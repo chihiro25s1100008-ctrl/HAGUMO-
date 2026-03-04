@@ -9,49 +9,93 @@
 body{
   margin:0;
   font-family:"Hiragino Kaku Gothic ProN", sans-serif;
-  background:linear-gradient(180deg,#fff0f6,#f0f9ff);
+  background:linear-gradient(180deg,#fff0f6 0%,#f0f9ff 100%);
   text-align:center;
-  color:#444;
+  color:#555;
+  overflow-x:hidden;
+}
+
+/* ふわふわ背景 */
+body::before{
+  content:"";
+  position:fixed;
+  width:200%;
+  height:200%;
+  background:radial-gradient(circle at 30% 30%,rgba(255,182,217,0.3),transparent 40%),
+             radial-gradient(circle at 70% 70%,rgba(173,216,230,0.3),transparent 40%);
+  animation:floatBg 15s infinite alternate ease-in-out;
+  z-index:-1;
+}
+
+@keyframes floatBg{
+  from{transform:translate(-5%,-5%);}
+  to{transform:translate(5%,5%);}
 }
 
 h1{
-  margin:40px 0 20px;
+  margin:50px 0 20px;
+  font-size:22px;
+  letter-spacing:2px;
 }
 
+/* カード */
 .card{
   background:white;
   max-width:420px;
-  margin:20px auto;
-  padding:25px;
-  border-radius:25px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  margin:30px auto;
+  padding:30px;
+  border-radius:30px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+  animation:fadeIn 0.8s ease;
 }
 
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* ボタン */
 button{
   display:block;
   width:100%;
-  padding:14px;
-  margin:10px 0;
+  padding:15px;
+  margin:12px 0;
   border:none;
   border-radius:999px;
-  background:#f4f4f4;
+  background:#f6f6f6;
   font-size:14px;
   cursor:pointer;
-  transition:0.3s;
+  transition:all 0.3s ease;
 }
 
 button:hover{
   background:#ffd6e7;
-  transform:scale(1.03);
+  transform:scale(1.05);
+  box-shadow:0 8px 20px rgba(255,182,217,0.4);
 }
 
 .result img{
-  width:160px;
-  border-radius:20px;
-  margin-bottom:10px;
+  width:170px;
+  border-radius:25px;
+  margin-bottom:15px;
+  animation:pop 0.6s ease;
+}
+
+@keyframes pop{
+  0%{transform:scale(0.8); opacity:0;}
+  100%{transform:scale(1); opacity:1;}
 }
 
 .hidden{display:none;}
+
+.restart{
+  background:#ff9ecb;
+  color:white;
+}
+
+.restart:hover{
+  background:#ff7eb9;
+}
 </style>
 </head>
 
@@ -62,13 +106,13 @@ button:hover{
 <div id="quiz" class="card"></div>
 
 <div id="resultCard" class="card hidden">
-<div id="result" class="result"></div>
-<button onclick="restart()">もう一度診断する</button>
+  <div id="result" class="result"></div>
+  <button class="restart" onclick="restart()">もう一度診断する</button>
 </div>
 
 <script>
 
-const questions = [
+const questions=[
 {q:"朝の気分は？",a:[
 {text:"静かに整えたい",type:"blue"},
 {text:"元気にスタート！",type:"red"},
@@ -84,50 +128,19 @@ const questions = [
 {text:"カフェ巡り",type:"yellow"},
 {text:"おうち時間",type:"white"}
 ]},
-{q:"好きな言葉は？",a:[
-{text:"成長",type:"red"},
-{text:"安心",type:"orange"},
-{text:"変化",type:"lightblue"}
-]},
 {q:"恋愛スタイルは？",a:[
 {text:"一途",type:"black"},
 {text:"甘えたい",type:"pink"},
 {text:"見守る",type:"blue"}
-]},
-{q:"自分の強みは？",a:[
-{text:"バランス感覚",type:"green"},
-{text:"情熱",type:"red"},
-{text:"優しさ",type:"white"}
-]},
-{q:"直したいところは？",a:[
-{text:"せっかち",type:"yellow"},
-{text:"考えすぎる",type:"purple"},
-{text:"強がり",type:"black"}
-]},
-{q:"あなたの色は？",a:[
-{text:"明るい色",type:"orange"},
-{text:"やわらかい色",type:"pink"},
-{text:"透明感ある色",type:"lightblue"}
-]},
-{q:"安心する瞬間は？",a:[
-{text:"自然の音",type:"green"},
-{text:"あたたかいごはん",type:"orange"},
-{text:"静かな夜",type:"blue"}
-]},
-{q:"大切にしたいものは？",a:[
-{text:"信頼",type:"black"},
-{text:"楽しさ",type:"yellow"},
-{text:"やり直せる勇気",type:"white"}
 ]}
 ];
 
-const results = {
+const results={
 green:`<img src="images/risu.PNG"><br>💚きゅうりす<br>バランス育成タイプ`,
 red:`<img src="images/tora.PNG"><br>❤️とまとら<br>情熱成長タイプ`,
 yellow:`<img src="images/saru.PNG"><br>💛れもんきー<br>刺激覚醒タイプ`,
 blue:`<img src="images/kame.PNG"><br>💙ぶるーべりくがめ<br>静観守護タイプ`,
 white:`<img src="images/buta.PNG"><br>🤍かぶた<br>再生リセットタイプ`,
-lightblue:`<img src="images/jaku.PNG"><br>🩵ばたふらいぴーこっく<br>水色進化タイプ`,
 purple:`<img src="images/imo.PNG"><br>💜さつまいもぐら<br>熟成安心タイプ`,
 pink:`<img src="images/nga.PNG"><br>🩷もももんが<br>甘やかし共鳴タイプ`,
 black:`<img src="images/kuma.PNG"><br>🖤くろいちじくま<br>深愛夜守タイプ`,
@@ -156,12 +169,8 @@ showQuestion();
 function showResult(){
 document.getElementById("quiz").classList.add("hidden");
 document.getElementById("resultCard").classList.remove("hidden");
-
 let max=0,final="";
-for(let t in scores){
-if(scores[t]>max){max=scores[t];final=t;}
-}
-
+for(let t in scores){if(scores[t]>max){max=scores[t];final=t;}}
 document.getElementById("result").innerHTML=results[final];
 }
 
