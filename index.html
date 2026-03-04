@@ -8,21 +8,50 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@600;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+:root{
+ --pink:#ff9ecb;
+ --pink2:#ff7eb9;
+ --sky:#eaf6ff;
+ --mint:#e8fff6;
+}
+
+*{box-sizing:border-box}
 body{
  margin:0;
  font-family:'Noto Sans JP',sans-serif;
- background:linear-gradient(180deg,#fff0f6,#f0f9ff);
  color:#555;
+ background:linear-gradient(180deg,#fff0f6,#f0f9ff);
+ overflow-x:hidden;
 }
 
+/* ふわふわ背景オーブ */
+.bg-orb{
+ position:fixed;
+ width:380px;height:380px;
+ border-radius:50%;
+ filter:blur(40px);
+ opacity:.5;
+ animation:float 12s ease-in-out infinite alternate;
+ z-index:-1;
+}
+.orb1{background:#ffd6ec; top:-80px; left:-80px;}
+.orb2{background:#cfe9ff; bottom:-120px; right:-80px; animation-delay:2s;}
+.orb3{background:#e6fff5; top:40%; left:60%; animation-delay:4s;}
+
+@keyframes float{
+ from{transform:translateY(0) translateX(0)}
+ to{transform:translateY(30px) translateX(20px)}
+}
+
+/* ヘッダー */
 header{
  display:flex;
  justify-content:space-between;
+ align-items:center;
  padding:20px 40px;
  background:rgba(255,255,255,.85);
  backdrop-filter:blur(10px);
- position:sticky;
- top:0;
+ position:sticky; top:0;
 }
 
 .logo{
@@ -37,37 +66,79 @@ nav a{
  text-decoration:none;
  color:#666;
  font-size:14px;
+ position:relative;
 }
 
+nav a::after{
+ content:"";
+ position:absolute;
+ left:0; bottom:-4px;
+ width:0%; height:2px;
+ background:var(--pink);
+ transition:.3s;
+}
+nav a:hover::after{width:100%}
+
+/* ヒーロー */
 .hero{
  text-align:center;
- padding:120px 20px;
+ padding:140px 20px 120px;
+ position:relative;
 }
 
 .hero h1{
  font-family:'Zen Maru Gothic',sans-serif;
- font-size:32px;
+ font-size:36px;
+ margin-bottom:20px;
+ animation:fadeUp 1s ease;
+}
+
+.hero p{
+ animation:fadeUp 1.2s ease;
+}
+
+@keyframes fadeUp{
+ from{opacity:0; transform:translateY(30px)}
+ to{opacity:1; transform:translateY(0)}
 }
 
 .btn{
- margin-top:30px;
- padding:16px 40px;
+ margin-top:40px;
+ padding:16px 44px;
  border:none;
  border-radius:999px;
- background:#ff9ecb;
+ background:linear-gradient(90deg,var(--pink),var(--pink2));
  color:white;
  font-size:14px;
  cursor:pointer;
  transition:.3s;
+ box-shadow:0 10px 25px rgba(255,158,203,.4);
 }
+
 .btn:hover{
- background:#ff7eb9;
- transform:scale(1.08);
+ transform:translateY(-4px) scale(1.05);
+ box-shadow:0 18px 40px rgba(255,158,203,.5);
+}
+
+/* セクションカード */
+.section{
+ padding:80px 20px;
+ text-align:center;
+}
+
+.card{
+ max-width:600px;
+ margin:auto;
+ background:white;
+ padding:50px;
+ border-radius:40px;
+ box-shadow:0 25px 60px rgba(0,0,0,.08);
+ animation:fadeUp 1s ease;
 }
 
 footer{
  text-align:center;
- padding:40px;
+ padding:50px;
  font-size:12px;
  opacity:.6;
 }
@@ -75,6 +146,10 @@ footer{
 </head>
 
 <body>
+
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<div class="bg-orb orb3"></div>
 
 <header>
 <div class="logo">MoeruTown</div>
@@ -90,6 +165,13 @@ footer{
 <h1>こころが形になった街。</h1>
 <p>あなたの中の愛されキャラを見つけよう</p>
 <a href="diagnosis.html"><button class="btn">診断する</button></a>
+</section>
+
+<section class="section">
+<div class="card">
+やさしさも、強さも、甘えも。<br>
+全部あなたの魅力。
+</div>
 </section>
 
 <footer>© 2026 MoeruTown</footer>
