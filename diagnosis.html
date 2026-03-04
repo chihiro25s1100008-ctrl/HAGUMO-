@@ -2,211 +2,55 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>診断 | MoeruTown</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="brand.css">
-
-<style>
-h1{
- font-family:'Zen Maru Gothic',sans-serif;
- margin-bottom:30px;
-}
-
-.progress{
- height:8px;
- background:#eee;
- border-radius:999px;
- margin-bottom:30px;
- overflow:hidden;
-}
-.progress-bar{
- height:100%;
- width:0%;
- background:linear-gradient(90deg,#ff9ecb,#ff7eb9);
- transition:.4s;
-}
-
-/* ふわキャラ */
-.floating-char{
- width:120px;
- position:absolute;
- top:-60px;
- right:-30px;
- opacity:0;
- transform:translateY(-20px);
- transition:all .6s ease;
-}
-.floating-char.show{
- opacity:1;
- transform:translateY(0);
-}
-
-/* ローディング */
-.loader{
- font-size:18px;
- animation:blink 1s infinite;
-}
-@keyframes blink{
- 50%{opacity:.4}
-}
-
-/* SNS風結果 */
-.sns-card{
- background:white;
- border-radius:30px;
- padding:30px;
- box-shadow:0 20px 50px rgba(0,0,0,.1);
- max-width:500px;
- margin:30px auto;
-}
-
-.sns-header{
- display:flex;
- align-items:center;
- gap:15px;
- margin-bottom:20px;
-}
-
-.sns-header img{
- width:60px;
- border-radius:50%;
-}
-
-.sns-name{
- font-weight:bold;
-}
-
-.result-img{
- width:220px;
- border-radius:30px;
- margin:20px 0;
-}
-</style>
+<title>ハグモ診断</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="nav">
 <a href="index.html">HOME</a>
-<a href="about.html">ABOUT</a>
-<a href="characters.html">CHARACTER</a>
+<a href="world.html">WORLD</a>
+<a href="hagumo.html">HAGUMO</a>
 <a href="diagnosis.html">DIAGNOSIS</a>
 </div>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
+<div class="container">
 
-<div class="card" id="quiz">
+<h1>🌱 あなたはどのハグモ？</h1>
 
-<h1>あなたの中のキャラ診断</h1>
-
-<div class="progress">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-
-<img id="floatingChar" class="floating-char">
-
-<div id="content"></div>
+<div class="card" id="quiz"></div>
 
 </div>
 
 <script>
 
-const characters={
- risu:{name:"きゅうりす",img:"risu.PNG",desc:"バランス型の優しい調整役。"},
- tora:{name:"とまとら",img:"tora.PNG",desc:"情熱あふれるリーダー。"},
- saru:{name:"れもんきー",img:"saru.PNG",desc:"ひらめき型ムードメーカー。"},
- kame:{name:"ぶるーべりくがめ",img:"kame.PNG",desc:"慎重で知的な努力家。"},
- buta:{name:"かぶた",img:"buta.PNG",desc:"包容力のある癒し系。"},
- jaku:{name:"ばたふらいぴーこっく",img:"jaku.PNG",desc:"ミステリアスアーティスト。"},
- imo:{name:"さつまいもぐら",img:"imo.PNG",desc:"コツコツ型努力家。"},
- nga:{name:"もももんが",img:"nga.PNG",desc:"甘え上手な愛されタイプ。"},
- kuma:{name:"くろいちじくま",img:"kuma.PNG",desc:"クールで優しい守護者。"},
- chabo:{name:"かぼちゃぼ",img:"chabo.PNG",desc:"元気いっぱいの明るさ担当。"}
+const results={
+ risu:"💚きゅうりす — バランス型ハグモ",
+ tora:"❤️とまとら — 情熱のハグモ",
+ saru:"💛れもんきー — ひらめきハグモ",
+ kame:"💙ぶるーべりくがめ — 知恵ハグモ",
+ buta:"🤍かぶた — 包容ハグモ"
 };
 
-const questions=[
-"朝の気分は？","友達との関係は？","得意なことは？",
-"好きな色は？","休日の過ごし方は？",
-"困った時は？","大事にしていることは？",
-"周りから言われる性格は？","好きな空間は？","あなたの本音は？"
-];
-
-let current=0;
-let scores={};
-
-function showQuestion(){
- document.getElementById("progressBar").style.width=(current/10)*100+"%";
-
- const q=questions[current];
- const content=document.getElementById("content");
- content.innerHTML=`<p>${q}</p>`;
-
- Object.keys(characters).forEach(type=>{
-   const btn=document.createElement("button");
-   btn.className="brand-btn";
-   btn.style.display="block";
-   btn.style.margin="10px auto";
-   btn.innerText=characters[type].name;
-   btn.onclick=()=>selectAnswer(type);
-   content.appendChild(btn);
- });
-}
-
-function selectAnswer(type){
- scores[type]=(scores[type]||0)+1;
-
- const floating=document.getElementById("floatingChar");
- floating.src="images/"+characters[type].img;
- floating.classList.add("show");
-
- setTimeout(()=>{
-   floating.classList.remove("show");
- },600);
-
- current++;
-
- if(current<10){
-   showQuestion();
- }else{
-   showLoading();
- }
-}
-
-function showLoading(){
- document.getElementById("content").innerHTML=
- "<p class='loader'>診断中...</p>";
- setTimeout(showResult,2000);
-}
-
-function showResult(){
- let resultType=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
- const result=characters[resultType];
-
+function showResult(type){
  document.getElementById("quiz").innerHTML=`
- <div class="sns-card">
-  <div class="sns-header">
-   <img src="images/${result.img}">
-   <div>
-    <div class="sns-name">@MoeruTown</div>
-    <div>あなたの結果</div>
-   </div>
-  </div>
-
-  <h2>${result.name}</h2>
-  <img src="images/${result.img}" class="result-img">
-  <p>${result.desc}</p>
-
-  <a href="diagnosis.html" class="brand-btn">もう一度診断</a>
-  <br><br>
-  <a href="index.html">HOMEへ戻る</a>
- </div>
+ <h2>${results[type]}</h2>
+ <a href="https://twitter.com/intent/tweet?text=私は${results[type]}でした🌱%20#ハグモ診断" target="_blank" class="button">
+ Xでシェア
+ </a>
+ <br><br>
+ <a href="index.html">HOMEへ戻る</a>
  `;
 }
 
-showQuestion();
+document.getElementById("quiz").innerHTML=`
+<p>あなたの性格は？</p>
+<button onclick="showResult('risu')" class="button">バランス型</button><br><br>
+<button onclick="showResult('tora')" class="button">情熱型</button><br><br>
+<button onclick="showResult('saru')" class="button">自由型</button>
+`;
 
 </script>
 
