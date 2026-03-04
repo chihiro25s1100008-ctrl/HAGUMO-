@@ -2,35 +2,136 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DIAGNOSIS | モエルタウン</title>
+
 <style>
-body{margin:0;font-family:sans-serif;background:#fffafc;text-align:center;}
-.card{background:white;padding:20px;border-radius:20px;margin:20px;}
-button{padding:12px;margin:10px;border:none;border-radius:20px;background:#f3f3f3;}
+body{
+  margin:0;
+  font-family:"Hiragino Kaku Gothic ProN", sans-serif;
+  background:linear-gradient(180deg,#fff0f6,#f0f9ff);
+  text-align:center;
+  color:#444;
+}
+
+h1{
+  margin:40px 0 20px;
+}
+
+.card{
+  background:white;
+  max-width:420px;
+  margin:20px auto;
+  padding:25px;
+  border-radius:25px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+button{
+  display:block;
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border:none;
+  border-radius:999px;
+  background:#f4f4f4;
+  font-size:14px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#ffd6e7;
+  transform:scale(1.03);
+}
+
+.result img{
+  width:160px;
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
 .hidden{display:none;}
 </style>
 </head>
+
 <body>
 
-<h1>愛されタイプ診断</h1>
+<h1>🌈 愛されタイプ診断</h1>
 
 <div id="quiz" class="card"></div>
+
 <div id="resultCard" class="card hidden">
-<div id="result"></div>
-<button onclick="restart()">もう一度</button>
+<div id="result" class="result"></div>
+<button onclick="restart()">もう一度診断する</button>
 </div>
 
 <script>
-const questions=[
-{q:"朝の気分は？",a:[{t:"静か",type:"blue"},{t:"元気",type:"red"}]},
-{q:"友達が落ち込んでたら？",a:[{t:"寄り添う",type:"pink"},{t:"励ます",type:"orange"}]}
+
+const questions = [
+{q:"朝の気分は？",a:[
+{text:"静かに整えたい",type:"blue"},
+{text:"元気にスタート！",type:"red"},
+{text:"のんびりゆったり",type:"purple"}
+]},
+{q:"友達が落ち込んでたら？",a:[
+{text:"そっと寄り添う",type:"pink"},
+{text:"励ます！",type:"orange"},
+{text:"黙って隣にいる",type:"black"}
+]},
+{q:"理想の休日は？",a:[
+{text:"自然の中でリフレッシュ",type:"green"},
+{text:"カフェ巡り",type:"yellow"},
+{text:"おうち時間",type:"white"}
+]},
+{q:"好きな言葉は？",a:[
+{text:"成長",type:"red"},
+{text:"安心",type:"orange"},
+{text:"変化",type:"lightblue"}
+]},
+{q:"恋愛スタイルは？",a:[
+{text:"一途",type:"black"},
+{text:"甘えたい",type:"pink"},
+{text:"見守る",type:"blue"}
+]},
+{q:"自分の強みは？",a:[
+{text:"バランス感覚",type:"green"},
+{text:"情熱",type:"red"},
+{text:"優しさ",type:"white"}
+]},
+{q:"直したいところは？",a:[
+{text:"せっかち",type:"yellow"},
+{text:"考えすぎる",type:"purple"},
+{text:"強がり",type:"black"}
+]},
+{q:"あなたの色は？",a:[
+{text:"明るい色",type:"orange"},
+{text:"やわらかい色",type:"pink"},
+{text:"透明感ある色",type:"lightblue"}
+]},
+{q:"安心する瞬間は？",a:[
+{text:"自然の音",type:"green"},
+{text:"あたたかいごはん",type:"orange"},
+{text:"静かな夜",type:"blue"}
+]},
+{q:"大切にしたいものは？",a:[
+{text:"信頼",type:"black"},
+{text:"楽しさ",type:"yellow"},
+{text:"やり直せる勇気",type:"white"}
+]}
 ];
 
-const results={
-blue:`<img src="images/kame.PNG" width="120"><br>💙ぶるーべりくがめ`,
-red:`<img src="images/tora.PNG" width="120"><br>❤️とまとら`,
-pink:`<img src="images/nga.PNG" width="120"><br>🩷もももんが`,
-orange:`<img src="images/chabo.PNG" width="120"><br>🧡かぼちゃぼ`
+const results = {
+green:`<img src="images/risu.PNG"><br>💚きゅうりす<br>バランス育成タイプ`,
+red:`<img src="images/tora.PNG"><br>❤️とまとら<br>情熱成長タイプ`,
+yellow:`<img src="images/saru.PNG"><br>💛れもんきー<br>刺激覚醒タイプ`,
+blue:`<img src="images/kame.PNG"><br>💙ぶるーべりくがめ<br>静観守護タイプ`,
+white:`<img src="images/buta.PNG"><br>🤍かぶた<br>再生リセットタイプ`,
+lightblue:`<img src="images/jaku.PNG"><br>🩵ばたふらいぴーこっく<br>水色進化タイプ`,
+purple:`<img src="images/imo.PNG"><br>💜さつまいもぐら<br>熟成安心タイプ`,
+pink:`<img src="images/nga.PNG"><br>🩷もももんが<br>甘やかし共鳴タイプ`,
+black:`<img src="images/kuma.PNG"><br>🖤くろいちじくま<br>深愛夜守タイプ`,
+orange:`<img src="images/chabo.PNG"><br>🧡かぼちゃぼ<br>包容保温タイプ`
 };
 
 let current=0;
@@ -41,7 +142,7 @@ if(current>=questions.length){showResult();return;}
 let q=questions[current];
 let html=`<h3>${q.q}</h3>`;
 q.a.forEach(ans=>{
-html+=`<button onclick="selectAnswer('${ans.type}')">${ans.t}</button>`;
+html+=`<button onclick="selectAnswer('${ans.type}')">${ans.text}</button>`;
 });
 document.getElementById("quiz").innerHTML=html;
 }
@@ -55,15 +156,25 @@ showQuestion();
 function showResult(){
 document.getElementById("quiz").classList.add("hidden");
 document.getElementById("resultCard").classList.remove("hidden");
+
 let max=0,final="";
-for(let t in scores){if(scores[t]>max){max=scores[t];final=t;}}
+for(let t in scores){
+if(scores[t]>max){max=scores[t];final=t;}
+}
+
 document.getElementById("result").innerHTML=results[final];
 }
 
-function restart(){current=0;scores={};location.reload();}
+function restart(){
+current=0;
+scores={};
+document.getElementById("quiz").classList.remove("hidden");
+document.getElementById("resultCard").classList.add("hidden");
+showQuestion();
+}
 
 showQuestion();
-</script>
 
+</script>
 </body>
 </html>
