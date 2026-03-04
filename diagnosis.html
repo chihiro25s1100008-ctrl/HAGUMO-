@@ -25,7 +25,6 @@ position:sticky;
 top:0;
 flex-wrap:wrap;
 box-shadow:0 5px 20px rgba(0,0,0,.05);
-z-index:1000;
 }
 
 .nav a{
@@ -56,11 +55,8 @@ cursor:pointer;
 transition:.3s;
 }
 
-button:hover{
-transform:scale(1.05);
-}
+button:hover{transform:scale(1.05);}
 
-/* ローディング */
 .loading{
 display:none;
 margin-top:50px;
@@ -75,7 +71,6 @@ animation:pulse 1.2s infinite;
 100%{opacity:.3;}
 }
 
-/* 結果カード */
 .result-card{
 display:none;
 margin-top:40px;
@@ -87,8 +82,18 @@ animation:fadeUp .8s ease;
 }
 
 .result-card img{
-width:140px;
-margin:10px;
+width:160px;
+opacity:0;
+transform:translateY(40px) scale(.8);
+animation:appear .8s ease forwards;
+animation-delay:.5s;
+}
+
+@keyframes appear{
+to{
+opacity:1;
+transform:translateY(0) scale(1);
+}
 }
 
 .compat{
@@ -107,6 +112,14 @@ from{opacity:0;transform:translateY(40px);}
 to{opacity:1;transform:translateY(0);}
 }
 
+.saved{
+margin-top:20px;
+padding:15px;
+background:#f0fff6;
+border-radius:15px;
+font-size:14px;
+}
+
 </style>
 </head>
 <body>
@@ -122,6 +135,8 @@ to{opacity:1;transform:translateY(0);}
 <div class="container">
 
 <h1>🌱 ハグモ覚醒診断</h1>
+
+<div id="savedResult" class="saved"></div>
 <div id="quiz"></div>
 
 <div class="loading" id="loading">
@@ -135,7 +150,7 @@ to{opacity:1;transform:translateY(0);}
 
 <div class="compat">
 <h3>🤝 相性ハグモ</h3>
-<img id="compatImg">
+<img id="compatImg" style="width:100px;">
 <p id="compatText"></p>
 </div>
 
@@ -164,7 +179,7 @@ const hagumoData={
 const questions=[
 "朝の理想の過ごし方は？",
 "チームではどんな役？",
-"好きな色は？",
+"理想の育て方は？",  // ←変更した質問
 "困った時どうする？",
 "理想の休日は？",
 "人に言われる性格は？",
@@ -177,7 +192,7 @@ const questions=[
 const options=[
 ["ゆったり","計画的","即行動"],
 ["支える","まとめる","盛り上げる"],
-["緑","赤","紫"],
+["コツコツ育成","バランス重視","大胆チャレンジ"],
 ["相談する","分析する","突き進む"],
 ["家","カフェ","旅"],
 ["優しい","冷静","明るい"],
@@ -189,14 +204,12 @@ const options=[
 
 let scores={};
 Object.keys(hagumoData).forEach(k=>scores[k]=0);
-
 let current=0;
 
 function showQuestion(){
 if(current>=questions.length){
 document.getElementById("quiz").style.display="none";
 document.getElementById("loading").style.display="block";
-
 setTimeout(showResult,2000);
 return;
 }
@@ -208,11 +221,10 @@ ${options[current].map((opt,i)=>`<button onclick="answer(${i})">${opt}</button>`
 }
 
 function answer(i){
-
 const mapping=[
 ["かぶた","きゅうりす","とまとら"],
 ["さつまいもぐら","きゅうりす","かぼちゃぼ"],
-["きゅうりす","とまとら","くろいちじくま"],
+["さつまいもぐら","きゅうりす","れもんきー"],
 ["かぶた","ぶるーべりくがめ","とまとら"],
 ["さつまいもぐら","きゅうりす","れもんきー"],
 ["かぶた","ぶるーべりくがめ","かぼちゃぼ"],
@@ -231,6 +243,7 @@ function showResult(){
 document.getElementById("loading").style.display="none";
 
 let top=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+localStorage.setItem("hagumoResult",top);
 
 let data=hagumoData[top];
 let compat=data.compat;
@@ -251,6 +264,14 @@ let url=encodeURIComponent(location.href);
 window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+url);
 }
 
+function showSaved(){
+let saved=localStorage.getItem("hagumoResult");
+if(saved){
+document.getElementById("savedResult").innerText="🌟 前回の診断結果： "+saved;
+}
+}
+
+showSaved();
 showQuestion();
 
 </script>
