@@ -4,25 +4,34 @@
 <meta charset="UTF-8">
 <title>ハグモ覚醒診断</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
+body{
+ font-family:'Noto Sans JP',sans-serif;
+ background:#fff7fb;
+ text-align:center;
+ margin:0;
+}
+
+h1{
+ font-family:'Zen Maru Gothic',sans-serif;
+ margin-top:40px;
+}
+
 .quiz-box,.result-card{
  background:white;
- border-radius:40px;
+ border-radius:30px;
  padding:40px;
- max-width:700px;
+ max-width:720px;
  margin:40px auto;
- box-shadow:0 20px 60px rgba(0,0,0,.08);
- text-align:center;
+ box-shadow:0 15px 40px rgba(0,0,0,.08);
 }
 
 .choice{
  display:block;
  margin:12px auto;
- padding:14px 30px;
+ padding:14px 25px;
  border-radius:999px;
  border:none;
  cursor:pointer;
@@ -30,25 +39,10 @@
  color:white;
  font-size:15px;
  transition:.3s;
+ width:80%;
 }
 
 .choice:hover{ transform:scale(1.05); }
-
-.fade-hagumo{
- position:absolute;
- width:140px;
- opacity:.12;
- right:0;
- bottom:0;
- animation:float 4s infinite;
-}
-
-@keyframes float{
- 0%,100%{transform:translateY(0)}
- 50%{transform:translateY(-15px)}
-}
-
-.loading{ font-size:18px; }
 
 .result-card img{
  width:220px;
@@ -58,7 +52,7 @@
 .share a{
  display:inline-block;
  margin:8px;
- padding:12px 28px;
+ padding:10px 25px;
  border-radius:999px;
  text-decoration:none;
  background:#222;
@@ -68,69 +62,97 @@
 
 .save-btn{
  background:#ff7eb9;
- margin-top:15px;
+}
+
+.loading{
+ font-size:18px;
 }
 </style>
 </head>
-
 <body>
 
-<div class="nav">
-<a href="index.html">HOME</a>
-<a href="world.html">WORLD</a>
-<a href="hagumo.html">HAGUMO</a>
-<a href="diagnosis.html">DIAGNOSIS</a>
-</div>
-
-<div class="container">
 <h1>🌱 ハグモ覚醒診断</h1>
 <div id="app"></div>
-</div>
 
 <script>
 
 const hagumos = [
-{key:"risu",name:"きゅうりす",img:"images/risu.PNG",title:"調和のハグモ",pair:"tora"},
-{key:"tora",name:"とまとら",img:"images/tora.PNG",title:"情熱のハグモ",pair:"risu"},
-{key:"saru",name:"れもんきー",img:"images/saru.PNG",title:"ひらめきのハグモ",pair:"kame"},
-{key:"kame",name:"ぶるーべりくがめ",img:"images/kame.PNG",title:"知恵のハグモ",pair:"saru"},
-{key:"buta",name:"かぶた",img:"images/buta.PNG",title:"包容のハグモ",pair:"fig"},
-{key:"imo",name:"さつまいもぐら",img:"images/imo.PNG",title:"努力のハグモ",pair:"momo"},
-{key:"momo",name:"もももんが",img:"images/momo.PNG",title:"愛されハグモ",pair:"imo"},
-{key:"fig",name:"くろいちじくま",img:"images/fig.PNG",title:"静寂のハグモ",pair:"buta"},
-{key:"kabo",name:"かぼちゃぼ",img:"images/kabo.PNG",title:"太陽のハグモ",pair:"pea"},
-{key:"pea",name:"ぴーなっつきつね",img:"images/pea.PNG",title:"機転のハグモ",pair:"kabo"}
+{key:"risu",name:"きゅうりす",img:"images/risu.PNG",type:"バランス・調和",pair:"tora"},
+{key:"tora",name:"とまとら",img:"images/tora.PNG",type:"情熱・リーダー",pair:"risu"},
+{key:"saru",name:"れもんきー",img:"images/saru.PNG",type:"ひらめき・自由",pair:"kame"},
+{key:"kame",name:"ぶるーべりくがめ",img:"images/kame.PNG",type:"知性・分析",pair:"saru"},
+{key:"buta",name:"かぶた",img:"images/buta.PNG",type:"優しさ・包容",pair:"kuma"},
+{key:"imo",name:"さつまいもぐら",img:"images/imo.PNG",type:"努力・継続",pair:"nga"},
+{key:"nga",name:"もももんが",img:"images/nga.PNG",type:"愛嬌・甘え上手",pair:"imo"},
+{key:"kuma",name:"くろいちじくま",img:"images/kuma.PNG",type:"静か・ミステリアス",pair:"buta"},
+{key:"chabo",name:"かぼちゃぼ",img:"images/chabo.PNG",type:"明るい・ポジティブ",pair:"jaku"},
+{key:"jaku",name:"ばたふらいぴーこっく",img:"images/jaku.PNG",type:"機転・賢さ",pair:"chabo"}
 ];
 
 let scores={};
 hagumos.forEach(h=>scores[h.key]=0);
 
 const questions=[
-"大切にしているものは？",
-"好きな時間帯は？",
-"周りから言われる性格は？",
-"ピンチの時どうする？",
-"あなたの強みは？",
-"好きな場所は？",
-"心が動く瞬間は？",
-"リーダー派？サポート派？",
-"好きな言葉は？",
-"あなたの輝き方は？"
+{
+q:"休日の理想は？",
+a:[
+{text:"のんびりリラックス",add:["risu","buta"]},
+{text:"友達と外へ",add:["chabo","nga"]},
+{text:"新しい挑戦",add:["tora","saru"]},
+{text:"知識を深める",add:["kame","jaku"]}
+]
+},
+{
+q:"あなたの強みは？",
+a:[
+{text:"空気を読む力",add:["risu"]},
+{text:"行動力",add:["tora"]},
+{text:"アイデア力",add:["saru"]},
+{text:"分析力",add:["kame"]}
+]
+},
+{
+q:"落ち込んだ時は？",
+a:[
+{text:"誰かに相談",add:["nga","buta"]},
+{text:"一人で考える",add:["kuma"]},
+{text:"気合いで乗り切る",add:["imo","tora"]},
+{text:"ポジティブ変換",add:["chabo"]}
+]
+},
+{
+q:"好きなポジションは？",
+a:[
+{text:"まとめ役",add:["tora"]},
+{text:"支える役",add:["buta","risu"]},
+{text:"自由人",add:["saru"]},
+{text:"参謀",add:["kame","jaku"]}
+]
+},
+{
+q:"理想の自分は？",
+a:[
+{text:"優しい人",add:["buta"]},
+{text:"カリスマ",add:["tora"]},
+{text:"唯一無二",add:["kuma"]},
+{text:"愛され存在",add:["nga"]}
+]
+}
 ];
 
 let current=0;
 
 function showQuestion(){
+ const q=questions[current];
  document.getElementById("app").innerHTML=`
  <div class="quiz-box">
- <div>${questions[current]}</div>
- ${hagumos.map(h=>`<button class="choice" onclick="choose('${h.key}')">${h.name}</button>`).join("")}
- <img src="${hagumos[Math.floor(Math.random()*hagumos.length)].img}" class="fade-hagumo">
+ <h3>${q.q}</h3>
+ ${q.a.map((choice,i)=>`<button class="choice" onclick="choose(${i})">${choice.text}</button>`).join("")}
  </div>`;
 }
 
-function choose(key){
- scores[key]++;
+function choose(i){
+ questions[current].a[i].add.forEach(k=>scores[k]++);
  current++;
  if(current<questions.length){ showQuestion(); }
  else{ loading(); }
@@ -139,7 +161,7 @@ function choose(key){
 function loading(){
  document.getElementById("app").innerHTML=
  `<div class="quiz-box"><div class="loading">🌱 ハグモ覚醒中...</div></div>`;
- setTimeout(showResult,2500);
+ setTimeout(showResult,2000);
 }
 
 function showResult(){
@@ -149,28 +171,23 @@ function showResult(){
 
  document.getElementById("app").innerHTML=`
  <div class="result-card" id="resultCard">
- <h2>あなたは ${h.name}</h2>
+ <img src="images/rogo.PNG" style="width:120px">
+ <h2>${h.name}</h2>
  <img src="${h.img}">
- <h3>${h.title}</h3>
+ <h3>${h.type}</h3>
  <p>
- あなたの中には${h.name}の因子が宿っています。<br>
- その魅力を信じることで、さらに輝きます。
+ あなたの中には<strong>${h.name}</strong>の因子が宿っています。<br>
+ その魅力を大切に育ててください。
  </p>
-
  <hr>
-
  <h3>🌸 相性ハグモ</h3>
  <p>${pair.name}</p>
  <img src="${pair.img}" style="width:140px">
-
  <div class="share">
  <a href="https://twitter.com/intent/tweet?text=私は${h.name}でした🌱%20#ハグモ覚醒診断" target="_blank">Xでシェア</a>
- <a href="https://social-plugins.line.me/lineit/share?url=${location.href}" target="_blank">LINEでシェア</a>
  </div>
-
  <button class="choice save-btn" onclick="saveImage()">診断カードを保存</button>
- </div>
- `;
+ </div>`;
 }
 
 function saveImage(){
