@@ -4,55 +4,63 @@
 <meta charset="UTF-8">
 <title>診断 | MoeruTown</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&family=Noto+Sans+JP&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
 
 <style>
 body{
  margin:0;
  font-family:'Noto Sans JP',sans-serif;
- text-align:center;
  background:linear-gradient(#fff0f6,#f0f9ff);
- padding:80px 20px;
+ text-align:center;
+ padding:60px 20px;
 }
 
 h1{
  font-family:'Zen Maru Gothic',sans-serif;
+ margin-bottom:40px;
+}
+
+.card{
+ background:white;
+ max-width:600px;
+ margin:auto;
+ padding:40px;
+ border-radius:40px;
+ box-shadow:0 25px 60px rgba(0,0,0,.08);
+}
+
+.question{
+ font-size:18px;
+ margin-bottom:30px;
 }
 
 button{
- padding:14px 30px;
- margin:15px;
+ display:block;
+ width:100%;
+ margin:10px 0;
+ padding:15px;
  border:none;
  border-radius:999px;
  background:#ff9ecb;
  color:white;
+ font-size:14px;
  cursor:pointer;
  transition:.3s;
 }
 
 button:hover{
- transform:scale(1.07);
+ transform:scale(1.05);
 }
 
-#result{
- margin-top:40px;
- animation:fadeUp .6s ease;
-}
-
-@keyframes fadeUp{
- from{opacity:0; transform:translateY(20px)}
- to{opacity:1; transform:translateY(0)}
-}
-
-img{
- width:170px;
+#result img{
+ width:180px;
  border-radius:25px;
  margin-bottom:15px;
 }
 
 .home-link{
  display:inline-block;
- margin-top:30px;
+ margin-top:20px;
  text-decoration:none;
  color:#ff7eb9;
 }
@@ -61,20 +69,98 @@ img{
 
 <body>
 
-<h1>あなたのタイプは？</h1>
+<h1>あなたの中のキャラ診断</h1>
 
-<button onclick="showResult()">診断する</button>
-
-<div id="result"></div>
+<div class="card" id="quiz">
+<div class="question" id="questionText"></div>
+<div id="answers"></div>
+</div>
 
 <script>
+
+const questions = [
+ {
+  text:"休日の過ごし方は？",
+  answers:[
+   {text:"みんなと遊ぶ！", type:"tora"},
+   {text:"ひとりでのんびり", type:"kame"},
+   {text:"新しいことに挑戦", type:"saru"}
+  ]
+ },
+ {
+  text:"友達に相談されたら？",
+  answers:[
+   {text:"全力で支える", type:"risu"},
+   {text:"優しく寄り添う", type:"buta"},
+   {text:"背中を押す！", type:"tora"}
+  ]
+ },
+ {
+  text:"自分の性格は？",
+  answers:[
+   {text:"甘えんぼ", type:"nga"},
+   {text:"クール", type:"kuma"},
+   {text:"コツコツ型", type:"imo"}
+  ]
+ }
+];
+
+let currentQuestion = 0;
+let scores = {};
+
+function showQuestion(){
+ const q = questions[currentQuestion];
+ document.getElementById("questionText").innerText = q.text;
+ const answersDiv = document.getElementById("answers");
+ answersDiv.innerHTML = "";
+
+ q.answers.forEach(a=>{
+   const btn = document.createElement("button");
+   btn.innerText = a.text;
+   btn.onclick = () => selectAnswer(a.type);
+   answersDiv.appendChild(btn);
+ });
+}
+
+function selectAnswer(type){
+ scores[type] = (scores[type] || 0) + 1;
+ currentQuestion++;
+
+ if(currentQuestion < questions.length){
+   showQuestion();
+ } else {
+   showResult();
+ }
+}
+
 function showResult(){
- document.getElementById("result").innerHTML = `
- <img src="images/risu.PNG"><br>
- 💚きゅうりすタイプ！<br>
- <a href="index.html" class="home-link">← HOMEへ戻る</a>
+ let resultType = Object.keys(scores).reduce((a,b)=> scores[a] > scores[b] ? a : b);
+
+ const resultData = {
+  risu:{name:"💚きゅうりす", img:"risu.PNG", text:"バランス育成タイプ。優しい調整役。"},
+  tora:{name:"❤️とまとら", img:"tora.PNG", text:"情熱リーダータイプ。"},
+  saru:{name:"💛れもんきー", img:"saru.PNG", text:"ひらめき型ムードメーカー。"},
+  kame:{name:"💙ぶるーべりくがめ", img:"kame.PNG", text:"慎重派で知的。"},
+  buta:{name:"🤍かぶた", img:"buta.PNG", text:"癒しの包容力タイプ。"},
+  nga:{name:"🩷もももんが", img:"nga.PNG", text:"甘えんぼ愛されタイプ。"},
+  kuma:{name:"🖤くろいちじくま", img:"kuma.PNG", text:"クールだけど優しい守護者。"},
+  imo:{name:"💜さつまいもぐら", img:"imo.PNG", text:"コツコツ努力家タイプ。"}
+ };
+
+ const result = resultData[resultType];
+
+ document.getElementById("quiz").innerHTML = `
+   <div id="result">
+   <img src="images/${result.img}">
+   <h2>${result.name}</h2>
+   <p>${result.text}</p>
+   <a href="index.html" class="home-link">← HOMEへ戻る</a>
+   </div>
  `;
 }
+
+showQuestion();
+
 </script>
 
 </body>
