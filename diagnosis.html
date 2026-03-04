@@ -5,82 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>診断 | MoeruTown</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
 
 <style>
-:root{
- --pink:#ff9ecb;
- --pink2:#ff7eb9;
-}
-
-body{
- margin:0;
- font-family:'Noto Sans JP',sans-serif;
- background:linear-gradient(#fff0f6,#f0f9ff);
- text-align:center;
- overflow-x:hidden;
-}
-
-/* 背景ふわオーブ */
-.orb{
- position:fixed;
- width:300px;height:300px;
- border-radius:50%;
- filter:blur(40px);
- opacity:.4;
- z-index:-1;
- animation:float 10s ease-in-out infinite alternate;
-}
-.orb1{background:#ffd6ec;top:-50px;left:-50px;}
-.orb2{background:#cfe9ff;bottom:-50px;right:-50px;}
-
-@keyframes float{
- from{transform:translateY(0)}
- to{transform:translateY(40px)}
-}
-
-.container{
- padding:60px 20px;
-}
-
-.card{
- background:white;
- max-width:650px;
- margin:auto;
- padding:50px;
- border-radius:45px;
- box-shadow:0 30px 70px rgba(0,0,0,.08);
- position:relative;
- overflow:hidden;
-}
-
 h1{
  font-family:'Zen Maru Gothic',sans-serif;
-}
-
-.question{
- font-size:20px;
  margin-bottom:30px;
- animation:fadeIn .5s ease;
-}
-
-button{
- display:block;
- width:100%;
- margin:12px 0;
- padding:16px;
- border:none;
- border-radius:999px;
- background:linear-gradient(90deg,var(--pink),var(--pink2));
- color:white;
- font-size:14px;
- cursor:pointer;
- transition:.3s;
- box-shadow:0 10px 25px rgba(255,158,203,.3);
-}
-
-button:hover{
- transform:scale(1.05);
 }
 
 .progress{
@@ -90,125 +21,164 @@ button:hover{
  margin-bottom:30px;
  overflow:hidden;
 }
-
 .progress-bar{
  height:100%;
  width:0%;
- background:linear-gradient(90deg,var(--pink),var(--pink2));
+ background:linear-gradient(90deg,#ff9ecb,#ff7eb9);
  transition:.4s;
 }
 
-/* 結果画面 */
-.result img{
+/* ふわキャラ */
+.floating-char{
+ width:120px;
+ position:absolute;
+ top:-60px;
+ right:-30px;
+ opacity:0;
+ transform:translateY(-20px);
+ transition:all .6s ease;
+}
+.floating-char.show{
+ opacity:1;
+ transform:translateY(0);
+}
+
+/* ローディング */
+.loader{
+ font-size:18px;
+ animation:blink 1s infinite;
+}
+@keyframes blink{
+ 50%{opacity:.4}
+}
+
+/* SNS風結果 */
+.sns-card{
+ background:white;
+ border-radius:30px;
+ padding:30px;
+ box-shadow:0 20px 50px rgba(0,0,0,.1);
+ max-width:500px;
+ margin:30px auto;
+}
+
+.sns-header{
+ display:flex;
+ align-items:center;
+ gap:15px;
+ margin-bottom:20px;
+}
+
+.sns-header img{
+ width:60px;
+ border-radius:50%;
+}
+
+.sns-name{
+ font-weight:bold;
+}
+
+.result-img{
  width:220px;
  border-radius:30px;
- margin-bottom:20px;
- animation:pop .6s ease;
-}
-
-@keyframes pop{
- from{transform:scale(.8);opacity:0}
- to{transform:scale(1);opacity:1}
-}
-
-.result h2{
- font-family:'Zen Maru Gothic',sans-serif;
- font-size:26px;
-}
-
-.home-btn{
- margin-top:25px;
- display:inline-block;
- text-decoration:none;
- padding:12px 30px;
- border-radius:999px;
- background:#ff9ecb;
- color:white;
-}
-
-.restart{
- margin-top:15px;
- display:block;
- color:#ff7eb9;
- text-decoration:none;
+ margin:20px 0;
 }
 </style>
 </head>
 
 <body>
 
+<div class="nav">
+<a href="index.html">HOME</a>
+<a href="about.html">ABOUT</a>
+<a href="characters.html">CHARACTER</a>
+<a href="diagnosis.html">DIAGNOSIS</a>
+</div>
+
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
 
-<div class="container">
-<h1>あなたの中のキャラ診断</h1>
-
 <div class="card" id="quiz">
+
+<h1>あなたの中のキャラ診断</h1>
 
 <div class="progress">
 <div class="progress-bar" id="progressBar"></div>
 </div>
 
-<div class="question" id="questionText"></div>
-<div id="answers"></div>
+<img id="floatingChar" class="floating-char">
 
-</div>
+<div id="content"></div>
+
 </div>
 
 <script>
 
-const characters = {
- risu:{name:"💚きゅうりす",img:"risu.PNG",text:"バランス型の優しい調整役。"},
- tora:{name:"❤️とまとら",img:"tora.PNG",text:"情熱あふれるリーダー。"},
- saru:{name:"💛れもんきー",img:"saru.PNG",text:"ひらめき型ムードメーカー。"},
- kame:{name:"💙ぶるーべりくがめ",img:"kame.PNG",text:"慎重で知的な努力家。"},
- buta:{name:"🤍かぶた",img:"buta.PNG",text:"包容力のある癒し系。"},
- jaku:{name:"🩵ばたふらいぴーこっく",img:"jaku.PNG",text:"水色のミステリアスアーティスト。"},
- imo:{name:"💜さつまいもぐら",img:"imo.PNG",text:"コツコツ型の努力家。"},
- nga:{name:"🩷もももんが",img:"nga.PNG",text:"甘え上手な愛されタイプ。"},
- kuma:{name:"🖤くろいちじくま",img:"kuma.PNG",text:"クールで優しい守護者。"},
- chabo:{name:"🧡かぼちゃぼ",img:"chabo.PNG",text:"元気いっぱいの明るさ担当。"}
+const characters={
+ risu:{name:"きゅうりす",img:"risu.PNG",desc:"バランス型の優しい調整役。"},
+ tora:{name:"とまとら",img:"tora.PNG",desc:"情熱あふれるリーダー。"},
+ saru:{name:"れもんきー",img:"saru.PNG",desc:"ひらめき型ムードメーカー。"},
+ kame:{name:"ぶるーべりくがめ",img:"kame.PNG",desc:"慎重で知的な努力家。"},
+ buta:{name:"かぶた",img:"buta.PNG",desc:"包容力のある癒し系。"},
+ jaku:{name:"ばたふらいぴーこっく",img:"jaku.PNG",desc:"ミステリアスアーティスト。"},
+ imo:{name:"さつまいもぐら",img:"imo.PNG",desc:"コツコツ型努力家。"},
+ nga:{name:"もももんが",img:"nga.PNG",desc:"甘え上手な愛されタイプ。"},
+ kuma:{name:"くろいちじくま",img:"kuma.PNG",desc:"クールで優しい守護者。"},
+ chabo:{name:"かぼちゃぼ",img:"chabo.PNG",desc:"元気いっぱいの明るさ担当。"}
 };
 
-const questions = [
- "朝の気分は？",
- "友達との関係は？",
- "得意なことは？",
- "好きな色は？",
- "休日の過ごし方は？",
- "困った時は？",
- "大事にしていることは？",
- "周りから言われる性格は？",
- "好きな空間は？",
- "あなたの本音は？"
+const questions=[
+"朝の気分は？","友達との関係は？","得意なことは？",
+"好きな色は？","休日の過ごし方は？",
+"困った時は？","大事にしていることは？",
+"周りから言われる性格は？","好きな空間は？","あなたの本音は？"
 ];
 
-const types = Object.keys(characters);
-let scores = {};
-let current = 0;
+let current=0;
+let scores={};
 
 function showQuestion(){
- document.getElementById("progressBar").style.width = (current/10)*100+"%";
- document.getElementById("questionText").innerText = questions[current];
- const answersDiv = document.getElementById("answers");
- answersDiv.innerHTML="";
+ document.getElementById("progressBar").style.width=(current/10)*100+"%";
 
- types.forEach(type=>{
+ const q=questions[current];
+ const content=document.getElementById("content");
+ content.innerHTML=`<p>${q}</p>`;
+
+ Object.keys(characters).forEach(type=>{
    const btn=document.createElement("button");
+   btn.className="brand-btn";
+   btn.style.display="block";
+   btn.style.margin="10px auto";
    btn.innerText=characters[type].name;
    btn.onclick=()=>selectAnswer(type);
-   answersDiv.appendChild(btn);
+   content.appendChild(btn);
  });
 }
 
 function selectAnswer(type){
  scores[type]=(scores[type]||0)+1;
+
+ const floating=document.getElementById("floatingChar");
+ floating.src="images/"+characters[type].img;
+ floating.classList.add("show");
+
+ setTimeout(()=>{
+   floating.classList.remove("show");
+ },600);
+
  current++;
+
  if(current<10){
    showQuestion();
  }else{
-   showResult();
+   showLoading();
  }
+}
+
+function showLoading(){
+ document.getElementById("content").innerHTML=
+ "<p class='loader'>診断中...</p>";
+ setTimeout(showResult,2000);
 }
 
 function showResult(){
@@ -216,12 +186,22 @@ function showResult(){
  const result=characters[resultType];
 
  document.getElementById("quiz").innerHTML=`
- <div class="result">
+ <div class="sns-card">
+  <div class="sns-header">
    <img src="images/${result.img}">
-   <h2>${result.name}</h2>
-   <p>${result.text}</p>
-   <a href="index.html" class="home-btn">HOMEへ戻る</a>
-   <a href="diagnosis.html" class="restart">もう一度診断する</a>
+   <div>
+    <div class="sns-name">@MoeruTown</div>
+    <div>あなたの結果</div>
+   </div>
+  </div>
+
+  <h2>${result.name}</h2>
+  <img src="images/${result.img}" class="result-img">
+  <p>${result.desc}</p>
+
+  <a href="diagnosis.html" class="brand-btn">もう一度診断</a>
+  <br><br>
+  <a href="index.html">HOMEへ戻る</a>
  </div>
  `;
 }
