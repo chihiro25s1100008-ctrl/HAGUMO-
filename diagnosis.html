@@ -249,8 +249,12 @@ current++;
 showQuestion();
 }
 
-function showResult(){
-document.getElementById("loading").style.display="none";
+let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[];
+history.push({
+name:top,
+date:new Date().toLocaleDateString()
+});
+localStorage.setItem("hagumoHistory",JSON.stringify(history));
 
 let top=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
 localStorage.setItem("hagumoResult",top);
