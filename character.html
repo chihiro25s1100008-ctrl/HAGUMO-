@@ -4,13 +4,37 @@
 <meta charset="UTF-8">
 <title>CHARACTER | モエルタウン</title>
 <style>
-body{margin:0;font-family:sans-serif;background:linear-gradient(#fff5fa,#f3faff);}
-header{padding:20px;background:white;}
+body{
+ margin:0;
+ font-family:sans-serif;
+ background:linear-gradient(#fff0f6,#f0f9ff);
+}
+header{padding:20px;background:rgba(255,255,255,.8);backdrop-filter:blur(10px);}
 nav a{margin:10px;text-decoration:none;color:#666;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;padding:40px;}
-.card{background:white;padding:20px;border-radius:20px;text-align:center;}
-.card img{width:100px;border-radius:20px;}
-footer{text-align:center;padding:40px;font-size:12px;}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+ gap:30px;
+ padding:80px 40px;
+}
+.card{
+ background:white;
+ padding:30px;
+ border-radius:35px;
+ text-align:center;
+ box-shadow:0 20px 40px rgba(0,0,0,.08);
+ transition:.4s;
+}
+.card:hover{
+ transform:translateY(-10px);
+ box-shadow:0 30px 60px rgba(0,0,0,.12);
+}
+.card img{
+ width:140px;
+ border-radius:25px;
+ margin-bottom:15px;
+}
+footer{text-align:center;padding:40px;font-size:12px;opacity:.6;}
 </style>
 </head>
 <body>
@@ -40,5 +64,6 @@ footer{text-align:center;padding:40px;font-size:12px;}
 </div>
 
 <footer>© 2026 MoeruTown</footer>
+
 </body>
 </html>
