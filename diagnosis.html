@@ -224,6 +224,26 @@ document.getElementById("compatImg").src=hagumoData[data.compat].img;
 
 generateCard(top);
 
+/* 履歴保存（画像付き） */
+let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[];
+history.push({
+  name: top,
+  img: data.img,
+  date: new Date().toLocaleDateString()
+});
+localStorage.setItem("hagumoHistory",JSON.stringify(history));
+}
+let data=hagumoData[top];
+
+document.getElementById("result").style.display="block";
+document.getElementById("resultName").innerText=top;
+document.getElementById("resultImg").src=data.img;
+document.getElementById("resultDesc").innerText=data.desc;
+
+document.getElementById("compatImg").src=hagumoData[data.compat].img;
+
+generateCard(top);
+
 /* 履歴保存 */
 let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[];
 history.push({name:top,date:new Date().toLocaleDateString()});
