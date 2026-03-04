@@ -2,9 +2,75 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>ハグモ診断</title>
+<title>ハグモ覚醒診断</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+.quiz-box,.result-card{
+ background:white;
+ border-radius:40px;
+ padding:40px;
+ max-width:700px;
+ margin:40px auto;
+ box-shadow:0 20px 60px rgba(0,0,0,.08);
+ text-align:center;
+}
+
+.choice{
+ display:block;
+ margin:12px auto;
+ padding:14px 30px;
+ border-radius:999px;
+ border:none;
+ cursor:pointer;
+ background:linear-gradient(90deg,#ff9ecb,#ff7eb9);
+ color:white;
+ font-size:15px;
+ transition:.3s;
+}
+
+.choice:hover{ transform:scale(1.05); }
+
+.fade-hagumo{
+ position:absolute;
+ width:140px;
+ opacity:.12;
+ right:0;
+ bottom:0;
+ animation:float 4s infinite;
+}
+
+@keyframes float{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-15px)}
+}
+
+.loading{ font-size:18px; }
+
+.result-card img{
+ width:220px;
+ margin:20px 0;
+}
+
+.share a{
+ display:inline-block;
+ margin:8px;
+ padding:12px 28px;
+ border-radius:999px;
+ text-decoration:none;
+ background:#222;
+ color:white;
+ font-size:14px;
+}
+
+.save-btn{
+ background:#ff7eb9;
+ margin-top:15px;
+}
+</style>
 </head>
 
 <body>
@@ -17,42 +83,107 @@
 </div>
 
 <div class="container">
-
-<h1>🌱 あなたはどのハグモ？</h1>
-
-<div class="card" id="quiz"></div>
-
+<h1>🌱 ハグモ覚醒診断</h1>
+<div id="app"></div>
 </div>
 
 <script>
 
-const results={
- risu:"💚きゅうりす — バランス型ハグモ",
- tora:"❤️とまとら — 情熱のハグモ",
- saru:"💛れもんきー — ひらめきハグモ",
- kame:"💙ぶるーべりくがめ — 知恵ハグモ",
- buta:"🤍かぶた — 包容ハグモ"
-};
+const hagumos = [
+{key:"risu",name:"きゅうりす",img:"images/risu.PNG",title:"調和のハグモ",pair:"tora"},
+{key:"tora",name:"とまとら",img:"images/tora.PNG",title:"情熱のハグモ",pair:"risu"},
+{key:"saru",name:"れもんきー",img:"images/saru.PNG",title:"ひらめきのハグモ",pair:"kame"},
+{key:"kame",name:"ぶるーべりくがめ",img:"images/kame.PNG",title:"知恵のハグモ",pair:"saru"},
+{key:"buta",name:"かぶた",img:"images/buta.PNG",title:"包容のハグモ",pair:"fig"},
+{key:"imo",name:"さつまいもぐら",img:"images/imo.PNG",title:"努力のハグモ",pair:"momo"},
+{key:"momo",name:"もももんが",img:"images/momo.PNG",title:"愛されハグモ",pair:"imo"},
+{key:"fig",name:"くろいちじくま",img:"images/fig.PNG",title:"静寂のハグモ",pair:"buta"},
+{key:"kabo",name:"かぼちゃぼ",img:"images/kabo.PNG",title:"太陽のハグモ",pair:"pea"},
+{key:"pea",name:"ぴーなっつきつね",img:"images/pea.PNG",title:"機転のハグモ",pair:"kabo"}
+];
 
-function showResult(type){
- document.getElementById("quiz").innerHTML=`
- <h2>${results[type]}</h2>
- <a href="https://twitter.com/intent/tweet?text=私は${results[type]}でした🌱%20#ハグモ診断" target="_blank" class="button">
- Xでシェア
- </a>
- <br><br>
- <a href="index.html">HOMEへ戻る</a>
+let scores={};
+hagumos.forEach(h=>scores[h.key]=0);
+
+const questions=[
+"大切にしているものは？",
+"好きな時間帯は？",
+"周りから言われる性格は？",
+"ピンチの時どうする？",
+"あなたの強みは？",
+"好きな場所は？",
+"心が動く瞬間は？",
+"リーダー派？サポート派？",
+"好きな言葉は？",
+"あなたの輝き方は？"
+];
+
+let current=0;
+
+function showQuestion(){
+ document.getElementById("app").innerHTML=`
+ <div class="quiz-box">
+ <div>${questions[current]}</div>
+ ${hagumos.map(h=>`<button class="choice" onclick="choose('${h.key}')">${h.name}</button>`).join("")}
+ <img src="${hagumos[Math.floor(Math.random()*hagumos.length)].img}" class="fade-hagumo">
+ </div>`;
+}
+
+function choose(key){
+ scores[key]++;
+ current++;
+ if(current<questions.length){ showQuestion(); }
+ else{ loading(); }
+}
+
+function loading(){
+ document.getElementById("app").innerHTML=
+ `<div class="quiz-box"><div class="loading">🌱 ハグモ覚醒中...</div></div>`;
+ setTimeout(showResult,2500);
+}
+
+function showResult(){
+ let top=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+ let h=hagumos.find(x=>x.key===top);
+ let pair=hagumos.find(x=>x.key===h.pair);
+
+ document.getElementById("app").innerHTML=`
+ <div class="result-card" id="resultCard">
+ <h2>あなたは ${h.name}</h2>
+ <img src="${h.img}">
+ <h3>${h.title}</h3>
+ <p>
+ あなたの中には${h.name}の因子が宿っています。<br>
+ その魅力を信じることで、さらに輝きます。
+ </p>
+
+ <hr>
+
+ <h3>🌸 相性ハグモ</h3>
+ <p>${pair.name}</p>
+ <img src="${pair.img}" style="width:140px">
+
+ <div class="share">
+ <a href="https://twitter.com/intent/tweet?text=私は${h.name}でした🌱%20#ハグモ覚醒診断" target="_blank">Xでシェア</a>
+ <a href="https://social-plugins.line.me/lineit/share?url=${location.href}" target="_blank">LINEでシェア</a>
+ </div>
+
+ <button class="choice save-btn" onclick="saveImage()">診断カードを保存</button>
+ </div>
  `;
 }
 
-document.getElementById("quiz").innerHTML=`
-<p>あなたの性格は？</p>
-<button onclick="showResult('risu')" class="button">バランス型</button><br><br>
-<button onclick="showResult('tora')" class="button">情熱型</button><br><br>
-<button onclick="showResult('saru')" class="button">自由型</button>
-`;
+function saveImage(){
+ html2canvas(document.getElementById("resultCard")).then(canvas=>{
+  let link=document.createElement("a");
+  link.download="hagumo_result.png";
+  link.href=canvas.toDataURL();
+  link.click();
+ });
+}
+
+showQuestion();
 
 </script>
-
 </body>
 </html>
