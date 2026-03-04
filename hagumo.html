@@ -5,6 +5,46 @@
 <title>HAGUMO図鑑</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:40px;
+ margin-top:40px;
+}
+
+.hagumo-card{
+ background:white;
+ border-radius:30px;
+ padding:30px;
+ box-shadow:0 20px 60px rgba(0,0,0,.08);
+ transition:.4s;
+}
+
+.hagumo-card:hover{
+ transform:translateY(-10px);
+}
+
+.hagumo-card img{
+ width:100%;
+ max-width:180px;
+ height:auto;
+ margin-bottom:20px;
+}
+
+.name{
+ font-weight:bold;
+ font-size:20px;
+ margin-bottom:10px;
+}
+
+.desc{
+ font-size:14px;
+ line-height:1.6;
+}
+
+</style>
 </head>
 
 <body>
@@ -18,19 +58,55 @@
 
 <div class="container">
 
-<h1>ハグモ図鑑</h1>
+<h1>🌱 ハグモ図鑑</h1>
 
-<div class="card">
-<p>💚きゅうりす — きゅうり×りすのバランス型ハグモ</p>
-<p>❤️とまとら — トマト×トラの情熱ハグモ</p>
-<p>💛れもんきー — レモン×さるのひらめきハグモ</p>
-<p>💙ぶるーべりくがめ — 知恵のハグモ</p>
-<p>🤍かぶた — 包容のハグモ</p>
-<p>🩵ばたふらいぴーこっく — 芸術のハグモ</p>
-<p>💜さつまいもぐら — 努力のハグモ</p>
-<p>🩷もももんが — 愛されハグモ</p>
-<p>🖤くろいちじくま — 静寂のハグモ</p>
-<p>🧡かぼちゃぼ — 太陽のハグモ</p>
+<div class="grid">
+
+<div class="hagumo-card">
+<img src="images/risu.PNG">
+<div class="name">💚 きゅうりす</div>
+<div class="desc">
+きゅうり×りすのバランス型ハグモ。<br>
+冷静で優しく、調和を大切にする。
+</div>
+</div>
+
+<div class="hagumo-card">
+<img src="images/tora.PNG">
+<div class="name">❤️ とまとら</div>
+<div class="desc">
+トマト×トラの情熱ハグモ。<br>
+真っ直ぐで負けず嫌いなリーダータイプ。
+</div>
+</div>
+
+<div class="hagumo-card">
+<img src="images/saru.PNG">
+<div class="name">💛 れもんきー</div>
+<div class="desc">
+レモン×さるのひらめきハグモ。<br>
+発想力豊かで自由奔放。
+</div>
+</div>
+
+<div class="hagumo-card">
+<img src="images/kame.PNG">
+<div class="name">💙 ぶるーべりくがめ</div>
+<div class="desc">
+ブルーベリー×かめの知恵ハグモ。<br>
+物事を深く考える思慮深い存在。
+</div>
+</div>
+
+<div class="hagumo-card">
+<img src="images/buta.PNG">
+<div class="name">🤍 かぶた</div>
+<div class="desc">
+かぶ×ぶたの包容ハグモ。<br>
+穏やかでみんなを支える癒し系。
+</div>
+</div>
+
 </div>
 
 </div>
