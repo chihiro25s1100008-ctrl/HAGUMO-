@@ -3,267 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>モエルタウン相性診断</title>
-
+<title>モエルタウン</title>
 <style>
-body{
-  margin:0;
-  font-family: "Hiragino Kaku Gothic ProN", sans-serif;
-  background: linear-gradient(180deg,#fff0f6,#f0f9ff);
-  text-align:center;
-  color:#444;
-}
-
-.container{
-  max-width:420px;
-  margin:auto;
-  padding:20px;
-}
-
-h1{
-  font-size:22px;
-  margin:30px 0;
-  letter-spacing:1px;
-}
-
-.card{
-  background:white;
-  padding:25px;
-  border-radius:25px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
-  margin-bottom:20px;
-  transition:0.4s;
-}
-
-button{
-  width:100%;
-  padding:14px;
-  margin:10px 0;
-  border:none;
-  border-radius:999px;
-  background:#f4f4f4;
-  font-size:14px;
-  transition:0.3s;
-  cursor:pointer;
-}
-
-button:hover{
-  background:#ffd6e7;
-  transform:scale(1.03);
-}
-
-.result img{
-  width:160px;
-  border-radius:20px;
-  margin-bottom:10px;
-}
-
-.hidden{
-  display:none;
-}
-
-.footer{
-  font-size:12px;
-  margin-top:30px;
-  opacity:0.6;
-}
+body{margin:0;font-family:sans-serif;background:linear-gradient(#fff5fa,#f3faff);color:#444;}
+header{display:flex;justify-content:space-between;padding:20px;background:white;}
+nav a{margin-left:15px;text-decoration:none;color:#666;}
+.hero{text-align:center;padding:80px 20px;}
+.btn{padding:15px 30px;border:none;border-radius:999px;background:#ff9ecb;color:white;}
+.section{text-align:center;padding:60px 20px;}
+.card{background:white;padding:25px;border-radius:25px;max-width:500px;margin:auto;}
+footer{text-align:center;padding:30px;font-size:12px;}
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<header>
+<div>🌈 MoeruTown</div>
+<nav>
+<a href="index.html">HOME</a>
+<a href="about.html">ABOUT</a>
+<a href="character.html">CHARACTER</a>
+<a href="diagnosis.html">DIAGNOSIS</a>
+</nav>
+</header>
 
-<h1>🌈 モエルタウン<br>愛されタイプ診断</h1>
+<section class="hero">
+<h1>あなたの中の愛されキャラを見つけよう</h1>
+<a href="diagnosis.html"><button class="btn">診断する</button></a>
+</section>
 
-<div id="quiz" class="card"></div>
-
-<div id="resultCard" class="card hidden">
-  <div id="result" class="result"></div>
-  <br>
-  <button onclick="restart()">もう一度診断する</button>
-  <a href="zukan.html"><button>キャラ図鑑を見る</button></a>
+<section class="section">
+<div class="card">
+モエルタウンは、感情や性格がキャラクターとして存在する世界。
 </div>
+</section>
 
-<div class="footer">
-© MoeruTown
-</div>
-
-</div>
-
-<script>
-
-const questions = [
-{ q:"朝の気分は？",
-  a:[
-   {text:"静かに整えたい", type:"blue"},
-   {text:"元気にスタート！", type:"red"},
-   {text:"のんびりゆったり", type:"purple"}
-  ]
-},
-{ q:"友達が落ち込んでたら？",
-  a:[
-   {text:"そっと寄り添う", type:"pink"},
-   {text:"励ます！", type:"orange"},
-   {text:"黙って隣にいる", type:"black"}
-  ]
-},
-{ q:"理想の休日は？",
-  a:[
-   {text:"自然の中でリフレッシュ", type:"green"},
-   {text:"カフェ巡り", type:"yellow"},
-   {text:"おうち時間", type:"white"}
-  ]
-},
-{ q:"恋愛スタイルは？",
-  a:[
-   {text:"一途", type:"black"},
-   {text:"甘えたい", type:"pink"},
-   {text:"見守る", type:"blue"}
-  ]
-},
-{ q:"安心する瞬間は？",
-  a:[
-   {text:"自然の音", type:"green"},
-   {text:"あたたかいごはん", type:"orange"},
-   {text:"静かな夜", type:"blue"}
-  ]
-}
-];
-
-const results = {
-
-green:`
-<img src="images/risu.PNG">
-💚きゅうりす<br>
-バランス育成タイプ<br><br>
-安心感で人を育てる存在。
-一緒にいると心が整うタイプ。
-`,
-
-red:`
-<img src="images/tora.PNG">
-❤️とまとら<br>
-情熱成長タイプ<br><br>
-行動力のかたまり。
-好きな人を全力で応援する。
-`,
-
-yellow:`
-<img src="images/saru.PNG">
-💛れもんきー<br>
-刺激覚醒タイプ<br><br>
-ムードメーカー。
-ちょっと刺激的でクセになる。
-`,
-
-blue:`
-<img src="images/kame.PNG">
-💙ぶるーべりくがめ<br>
-静観守護タイプ<br><br>
-冷静で落ち着いた守護者。
-`,
-
-white:`
-<img src="images/buta.PNG">
-🤍かぶた<br>
-再生リセットタイプ<br><br>
-何度でもやり直せる優しさ。
-`,
-
-lightblue:`
-<img src="images/jaku.PNG">
-🩵ばたふらいぴーこっく<br>
-水色進化タイプ<br><br>
-変化を楽しむ自由人。
-`,
-
-purple:`
-<img src="images/imo.PNG">
-💜さつまいもぐら<br>
-熟成安心タイプ<br><br>
-ゆっくり深く育つ魅力。
-`,
-
-pink:`
-<img src="images/nga.PNG">
-🩷もももんが<br>
-甘やかし共鳴タイプ<br><br>
-共感力が高く癒し系。
-`,
-
-black:`
-<img src="images/kuma.PNG">
-🖤くろいちじくま<br>
-深愛夜守タイプ<br><br>
-一途で深い愛情。
-`,
-
-orange:`
-<img src="images/chabo.PNG">
-🧡かぼちゃぼ<br>
-包容保温タイプ<br><br>
-みんなの心を温める存在。
-`
-};
-
-let current = 0;
-let scores = {};
-
-function showQuestion(){
- if(current >= questions.length){
-   showResult();
-   return;
- }
-
- const q = questions[current];
- let html = `<h3>${q.q}</h3>`;
-
- q.a.forEach(ans=>{
-   html += `<button onclick="selectAnswer('${ans.type}')">${ans.text}</button>`;
- });
-
- document.getElementById("quiz").innerHTML = html;
-}
-
-function selectAnswer(type){
- scores[type] = (scores[type] || 0) + 1;
- current++;
- showQuestion();
-}
-
-function showResult(){
- document.getElementById("quiz").classList.add("hidden");
- document.getElementById("resultCard").classList.remove("hidden");
-
- let max = 0;
- let finalType = "";
-
- for(let type in scores){
-   if(scores[type] > max){
-     max = scores[type];
-     finalType = type;
-   }
- }
-
- document.getElementById("result").innerHTML =
- results[finalType] +
- `<br><br>
- <a href="https://twitter.com/intent/tweet?text=私はモエルタウン診断をやってみたよ！🌈&url=${location.href}" target="_blank">
- <button>結果をXでシェア</button>
- </a>`;
-}
-
-function restart(){
- current = 0;
- scores = {};
- document.getElementById("quiz").classList.remove("hidden");
- document.getElementById("resultCard").classList.add("hidden");
- showQuestion();
-}
-
-showQuestion();
-
-</script>
+<footer>© 2026 MoeruTown</footer>
 </body>
 </html>
