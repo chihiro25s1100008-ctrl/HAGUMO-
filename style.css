@@ -1,0 +1,67 @@
+/* ===== HAGUMO Official Brand ===== */
+
+:root{
+ --pink:#ff9ecb;
+ --pink2:#ff7eb9;
+ --blue:#cfe9ff;
+ --bg:linear-gradient(#fff0f6,#f0f9ff);
+}
+
+body{
+ margin:0;
+ font-family:'Noto Sans JP',sans-serif;
+ background:var(--bg);
+ color:#444;
+ text-align:center;
+}
+
+.nav{
+ position:fixed;
+ top:0;
+ width:100%;
+ display:flex;
+ justify-content:center;
+ gap:40px;
+ padding:20px;
+ background:rgba(255,255,255,.8);
+ backdrop-filter:blur(10px);
+ z-index:1000;
+}
+
+.nav a{
+ text-decoration:none;
+ color:#444;
+ font-weight:500;
+}
+
+.nav a:hover{
+ color:var(--pink2);
+}
+
+.container{
+ margin-top:140px;
+ padding:40px 20px;
+}
+
+h1{
+ font-family:'Zen Maru Gothic',sans-serif;
+}
+
+.card{
+ background:white;
+ border-radius:40px;
+ box-shadow:0 20px 60px rgba(0,0,0,.08);
+ padding:40px;
+ max-width:800px;
+ margin:40px auto;
+}
+
+.button{
+ display:inline-block;
+ padding:14px 40px;
+ border-radius:999px;
+ background:linear-gradient(90deg,var(--pink),var(--pink2));
+ color:white;
+ text-decoration:none;
+ margin-top:20px;
+}
