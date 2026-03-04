@@ -2,21 +2,34 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>CHARACTER | モエルタウン</title>
+<title>CHARACTER | MoeruTown</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
+
 <style>
 body{
  margin:0;
- font-family:sans-serif;
+ font-family:'Noto Sans JP',sans-serif;
  background:linear-gradient(#fff0f6,#f0f9ff);
 }
-header{padding:20px;background:rgba(255,255,255,.8);backdrop-filter:blur(10px);}
-nav a{margin:10px;text-decoration:none;color:#666;}
+
+header{
+ padding:20px 40px;
+ background:rgba(255,255,255,.85);
+}
+
+nav a{
+ margin-right:20px;
+ text-decoration:none;
+ color:#666;
+}
+
 .grid{
  display:grid;
  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
  gap:30px;
  padding:80px 40px;
 }
+
 .card{
  background:white;
  padding:30px;
@@ -24,19 +37,22 @@ nav a{margin:10px;text-decoration:none;color:#666;}
  text-align:center;
  box-shadow:0 20px 40px rgba(0,0,0,.08);
  transition:.4s;
+ text-decoration:none;
+ color:#555;
 }
+
 .card:hover{
  transform:translateY(-10px);
- box-shadow:0 30px 60px rgba(0,0,0,.12);
 }
+
 .card img{
  width:140px;
  border-radius:25px;
  margin-bottom:15px;
 }
-footer{text-align:center;padding:40px;font-size:12px;opacity:.6;}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -50,20 +66,18 @@ footer{text-align:center;padding:40px;font-size:12px;opacity:.6;}
 
 <div class="grid">
 
-<div class="card"><img src="images/risu.PNG"><br>💚きゅうりす</div>
-<div class="card"><img src="images/tora.PNG"><br>❤️とまとら</div>
-<div class="card"><img src="images/saru.PNG"><br>💛れもんきー</div>
-<div class="card"><img src="images/kame.PNG"><br>💙ぶるーべりくがめ</div>
-<div class="card"><img src="images/buta.PNG"><br>🤍かぶた</div>
-<div class="card"><img src="images/jaku.PNG"><br>🩵ばたふらいぴーこっく</div>
-<div class="card"><img src="images/imo.PNG"><br>💜さつまいもぐら</div>
-<div class="card"><img src="images/nga.PNG"><br>🩷もももんが</div>
-<div class="card"><img src="images/kuma.PNG"><br>🖤くろいちじくま</div>
-<div class="card"><img src="images/chabo.PNG"><br>🧡かぼちゃぼ</div>
+<a href="risu.html" class="card"><img src="images/risu.PNG"><br>💚きゅうりす</a>
+<a href="tora.html" class="card"><img src="images/tora.PNG"><br>❤️とまとら</a>
+<a href="saru.html" class="card"><img src="images/saru.PNG"><br>💛れもんきー</a>
+<a href="kame.html" class="card"><img src="images/kame.PNG"><br>💙ぶるーべりくがめ</a>
+<a href="buta.html" class="card"><img src="images/buta.PNG"><br>🤍かぶた</a>
+<a href="jaku.html" class="card"><img src="images/jaku.PNG"><br>🩵ばたふらいぴーこっく</a>
+<a href="imo.html" class="card"><img src="images/imo.PNG"><br>💜さつまいもぐら</a>
+<a href="nga.html" class="card"><img src="images/nga.PNG"><br>🩷もももんが</a>
+<a href="kuma.html" class="card"><img src="images/kuma.PNG"><br>🖤くろいちじくま</a>
+<a href="chabo.html" class="card"><img src="images/chabo.PNG"><br>🧡かぼちゃぼ</a>
 
 </div>
-
-<footer>© 2026 MoeruTown</footer>
 
 </body>
 </html>
