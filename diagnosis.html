@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>DIAGNOSIS | モエルタウン</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#fffafc;text-align:center;}
+.card{background:white;padding:20px;border-radius:20px;margin:20px;}
+button{padding:12px;margin:10px;border:none;border-radius:20px;background:#f3f3f3;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
 
+<h1>愛されタイプ診断</h1>
+
+<div id="quiz" class="card"></div>
+<div id="resultCard" class="card hidden">
+<div id="result"></div>
+<button onclick="restart()">もう一度</button>
+</div>
+
+<script>
+const questions=[
+{q:"朝の気分は？",a:[{t:"静か",type:"blue"},{t:"元気",type:"red"}]},
+{q:"友達が落ち込んでたら？",a:[{t:"寄り添う",type:"pink"},{t:"励ます",type:"orange"}]}
+];
+
+const results={
+blue:`<img src="images/kame.PNG" width="120"><br>💙ぶるーべりくがめ`,
+red:`<img src="images/tora.PNG" width="120"><br>❤️とまとら`,
+pink:`<img src="images/nga.PNG" width="120"><br>🩷もももんが`,
+orange:`<img src="images/chabo.PNG" width="120"><br>🧡かぼちゃぼ`
+};
+
+let current=0;
+let scores={};
+
+function showQuestion(){
+if(current>=questions.length){showResult();return;}
+let q=questions[current];
+let html=`<h3>${q.q}</h3>`;
+q.a.forEach(ans=>{
+html+=`<button onclick="selectAnswer('${ans.type}')">${ans.t}</button>`;
+});
+document.getElementById("quiz").innerHTML=html;
+}
+
+function selectAnswer(type){
+scores[type]=(scores[type]||0)+1;
+current++;
+showQuestion();
+}
+
+function showResult(){
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("resultCard").classList.remove("hidden");
+let max=0,final="";
+for(let t in scores){if(scores[t]>max){max=scores[t];final=t;}}
+document.getElementById("result").innerHTML=results[final];
+}
+
+function restart(){current=0;scores={};location.reload();}
+
+showQuestion();
+</script>
+
+</body>
+</html>
