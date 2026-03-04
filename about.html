@@ -4,11 +4,25 @@
 <meta charset="UTF-8">
 <title>ABOUT | モエルタウン</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#fffafc;text-align:center;color:#444;}
-header{padding:20px;background:white;}
+body{
+ margin:0;
+ font-family:sans-serif;
+ background:linear-gradient(#fff0f6,#f0f9ff);
+ text-align:center;
+}
+header{padding:20px;background:rgba(255,255,255,.8);backdrop-filter:blur(10px);}
 nav a{margin:10px;text-decoration:none;color:#666;}
-section{padding:80px 20px;}
-footer{padding:40px;font-size:12px;}
+.section{padding:120px 20px;animation:fade 1s ease;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+.card{
+ background:white;
+ padding:40px;
+ border-radius:30px;
+ max-width:600px;
+ margin:auto;
+ box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+footer{padding:40px;font-size:12px;opacity:.6;}
 </style>
 </head>
 <body>
@@ -22,14 +36,17 @@ footer{padding:40px;font-size:12px;}
 </nav>
 </header>
 
-<section>
+<div class="section">
+<div class="card">
 <h1>モエルタウンとは？</h1>
 <p>
-ここは、あなたの感情がキャラクターとして生きている世界。<br>
-やさしさも、強さも、甘えも、全部が大切。
+あなたの心の中に住んでいるキャラクターたちの世界。<br>
+甘えも、情熱も、静けさも、全部大切。
 </p>
-</section>
+</div>
+</div>
 
 <footer>© 2026 MoeruTown</footer>
+
 </body>
 </html>
