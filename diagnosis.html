@@ -125,13 +125,23 @@ font-size:14px;
 <body>
 
 <div class="nav">
-<a href="index.html">HOME</a>
-<a href="world.html">WORLD</a>
-<a href="hagumo.html">HAGUMO</a>
-<a href="diagnosis.html">DIAGNOSIS</a>
-<a href="product.html">PRODUCT</a>
+<a href="index.html" class="nav-link">HOME</a>
+<a href="world.html" class="nav-link">WORLD</a>
+<a href="hagumo.html" class="nav-link">HAGUMO</a>
+<a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
+<a href="product.html" class="nav-link">PRODUCT</a>
+<a href="my.html" class="nav-link">MY HAGUMO</a>
 </div>
 
+<script>
+const links=document.querySelectorAll(".nav-link");
+links.forEach(link=>{
+if(link.href===window.location.href){
+link.style.color="#ff4fa3";
+link.style.borderBottom="3px solid #ff4fa3";
+}
+});
+</script>
 <div class="container">
 
 <h1>🌱 ハグモ覚醒診断</h1>
