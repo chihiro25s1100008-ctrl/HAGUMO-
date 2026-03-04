@@ -1,210 +1,254 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
 <meta charset="UTF-8">
-<title>ハグモ覚醒診断</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAGUMO 覚醒診断</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script
-
- <div class="nav">
-<a href="index.html">HOME</a>
-<a href="world.html">WORLD</a>
-<a href="hagumo.html">HAGUMO</a>
-<a href="diagnosis.html">DIAGNOSIS</a>
-<a href="product.html">PRODUCT</a>
-</div>
 
 <style>
 body{
- font-family:'Noto Sans JP',sans-serif;
- background:#fff7fb;
- text-align:center;
- margin:0;
+margin:0;
+font-family:'Noto Sans JP',sans-serif;
+background:linear-gradient(180deg,#fffdf8,#ffeef6);
+text-align:center;
+color:#444;
 }
 
-h1{
- font-family:'Zen Maru Gothic',sans-serif;
- margin-top:40px;
+.nav{
+display:flex;
+justify-content:center;
+gap:15px;
+padding:15px;
+background:white;
+position:sticky;
+top:0;
+flex-wrap:wrap;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+z-index:1000;
 }
 
-.quiz-box,.result-card{
- background:white;
- border-radius:30px;
- padding:40px;
- max-width:720px;
- margin:40px auto;
- box-shadow:0 15px 40px rgba(0,0,0,.08);
+.nav a{
+text-decoration:none;
+color:#ff7eb9;
+font-weight:bold;
+font-size:14px;
 }
 
-.choice{
- display:block;
- margin:12px auto;
- padding:14px 25px;
- border-radius:999px;
- border:none;
- cursor:pointer;
- background:linear-gradient(90deg,#ff9ecb,#ff7eb9);
- color:white;
- font-size:15px;
- transition:.3s;
- width:80%;
+.container{
+max-width:900px;
+margin:40px auto;
+padding:20px;
 }
 
-.choice:hover{ transform:scale(1.05); }
+button{
+display:block;
+width:100%;
+max-width:420px;
+margin:12px auto;
+padding:14px;
+border:none;
+border-radius:999px;
+background:linear-gradient(90deg,#ff9ecb,#ff7eb9);
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+/* ローディング */
+.loading{
+display:none;
+margin-top:50px;
+font-size:20px;
+font-weight:bold;
+animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+0%{opacity:.3;}
+50%{opacity:1;}
+100%{opacity:.3;}
+}
+
+/* 結果カード */
+.result-card{
+display:none;
+margin-top:40px;
+background:white;
+padding:30px;
+border-radius:30px;
+box-shadow:0 25px 60px rgba(0,0,0,.1);
+animation:fadeUp .8s ease;
+}
 
 .result-card img{
- width:220px;
- margin:20px 0;
+width:140px;
+margin:10px;
 }
 
-.share a{
- display:inline-block;
- margin:8px;
- padding:10px 25px;
- border-radius:999px;
- text-decoration:none;
- background:#222;
- color:white;
- font-size:14px;
+.compat{
+margin-top:20px;
+padding:20px;
+background:#fff5fa;
+border-radius:20px;
 }
 
-.save-btn{
- background:#ff7eb9;
+.share{
+margin-top:20px;
 }
 
-.loading{
- font-size:18px;
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(40px);}
+to{opacity:1;transform:translateY(0);}
 }
+
 </style>
 </head>
 <body>
 
+<div class="nav">
+<a href="index.html">HOME</a>
+<a href="world.html">WORLD</a>
+<a href="hagumo.html">HAGUMO</a>
+<a href="product.html">PRODUCT</a>
+<a href="diagnosis.html">DIAGNOSIS</a>
+</div>
+
+<div class="container">
+
 <h1>🌱 ハグモ覚醒診断</h1>
-<div id="app"></div>
+<div id="quiz"></div>
+
+<div class="loading" id="loading">
+🌿 ハグモ覚醒中・・・
+</div>
+
+<div class="result-card" id="resultCard">
+<h2 id="resultTitle"></h2>
+<img id="resultImg">
+<p id="resultDesc"></p>
+
+<div class="compat">
+<h3>🤝 相性ハグモ</h3>
+<img id="compatImg">
+<p id="compatText"></p>
+</div>
+
+<div class="share">
+<button onclick="shareResult()">Xでシェアする</button>
+</div>
+
+</div>
+</div>
 
 <script>
 
-const hagumos = [
-{key:"risu",name:"きゅうりす",img:"images/risu.PNG",type:"バランス・調和",pair:"tora"},
-{key:"tora",name:"とまとら",img:"images/tora.PNG",type:"情熱・リーダー",pair:"risu"},
-{key:"saru",name:"れもんきー",img:"images/saru.PNG",type:"ひらめき・自由",pair:"kame"},
-{key:"kame",name:"ぶるーべりくがめ",img:"images/kame.PNG",type:"知性・分析",pair:"saru"},
-{key:"buta",name:"かぶた",img:"images/buta.PNG",type:"優しさ・包容",pair:"kuma"},
-{key:"imo",name:"さつまいもぐら",img:"images/imo.PNG",type:"努力・継続",pair:"nga"},
-{key:"nga",name:"もももんが",img:"images/nga.PNG",type:"愛嬌・甘え上手",pair:"imo"},
-{key:"kuma",name:"くろいちじくま",img:"images/kuma.PNG",type:"静か・ミステリアス",pair:"buta"},
-{key:"chabo",name:"かぼちゃぼ",img:"images/chabo.PNG",type:"明るい・ポジティブ",pair:"jaku"},
-{key:"jaku",name:"ばたふらいぴーこっく",img:"images/jaku.PNG",type:"機転・賢さ",pair:"chabo"}
+const hagumoData={
+きゅうりす:{img:"risu.PNG",desc:"調和とバランスの守護者。",compat:"とまとら"},
+とまとら:{img:"tora.PNG",desc:"情熱と突破力の象徴。",compat:"きゅうりす"},
+れもんきー:{img:"saru.PNG",desc:"自由な発想の革命家。",compat:"ぶるーべりくがめ"},
+ぶるーべりくがめ:{img:"kame.PNG",desc:"冷静沈着な知略家。",compat:"れもんきー"},
+かぶた:{img:"buta.PNG",desc:"包容力あふれる癒し系。",compat:"もももんが"},
+さつまいもぐら:{img:"imo.PNG",desc:"努力と継続の職人。",compat:"かぶた"},
+もももんが:{img:"nga.PNG",desc:"愛嬌たっぷりの人気者。",compat:"かぶた"},
+くろいちじくま:{img:"kuma.PNG",desc:"静かなカリスマ。",compat:"ぶるーべりくがめ"},
+かぼちゃぼ:{img:"chabo.PNG",desc:"陽気なムードメーカー。",compat:"とまとら"},
+ばたふらいぴーこっく:{img:"jaku.PNG",desc:"華麗なる知性の舞姫。",compat:"れもんきー"}
+};
+
+const questions=[
+"朝の理想の過ごし方は？",
+"チームではどんな役？",
+"好きな色は？",
+"困った時どうする？",
+"理想の休日は？",
+"人に言われる性格は？",
+"挑戦と安定どっち？",
+"好きな場所は？",
+"直感派？論理派？",
+"あなたの強みは？"
+];
+
+const options=[
+["ゆったり","計画的","即行動"],
+["支える","まとめる","盛り上げる"],
+["緑","赤","紫"],
+["相談する","分析する","突き進む"],
+["家","カフェ","旅"],
+["優しい","冷静","明るい"],
+["安定","バランス","挑戦"],
+["自然","図書館","街"],
+["直感","論理","ひらめき"],
+["包容力","知性","情熱"]
 ];
 
 let scores={};
-hagumos.forEach(h=>scores[h.key]=0);
-
-const questions=[
-{
-q:"休日の理想は？",
-a:[
-{text:"のんびりリラックス",add:["risu","buta"]},
-{text:"友達と外へ",add:["chabo","nga"]},
-{text:"新しい挑戦",add:["tora","saru"]},
-{text:"知識を深める",add:["kame","jaku"]}
-]
-},
-{
-q:"あなたの強みは？",
-a:[
-{text:"空気を読む力",add:["risu"]},
-{text:"行動力",add:["tora"]},
-{text:"アイデア力",add:["saru"]},
-{text:"分析力",add:["kame"]}
-]
-},
-{
-q:"落ち込んだ時は？",
-a:[
-{text:"誰かに相談",add:["nga","buta"]},
-{text:"一人で考える",add:["kuma"]},
-{text:"気合いで乗り切る",add:["imo","tora"]},
-{text:"ポジティブ変換",add:["chabo"]}
-]
-},
-{
-q:"好きなポジションは？",
-a:[
-{text:"まとめ役",add:["tora"]},
-{text:"支える役",add:["buta","risu"]},
-{text:"自由人",add:["saru"]},
-{text:"参謀",add:["kame","jaku"]}
-]
-},
-{
-q:"理想の自分は？",
-a:[
-{text:"優しい人",add:["buta"]},
-{text:"カリスマ",add:["tora"]},
-{text:"唯一無二",add:["kuma"]},
-{text:"愛され存在",add:["nga"]}
-]
-}
-];
+Object.keys(hagumoData).forEach(k=>scores[k]=0);
 
 let current=0;
 
 function showQuestion(){
- const q=questions[current];
- document.getElementById("app").innerHTML=`
- <div class="quiz-box">
- <h3>${q.q}</h3>
- ${q.a.map((choice,i)=>`<button class="choice" onclick="choose(${i})">${choice.text}</button>`).join("")}
- </div>`;
+if(current>=questions.length){
+document.getElementById("quiz").style.display="none";
+document.getElementById("loading").style.display="block";
+
+setTimeout(showResult,2000);
+return;
 }
 
-function choose(i){
- questions[current].a[i].add.forEach(k=>scores[k]++);
- current++;
- if(current<questions.length){ showQuestion(); }
- else{ loading(); }
+document.getElementById("quiz").innerHTML=`
+<h3>Q${current+1}. ${questions[current]}</h3>
+${options[current].map((opt,i)=>`<button onclick="answer(${i})">${opt}</button>`).join("")}
+`;
 }
 
-function loading(){
- document.getElementById("app").innerHTML=
- `<div class="quiz-box"><div class="loading">🌱 ハグモ覚醒中...</div></div>`;
- setTimeout(showResult,2000);
+function answer(i){
+
+const mapping=[
+["かぶた","きゅうりす","とまとら"],
+["さつまいもぐら","きゅうりす","かぼちゃぼ"],
+["きゅうりす","とまとら","くろいちじくま"],
+["かぶた","ぶるーべりくがめ","とまとら"],
+["さつまいもぐら","きゅうりす","れもんきー"],
+["かぶた","ぶるーべりくがめ","かぼちゃぼ"],
+["さつまいもぐら","きゅうりす","れもんきー"],
+["さつまいもぐら","ぶるーべりくがめ","れもんきー"],
+["もももんが","ぶるーべりくがめ","ばたふらいぴーこっく"],
+["かぶた","ぶるーべりくがめ","とまとら"]
+];
+
+scores[mapping[current][i]]+=2;
+current++;
+showQuestion();
 }
 
 function showResult(){
- let top=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
- let h=hagumos.find(x=>x.key===top);
- let pair=hagumos.find(x=>x.key===h.pair);
+document.getElementById("loading").style.display="none";
 
- document.getElementById("app").innerHTML=`
- <div class="result-card" id="resultCard">
- <img src="images/rogo.PNG" style="width:120px">
- <h2>${h.name}</h2>
- <img src="${h.img}">
- <h3>${h.type}</h3>
- <p>
- あなたの中には<strong>${h.name}</strong>の因子が宿っています。<br>
- その魅力を大切に育ててください。
- </p>
- <hr>
- <h3>🌸 相性ハグモ</h3>
- <p>${pair.name}</p>
- <img src="${pair.img}" style="width:140px">
- <div class="share">
- <a href="https://twitter.com/intent/tweet?text=私は${h.name}でした🌱%20#ハグモ覚醒診断" target="_blank">Xでシェア</a>
- </div>
- <button class="choice save-btn" onclick="saveImage()">診断カードを保存</button>
- </div>`;
+let top=Object.keys(scores).reduce((a,b)=>scores[a]>scores[b]?a:b);
+
+let data=hagumoData[top];
+let compat=data.compat;
+
+document.getElementById("resultTitle").innerText="あなたの覚醒ハグモは「"+top+"」";
+document.getElementById("resultImg").src=data.img;
+document.getElementById("resultDesc").innerText=data.desc;
+
+document.getElementById("compatImg").src=hagumoData[compat].img;
+document.getElementById("compatText").innerText=compat+" と最高相性！";
+
+document.getElementById("resultCard").style.display="block";
 }
 
-function saveImage(){
- html2canvas(document.getElementById("resultCard")).then(canvas=>{
-  let link=document.createElement("a");
-  link.download="hagumo_result.png";
-  link.href=canvas.toDataURL();
-  link.click();
- });
+function shareResult(){
+let text=document.getElementById("resultTitle").innerText+"｜HAGUMO覚醒診断";
+let url=encodeURIComponent(location.href);
+window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+url);
 }
 
 showQuestion();
@@ -212,7 +256,3 @@ showQuestion();
 </script>
 </body>
 </html>
-<br><br>
-<a href="index.html" class="choice" style="background:#ccc;color:#333;">
-🏠 HOMEへ戻る
-</a>
