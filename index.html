@@ -4,17 +4,99 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>モエルタウン</title>
+
 <style>
-body{margin:0;font-family:sans-serif;background:linear-gradient(#fff5fa,#f3faff);color:#444;}
-header{display:flex;justify-content:space-between;padding:20px;background:white;}
-nav a{margin-left:15px;text-decoration:none;color:#666;}
-.hero{text-align:center;padding:80px 20px;}
-.btn{padding:15px 30px;border:none;border-radius:999px;background:#ff9ecb;color:white;}
-.section{text-align:center;padding:60px 20px;}
-.card{background:white;padding:25px;border-radius:25px;max-width:500px;margin:auto;}
-footer{text-align:center;padding:30px;font-size:12px;}
+body{
+ margin:0;
+ font-family:"Hiragino Kaku Gothic ProN",sans-serif;
+ background:linear-gradient(180deg,#fff0f6,#f0f9ff);
+ color:#555;
+ overflow-x:hidden;
+}
+
+/* ふわ背景 */
+body::before{
+ content:"";
+ position:fixed;
+ width:200%;
+ height:200%;
+ background:
+ radial-gradient(circle at 20% 30%,rgba(255,182,217,.3),transparent 40%),
+ radial-gradient(circle at 80% 70%,rgba(173,216,230,.3),transparent 40%);
+ animation:float 18s infinite alternate ease-in-out;
+ z-index:-1;
+}
+@keyframes float{
+ from{transform:translate(-5%,-5%);}
+ to{transform:translate(5%,5%);}
+}
+
+header{
+ display:flex;
+ justify-content:space-between;
+ padding:20px 30px;
+ background:rgba(255,255,255,0.8);
+ backdrop-filter:blur(10px);
+ position:sticky;
+ top:0;
+}
+
+nav a{
+ margin-left:15px;
+ text-decoration:none;
+ color:#666;
+ font-size:14px;
+}
+
+.hero{
+ text-align:center;
+ padding:120px 20px;
+ animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+ from{opacity:0;transform:translateY(20px);}
+ to{opacity:1;transform:translateY(0);}
+}
+
+.btn{
+ padding:16px 35px;
+ border:none;
+ border-radius:999px;
+ background:#ff9ecb;
+ color:white;
+ font-size:14px;
+ transition:0.3s;
+}
+.btn:hover{
+ background:#ff7eb9;
+ transform:scale(1.08);
+ box-shadow:0 10px 25px rgba(255,158,203,.5);
+}
+
+.section{
+ text-align:center;
+ padding:80px 20px;
+}
+
+.card{
+ background:white;
+ padding:30px;
+ border-radius:30px;
+ max-width:500px;
+ margin:auto;
+ box-shadow:0 20px 40px rgba(0,0,0,.08);
+}
+
+footer{
+ text-align:center;
+ padding:40px;
+ font-size:12px;
+ opacity:.6;
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -29,15 +111,17 @@ footer{text-align:center;padding:30px;font-size:12px;}
 
 <section class="hero">
 <h1>あなたの中の愛されキャラを見つけよう</h1>
+<p>やさしさも強さも、全部かわいい。</p>
 <a href="diagnosis.html"><button class="btn">診断する</button></a>
 </section>
 
 <section class="section">
 <div class="card">
-モエルタウンは、感情や性格がキャラクターとして存在する世界。
+ここは、感情がキャラクターとして生きている世界。
 </div>
 </section>
 
 <footer>© 2026 MoeruTown</footer>
+
 </body>
 </html>
