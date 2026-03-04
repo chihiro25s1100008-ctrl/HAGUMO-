@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY HAGUMO</title>
+<style>
+body{font-family:sans-serif;background:#fffdf8;text-align:center}
+.card{
+background:white;
+padding:20px;
+margin:20px auto;
+max-width:400px;
+border-radius:20px;
+box-shadow:0 15px 30px rgba(0,0,0,.1);
+}
+</style>
+</head>
+<body>
+
+<h1>📜 覚醒履歴</h1>
+<div id="history"></div>
+
+<script>
+let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[];
+
+function render(){
+let container=document.getElementById("history");
+container.innerHTML="";
+history.forEach(item=>{
+container.innerHTML+=`
+<div class="card">
+<h3>${item.name}</h3>
+<p>${item.date}</p>
+</div>`;
+});
+}
+render();
+</script>
+</body>
+</html>
