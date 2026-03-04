@@ -5,69 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HAGUMO GROW KIT</title>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
 
 <style>
+body{
+margin:0;
+font-family:'Noto Sans JP',sans-serif;
+background:linear-gradient(180deg,#fffdf8,#fff6fb);
+text-align:center;
+color:#444;
+overflow-x:hidden;
+}
+
+.nav{
+display:flex;
+justify-content:center;
+gap:20px;
+padding:15px;
+background:white;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.nav a{
+text-decoration:none;
+color:#ff7eb9;
+font-weight:bold;
+}
 
 .hero{
- padding:80px 20px 40px;
+padding:90px 20px 60px;
+position:relative;
 }
 
 .hero h1{
- font-size:32px;
+font-family:'Zen Maru Gothic',sans-serif;
+font-size:34px;
+margin-bottom:10px;
+animation:fadeUp 1s ease forwards;
+}
+
+.hero p{
+opacity:0;
+animation:fadeUp 1.2s ease forwards;
+animation-delay:.3s;
 }
 
 .price{
- font-size:22px;
- margin:20px 0;
- color:#ff7eb9;
- font-weight:bold;
+font-size:24px;
+color:#ff6fa5;
+font-weight:bold;
+margin:25px 0;
+opacity:0;
+animation:fadeUp 1.4s ease forwards;
+animation-delay:.6s;
 }
 
-.section-box{
- background:white;
- padding:30px;
- border-radius:30px;
- box-shadow:0 15px 40px rgba(0,0,0,.08);
- margin:40px auto;
- max-width:900px;
+.buy-button{
+display:inline-block;
+padding:16px 45px;
+border-radius:999px;
+background:linear-gradient(90deg,#ff9ecb,#ff7eb9);
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 10px 30px rgba(255,120,170,.4);
+animation:pulse 2s infinite;
+}
+
+.buy-button:hover{
+transform:scale(1.07);
+}
+
+.section{
+max-width:950px;
+margin:60px auto;
+padding:30px;
+background:white;
+border-radius:30px;
+box-shadow:0 20px 50px rgba(0,0,0,.07);
+opacity:0;
+transform:translateY(40px);
+transition:1s;
+}
+
+.section.show{
+opacity:1;
+transform:translateY(0);
 }
 
 .steps{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:25px;
- margin-top:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+margin-top:30px;
 }
 
 .step{
- background:#fafafa;
- padding:20px;
- border-radius:20px;
- box-shadow:0 10px 25px rgba(0,0,0,.05);
+background:#fafafa;
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+transition:.4s;
 }
 
-.fake-button{
- display:inline-block;
- margin-top:25px;
- padding:14px 40px;
- border-radius:999px;
- background:linear-gradient(90deg,#ff9ecb,#ff7eb9);
- color:white;
- font-weight:bold;
- cursor:pointer;
+.step:hover{
+transform:translateY(-8px);
 }
 
-.fake-button:hover{
- transform:scale(1.05);
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(30px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.05);}
+100%{transform:scale(1);}
+}
+
+.float{
+position:absolute;
+width:80px;
+animation:float 6s ease-in-out infinite;
+}
+
+.float1{top:60px;left:10%;}
+.float2{top:150px;right:10%;animation-delay:2s;}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(0);}
 }
 
 .notice{
- font-size:13px;
- opacity:.6;
- margin-top:10px;
+font-size:13px;
+opacity:.6;
+margin-top:10px;
 }
-
 </style>
 </head>
 
@@ -81,37 +159,39 @@
 <a href="product.html">PRODUCT</a>
 </div>
 
-<div class="container">
-
 <div class="hero">
+<img src="risu.PNG" class="float float1">
+<img src="imo.PNG" class="float float2">
+
 <h1>🌱 HAGUMO GROW KIT</h1>
 <p>
-あなたの「育てたい」という想いから<br>
+あなたが選んだ種から、<br>
 ハグモが目覚める。
 </p>
-<div class="price">月額 1,980円（税込）</div>
-<div class="fake-button">育成をはじめる</div>
-<div class="notice">※現在は体験デモページです</div>
+
+<div class="price">1キット 2,980円（税込）</div>
+
+<div class="buy-button">育成をはじめる</div>
+<div class="notice">※現在はコンセプトデモページです</div>
 </div>
 
-<div class="section-box">
+<div class="section">
 <h2>📦 セット内容</h2>
 <p>
 ・選択した野菜の種<br>
-・ハグモ監修 育成ガイドブック<br>
-・ハグモ覚醒カード<br>
-・成長後 美容活用レシピ配信
+・ハグモ公式育成ガイド<br>
+・覚醒カード<br>
+・成長後の美容活用レシピ配信
 </p>
 </div>
 
-<div class="section-box">
+<div class="section">
 <h2>🌿 育成の流れ</h2>
-
 <div class="steps">
 
 <div class="step">
 <h3>STEP 1</h3>
-<p>種を植える。<br>ハグモの眠りが始まる。</p>
+<p>種を植える。<br>ハグモが眠りから目覚める。</p>
 </div>
 
 <div class="step">
@@ -121,51 +201,50 @@
 
 <div class="step">
 <h3>STEP 3</h3>
-<p>美容レシピ配信。<br>野菜の祝福が届く。</p>
+<p>美容活用レシピが届く。</p>
 </div>
 
 <div class="step">
 <h3>STEP 4</h3>
-<p>難易度に応じて<br>ハグモグッズ降臨。</p>
+<p>育成難易度に応じて<br>ランダムでグッズ降臨。</p>
 </div>
 
 </div>
 </div>
 
-<div class="section-box">
+<div class="section">
 <h2>🌱 育成難易度</h2>
 
-<p>
-🟢 かんたん：カブ / サツマイモ / バタフライピー
-</p>
-
-<p>
-🟡 ふつう：キュウリ / ミニトマト / カボチャ
-</p>
-
-<p>
-🔴 むずかしめ（果樹系）：レモン / ブルーベリー / モモ / イチジク
-</p>
+<p>🟢 かんたん：カブ / サツマイモ / バタフライピー</p>
+<p>🟡 ふつう：キュウリ / ミニトマト / カボチャ</p>
+<p>🔴 むずかしめ：レモン / ブルーベリー / モモ / イチジク</p>
 
 </div>
 
-<div class="section-box">
+<div class="section">
 <h2>❓ よくある質問</h2>
 
-<p><strong>Q. 本当にハグモは見えますか？</strong><br>
-本気で育てた人にだけ姿を現します。
+<p><strong>Q. 月額ですか？</strong><br>
+いいえ。ハグモは都度課金型キットです。
 </p>
 
-<p><strong>Q. 写真はどこに送りますか？</strong><br>
-現在はデモ版のため送信機能はありません。
-</p>
-
-<p><strong>Q. 実際に購入できますか？</strong><br>
-このページはブランドコンセプト体験用です。
+<p><strong>Q. 本当に購入できますか？</strong><br>
+現在はブランド体験用のデモページです。
 </p>
 
 </div>
 
-</div>
+<script>
+const sections = document.querySelectorAll('.section');
+window.addEventListener('scroll',()=>{
+sections.forEach(sec=>{
+const top = sec.getBoundingClientRect().top;
+if(top < window.innerHeight - 100){
+sec.classList.add('show');
+}
+});
+});
+</script>
+
 </body>
 </html>
