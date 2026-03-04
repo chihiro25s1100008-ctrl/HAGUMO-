@@ -4,22 +4,100 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MY HAGUMO</title>
+
 <style>
-body{font-family:sans-serif;background:#fffdf8;text-align:center}
+body{
+margin:0;
+font-family:'Arial',sans-serif;
+background:linear-gradient(180deg,#fffdf8,#ffeef5);
+text-align:center;
+}
+
+/* ナビ */
+.nav{
+display:flex;
+justify-content:center;
+gap:20px;
+padding:15px;
+background:white;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+position:sticky;
+top:0;
+z-index:10;
+flex-wrap:wrap;
+}
+.nav a{
+text-decoration:none;
+color:#333;
+font-weight:bold;
+}
+.nav a.active{
+color:#ff4fa3;
+border-bottom:3px solid #ff4fa3;
+}
+
+/* タイトル */
+h1{
+margin-top:40px;
+}
+
+/* 履歴カード */
+.history-container{
+max-width:500px;
+margin:40px auto;
+padding:0 15px;
+}
+
 .card{
 background:white;
 padding:20px;
-margin:20px auto;
-max-width:400px;
+margin-bottom:20px;
 border-radius:20px;
-box-shadow:0 15px 30px rgba(0,0,0,.1);
+box-shadow:0 15px 30px rgba(0,0,0,.08);
+transition:.3s;
+}
+.card:hover{
+transform:translateY(-5px);
+}
+
+.date{
+font-size:12px;
+color:#999;
+margin-top:10px;
+}
+
+/* ボタン */
+.clear-btn{
+margin-top:20px;
+padding:10px 20px;
+border:none;
+border-radius:30px;
+background:#ff9fcf;
+color:white;
+cursor:pointer;
+}
+.clear-btn:hover{
+background:#ff4fa3;
 }
 </style>
 </head>
 <body>
 
+<!-- ナビ -->
+<div class="nav">
+<a href="index.html">HOME</a>
+<a href="world.html">WORLD</a>
+<a href="hagumo.html">HAGUMO</a>
+<a href="diagnosis.html">DIAGNOSIS</a>
+<a href="product.html">PRODUCT</a>
+<a href="my.html" class="active">MY HAGUMO</a>
+</div>
+
 <h1>📜 覚醒履歴</h1>
-<div id="history"></div>
+
+<div class="history-container" id="history"></div>
+
+<button class="clear-btn" onclick="clearHistory()">履歴をリセット</button>
 
 <script>
 let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[];
@@ -27,15 +105,30 @@ let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[];
 function render(){
 let container=document.getElementById("history");
 container.innerHTML="";
-history.forEach(item=>{
+
+if(history.length===0){
+container.innerHTML="<p>まだ覚醒していません 🌱</p>";
+return;
+}
+
+history.slice().reverse().forEach(item=>{
 container.innerHTML+=`
 <div class="card">
 <h3>${item.name}</h3>
-<p>${item.date}</p>
-</div>`;
+<div class="date">${item.date}</div>
+</div>
+`;
 });
 }
+
+function clearHistory(){
+localStorage.removeItem("hagumoHistory");
+history=[];
+render();
+}
+
 render();
 </script>
+
 </body>
 </html>
