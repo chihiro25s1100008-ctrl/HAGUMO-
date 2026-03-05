@@ -1,112 +1,86 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MY HAGUMO</title>
 
 <style>
+
 body{
-margin:0;
 font-family:sans-serif;
-background:linear-gradient(180deg,#fffdf8,#ffeef5);
 text-align:center;
+background:#fffdf8;
 }
 
 .nav{
 display:flex;
 justify-content:center;
-gap:20px;
-padding:15px;
+gap:25px;
+padding:20px;
 background:white;
 box-shadow:0 5px 20px rgba(0,0,0,.05);
-flex-wrap:wrap;
 }
+
 .nav a{
 text-decoration:none;
 color:#333;
 font-weight:bold;
 }
+
 .nav a.active{
 color:#ff4fa3;
 border-bottom:3px solid #ff4fa3;
 }
 
-h1{margin-top:40px;}
-
-.container{
-max-width:600px;
-margin:40px auto;
-padding:0 15px;
-}
-
 .card{
+
 background:white;
+
+margin:20px auto;
+
 padding:20px;
-margin-bottom:25px;
+
 border-radius:20px;
-box-shadow:0 15px 30px rgba(0,0,0,.08);
-position:relative;
-transition:.3s;
-}
-.card:hover{
-transform:translateY(-5px);
+
+width:260px;
+
+box-shadow:0 10px 20px rgba(0,0,0,.1);
+
 }
 
-.card img{
-width:120px;
+img{
+
+width:150px;
+
 border-radius:20px;
-margin-bottom:10px;
+
 }
 
-.date{
-font-size:12px;
-color:#888;
-}
+button{
 
-.level{
-font-weight:bold;
-margin:10px 0;
-color:#ff4fa3;
-}
-
-.favorite-btn{
 margin-top:10px;
-padding:6px 15px;
+
+padding:8px 15px;
+
 border:none;
+
 border-radius:20px;
-background:#ffd966;
-cursor:pointer;
-}
 
-.favorite{
-border:3px solid gold;
-}
-
-.clear-btn{
-margin-top:20px;
-padding:10px 20px;
-border:none;
-border-radius:30px;
 background:#ff9fcf;
+
 color:white;
-cursor:pointer;
-}
-.clear-btn:hover{
-background:#ff4fa3;
+
 }
 
-.badge{
-position:absolute;
-top:10px;
-right:10px;
-background:gold;
-padding:5px 10px;
-border-radius:20px;
-font-size:12px;
-}
 </style>
+
 </head>
+
 <body>
 
 <div class="nav">
@@ -118,67 +92,48 @@ font-size:12px;
 <a href="my.html" class="active">MY HAGUMO</a>
 </div>
 
-<h1>👑 MY HAGUMO</h1>
+<h1>🌿 MY HAGUMO</h1>
 
-<div class="container" id="history"></div>
-
-<button class="clear-btn" onclick="clearHistory()">履歴リセット</button>
+<div id="history"></div>
 
 <script>
-let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[];
-let favorite=localStorage.getItem("favoriteHagumo");
 
-function calculateLevel(name){
-let count=history.filter(h=>h.name===name).length;
-if(count>=5) return "SSR覚醒";
-if(count>=3) return "S覚醒";
-if(count>=2) return "A覚醒";
-return "通常覚醒";
+let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[]
+
+let container=document.getElementById("history")
+
+history.reverse().forEach((h,i)=>{
+
+let div=document.createElement("div")
+
+div.className="card"
+
+div.innerHTML=`
+
+<img src="${h.img}">
+
+<h3>${h.name}</h3>
+
+<p>${h.date}</p>
+
+<button onclick="setOshi('${h.name}')">推しにする</button>
+
+`
+
+container.appendChild(div)
+
+})
+
+function setOshi(name){
+
+localStorage.setItem("oshiHagumo",name)
+
+alert(name+" を推しハグモに設定しました！")
+
 }
 
-function render(){
-let container=document.getElementById("history");
-container.innerHTML="";
-
-if(history.length===0){
-container.innerHTML="<p>まだ覚醒していません 🌱</p>";
-return;
-}
-
-history.slice().reverse().forEach(item=>{
-let level=calculateLevel(item.name);
-
-let isFav = favorite===item.name ? "favorite" : "";
-
-container.innerHTML+=`
-<div class="card ${isFav}">
-${favorite===item.name ? '<div class="badge">👑 推し</div>' : ''}
-<img src="${item.img}">
-<h3>${item.name}</h3>
-<div class="level">🌟 ${level}</div>
-<div class="date">${item.date}</div>
-<button class="favorite-btn" onclick="setFavorite('${item.name}')">推しにする</button>
-</div>
-`;
-});
-}
-
-function setFavorite(name){
-localStorage.setItem("favoriteHagumo",name);
-favorite=name;
-render();
-}
-
-function clearHistory(){
-localStorage.removeItem("hagumoHistory");
-localStorage.removeItem("favoriteHagumo");
-history=[];
-favorite=null;
-render();
-}
-
-render();
 </script>
 
 </body>
+
 </html>
