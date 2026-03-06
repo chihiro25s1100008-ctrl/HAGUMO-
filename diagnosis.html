@@ -36,7 +36,7 @@
         <div class="card">
             <div id="q-container"></div>
 
-            <div id="result-area">
+            <div id="result-area" style="text-align: center;">
                 <div class="res-main-card">
                     <div id="main-catch" style="color:#ff7eb9; font-weight:bold; font-size: 14px;"></div>
                     <div id="main-res-name" style="font-size:26px; margin:10px 0; font-family: 'Zen Maru Gothic';"></div>
@@ -69,7 +69,6 @@
             { q: "ハグモと一緒に何したい？", a: "賑やかにパーティー！", b: "静かに家庭菜園を楽しみたい" }
         ];
 
-        // 10キャラのデータと相性理由
         const characters = [
             { name: "とまとら", catch: "情熱・リーダー", img: "tora.PNG", partner: "かぼちゃぼ", reason: "情熱的なリーダーのあなたを、明るいかぼちゃぼが笑顔で支えてくれます。お互いのポジティブさが合わさると最強の二人になれます。" },
             { name: "きゅうりす", catch: "バランス・調和", img: "risu.PNG", partner: "かぶた", reason: "周りとの調和を大事にするきゅうりすと、包容力抜群のかぶた。お互いに気遣いができるので、一緒にいると心が一番落ち着く関係です。" },
@@ -106,36 +105,27 @@
             document.getElementById(`q${currentQ}`).classList.remove('active');
             currentQ++;
             document.getElementById('progress').style.width = `${(currentQ/questions.length)*100}%`;
-            if (currentQ < questions.length) document.getElementById(`q${currentQ}`).classList.add('active');
-            else showResult();
+            if (currentQ < questions.length) {
+                document.getElementById(`q${currentQ}`).classList.add('active');
+            } else {
+                showResult();
+            }
         }
 
         function showResult() {
-    document.getElementById('q-container').style.display = 'none';
-    document.getElementById('result-area').style.display = 'block';
-    const index = Math.min(scoreA, characters.length - 1);
-    const main = characters[index];
-    
-    // --- 追加：結果を保存する ---
-    localStorage.setItem('myHagumo', JSON.stringify(main));
-    // -------------------------
+            document.getElementById('q-container').style.display = 'none';
+            document.getElementById('result-area').style.display = 'block';
+            
+            // スコアに基づいてキャラを決定
+            const index = Math.min(scoreA, characters.length - 1);
+            const main = characters[index];
+            
+            // 結果をローカルストレージに保存
+            localStorage.setItem('myHagumo', JSON.stringify(main));
 
-    const partner = characters.find(c => c.name === main.partner);
-    document.getElementById('main-catch').innerText = `― ${main.catch} ―`;
-    document.getElementById('main-res-name').innerText = main.name;
-    document.getElementById('main-res-img').src = `./images/${main.img}`;
-    document.getElementById('main-res-img').onerror = function(){ this.src = `./${main.img}`; };
-    document.getElementById('main-desc').innerText = `あなたは${main.catch}。${main.name}が、あなたの日常をサポートしてくれます。`;
+            const partner = characters.find(c => c.name === main.partner);
 
-    document.getElementById('sub-res-area').innerHTML = `
-        <div class="sub-item">
-            <img src="./images/${partner.img}" onerror="this.src='./${partner.img}'">
-            <div style="font-weight:bold; font-size:14px;">${partner.name}</div>
-        </div>
-    `;
-    document.getElementById('comp-reason').innerText = main.reason;
-}
-
+            // 画面に表示
             document.getElementById('main-catch').innerText = `― ${main.catch} ―`;
             document.getElementById('main-res-name').innerText = main.name;
             document.getElementById('main-res-img').src = `./images/${main.img}`;
@@ -150,6 +140,7 @@
             `;
             document.getElementById('comp-reason').innerText = main.reason;
         }
+
         init();
     </script>
     <script src="./common.js"></script>
