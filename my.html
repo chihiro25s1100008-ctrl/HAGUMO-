@@ -1,132 +1,104 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY HAGUMO</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background: #fffdf8;
+            margin: 0;
+        }
 
-<meta charset="UTF-8">
+        /* 履歴カードのデザイン */
+        .card {
+            background: white;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 20px;
+            width: 260px;
+            box-shadow: 0 10px 20px rgba(0,0,0,.1);
+            animation: fadeIn 0.5s ease;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-<title>MY HAGUMO</title>
+        img {
+            width: 150px;
+            border-radius: 20px;
+        }
 
-<style>
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background: #ff9fcf;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-body{
-font-family:sans-serif;
-text-align:center;
-background:#fffdf8;
-}
+        button:hover {
+            background: #ff4fa3;
+        }
 
-.nav{
-display:flex;
-justify-content:center;
-gap:25px;
-padding:20px;
-background:white;
-box-shadow:0 5px 20px rgba(0,0,0,.05);
-}
-
-.nav a{
-text-decoration:none;
-color:#333;
-font-weight:bold;
-}
-
-.nav a.active{
-color:#ff4fa3;
-border-bottom:3px solid #ff4fa3;
-}
-
-.card{
-
-background:white;
-
-margin:20px auto;
-
-padding:20px;
-
-border-radius:20px;
-
-width:260px;
-
-box-shadow:0 10px 20px rgba(0,0,0,.1);
-
-}
-
-img{
-
-width:150px;
-
-border-radius:20px;
-
-}
-
-button{
-
-margin-top:10px;
-
-padding:8px 15px;
-
-border:none;
-
-border-radius:20px;
-
-background:#ff9fcf;
-
-color:white;
-
-}
-
-</style>
-
+        /* 履歴がない時のメッセージ */
+        .empty-msg {
+            margin-top: 50px;
+            padding: 40px;
+            color: #888;
+        }
+    </style>
 </head>
 
 <body>
 
+    <div class="container">
+        <h1>🌿 MY HAGUMO</h1>
+        <div id="history"></div>
+    </div>
 
+    <script>
+        // ローカルストレージから履歴を取得
+        let history = JSON.parse(localStorage.getItem("hagumoHistory")) || [];
+        let container = document.getElementById("history");
 
-<h1>🌿 MY HAGUMO</h1>
+        // 履歴が空の場合の処理
+        if (history.length === 0) {
+            container.innerHTML = `
+                <div class="empty-msg">
+                    <p>まだ出会ったハグモがいないようです...</p>
+                    <a href="diagnosis.html" class="button" style="display:inline-block; text-decoration:none;">🌱 診断してハグモを見つける</a>
+                </div>
+            `;
+        } else {
+            // 履歴がある場合は、新しい順に表示
+            history.slice().reverse().forEach((h) => {
+                let div = document.createElement("div");
+                div.className = "card";
+                div.innerHTML = `
+                    <img src="${h.img}">
+                    <h3>${h.name}</h3>
+                    <p>${h.date}</p>
+                    <button onclick="setOshi('${h.name}')">推しにする</button>
+                `;
+                container.appendChild(div);
+            });
+        }
 
-<div id="history"></div>
+        function setOshi(name) {
+            localStorage.setItem("oshiHagumo", name);
+            alert(name + " を推しハグモに設定しました！");
+        }
+    </script>
 
-<script>
-
-let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[]
-
-let container=document.getElementById("history")
-
-history.reverse().forEach((h,i)=>{
-
-let div=document.createElement("div")
-
-div.className="card"
-
-div.innerHTML=`
-
-<img src="${h.img}">
-
-<h3>${h.name}</h3>
-
-<p>${h.date}</p>
-
-<button onclick="setOshi('${h.name}')">推しにする</button>
-
-`
-
-container.appendChild(div)
-
-})
-
-function setOshi(name){
-
-localStorage.setItem("oshiHagumo",name)
-
-alert(name+" を推しハグモに設定しました！")
-
-}
-
-</script>
-
+    <script src="common.js"></script>
 </body>
-
 </html>
