@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -16,7 +15,7 @@
 
         body { margin: 0; padding: 0; overflow-x: hidden; color: var(--text-gray); font-family: 'Zen Maru Gothic', sans-serif; }
 
-        /* --- 共通ナビゲーション復活 --- */
+        /* --- ナビゲーション --- */
         .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
         .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
         .nav-logo-img { height: 30px; }
@@ -26,7 +25,7 @@
 
         .container { margin-top: 80px; }
 
-        /* --- ヒーローセクション強化 --- */
+        /* --- ヒーローセクション --- */
         .hero-section {
             padding: 120px 20px 100px;
             background: linear-gradient(135deg, #fff 0%, var(--soft-pink) 100%);
@@ -38,7 +37,6 @@
         .hero-logo { width: 120px; margin-bottom: 30px; animation: floatLogo 3s ease-in-out infinite; }
         @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* 【巨大化】新キャッチコピー */
         .big-catch {
             font-size: clamp(32px, 8vw, 60px);
             font-weight: 700;
@@ -54,26 +52,25 @@
             margin-bottom: 40px;
         }
 
-        /* ポスター画像 */
         .hero-poster {
             position: absolute;
             right: 3%; top: 20%;
-            width: 200px;
+            width: 220px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(255,126,185,0.2);
             animation: floatPoster 4s ease-in-out infinite;
         }
         @keyframes floatPoster { 0%, 100% { transform: rotate(2deg) translateY(0); } 50% { transform: rotate(-2deg) translateY(-20px); } }
 
-        /* アニメーション用 */
         .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* 特徴カード */
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 80px 20px; max-width: 1000px; margin: 0 auto; }
+        /* 特徴カード（台本の内容を反映） */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
         .feature-card { background: white; padding: 40px; border-radius: 35px; box-shadow: 0 15px 35px rgba(255,126,185,0.08); text-align: center; }
+        .feature-card h3 { color: var(--main-pink); margin-top: 15px; }
 
-        /* 3 STEP (ピンク×白デザイン) */
+        /* 3 STEP */
         .steps-box {
             background: white;
             padding: 60px 30px;
@@ -92,7 +89,6 @@
             font-weight: bold; font-size: 20px; flex-shrink: 0;
         }
 
-        /* CTAボタン */
         .big-button {
             display: inline-block; background: var(--main-pink); color: white;
             padding: 22px 60px; border-radius: 100px; text-decoration: none;
@@ -101,8 +97,13 @@
         }
         .big-button:hover { transform: scale(1.05); background: #ff60a8; }
 
-        @media screen and (max-width: 1024px) {
-            .hero-poster { position: relative; right: auto; top: auto; width: 80%; max-width: 300px; margin: 30px auto; }
+        /* フッター注意書き */
+        .footer-notice {
+            background: #fff0f5;
+            border-top: 2px dashed var(--main-pink);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
         }
     </style>
 </head>
@@ -125,8 +126,7 @@
     <div class="container">
         <section class="hero-section">
             <img src="./images/rogo.PNG" class="hero-logo" alt="HAGUMO">
-            
-            <img src="./images/pos.PNG" class="hero-poster" alt="ポスター">
+            <img src="./images/pos.PNG" class="hero-poster" alt="電車内広告イメージ">
 
             <div class="big-catch">かわいくはじめる、<br>美容の自給自足</div>
             <p class="sub-copy">育てる、私が、きれいになる。</p>
@@ -136,37 +136,51 @@
 
         <div class="feature-grid reveal">
             <div class="feature-card">
-                <div style="font-size:60px; margin-bottom: 20px;">🥗</div>
-                <h3>はじめてでも育つ</h3>
-                <p>失敗しない専用キットとガイドをお届け。</p>
+                <div style="font-size:50px;">🧴</div>
+                <h3>美容への活用</h3>
+                <p>育てた野菜で手作りパック。自分で作るから、安心でかっこいい。</p>
             </div>
             <div class="feature-card">
-                <div style="font-size:60px; margin-bottom: 20px;">✨</div>
-                <h3>きれいをつくる</h3>
-                <p>収穫した野菜で、内側から輝く毎日を。</p>
+                <div style="font-size:50px;">🐿️</div>
+                <h3>推し活としての農業</h3>
+                <p>きゅうりす、とまとら…。可愛いハグモを集めてコンプリートを目指そう。</p>
+            </div>
+            <div class="feature-card">
+                <div style="font-size:50px;">🎁</div>
+                <h3>育てるほどご褒美</h3>
+                <p>成長報告を送ると、ここでしか手に入らない限定グッズが届く！</p>
             </div>
         </div>
 
         <div class="steps-box reveal">
-            <h2 style="text-align:center; margin-bottom:40px; color: var(--main-pink);">3 STEP TO START</h2>
+            <h2 style="text-align:center; margin-bottom:40px; color: var(--main-pink);">3 STEP TO BEAUTY</h2>
             <div class="step-item">
                 <div class="step-num">1</div>
-                <div><b>運命の診断</b><br>あなたにぴったりのハグモを選びます。</div>
+                <div><b>運命の診断でお迎え</b><br>10種類のハグモから、あなたにぴったりのパートナーを選びます。</div>
             </div>
             <div class="step-item">
                 <div class="step-num">2</div>
-                <div><b>キットで育てる</b><br>すべてがセットになったキットが届きます。</div>
+                <div><b>成長を報告して推し活</b><br>写真を送るたびに、限定キャラクターグッズ（コンプリート報酬）が届きます。</div>
             </div>
             <div class="step-item">
                 <div class="step-num">3</div>
-                <div><b>自分をみがく</b><br>収穫した野菜で、最高の自分へ。</div>
+                <div><b>とれたて野菜で自分磨き</b><br>収穫した野菜でパックや美容液を手作り。憧れの「美容の自給自足」へ。</div>
             </div>
         </div>
 
         <div class="cta-area reveal" style="text-align:center; margin-bottom: 100px;">
+            <p style="color:#888; margin-bottom: 20px;">さあ、あなたも「萌え」と「美」を育ててみませんか？</p>
             <a href="diagnosis.html" class="big-button">今すぐ診断をはじめる 🌱</a>
         </div>
     </div>
+
+    <footer class="footer-notice">
+        <p style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
+        <p style="font-size: 13px; color: #888; line-height: 1.6;">
+            このウェブサイトは学校の授業課題として制作された架空のサービス紹介ページです。<br>
+            実際に商品の販売、発送、グッズの配布などは行っておりません。
+        </p>
+    </footer>
 
     <script>
         function reveal() {
