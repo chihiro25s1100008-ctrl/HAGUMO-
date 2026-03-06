@@ -9,64 +9,73 @@
     <style>
         /* --- ワールドページ専用：幻想的なスタイル --- */
         .world-hero {
-            height: 60vh;
-            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('./images/world-bg.JPG');
+            height: 50vh;
+            background: linear-gradient(rgba(255,126,185,0.1), rgba(255,255,255,1)), url('./images/world-bg.JPG');
             background-size: cover;
             background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            border-radius: 0 0 80px 80px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            margin-bottom: -50px;
+            text-align: center;
+            border-radius: 0 0 60px 60px;
         }
 
-        .story-section {
+        .story-box {
             background: white;
-            padding: 80px 30px 60px;
-            border-radius: 50px;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: -60px auto 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 聖域エリアのデザイン */
+        .area-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding: 20px;
             max-width: 900px;
             margin: 0 auto;
-            position: relative;
-            z-index: 5;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            text-align: center;
         }
 
-        /* 聖域エリアのグリッド */
-        .area-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 40px 20px;
-        }
-        .area-card {
+        .area-item {
             background: white;
+            border-radius: 30px;
             padding: 30px;
-            border-radius: 30px;
-            border: 1px solid #fff4f9;
-            transition: 0.3s;
-            text-align: left;
+            border-left: 8px solid #ff9ecb;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        .area-card:hover { transform: scale(1.02); background: #fffcfd; border-color: #ff9ecb; }
-        .area-name { color: #ff7eb9; font-weight: bold; font-size: 18px; margin-bottom: 10px; display: block; }
 
-        /* 神秘的な引用文 */
-        .myth-quote {
-            font-family: 'Zen Maru Gothic';
-            font-size: 20px;
-            line-height: 2;
-            color: #444;
-            margin: 40px 0;
-            padding: 40px;
+        .area-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .area-title { font-family: 'Zen Maru Gothic'; font-size: 20px; color: #444; }
+        .area-symbol { font-size: 24px; }
+
+        .habitant-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .habitant-tag {
             background: #fff4f9;
-            border-radius: 30px;
-            position: relative;
+            color: #ff7eb9;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 1px solid #ffdaeb;
         }
-        .myth-quote::before { content: "“"; font-size: 80px; color: #ffdaeb; position: absolute; top: 0; left: 20px; }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
@@ -75,65 +84,86 @@
     <div class="container" style="margin-top: 80px;">
         
         <section class="world-hero">
-            <div style="text-align: center;">
-                <h1 style="font-family: 'Zen Maru Gothic'; font-size: 3rem;">HAGUMO WORLD</h1>
-                <p>そこは、想いが形になる場所。</p>
+            <div>
+                <h1 style="font-family: 'Zen Maru Gothic'; font-size: 32px; color: #444;">HAGUMO WORLD</h1>
+                <p style="color: #888;">野菜とココロが共鳴する、5つの物語。</p>
             </div>
         </section>
 
-        <section class="story-section">
-            <span style="color: #ff7eb9; font-weight: bold; letter-spacing: 3px;">STORY</span>
-            <div class="myth-quote reveal">
-                「育てたい」という人の願い。<br>
-                その純粋な想いが土に溶け込んだとき、<br>
-                野菜は魂を持ち、ハグモとして目覚める。
-            </div>
-            <p style="color: #666; line-height: 2; text-align: left; max-width: 600px; margin: 0 auto;">
-                HAGUMOの世界では、植物と人間は鏡のような存在です。<br>
-                あなたがハグモを愛でるほど、ハグモはあなたに「美しさ」を返します。<br>
-                これは、ただの栽培ではありません。自分自身を再発見する物語なのです。
+        <section class="story-box reveal">
+            <h2 style="color: #ff7eb9; font-size: 18px; margin-bottom: 15px;">誕生の秘密</h2>
+            <p style="font-size: 14px; line-height: 1.8; color: #666; text-align: left;">
+                HAGUMOの世界は、あなたの「育てたい」という真っ直ぐな想いから始まります。
+                広大な大地の各エリアには、まだ種の中に眠っている個性豊かな10種類のハグモたちが、あなたの訪れを待っています。
             </p>
         </section>
 
-        <h2 style="text-align: center; margin-top: 80px; font-family: 'Zen Maru Gothic';">🌿 5つの聖域（エリア設定）</h2>
-        
+        <div class="area-list">
+            
+            <div class="area-item reveal">
+                <div class="area-header">
+                    <div class="area-title">01. はじまりの苗床</div>
+                    <div class="area-symbol">🌱</div>
+                </div>
+                <div class="habitant-tags">
+                    <span class="habitant-tag">とまとら</span>
+                    <span class="habitant-tag">かぶた</span>
+                </div>
+                <p style="font-size: 13px; color: #777;">真っ白な土壌が広がる、生命の源。情熱的なリーダー「とまとら」と、包容力あふれる「かぶた」が新しい芽吹きを支えています。</p>
+            </div>
 
-        <div class="area-grid">
-            <div class="area-card reveal">
-                <span class="area-name">01. はじまりの苗床</span>
-                <p style="font-size: 13px; color: #777;">
-                    すべてのハグモが種として眠る場所。ここでは「とまとら」や「かぶた」が、新しいパートナーを待っています。
-                </p>
+            <div class="area-item reveal">
+                <div class="area-header">
+                    <div class="area-title">02. 潤いのオアシス</div>
+                    <div class="area-symbol">💧</div>
+                </div>
+                <div class="habitant-tags">
+                    <span class="habitant-tag">きゅうりす</span>
+                    <span class="habitant-tag">もももんが</span>
+                    <span class="habitant-tag">かぼちゃぼ</span>
+                </div>
+                <p style="font-size: 13px; color: #777;">常に清らかな水が流れる癒やしの地。調和を愛する「きゅうりす」、愛嬌満点の「もももんが」、ポジティブな「かぼちゃぼ」が水辺で遊んでいます。</p>
             </div>
-            <div class="area-card reveal">
-                <span class="area-name">02. 潤いのオアシス</span>
-                <p style="font-size: 13px; color: #777;">
-                    水分たっぷりの野菜たちが住む湿地帯。「きゅうりす」や「もももんが」が、お肌に良い雫を集めています。
-                </p>
+
+            <div class="area-item reveal">
+                <div class="area-header">
+                    <div class="area-title">03. ひらめきの樹海</div>
+                    <div class="area-symbol">🌳</div>
+                </div>
+                <div class="habitant-tags">
+                    <span class="habitant-tag">れもんきー</span>
+                    <span class="habitant-tag">ばたふらいぴーこっく</span>
+                </div>
+                <p style="font-size: 13px; color: #777;">不思議な色の果実が実る、知恵の森。自由奔放な「れもんきー」と、冷静沈着な「ばたふらいぴーこっく」が、新しい美容のヒントを研究しています。</p>
             </div>
-            <div class="area-card reveal">
-                <span class="area-name">03. ひらめきの樹海</span>
-                <p style="font-size: 13px; color: #777;">
-                    果実のハグモが暮らす森。「れもんきー」が飛び回り、常に新しい美容レシピが生まれる場所。
-                </p>
+
+            <div class="area-item reveal">
+                <div class="area-header">
+                    <div class="area-title">04. 深い知恵の洞窟</div>
+                    <div class="area-symbol">💎</div>
+                </div>
+                <div class="habitant-tags">
+                    <span class="habitant-tag">さつまいもぐら</span>
+                    <span class="habitant-tag">ぶるーべりくがめ</span>
+                </div>
+                <p style="font-size: 13px; color: #777;">大地のエネルギーが凝縮された静かな空間。努力家の「さつまいもぐら」と、博識な「ぶるーべりくがめ」が、古の知識を守っています。</p>
             </div>
-            <div class="area-card reveal">
-                <span class="area-name">04. 深い知恵の洞窟</span>
-                <p style="font-size: 13px; color: #777;">
-                    根菜のハグモが静かに瞑想する場所。「さつまいもぐら」や「くがめ」が、大地の栄養を蓄えています。
-                </p>
+
+            <div class="area-item reveal">
+                <div class="area-header">
+                    <div class="area-title">05. 宵闇の果実園</div>
+                    <div class="area-symbol">🌙</div>
+                </div>
+                <div class="habitant-tags">
+                    <span class="habitant-tag">くろいちじくま</span>
+                </div>
+                <p style="font-size: 13px; color: #777;">月の光だけが降り注ぐ、ミステリアスな聖域。一人の時間を愛する「くろいちじくま」が、静かに夜風を楽しんでいる隠れスポットです。</p>
             </div>
-            <div class="area-card reveal">
-                <span class="area-name">05. 紺碧の庭園</span>
-                <p style="font-size: 13px; color: #777;">
-                    青い花が咲き乱れる神秘的な庭。「ばたふらいぴーこっく」が、透明感を引き出すハーブを育てています。
-                </p>
-            </div>
+
         </div>
 
-        <div style="text-align: center; margin: 100px 0;">
-            <p style="font-family: 'Zen Maru Gothic'; margin-bottom: 20px;">あなたの日常に、この世界を少しだけお裾分け。</p>
-            <a href="product.html" class="button">育成キットを見てみる</a>
+        <div style="text-align: center; margin: 80px 0;">
+            <a href="hagumo.html" class="button">ハグモたちの詳しいプロフィールへ</a>
         </div>
 
     </div>
