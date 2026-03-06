@@ -2,26 +2,105 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAGUMO | 美容の自給自足</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HAGUMO | かわいくはじめる、美容の自給自足</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
+        /* ホーム専用の追加スタイル */
+        body { overflow-x: hidden; }
+        
         .hero-section {
-            padding: 80px 20px 60px;
+            padding: 100px 20px 60px;
             background: linear-gradient(135deg, #fff 0%, var(--soft-pink) 100%);
             text-align: center;
-            border-radius: 0 0 50px 50px;
+            border-radius: 0 0 60px 60px;
             position: relative;
         }
-        .hero-logo { width: 120px; margin-bottom: 20px; animation: float 3s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .big-catch { font-size: clamp(26px, 7vw, 50px); font-weight: 700; color: var(--pink2); line-height: 1.3; }
-        .hero-poster { width: 80%; max-width: 220px; border-radius: 20px; box-shadow: 0 10px 25px rgba(255,105,180,0.2); margin-top: 30px; }
-        .big-button { display: inline-block; background: var(--pink2); color: white; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 30px; }
+
+        .hero-logo { 
+            width: 140px; 
+            margin-bottom: 20px; 
+            animation: floatLogo 3s ease-in-out infinite; 
+            filter: drop-shadow(0 5px 15px rgba(255,192,203,0.3));
+        }
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .big-catch { 
+            font-size: clamp(28px, 8vw, 52px); 
+            font-weight: 700; 
+            color: var(--pink2); 
+            line-height: 1.3; 
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px white;
+        }
+
+        .sub-copy { 
+            font-size: clamp(16px, 4vw, 20px); 
+            color: #888; 
+            margin-bottom: 35px; 
+            font-weight: bold;
+        }
+
+        .hero-poster { 
+            width: 85%; 
+            max-width: 260px; 
+            border-radius: 25px; 
+            box-shadow: 0 15px 35px rgba(255,105,180,0.25); 
+            margin-top: 40px;
+            border: 5px solid white;
+            transform: rotate(-2deg);
+        }
+
+        .big-button { 
+            display: inline-block; 
+            background: var(--pink2); 
+            color: white; 
+            padding: 20px 45px; 
+            border-radius: 100px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 18px; 
+            box-shadow: 0 8px 20px rgba(255,105,180,0.4);
+            transition: 0.3s;
+        }
+        .big-button:active { transform: scale(0.95); }
+
+        /* スクロールでふわっと出す演出用 */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .feature-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            padding: 60px 20px; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+        }
+
+        .feature-card { 
+            background: white; 
+            padding: 35px 25px; 
+            border-radius: 35px; 
+            box-shadow: 0 15px 30px rgba(255,192,203,0.15); 
+            text-align: center; 
+            border: 2px solid var(--soft-pink); 
+        }
+        .feature-card h3 { color: var(--pink2); margin-bottom: 15px; font-size: 1.3rem; }
+        .feature-card p { font-size: 14px; color: #777; line-height: 1.7; }
+
+        footer {
+            background: var(--soft-pink);
+            padding: 50px 20px;
+            text-align: center;
+            border-top: 2px dashed var(--pink2);
+            margin-top: 60px;
+        }
     </style>
 </head>
 <body>
+
     <nav class="nav">
         <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
         <div class="nav-links">
@@ -33,13 +112,62 @@
             <a href="my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
+
     <div class="container">
         <section class="hero-section">
-            <img src="./images/rogo.PNG" class="hero-logo">
+            <img src="./images/rogo.PNG" class="hero-logo" alt="HAGUMO">
             <div class="big-catch">かわいくはじめる、<br>美容の自給自足</div>
+            <p class="sub-copy">育てる、私が、きれいになる。</p>
+            
             <a href="diagnosis.html" class="big-button">パートナーを診断する 🌱</a>
-            <br><img src="./images/pos.PNG" class="hero-poster">
+            
+            <div class="reveal">
+                <img src="./images/pos.PNG" class="hero-poster" alt="HAGUMOポスター">
+            </div>
         </section>
+
+        <div class="feature-grid reveal">
+            <div class="feature-card">
+                <h3>🧴 美容への活用</h3>
+                <p>収穫した野菜やハーブで、自分だけの「生パック」や「ハーブティー」を。体の中から、外から、美しさを引き出します。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🐿️ 推し活としての農業</h3>
+                <p>10人の個性豊かなHAGUMOたち。育てて、触れ合って、コレクション。農業が最高のエンターテインメントに変わります。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎁 育てるほどご褒美</h3>
+                <p>成長報告を送ると、限定のアクリルキーホルダーやオリジナルコスメが届く！あなたの努力をHAGUMOが見守っています。</p>
+            </div>
+        </div>
+
+        <div class="reveal" style="text-align:center; padding: 60px 20px 100px;">
+            <h2 style="color: var(--pink2); margin-bottom: 25px;">さあ、あなたも。</h2>
+            <a href="diagnosis.html" class="big-button">今すぐ診断をはじめる 🌱</a>
+        </div>
     </div>
+
+    <footer>
+        <p style="color: var(--pink2); font-weight: bold; font-size: 14px; margin-bottom: 8px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
+        <p style="font-size: 10px; color: #888; letter-spacing: 0.5px;">これは授業課題であり、実際の購入・発送は行っていません。</p>
+    </footer>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // 最初にも一度実行して、最初に見えてる要素を表示させる
+        window.onload = reveal;
+    </script>
+
 </body>
 </html>
