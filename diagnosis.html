@@ -8,19 +8,29 @@
     <style>
         :root { --main-pink: #ff7eb9; --sub-pink: #ffdaeb; --bg: #fff9fb; }
         body { margin: 0; background: var(--bg); font-family: 'Zen Maru Gothic', sans-serif; color: #444; }
+        
+        /* ナビゲーション復活 */
         .navbar { position: fixed; top: 0; width: 100%; height: 60px; background: white; z-index: 1000; border-bottom: 2px solid var(--sub-pink); display: flex; align-items: center; justify-content: center; }
         .nav-logo-img { height: 35px; }
+
         .container { margin-top: 80px; padding: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
         .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 25px rgba(255,126,185,0.1); border: 2px solid var(--sub-pink); margin-bottom: 25px; text-align: center; }
         .btn { background: white; border: 2px solid var(--sub-pink); padding: 14px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #666; font-size: 14px; transition: 0.2s; width: 100%; margin: 8px 0; }
         .btn:hover { background: var(--main-pink); color: white; transform: translateY(-2px); }
         .f-select { width: 100%; padding: 12px; border-radius: 15px; border: 1px solid var(--sub-pink); margin-bottom: 12px; font-family: inherit; }
+        
+        /* 診断結果エリア */
         #result-area { display: none; }
         .best-partner { background: #fff0f5; border-radius: 15px; padding: 10px; margin-top: 15px; border: 1px dashed var(--main-pink); }
+        
+        /* 相性の理由 */
+        #comp-reason { font-size: 13px; color: #777; margin-top: 10px; line-height: 1.5; padding: 10px; background: #fafafa; border-radius: 10px; }
     </style>
 </head>
 <body>
+
 <nav class="navbar"><img src="./images/rogo.PNG" class="nav-logo-img"></nav>
+
 <div class="container">
     <div class="card" id="q-area">
         <div id="q-progress" style="font-size:12px; color:var(--main-pink); font-weight:bold;">Q 1 / 20</div>
@@ -41,39 +51,40 @@
     </div>
 
     <div class="card">
-        <h3 style="color:var(--main-pink);">🤝 ハグモ相性占い (全55通り)</h3>
+        <h3 style="color:var(--main-pink);">🤝 ハグモ相性占い</h3>
         <select id="my-s" class="f-select"></select>
         <select id="fr-s" class="f-select"></select>
         <button class="btn" onclick="checkComp()">二人の相性を占う！</button>
-        <div id="comp-res" style="margin-top:15px; font-weight:bold; color:var(--main-pink); font-size:1.1rem;"></div>
+        <div id="comp-res" style="margin-top:15px; font-weight:bold; color:var(--main-pink); font-size:1.2rem;"></div>
+        <div id="comp-reason">ハグモを選択して占ってみてね！</div>
     </div>
 </div>
 
 <script>
 const chars = [
-    {id:"buta.PNG", name:"かぶた", type:"ISFJ", best:"jaku.PNG", desc:"献身的で優しい。"},
-    {id:"tora.PNG", name:"とまとら", type:"ESTP", best:"kuma.PNG", desc:"情熱的な挑戦者。"},
-    {id:"risu.PNG", name:"きゅうりす", type:"INFJ", best:"chabo.PNG", desc:"共感力が高い。"},
-    {id:"saru.PNG", name:"れもんきー", type:"ENFP", desc:"自由なアイデアマン。", best:"imo.PNG"},
-    {id:"kame.PNG", name:"ぶるーべりくがめ", type:"INTJ", desc:"知的な戦略家。", best:"nga.PNG"},
-    {id:"imo.PNG", name:"さつまいもぐら", type:"ISTJ", desc:"真面目で誠実。", best:"saru.PNG"},
-    {id:"nga.PNG", name:"もももんが", type:"ESFP", desc:"天真爛漫なアイドル。", best:"kame.PNG"},
-    {id:"kuma.PNG", name:"くろいちじくま", type:"INFP", desc:"心優しい芸術家。", best:"tora.PNG"},
-    {id:"chabo.PNG", name:"かぼちゃぼ", type:"ENTP", desc:"ユーモア溢れる天才。", best:"risu.PNG"},
-    {id:"jaku.PNG", name:"ばたふらいぴーこっく", type:"ENTJ", desc:"自信に満ちたリーダー。", best:"buta.PNG"}
+    {id:"buta.PNG", name:"かぶた", type:"ISFJ", best:"jaku.PNG", desc:"献身的で優しい平和主義者。"},
+    {id:"tora.PNG", name:"とまとら", type:"ESTP", best:"kuma.PNG", desc:"情熱的でスリルを愛する挑戦者。"},
+    {id:"risu.PNG", name:"きゅうりす", type:"INFJ", best:"chabo.PNG", desc:"深い洞察力を持つ共感の天才。"},
+    {id:"saru.PNG", name:"れもんきー", type:"ENFP", best:"imo.PNG", desc:"自由な発想で周りを明るくする自由人。"},
+    {id:"kame.PNG", name:"ぶるーべりくがめ", type:"INTJ", desc:"冷静沈着で知的な戦略家。", best:"nga.PNG"},
+    {id:"imo.PNG", name:"さつまいもぐら", type:"ISTJ", desc:"コツコツ積み上げる誠実な努力家。", best:"saru.PNG"},
+    {id:"nga.PNG", name:"もももんが", type:"ESFP", desc:"今この瞬間を楽しむ愛されアイドル。", best:"kame.PNG"},
+    {id:"kuma.PNG", name:"くろいちじくま", type:"INFP", desc:"独自の感性を持つ心優しい芸術家。", best:"tora.PNG"},
+    {id:"chabo.PNG", name:"かぼちゃぼ", type:"ENTP", desc:"知的好奇心旺盛なアイデアマン。", best:"risu.PNG"},
+    {id:"jaku.PNG", name:"ばたふらいぴーこっく", type:"ENTJ", desc:"自信に満ち溢れたカリスマリーダー。", best:"buta.PNG"}
 ];
 
 const questions = [
-    {t:"大勢で遊ぶより少人数が好き", v:"I"}, {t:"新しいことより慣れたことがいい", v:"S"},
-    {t:"理屈より気持ちを優先する", v:"F"}, {t:"予定はきっちり決めたい", v:"J"},
-    {t:"自分から話しかける方だ", v:"E"}, {t:"空想にふけるのが好きだ", v:"N"},
-    {t:"客観的な意見を重視する", v:"T"}, {t:"期限ギリギリにやるタイプだ", v:"P"},
-    {t:"休日は外に出たい", v:"E"}, {t:"細かい作業が得意だ", v:"S"},
-    {t:"相談されたら解決策を言う", v:"T"}, {t:"部屋の片付けが得意だ", v:"J"},
-    {t:"一人の時間が必要だ", v:"I"}, {t:"将来の可能性を信じている", v:"N"},
-    {t:"和を乱したくない", v:"F"}, {t:"その場のノリを大切にする", v:"P"},
-    {t:"注目されると嬉しい", v:"E"}, {t:"現実的な解決策を好む", v:"S"},
-    {t:"感情表現が豊かな方だ", v:"F"}, {t:"物事を整理するのが好きだ", v:"J"}
+    {t:"休日は一人で静かに過ごすのが好きだ", v:"I"}, {t:"直感よりも、具体的な事実を信じる", v:"S"},
+    {t:"決断するときは理屈より感情を優先する", v:"F"}, {t:"散らかった部屋にいると落ち着かない", v:"J"},
+    {t:"初対面の人ともすぐに打ち解けられる", v:"E"}, {t:"未来の可能性について考えるのが好きだ", v:"N"},
+    {t:"人の気持ちより、正論の方が大切だと思う", v:"T"}, {t:"予定は決めず、その時の気分で動きたい", v:"P"},
+    {t:"パーティーより静かなカフェが好きだ", v:"I"}, {t:"細かい作業やルーチンワークが得意だ", v:"S"},
+    {t:"物語の裏に隠された意味を考えるのが好きだ", v:"N"}, {t:"何かを決める時はメリット・デメリットで考える", v:"T"},
+    {t:"自分から話題を振るのが得意だ", v:"E"}, {t:"他人の感情の変化に敏感な方だ", v:"F"},
+    {t:"期限は必ず守るし、準備も早めにする", v:"J"}, {t:"想定外のハプニングも楽しめる", v:"P"},
+    {t:"グループの中でリーダーになることが多い", v:"E"}, {t:"伝統や実績があるものを信頼する", v:"S"},
+    {t:"他人の悩みを聞くのが得意だ", v:"F"}, {t:"物事を整理・分類するのが好きだ", v:"J"}
 ];
 
 let step = 0; let mbti = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
@@ -81,14 +92,15 @@ let step = 0; let mbti = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
 function showQ() {
     const q = questions[step];
     document.getElementById('q-progress').innerText = `Q ${step+1} / 20`;
-    document.getElementById('q-text').innerText = q.t;
+    document.getElementById('q-text').innerText = q.text || q.t;
     const box = document.getElementById('q-choices'); box.innerHTML = '';
-    [{l:"はい", a:1}, {l:"いいえ", a:0}].forEach(o => {
+    [{l:"そう思う", a:1}, {l:"そう思わない", a:0}].forEach(o => {
         const b = document.createElement('button'); b.className='btn'; b.innerText=o.l;
-        b.onclick=()=>{ if(o.a) mbti[q.v]++; else { /* 逆をプラス */ 
-            const opp = {E:"I",I:"E",S:"N",N:"S",T:"F",F:"T",J:"P",P:"J"}; mbti[opp[q.v]]++;
-        }
-        step++; if(step<questions.length) showQ(); else showRes(); };
+        b.onclick=()=>{ 
+            const val = o.a ? q.v : {E:"I",I:"E",S:"N",N:"S",T:"F",F:"T",J:"P",P:"J"}[q.v];
+            mbti[val]++;
+            step++; if(step<questions.length) showQ(); else showRes(); 
+        };
         box.appendChild(b);
     });
 }
@@ -104,6 +116,7 @@ function showRes() {
     document.getElementById('result-area').style.display='block';
     document.getElementById('res-img').src = `./images/${best.id}`;
     document.getElementById('res-name').innerText = best.name;
+    document.getElementById('res-desc').innerText = `あなたは【${type}】タイプ。${best.desc}`;
     const partner = chars.find(c => c.id === best.best);
     document.getElementById('best-partner-name').innerText = partner.name;
     localStorage.setItem('myHagumo_ID', best.id);
@@ -112,11 +125,32 @@ function showRes() {
 function checkComp() {
     const s1 = document.getElementById('my-s').value;
     const s2 = document.getElementById('fr-s').value;
-    // 55通りの一貫した相性を出すためのロジック
-    const pair = [s1, s2].sort().join("");
-    let hash = 0; for (let i = 0; i < pair.length; i++) hash = pair.charCodeAt(i) + ((hash << 5) - hash);
-    const score = Math.abs(hash % 41) + 60;
-    document.getElementById('comp-res').innerText = `相性：${score}%！`;
+    const c1 = chars.find(c=>c.id===s1);
+    const c2 = chars.find(c=>c.id===s2);
+    
+    // 性格の共通点数を計算
+    let matches = 0;
+    for(let i=0; i<4; i++) if(c1.type[i]===c2.type[i]) matches++;
+    
+    let score = 0;
+    let reason = "";
+
+    if(matches === 4) {
+        score = 95;
+        reason = "似た者同士で、言葉がなくても分かり合える最高の理解者です！";
+    } else if(matches === 0) {
+        score = 88;
+        reason = "正反対だからこそ、お互いの持っていない部分を補い合える最強の凸凹コンビ！";
+    } else if(matches >= 2) {
+        score = 75 + (matches * 5);
+        reason = "価値観のベースが同じなので、一緒にいてとても居心地が良い関係です。";
+    } else {
+        score = 60 + (Math.random() * 10);
+        reason = "刺激し合える関係。お互いの違いを認め合うことで、新しい発見があるはず！";
+    }
+
+    document.getElementById('comp-res').innerText = `相性：${Math.floor(score)}%！`;
+    document.getElementById('comp-reason').innerText = reason;
 }
 
 window.onload = () => {
