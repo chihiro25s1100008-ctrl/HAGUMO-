@@ -1,37 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ハグモ図鑑 | HAGUMO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8"><title>ハグモ図鑑</title>
+    <link rel="stylesheet" href="./style.css">
     <style>
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-top: 30px; }
-        .hagumo-card { background: white; border-radius: 25px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.08); transition: .3s; }
-        .hagumo-card:hover { transform: translateY(-8px); }
-        .hagumo-card img { width: 140px; height: auto; margin-bottom: 15px; }
-        .name { font-family: 'Zen Maru Gothic', sans-serif; font-size: 18px; margin-bottom: 8px; }
-        .type { font-size: 13px; opacity: .7; margin-bottom: 10px; }
-        .desc { font-size: 13px; line-height: 1.6; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .hagumo-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .hagumo-card img { width: 100px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🌱 ハグモ図鑑</h1>
         <div class="grid">
-            <div class="hagumo-card"><img src="risu.PNG"><div class="name">きゅうりす</div><div class="type">バランス・調和</div><div class="desc">きゅうり×りすの妖精ハグモ。</div></div>
-            <div class="hagumo-card"><img src="tora.PNG"><div class="name">とまとら</div><div class="type">情熱・リーダー</div><div class="desc">トマト×トラの情熱ハグモ。</div></div>
-            <div class="hagumo-card"><img src="saru.PNG"><div class="name">れもんきー</div><div class="type">ひらめき・自由</div><div class="desc">レモン×さるの発想妖精。</div></div>
-            <div class="hagumo-card"><img src="kame.PNG"><div class="name">ぶるーべりくがめ</div><div class="type">知性・分析</div><div class="desc">ブルーベリー×かめの思考ハグモ。</div></div>
-            <div class="hagumo-card"><img src="buta.PNG"><div class="name">かぶた</div><div class="type">優しさ・包容</div><div class="desc">かぶ×ぶたの癒し妖精。</div></div>
-            <div class="hagumo-card"><img src="imo.PNG"><div class="name">さつまいもぐら</div><div class="type">努力・継続</div><div class="desc">さつまいも×もぐらの努力型ハグモ。</div></div>
-            <div class="hagumo-card"><img src="nga.PNG"><div class="name">もももんが</div><div class="type">愛嬌・甘え上手</div><div class="desc">もも×もんがの愛され妖精。</div></div>
-            <div class="hagumo-card"><img src="kuma.PNG"><div class="name">くろいちじくま</div><div class="type">静か・ミステリアス</div><div class="desc">いちじく×くまの静寂ハグモ。</div></div>
-            <div class="hagumo-card"><img src="chabo.PNG"><div class="name">かぼちゃぼ</div><div class="type">明るい・ポジティブ</div><div class="desc">かぼちゃ×ちゃぼの太陽ハグモ。</div></div>
-            <div class="hagumo-card"><img src="jaku.PNG"><div class="name">ばたふらいぴーこっく</div><div class="type">機転・賢さ</div><div class="desc">バタフライピー×孔雀の知略妖精。</div></div>
-        </div>
+            <div class="hagumo-card"><img src="./risu.PNG"><h3>きゅうりす</h3></div>
+            <div class="hagumo-card"><img src="./tora.PNG"><h3>とまとら</h3></div>
+            </div>
     </div>
-    <script src="common.js"></script>
+    <script src="./common.js"></script>
 </body>
 </html>
