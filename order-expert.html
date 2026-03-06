@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPERT KIT | HAGUMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --main-pink: #ff7eb9; --expert-orange: #fff4e0; --accent-orange: #f39c12; }
+        body { background: #fffafb; font-family: 'Zen Maru Gothic', sans-serif; margin: 0; padding: 0; }
+        
+        .order-hero {
+            background: linear-gradient(135deg, #fff 0%, var(--expert-orange) 100%);
+            padding: 60px 20px; text-align: center; border-radius: 0 0 50px 50px;
+        }
+        
+        .product-container {
+            max-width: 1000px; margin: -40px auto 100px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+            padding: 40px; background: white; border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .reward-timeline {
+            margin-top: 30px; padding: 25px;
+            background: #fffaf0; border-radius: 25px; border: 2px solid #ffdaeb;
+        }
+        .timeline-item { display: flex; gap: 15px; margin-bottom: 20px; }
+        .timeline-icon {
+            background: #f39c12; color: white; width: 30px; height: 30px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; flex-shrink: 0; font-weight: bold;
+        }
+        .timeline-text b { display: block; color: #d35400; font-size: 14px; }
+        .timeline-text p { font-size: 12px; color: #666; margin: 4px 0; }
+
+        .btn-order {
+            background: linear-gradient(90deg, #ff7eb9, #ff9a9e); color: white; border: none;
+            padding: 20px; width: 100%; border-radius: 50px;
+            font-size: 20px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255,126,185,0.3);
+        }
+        
+        @media (max-width: 768px) { .product-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="order-hero">
+        <span style="background:white; border:1px solid #f39c12; color:#f39c12; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:12px;">RANK B : EXPERT</span>
+        <h1 style="color:var(--main-pink); margin:10px 0;">こだわり美肌菜園セット</h1>
+        <p style="font-size:14px; color:#888;">育てる楽しみ、食べる喜び。ARキャラと作る特別な菜園。</p>
+    </div>
+
+    <div class="product-container">
+        <div class="image-area">
+            <img src="./images/risu.PNG" style="width:100%; border-radius:30px;">
+            <div style="margin-top:20px; padding:20px; background:var(--expert-orange); border-radius:20px;">
+                <h4 style="margin:0; font-size:14px; color:#d35400;">🐿️ こだわり同梱物</h4>
+                <ul style="font-size:13px; color:#444; padding-left:20px;">
+                    <li>栄養満点！オリジナルブレンド「美の土」</li>
+                    <li>お名前刻印入りウッドネームプレート</li>
+                    <li>スマホをかざすと飛び出す！ARフォトカード</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="info-area">
+            <h2 style="margin:0; font-size:22px;">HAGUMO "中級" 育成キット</h2>
+            <p style="font-size:28px; font-weight:bold; color:#444; margin:15px 0;">¥2,980 <span style="font-size:14px; color:#999;">(税込)</span></p>
+            
+            <div class="reward-timeline">
+                <h4 style="margin:0 0 15px 0; font-size:15px; text-align:center;">📮 成長報告で届くご褒美グッズ</h4>
+                <div class="timeline-item">
+                    <div class="timeline-icon">1</div>
+                    <div class="timeline-text">
+                        <b>成長報告（郵送）</b>
+                        <p>本葉が出たら！キャラとお揃い「ふわふわ洗顔ヘアバンド」を郵送。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">2</div>
+                    <div class="timeline-text">
+                        <b>収穫報告（郵送）</b>
+                        <p>達成の証！キャラが立体的に見える「2Dアクリルスタンド」を郵送。</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-order">この子とお庭をはじめる 🐿️</button>
+        </div>
+    </div>
+</body>
+</html>
