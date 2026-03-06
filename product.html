@@ -2,100 +2,37 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KIT & SHOP | HAGUMO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        :root {
-            --main-pink: #ff7eb9;
-            --sub-pink: #ffdaeb;
-            --bg-pink: #fff9fb;
-            --easy-green: #e0f9e0;
-            --normal-orange: #fff4e0;
-            --hard-gold: #f9d5e5;
-        }
-
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-pink); color: #444; margin: 0; }
-
-        /* --- 共通ナビゲーション復活 --- */
+        :root { --main-pink: #ff7eb9; --bg-pink: #fff9fb; }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-pink); margin: 0; padding-top: 80px; }
+        
+        /* 共通ナビ */
         .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
         .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
         .nav-logo-img { height: 30px; }
-        .nav-links { display: flex; gap: 15px; }
-        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; }
+        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; margin: 0 10px; }
         .nav-links a.active { color: var(--main-pink); }
 
-        .shop-hero {
-            background: linear-gradient(135deg, #fff5f8 0%, #fee2e2 100%);
-            padding: 120px 20px 60px;
-            text-align: center;
-            border-radius: 0 0 50px 50px;
-        }
+        .shop-hero { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #fff 0%, #ffe4ee 100%); border-radius: 0 0 50px 50px; }
+        .product-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+        .price-card { background: white; border-radius: 40px; padding: 30px; text-align: center; border: 2px solid #fff0f5; transition: 0.3s; }
+        .price-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(255,126,185,0.1); }
+        
+        .level-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-bottom: 15px; }
+        .easy { background: #e0f9e0; color: #2d5a2d; }
+        .normal { background: #fff4e0; color: #855d10; }
+        .hard { background: #f9d5e5; color: #991b1b; }
 
-        .product-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 30px;
-            padding: 40px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .price-card {
-            background: white;
-            border-radius: 40px;
-            padding: 30px;
-            text-align: center;
-            border: 2px solid #fff0f5;
-            transition: 0.4s;
-            position: relative;
-        }
-        .price-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(255,126,185,0.15); }
-
-        /* 難易度タグ */
-        .level-badge {
-            display: inline-block;
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .easy { background: var(--easy-green); color: #2d5a2d; }
-        .normal { background: var(--normal-orange); color: #855d10; }
-        .hard { background: var(--hard-gold); color: #991b1b; border: 1px solid var(--main-pink); }
-
-        /* 野菜リスト */
-        .veggie-list {
-            background: #fff9fb;
-            border-radius: 20px;
-            padding: 15px;
-            margin: 15px 0;
-            text-align: left;
-        }
-        .veggie-list span { display: block; font-size: 11px; color: #999; margin-bottom: 5px; }
-        .veggie-item { display: inline-block; background: white; padding: 4px 10px; border-radius: 10px; font-size: 13px; margin: 2px; border: 1px solid #eee; }
-
-        .buy-link {
-            display: block;
-            background: var(--main-pink);
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            border-radius: 25px;
-            font-weight: bold;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-        .buy-link:hover { background: #ff60a8; box-shadow: 0 5px 15px rgba(255,126,185,0.3); }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .buy-link { display: block; background: var(--main-pink); color: white; text-decoration: none; padding: 15px; border-radius: 25px; font-weight: bold; margin-top: 20px; }
+        
+        /* フッター注意書き */
+        .footer-notice { background: #fff0f5; border-top: 2px dashed var(--main-pink); padding: 40px 20px; text-align: center; margin-top: 60px; }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <div class="nav-content">
             <img src="./images/rogo.PNG" class="nav-logo-img">
@@ -110,77 +47,40 @@
         </div>
     </nav>
 
-    <div class="container">
-        <section class="shop-hero">
-            <h1 style="color: var(--main-pink);">HAGUMO SHOP</h1>
-            <p style="color: #888;">育てたい難易度から、あなたのパートナーを選んでね。</p>
-        </section>
+    <section class="shop-hero">
+        <h1>HAGUMO SHOP</h1>
+        <p>「美容の自給自足」を、お気に入りの子と一緒に。</p>
+    </section>
 
-        <div class="product-list">
-            <div class="price-card reveal">
-                <div class="level-badge easy">✨ かんたん：はじめての方に</div>
-                <img src="./images/buta.PNG" style="width:120px; margin-bottom: 10px;">
-                <h3 style="margin:0;">はじめてのHAGUMOセット</h3>
-                
-                <div class="veggie-list">
-                    <span>🌱 選べるラインナップ</span>
-                    <div class="veggie-item">カブ</div>
-                    <div class="veggie-item">サツマイモ</div>
-                    <div class="veggie-item">バタフライピー</div>
-                </div>
+    <div class="product-list">
+        <div class="price-card">
+            <div class="level-badge easy">✨ かんたん：カブ / サツマイモ / バタフライピー</div>
+            <img src="./images/buta.PNG" style="width:120px;">
+            <h3>はじめてのHAGUMOセット</h3>
+            <p style="font-size:12px; color:#888;">#準備0 #失敗0 #萌え100</p>
+            <a href="order-entry.html" class="buy-link">この子をお迎えする 🌱</a>
+        </div>
 
-                <div style="font-size: 24px; font-weight: bold; margin: 15px 0;">¥1,980</div>
-                <a href="order-entry.html" class="buy-link">この子をお迎えする 🌱</a>
-            </div>
+        <div class="price-card">
+            <div class="level-badge normal">🌿 ふつう：キュウリ / ミニトマト / カボチャ</div>
+            <img src="./images/risu.PNG" style="width:120px;">
+            <h3>こだわり美肌菜園セット</h3>
+            <p style="font-size:12px; color:#888;">#推しと自分磨き #美容レシピ付</p>
+            <a href="order-expert.html" class="buy-link">この子をお迎えする 🐿️</a>
+        </div>
 
-            <div class="price-card reveal">
-                <div class="level-badge normal">🌿 ふつう：こだわりたい方に</div>
-                <img src="./images/risu.PNG" style="width:120px; margin-bottom: 10px;">
-                <h3 style="margin:0;">こだわり菜園セット</h3>
-                
-                <div class="veggie-list">
-                    <span>🌼 選べるラインナップ</span>
-                    <div class="veggie-item">キュウリ</div>
-                    <div class="veggie-item">ミニトマト</div>
-                    <div class="veggie-item">カボチャ</div>
-                </div>
-
-                <div style="font-size: 24px; font-weight: bold; margin: 15px 0;">¥2,980</div>
-                <a href="order-expert.html" class="buy-link">この子をお迎えする 🐿️</a>
-            </div>
-
-            <div class="price-card reveal">
-                <div class="level-badge hard">💎 むずかしめ：匠を目指す方に</div>
-                <img src="./images/kuma.PNG" style="width:120px; margin-bottom: 10px;">
-                <h3 style="margin:0;">匠のハグモ極みセット</h3>
-                
-                <div class="veggie-list">
-                    <span>🍑 選べるラインナップ</span>
-                    <div class="veggie-item">レモン</div>
-                    <div class="veggie-item">ブルーベリー</div>
-                    <div class="veggie-item">モモ</div>
-                    <div class="veggie-item">イチジク</div>
-                </div>
-
-                <div style="font-size: 24px; font-weight: bold; margin: 15px 0;">¥4,500</div>
-                <a href="order-master.html" class="buy-link">この子をお迎えする ✨</a>
-            </div>
+        <div class="price-card">
+            <div class="level-badge hard">💎 むずかしめ：レモン / ピーチ / イチジク</div>
+            <img src="./images/kuma.PNG" style="width:120px;">
+            <h3>匠のハグモ極みセット</h3>
+            <p style="font-size:12px; color:#888;">#プロ仕様 #コンプリート必須</p>
+            <a href="order-master.html" class="buy-link">この子をお迎えする ✨</a>
         </div>
     </div>
 
-    <script>
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
-                    reveals[i].classList.add("active");
-                }
-            }
-        }
-        window.addEventListener("scroll", reveal);
-        reveal();
-    </script>
+    <footer class="footer-notice">
+        <p style="color: var(--main-pink); font-weight: bold;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
+        <p style="font-size: 12px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p>
+    </footer>
 </body>
 </html>
