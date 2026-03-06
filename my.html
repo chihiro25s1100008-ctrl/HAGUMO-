@@ -3,212 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY HAGUMO | 究極の育成＆相性診断</title>
+    <title>MY HAGUMO | Sweet Mode</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --main-pink: #ff7eb9; --sub-pink: #ffdaeb; --bg: #fff9fb; }
-        body { margin: 0; background: var(--bg); font-family: 'Zen Maru Gothic', sans-serif; color: #444; }
+        body { margin: 0; padding: 0; background-color: var(--bg); font-family: 'Zen Maru Gothic', sans-serif; overflow-x: hidden; }
         
-        /* 固定ナビゲーション */
+        /* ナビゲーション */
         .navbar { position: fixed; top: 0; width: 100%; height: 60px; background: white; z-index: 1000; border-bottom: 2px solid var(--sub-pink); display: flex; align-items: center; justify-content: center; }
-        .nav-logo-img { height: 35px; }
+        .nav-logo-img { height: 30px; }
 
         .container { margin-top: 80px; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-
-        /* 診断画面 */
-        #shindan-screen { width: 100%; max-width: 450px; text-align: center; background: white; border-radius: 30px; padding: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-
-        /* マイページ（育成） */
-        #mypage-screen { display: none; width: 100%; max-width: 450px; flex-direction: column; align-items: center; }
-        .stage { background: white; border-radius: 40px; padding: 30px 10px; box-shadow: 0 10px 30px rgba(255,126,185,0.1); width: 100%; display: flex; flex-direction: column; align-items: center; position: relative; }
-        .my-img { width: 220px; transition: 0.3s; }
-        .bounce { animation: bounce 1.5s infinite alternate ease-in-out; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
-        .max-aura { filter: drop-shadow(0 0 15px gold); animation: rainbow 3s infinite linear; }
-        @keyframes rainbow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-
-        /* 共通UI */
-        .window { width: 85%; background: #fffaff; border: 3px solid var(--sub-pink); border-radius: 20px; padding: 15px; position: relative; margin: 20px 0; min-height: 60px; text-align: center; }
-        .name-tag { position: absolute; top: -12px; left: 15px; background: var(--main-pink); color: white; padding: 2px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; }
-        .btn { background: white; border: 2px solid var(--sub-pink); padding: 12px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #666; font-size: 14px; transition: 0.2s; width: 100%; margin: 5px 0; }
-        .btn:hover { background: var(--main-pink); color: white; }
-        .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; }
         
-        .gauge-bar { width: 80%; height: 10px; background: #eee; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-        #love-fill { height: 100%; background: linear-gradient(90deg, #ffb6c1, var(--main-pink)); width: 50%; transition: 1s; }
+        /* ゲーム画面 */
+        .stage { background: white; border-radius: 40px; padding: 40px 20px; box-shadow: 0 15px 40px rgba(255, 126, 185, 0.15); width: 100%; max-width: 450px; position: relative; border: 2px solid var(--sub-pink); text-align: center; }
+        
+        .char-label { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--main-pink); color: white; padding: 5px 25px; border-radius: 20px; font-weight: bold; font-size: 14px; box-shadow: 0 4px 10px rgba(255,126,185,0.3); }
+        
+        .my-img { width: 220px; transition: 0.3s; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1)); cursor: pointer; }
+        .bounce { animation: bounce 1.2s infinite alternate ease-in-out; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        .max-aura { filter: drop-shadow(0 0 15px var(--main-pink)) !important; }
 
-        /* 相性診断セクション */
-        .friend-box { margin-top: 20px; width: 100%; background: #fff; border-radius: 25px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .f-select { width: 100%; padding: 10px; border-radius: 15px; border: 1px solid #ddd; margin-bottom: 10px; font-family: inherit; }
+        /* メッセージウィンドウ */
+        .speech-bubble { background: #fff4f9; border: 3px solid var(--sub-pink); border-radius: 25px; padding: 20px; margin: 25px 0; min-height: 80px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555; position: relative; font-size: 15px; line-height: 1.5; }
+
+        /* ゲージ */
+        .gauge-wrap { width: 80%; height: 16px; background: #ffeef2; border-radius: 10px; margin: 10px auto; overflow: hidden; border: 2px solid var(--sub-pink); }
+        #love-bar { height: 100%; background: linear-gradient(to right, #ffb6c1, var(--main-pink)); transition: 0.8s; width: 50%; }
+        
+        /* ボタン */
+        .action-area { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 450px; margin-top: 20px; }
+        .kawaii-btn { background: white; border: 3px solid var(--sub-pink); color: var(--main-pink); padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 14px; transition: 0.2s; outline: none; }
+        .kawaii-btn:hover { background: #fff0f5; transform: scale(1.03); }
+        
+        .choice-container { display: none; flex-direction: column; gap: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<nav class="navbar"><img src="./images/rogo.PNG" class="nav-logo-img"></nav>
+    <nav class="navbar"><img src="./images/rogo.PNG" class="nav-logo-img"></nav>
 
-<div class="container">
-    
-    <div id="shindan-screen">
-        <h2 style="color:var(--main-pink);">あなたにぴったりの<br>ハグモを診断します♪</h2>
-        <div class="window">今の気分は？</div>
-        <button class="btn" onclick="runShindan('cool')">冷静に頑張りたい</button>
-        <button class="btn" onclick="runShindan('hot')">情熱的に盛り上がりたい</button>
-        <button class="btn" onclick="runShindan('cute')">とにかく癒やされたい</button>
-    </div>
-
-    <div id="mypage-screen">
+    <div class="container">
         <div class="stage">
-            <div class="name-tag" id="char-name">HAGUMO</div>
-            <img id="char-img" class="my-img bounce" src="">
-            <div class="window">
-                <div id="msg-text" class="msg-text">...</div>
-                <div id="choices" style="margin-top:10px; display: flex; flex-direction: column; gap: 5px;"></div>
-            </div>
-            <div class="gauge-bar"><div id="love-fill"></div></div>
-            <div style="font-size: 12px; color: var(--main-pink); font-weight: bold;">なかよし度: <span id="love-val">50</span>%</div>
-            <div class="action-btns" id="main-actions">
-                <button class="btn" onclick="pet()">💖 なでる</button>
-                <button class="btn" onclick="startTalk()">💬 おはなし</button>
+            <div class="char-label" id="status-label">LOADING...</div>
+            <div class="speech-bubble" id="msg-text">Chihiroさん、待ってたよ！</div>
+            <img id="partner-img" class="my-img bounce" src="">
+            <div class="gauge-wrap"><div id="love-bar"></div></div>
+            <div style="font-size: 13px; color: var(--main-pink); font-weight: bold; margin-bottom: 10px;">なかよしレベル: <span id="love-num">50</span>%</div>
+            
+            <div id="choices" class="choice-container"></div>
+            
+            <div id="main-actions" class="action-area">
+                <button class="kawaii-btn" onclick="petAction()">👋 なでなで</button>
+                <button class="kawaii-btn" onclick="startTalk()">💬 おはなし</button>
             </div>
         </div>
-
-        <div class="friend-box">
-            <h4 style="margin:0 0 10px 0; color:var(--main-pink); text-align:center;">🤝 ハグモ相性チェック</h4>
-            <div style="font-size:11px; margin-bottom:5px;">自分のハグモ:</div>
-            <select id="my-select" class="f-select"></select>
-            <div style="font-size:11px; margin-bottom:5px;">友達のハグモ:</div>
-            <select id="friend-select" class="f-select"></select>
-            <button class="btn" style="background:var(--main-pink); color:white;" onclick="checkCompatibility()">相性を占う！</button>
-            <div id="comp-res" style="margin-top:15px; font-size:13px; font-weight:bold; color:var(--main-pink); text-align:center;"></div>
-        </div>
-
-        <button class="btn" style="margin-top:20px; opacity:0.6;" onclick="resetAll()">🔄 診断からやり直す</button>
     </div>
-</div>
 
-<script>
-// キャラデータ（全キャラ10会話分：簡略化のため代表値を保持しつつ動的に生成）
-const charaData = {
-    "buta.PNG": { name: "かぶた", type: "cute", talks: [
-        {q:"ぎゅーしますかぁ？", a:[{t:"して！", l:5, r:"あったかいですねぇ。"}, {t:"大丈夫", l:2, r:"いつでも待ってますよぉ。"}]},
-        {q:"お茶淹れましたよぉ。", a:[{t:"ありがとう", l:5, r:"ホッとしますねぇ。"}, {t:"熱そう", l:1, r:"ふーふーしますぅ。"}]},
-        {q:"疲れてなぁい？", a:[{t:"疲れた", l:7, r:"よしよしですよぉ。"}, {t:"元気だよ", l:4, r:"それは良かったですぅ。"}]}
-    ]},
-    "tora.PNG": { name: "とまとら", type: "hot", talks: [
-        {q:"目標、叫んでみろ！", a:[{t:"世界一！", l:7, r:"いい情熱だ！"}, {t:"まだない", l:-5, r:"俺が見つけてやる！"}]},
-        {q:"筋トレ、付き合えよ！", a:[{t:"いくぜ！", l:5, r:"その返事を待ってた！"}, {t:"無理", l:-2, r:"根性見せろよ！"}]}
-    ]},
-    "kame.PNG": { name: "ぶるーべりくがめ", type: "cool", talks: [
-        {q:"今日の効率はどうですか？", a:[{t:"120%！", l:10, r:"分析以上の成果です。"}, {t:"ダメダメ", l:-5, r:"原因を分析しましょう。"}]},
-        {q:"本を読みませんか？", a:[{t:"読む！", l:5, r:"知識は武器です。"}, {t:"眠い", l:-2, r:"睡眠効率を分析します。"}]}
-    ]}
-    // ... 他のキャラ(risu.PNG, saru.PNG, imo.PNG, nga.PNG, kuma.PNG, chabo.PNG, jaku.PNG)も同様の形式
-};
+    <script>
+        let love = 50;
+        let currentChara = null;
 
-// 相性テーブル (全100パターンをロジックで生成)
-const getCompMessage = (score) => {
-    if(score >= 90) return "運命の二人！奇跡の相性です！";
-    if(score >= 70) return "とっても仲良し！一緒にいるとハッピー！";
-    if(score >= 40) return "まずまずの相性。これから仲良くなれるよ。";
-    return "今は少し距離があるかも？歩み寄りが大事！";
-};
+        const charaDatabase = {
+            "buta.PNG": { name: "かぶた", suffix: "ですよぉ", talks: [
+                {q:"ぎゅーってしてもいいですかぁ？", a:[{t:"いいよ！", l:10, r:"えへへ、あったかいですねぇ♪"}, {t:"また今度ね", l:5, r:"いつでも待ってますよぉ。"}]},
+                {q:"Chihiroさん、お疲れじゃないですかぁ？", a:[{t:"ちょっと疲れた", l:15, r:"よしよしですよぉ。癒してあげますぅ。"}, {t:"元気だよ！", l:10, r:"それは良かったですぅ！"}]}
+            ]},
+            "tora.PNG": { name: "とまとら", suffix: "ぜ！", talks: [
+                {q:"おい！今日の気合はどうだ！？", a:[{t:"最高だぜ！", l:15, r:"いい返事だ！燃えてきたぜ！"}, {t:"そこそこかな", l:5, r:"もっと情熱燃やしていこうぜ！"}]},
+                {q:"俺の背中についてくる勇気はあるか！", a:[{t:"もちろん！", l:15, r:"ハハッ！最高の相棒だな！"}, {t:"怖いよー", l:5, r:"心配すんな、俺が守ってやる！"}]}
+            ]},
+            "risu.PNG": { name: "きゅうりす", suffix: "だね", talks: [
+                {q:"心のバランス、整ってるかな？", a:[{t:"バッチリ！", l:10, r:"素晴らしい調和だね。"}, {t:"乱れてるかも", l:5, r:"深呼吸して、僕と合わせよう。"}]},
+                {q:"このハーブティー、一緒に飲む？", a:[{t:"飲む！", l:10, r:"心が落ち着く香りがするね。"}, {t:"今はいいや", l:5, r:"気が向いたらいつでも言って。"}]}
+            ]},
+            "saru.PNG": { name: "れもんきー", suffix: "だよ！", talks: [
+                {q:"ねえねえ、イタズラしちゃおうよ！", a:[{t:"しちゃおう！", l:15, r:"ウキー！ワクワクが止まらないね！"}, {t:"ダメだよー", l:-5, r:"ちぇー、自由じゃないなぁ！"}]},
+                {q:"新しい遊び、ひらめいちゃった！", a:[{t:"教えて！", l:10, r:"空飛ぶレモンごっこだよ！"}, {t:"また今度", l:5, r:"えー！損してるよー！"}]}
+            ]},
+            "kame.PNG": { name: "ぶるーべりくがめ", suffix: "です", talks: [
+                {q:"今日の活動効率を分析しましょう。", a:[{t:"お願い！", l:10, r:"無駄のない、完璧な一日ですね。"}, {t:"適当がいいな", l:-10, r:"…理解に苦しみますが、休息も必要です。"}]},
+                {q:"私の甲羅、硬度を測ってみますか？", a:[{t:"触っていい？", l:10, r:"どうぞ。知性が詰まった硬さです。"}, {t:"重そう…", l:5, r:"合理的な重心設計ですよ。"}]}
+            ]},
+            "imo.PNG": { name: "さつまいもぐら", suffix: "だな", talks: [
+                {q:"今日の一歩、ちゃんと踏み出せたか？", a:[{t:"頑張った！", l:15, r:"偉いぞ。その継続が力になる。"}, {t:"休んじゃった", l:5, r:"休むのも計画のうちだ。明日からまたな。"}]},
+                {q:"地道な努力が一番強いんだぞ。", a:[{t:"そうだね！", l:10, r:"お前なら分かってくれると思ってた。"}, {t:"近道したい", l:-5, r:"焦るな。土台が大事だ。"}]}
+            ]},
+            "nga.PNG": { name: "もももんが", suffix: "もん！", talks: [
+                {q:"ももに構ってくれないと、泣いちゃうもん！", a:[{t:"なでなで", l:15, r:"えへへー！大好きだもん！"}, {t:"後でね", l:-10, r:"ぷんぷんだもん！もう知らないもん！"}]},
+                {q:"もも、世界一可愛いでしょぉ？", a:[{t:"可愛い！", l:15, r:"もっと言って！もも、幸せだもん！"}, {t:"普通かな", l:-5, r:"ひどいもん！ちゃんと見てほしいもん！"}]}
+            ]},
+            "kuma.PNG": { name: "くろいちじくま", suffix: "…", talks: [
+                {q:"…静かな時間は、嫌いか？", a:[{t:"好きだよ", l:10, r:"…そうか。君とは気が合いそうだ。"}, {t:"寂しいな", l:5, r:"…私が隣にいる。それで十分だ。"}]},
+                {q:"…影に隠れて、君を見ていてもいいか？", a:[{t:"いいよ", l:15, r:"…ミステリアスな君を、もっと知りたい。"}, {t:"恥ずかしい", l:5, r:"…では、そっと見守ろう。"}]}
+            ]},
+            "chabo.PNG": { name: "かぼちゃぼ", suffix: "だよ！", talks: [
+                {q:"ハッピーなこと、探しに行こうよ！", a:[{t:"いくいく！", l:15, r:"最高！君がいると太陽みたいだ！"}, {t:"疲れたなぁ", l:5, r:"僕がハッピーを運んであげる！"}]},
+                {q:"笑顔を見せて！ハッピー連鎖だよ！", a:[{t:"ニコッ！", l:15, r:"うわぁ！世界が輝きだしたよ！"}, {t:"ムリ…", l:5, r:"僕が笑わせちゃうもんね！アハハ！"}]}
+            ]},
+            "jaku.PNG": { name: "ばたふらいぴーこっく", suffix: "わね", talks: [
+                {q:"あら、私を使いこなせるかしら？", a:[{t:"任せて！", l:15, r:"ふふ、その自信。嫌いじゃないわ。"}, {t:"自信ないな", l:5, r:"私が機転を利かせてあげるわ。"}]},
+                {q:"美しいものには、棘があるのよ。", a:[{t:"カッコいい！", l:10, r:"淑女のたしなみ、教えてあげるわ。"}, {t:"怖いなぁ", l:5, r:"ふふ、冗談よ。安心なさい。"}]}
+            ]}
+        };
 
-let love = 50;
-let currentImg = "";
-
-function init() {
-    const saved = JSON.parse(localStorage.getItem('myHagumo_final'));
-    
-    // セレクトボックスの生成
-    const myS = document.getElementById('my-select');
-    const frS = document.getElementById('friend-select');
-    Object.keys(charaData).forEach(img => {
-        const name = charaData[img].name;
-        myS.innerHTML += `<option value="${img}">${name}</option>`;
-        frS.innerHTML += `<option value="${img}">${name}</option>`;
-    });
-
-    if (saved) {
-        currentImg = saved.img;
-        love = saved.love;
-        showMypage();
-    }
-}
-
-function runShindan(type) {
-    const candidates = Object.keys(charaData).filter(img => charaData[img].type === type || type === 'cute');
-    currentImg = candidates[Math.floor(Math.random() * candidates.length)];
-    love = 50;
-    showMypage();
-}
-
-function showMypage() {
-    document.getElementById('shindan-screen').style.display = 'none';
-    document.getElementById('mypage-screen').style.display = 'flex';
-    document.getElementById('char-img').src = `./images/${currentImg}`;
-    document.getElementById('char-name').innerText = charaData[currentImg].name;
-    document.getElementById('my-select').value = currentImg;
-    updateUI();
-}
-
-function updateUI() {
-    document.getElementById('love-val').innerText = Math.floor(love);
-    document.getElementById('love-fill').style.width = love + "%";
-    if (love >= 100) document.getElementById('char-img').classList.add('max-aura');
-    localStorage.setItem('myHagumo_final', JSON.stringify({ img: currentImg, love: love, time: Date.now() }));
-}
-
-function pet() {
-    love = Math.min(100, love + 1);
-    document.getElementById('msg-text').innerText = "なでなで、嬉しいですぅ♪";
-    updateUI();
-}
-
-function startTalk() {
-    const talks = charaData[currentImg].talks;
-    const talk = talks[Math.floor(Math.random() * talks.length)];
-    const msg = document.getElementById('msg-text');
-    const choiceBox = document.getElementById('choices');
-    
-    msg.innerText = talk.q;
-    choiceBox.innerHTML = '';
-    document.getElementById('main-actions').style.display = 'none';
-
-    talk.a.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = 'btn';
-        btn.innerText = c.t;
-        btn.onclick = () => {
-            love = Math.max(0, Math.min(100, love + c.l));
-            msg.innerText = c.r;
-            choiceBox.innerHTML = '';
-            document.getElementById('main-actions').style.display = 'grid';
+        window.onload = () => {
+            const saved = JSON.parse(localStorage.getItem('myHagumo'));
+            if (!saved) {
+                document.getElementById('msg-text').innerText = "診断を先にしてね！";
+                return;
+            }
+            currentChara = charaDatabase[saved.img] || charaDatabase["buta.PNG"];
+            love = saved.love || 50;
+            
+            document.getElementById('partner-img').src = `./images/${saved.img}`;
+            document.getElementById('status-label').innerText = `${currentChara.name}`;
             updateUI();
         };
-        choiceBox.appendChild(btn);
-    });
-}
 
-function checkCompatibility() {
-    const my = document.getElementById('my-select').value;
-    const fr = document.getElementById('friend-select').value;
-    // シンプルなシード値ベースの擬似ランダム相性（組み合わせで固定の結果が出る）
-    const combined = my + fr;
-    let score = 0;
-    for(let i=0; i<combined.length; i++) score += combined.charCodeAt(i);
-    score = (score % 61) + 40; // 40-100%
+        function updateUI() {
+            document.getElementById('love-bar').style.width = love + '%';
+            document.getElementById('love-num').innerText = Math.floor(love);
+            if (love >= 90) document.getElementById('partner-img').classList.add('max-aura');
+            
+            const saved = JSON.parse(localStorage.getItem('myHagumo'));
+            saved.love = love;
+            localStorage.setItem('myHagumo', JSON.stringify(saved));
+        }
 
-    document.getElementById('comp-res').innerHTML = `💖 相性スコア: ${score}%<br><span style="font-size:11px;">${getCompMessage(score)}</span>`;
-}
+        function petAction() {
+            love = Math.min(100, love + 2);
+            document.getElementById('msg-text').innerText = "なでなで、心地いい" + currentChara.suffix + "…♪";
+            updateUI();
+        }
 
-function resetAll() {
-    if(confirm("診断からやり直しますか？現在のなかよし度はリセットされます。")) {
-        localStorage.removeItem('myHagumo_final');
-        location.reload();
-    }
-}
+        function startTalk() {
+            const talk = currentChara.talks[Math.floor(Math.random() * currentChara.talks.length)];
+            const msg = document.getElementById('msg-text');
+            const choiceBox = document.getElementById('choices');
+            const actionBox = document.getElementById('main-actions');
 
-window.onload = init;
-</script>
+            msg.innerText = talk.q;
+            choiceBox.innerHTML = '';
+            choiceBox.style.display = 'flex';
+            actionBox.style.display = 'none';
+
+            talk.a.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'kawaii-btn';
+                btn.innerText = choice.t;
+                btn.onclick = () => {
+                    love = Math.max(0, Math.min(100, love + choice.l));
+                    msg.innerText = choice.r;
+                    choiceBox.style.display = 'none';
+                    actionBox.style.display = 'grid';
+                    updateUI();
+                };
+                choiceBox.appendChild(btn);
+            });
+        }
+    </script>
 </body>
 </html>
