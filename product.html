@@ -38,10 +38,10 @@
 
         .product-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             padding: 20px;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
@@ -73,6 +73,7 @@
         }
         .level-1 { background: #e0f9e0; color: #2d5a2d; }
         .level-2 { background: #fff4e0; color: #855d10; }
+        .level-3 { background: #fee2e2; color: #991b1b; }
 
         .kit-includes {
             background: #fdf4f9;
@@ -80,6 +81,7 @@
             border-radius: 15px;
             margin: 20px 0;
             text-align: left;
+            flex-grow: 1;
         }
         .kit-includes span { display: block; font-size: 11px; color: #ff7eb9; font-weight: bold; margin-bottom: 5px; }
         .kit-includes ul { list-style: none; font-size: 13px; color: #555; padding: 0; }
@@ -177,14 +179,13 @@
                 <div class="difficulty-tag level-1">難易度：★☆☆☆☆（かんたん）</div>
                 <img src="./images/buta.PNG" style="width:100px; margin: 0 auto;" onerror="this.src='./buta.PNG'">
                 <h3 style="margin-top:15px;">はじめてのHAGUMOセット</h3>
-                <p style="font-size:12px; color:#ff7eb9; font-weight:bold;">カブ / サツマイモ / バタフライピー</p>
+                <p style="font-size:12px; color:#ff7eb9; font-weight:bold;">カブ / サツマイモ</p>
                 <div class="kit-includes">
                     <span>SET CONTENTS</span>
                     <ul>
                         <li>ハグモが宿る魔法の種</li>
                         <li>栄養たっぷり圧縮土</li>
                         <li>そのまま育てるエコポット</li>
-                        <li>美容活用レシピカード</li>
                     </ul>
                 </div>
                 <div class="price-val">¥1,980 <span>(税込)</span></div>
@@ -195,17 +196,33 @@
                 <div class="difficulty-tag level-2">難易度：★★★☆☆（ふつう）</div>
                 <img src="./images/risu.PNG" style="width:100px; margin: 0 auto;" onerror="this.src='./risu.PNG'">
                 <h3 style="margin-top:15px;">こだわり菜園セット</h3>
-                <p style="font-size:12px; color:#ff7eb9; font-weight:bold;">キュウリ / ミニトマト / カボチャ</p>
+                <p style="font-size:12px; color:#ff7eb9; font-weight:bold;">キュウリ / ミニトマト</p>
                 <div class="kit-includes">
                     <span>SET CONTENTS</span>
                     <ul>
                         <li>ハグモが宿る魔法の種</li>
                         <li>収穫倍増！専用肥料</li>
                         <li>おしゃれなプランターカバー</li>
-                        <li>限定スマホ壁紙（ランダム）</li>
                     </ul>
                 </div>
                 <div class="price-val">¥2,480 <span>(税込)</span></div>
+                <button class="button" style="width:100%; border:none;">このキットで始める</button>
+            </div>
+
+            <div class="price-card reveal">
+                <div class="difficulty-tag level-3">難易度：★★★★★（むずかしい）</div>
+                <img src="./images/kuma.PNG" style="width:100px; margin: 0 auto;" onerror="this.src='./kuma.PNG'">
+                <h3 style="margin-top:15px;">匠のハグモ極みセット</h3>
+                <p style="font-size:12px; color:#ff7eb9; font-weight:bold;">黒イチジク / ブルーベリー</p>
+                <div class="kit-includes">
+                    <span>SET CONTENTS</span>
+                    <ul>
+                        <li>希少！矮性（わいせい）の種</li>
+                        <li>匠のプレミアム培養土</li>
+                        <li>pH測定キット</li>
+                    </ul>
+                </div>
+                <div class="price-val">¥3,980 <span>(税込)</span></div>
                 <button class="button" style="width:100%; border:none;">このキットで始める</button>
             </div>
         </div>
@@ -222,23 +239,22 @@
         <section class="qa-section reveal">
             <h2 style="text-align: center; font-family: 'Zen Maru Gothic'; margin-bottom: 30px;">よくあるご質問</h2>
             <div class="qa-item">
-                <span class="qa-q">Q. 庭やベランダがなくても大丈夫ですか？</span>
-                <p class="qa-a">A. はい！室内やキッチンのわずかなスペースで育てられるよう設計されています。</p>
+                <span class="qa-q">Q. 「匠セット」のイチジクなどはキッチンで育てるには大きくないですか？</span>
+                <p class="qa-a">A. ご安心ください！HAGUMOの匠セットは、室内でもコンパクトに収穫できるよう改良された「矮性（わいせい）」という品種を厳選しています。キッチンカウンターの上でも十分に育てることが可能です。</p>
+            </div>
+            <div class="qa-item">
+                <span class="qa-q">Q. 庭やベランダが全くなくても大丈夫ですか？</span>
+                <p class="qa-a">A. はい。太陽の代わりに室内のライトや、窓際からのわずかな光で育つようにハグモが光の管理をアドバイスしてくれます。土も飛び散りにくい固形タイプを採用しています。</p>
             </div>
             <div class="qa-item">
                 <span class="qa-q">Q. 虫が苦手なのですが…</span>
-                <p class="qa-a">A. 室内栽培に特化した「虫がつきにくい土」を封入していますので、安心して始められます。</p>
-            </div>
-            <div class="qa-item">
-                <span class="qa-q">Q. 本当に「0」からできますか？</span>
-                <p class="qa-a">A. 準備するものは「水」だけです。ハサミやシャベルすら必要ありません。</p>
+                <p class="qa-a">A. 室内栽培用に100%加熱殺菌された土のみを使用しています。外から虫が入り込まない限り、土の中から発生することはありません。</p>
             </div>
         </section>
 
         <div style="text-align: center; color: #999; font-size: 11px; margin: 80px 0 50px;">
             ※これは学校課題の制作物であり、実際の販売は行っておりません。
         </div>
-
     </div>
 
     <script>
