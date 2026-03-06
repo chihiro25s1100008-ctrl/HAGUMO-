@@ -2,135 +2,84 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIAGNOSIS | HAGUMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
     <style>
-        :root { 
-            --main-pink: #ff7eb9; 
-            --soft-pink: #fff4f9; 
-            --bg-pink: #fffafb;
-        }
+        :root { --main-pink: #ff7eb9; --soft-pink: #fff4f9; --bg-pink: #fffafb; }
         body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-pink); margin: 0; padding-top: 80px; color: #444; }
-
-        /* --- 共通ナビゲーション：他ページと完全統一 --- */
         .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
         .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
         .nav-logo-img { height: 30px; }
-        .nav-links { display: flex; gap: 15px; }
-        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; }
+        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; margin: 0 10px; }
         .nav-links a.active { color: var(--main-pink); }
-
-        /* 診断コンテンツエリア */
-        .container { padding: 60px 20px; text-align: center; }
-        .diag-box { 
-            max-width: 600px; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 50px 40px; 
-            border-radius: 40px; 
-            box-shadow: 0 15px 35px rgba(255,126,185,0.08); 
-        }
-
+        .container { padding: 40px 20px; text-align: center; }
+        .diag-box { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 40px; box-shadow: 0 15px 35px rgba(255,126,185,0.08); }
         .q-box { display: none; }
         .q-box.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .choice-btn { 
-            display: block; width: 100%; padding: 18px; margin: 12px 0; 
-            border: 2px solid var(--soft-pink); background: white; border-radius: 50px; 
-            cursor: pointer; font-size: 16px; font-weight: bold; color: #666;
-            transition: 0.3s; 
-        }
+        .choice-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid var(--soft-pink); background: white; border-radius: 50px; cursor: pointer; font-size: 16px; font-weight: bold; color: #666; transition: 0.3s; }
         .choice-btn:hover { background: var(--soft-pink); border-color: var(--main-pink); color: var(--main-pink); }
-
         #result-area { display: none; animation: fadeIn 0.8s ease; }
-        .result-char-img { width: 220px; margin: 20px 0; border-radius: 20px; }
-        
-        .btn-go-shop { 
-            display: inline-block; background: var(--main-pink); color: white; 
-            padding: 20px 60px; border-radius: 100px; text-decoration: none; 
-            font-weight: bold; font-size: 18px; box-shadow: 0 10px 25px rgba(255,126,185,0.3);
-            margin-top: 30px; transition: 0.3s;
-        }
-        .btn-go-shop:hover { transform: scale(1.05); background: #ff60a8; }
-
-        .footer-notice { background: #fff0f5; border-top: 2px dashed var(--main-pink); padding: 40px 20px; text-align: center; margin-top: 100px; }
+        .result-char-img { width: 220px; margin: 20px 0; }
+        .btn-go-my { display: inline-block; background: var(--main-pink); color: white; padding: 18px 50px; border-radius: 100px; text-decoration: none; font-weight: bold; margin-top: 20px; box-shadow: 0 10px 25px rgba(255,126,185,0.3); }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
-        <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img">
-            <div class="nav-links">
-                <a href="index.html">HOME</a>
-                <a href="world.html">WORLD</a>
-                <a href="hagumo.html">HAGUMO</a>
-                <a href="diagnosis.html" class="active">DIAGNOSIS</a>
-                <a href="product.html">PRODUCT</a>
-                <a href="my.html">MY HAGUMO</a>
-            </div>
-        </div>
+        <div class="nav-content"><img src="./images/rogo.PNG" class="nav-logo-img"><div class="nav-links"><a href="index.html">HOME</a><a href="world.html">WORLD</a><a href="hagumo.html">HAGUMO</a><a href="diagnosis.html" class="active">DIAGNOSIS</a><a href="product.html">PRODUCT</a><a href="my.html">MY HAGUMO</a></div></div>
     </nav>
-
     <div class="container">
         <div class="diag-box">
             <div id="q-area">
-                <div class="q-box active" id="q1">
-                    <span style="color: var(--main-pink); font-weight: bold;">STEP 01</span>
-                    <h2 style="margin-top: 10px;">どんな風に過ごしたい？</h2>
-                    <button class="choice-btn" onclick="nextQ(2)">穏やかで優しい時間を過ごしたい</button>
-                    <button class="choice-btn" onclick="nextQ(2)">毎日を全力で楽しみたい！</button>
-                </div>
-                <div class="q-box" id="q2">
-                    <span style="color: var(--main-pink); font-weight: bold;">STEP 02</span>
-                    <h2 style="margin-top: 10px;">あなたの理想の姿は？</h2>
-                    <button class="choice-btn" onclick="showResult('risu')">心身ともにバランスの取れた人</button>
-                    <button class="choice-btn" onclick="showResult('buta')">周囲を包み込むような優しい人</button>
-                    <button class="choice-btn" onclick="showResult('tora')">情熱を持ってリードする人</button>
-                </div>
+                <div class="q-box active" id="q1"><span>Q1/10</span><h2>放課後の過ごし方は？</h2><button class="choice-btn" onclick="addScore('E',1)">友達とおしゃべり</button><button class="choice-btn" onclick="addScore('I',1)">一人で趣味に没頭</button></div>
+                <div class="q-box" id="q2"><span>Q2/10</span><h2>どちらの言葉が嬉しい？</h2><button class="choice-btn" onclick="addScore('F',1)">「いつも優しいね」</button><button class="choice-btn" onclick="addScore('T',1)">「頼りになるね」</button></div>
+                <div class="q-box" id="q3"><span>Q3/10</span><h2>育ててみたいのはどっち？</h2><button class="choice-btn" onclick="addScore('S',1)">料理に使える実用的な野菜</button><button class="choice-btn" onclick="addScore('N',1)">見た目が珍しいオシャレな野菜</button></div>
+                <div class="q-box" id="q4"><span>Q4/10</span><h2>計画を立てることは？</h2><button class="choice-btn" onclick="addScore('J',1)">得意！予定通り進めたい</button><button class="choice-btn" onclick="addScore('P',1)">苦手。その場のノリで！</button></div>
+                <div class="q-box" id="q5"><span>Q5/10</span><h2>美容液を選ぶ基準は？</h2><button class="choice-btn" onclick="addScore('T',1)">成分やデータ</button><button class="choice-btn" onclick="addScore('F',1)">直感や可愛いパッケージ</button></div>
+                <div class="q-box" id="q6"><span>Q6/10</span><h2>SNSの使い方は？</h2><button class="choice-btn" onclick="addScore('E',1)">積極的に投稿する</button><button class="choice-btn" onclick="addScore('I',1)">見る専門、または鍵垢</button></div>
+                <div class="q-box" id="q7"><span>Q7/10</span><h2>今の肌の悩みは？</h2><button class="choice-btn" onclick="addScore('S',1)">乾燥や荒れ</button><button class="choice-btn" onclick="addScore('N',1)">くすみやハリのなさ</button></div>
+                <div class="q-box" id="q8"><span>Q8/10</span><h2>買い物をする時は？</h2><button class="choice-btn" onclick="addScore('J',1)">買うものを決めてから行く</button><button class="choice-btn" onclick="addScore('P',1)">お店で見てから決める</button></div>
+                <div class="q-box" id="q9"><span>Q9/10</span><h2>どちらのタイプ？</h2><button class="choice-btn" onclick="addScore('N',1)">夢見がちなロマンチスト</button><button class="choice-btn" onclick="addScore('S',1)">現実的なリアリスト</button></div>
+                <div class="q-box" id="q10"><span>Q10/10</span><h2>ハグモへの一言！</h2><button class="choice-btn" onclick="calcResult('A')">一緒に成長しようね！</button><button class="choice-btn" onclick="calcResult('B')">私を可愛くしてね！</button></div>
             </div>
-
             <div id="result-area">
-                <p style="color:var(--main-pink); font-weight:bold; margin-bottom: 5px;">RESULT</p>
-                <p style="font-size: 14px; color: #888;">あなたにぴったりのパートナーは…</p>
-                <h1 id="res-name" style="color: var(--main-pink); margin: 10px 0;"></h1>
+                <p style="color:var(--main-pink); font-weight:bold;">運命のハグモは…</p>
+                <h1 id="res-name"></h1>
                 <img src="" id="res-img" class="result-char-img">
-                <p id="res-desc" style="font-size:14px; line-height:1.7; color:#666; background: var(--bg-pink); padding: 20px; border-radius: 20px; text-align: left;"></p>
-                <a href="product.html" class="btn-go-shop">この子をお迎えに行く 🌱</a>
+                <p id="res-desc" style="font-size:14px; line-height:1.7; color:#666; background:var(--bg-pink); padding:20px; border-radius:20px; text-align:left;"></p>
+                <a href="my.html" class="btn-go-my">この子との生活を始める 🎀</a>
             </div>
         </div>
     </div>
-
-    <footer class="footer-notice">
-        <p style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
-        <p style="font-size: 13px; color: #888; line-height: 1.6;">
-            このウェブサイトは学校の授業課題として制作された架空のサービス紹介ページです。<br>
-            実際に商品の販売、発送、グッズの配布などは行っておりません。
-        </p>
-    </footer>
-
     <script>
-        const charData = {
-            risu: { name: "きゅうりす", img: "./images/risu.PNG", desc: "【バランス・調和】\n落ち着いたあなたには、きゅうりすがぴったり。キュウリのパックで火照った肌をクールダウン。自分自身のバランスを整える、癒やしの農業体験を。" },
-            buta: { name: "かぶた", img: "./images/buta.PNG", desc: "【優しさ・包容】\n穏やかな心の持ち主のあなたには、かぶたが寄り添います。カブの力で内側から透明感を。自分を優しくケアする、穏やかな時間を一緒に。" },
-            tora: { name: "とまとら", img: "./images/tora.PNG", desc: "【情熱・リーダー】\nアクティブなあなたには、情熱のとまとら！リコピンたっぷりのトマトで紫外線に負けない肌作り。強い味方と一緒に、パワフルな「美容の自給自足」を。" }
-        };
-
-        function nextQ(num) {
-            document.querySelectorAll('.q-box').forEach(el => el.classList.remove('active'));
-            document.getElementById('q' + num).classList.add('active');
-        }
-
-        function showResult(key) {
+        let scores = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
+        let currentQ = 1;
+        const charDB = [
+            { name: "かぶた", img: "./images/buta.PNG", p: "優しさ・包容", type: "IFJ", d: "優しいあなたには、包み込むようなかぶたが最適。" },
+            { name: "とまとら", img: "./images/tora.PNG", p: "情熱・リーダー", type: "ETJ", d: "情熱的なリーダーのあなたには、力強いとまとらがぴったり。" },
+            { name: "れもんきー", img: "./images/saru.PNG", p: "ひらめき・自由", type: "ENP", d: "自由な発想のあなたには、刺激的なれもんきーがおすすめ。" },
+            { name: "ぶるーべりくがめ", img: "./images/kame.PNG", p: "知性・分析", type: "INT", d: "知的な分析派のあなたには、冷静なぶるーべりくがめが寄り添います。" },
+            { name: "きゅうりす", img: "./images/risu.PNG", p: "バランス・調和", type: "ISJ", d: "調和を重んじるあなたには、バランス感覚抜群のきゅうりすを。" },
+            { name: "さつまいもぐら", img: "./images/imo.PNG", p: "努力・継続", type: "IST", d: "コツコツ頑張るあなたには、実直なさつまいもぐらが一番。" },
+            { name: "もももんが", img: "./images/nga.PNG", p: "愛嬌・甘え上手", type: "EFP", d: "愛されキャラのあなたには、キュートなもももんががお似合い。" },
+            { name: "くろいちじくま", img: "./images/kuma.PNG", p: "静か・ミステリアス", type: "INF", d: "神秘的なあなたには、深い魅力のくろいちじくまが合います。" },
+            { name: "かぼちゃぼ", img: "./images/chabo.PNG", p: "明るい・ポジティブ", type: "ESF", d: "いつも明るいあなたには、ハッピーを届けるかぼちゃぼが。"},
+            { name: "ばたふらいぴーこっく", img: "./images/jaku.PNG", p: "機転・賢さ", type: "ENT", d: "賢く機転が利くあなたには、華麗なばたふらいぴーこっく。"}
+        ];
+        function addScore(t, v) { scores[t] += v; currentQ++; if(currentQ <= 10) showQ(); }
+        function showQ() { document.querySelectorAll('.q-box').forEach(el => el.classList.remove('active')); document.getElementById('q'+currentQ).classList.add('active'); }
+        function calcResult() {
             document.getElementById('q-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'block';
-            const data = charData[key];
-            document.getElementById('res-name').innerText = data.name;
-            document.getElementById('res-img').src = data.img;
-            document.getElementById('res-desc').innerText = data.desc;
+            let userType = (scores.E >= scores.I ? "E" : "I") + (scores.N >= scores.S ? "N" : "S") + (scores.F >= scores.T ? "F" : "T");
+            let final = charDB.find(c => c.type === userType) || charDB[0];
+            document.getElementById('res-name').innerText = final.name;
+            document.getElementById('res-img').src = final.img;
+            document.getElementById('res-desc').innerText = "【" + final.p + "】\n" + final.d;
+            localStorage.setItem('myHagumoName', final.name);
+            localStorage.setItem('myHagumoImg', final.img);
+            localStorage.setItem('myHagumoPers', final.p);
+            localStorage.setItem('myHagumoLove', 50);
         }
     </script>
 </body>
