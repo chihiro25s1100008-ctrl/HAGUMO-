@@ -3,146 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ハグモ本格性格診断 | HAGUMO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <title>DIAGNOSIS | HAGUMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
-        .progress-fill { width: 0%; height: 100%; background: #ff9ecb; transition: 0.3s; }
+        :root { 
+            --main-pink: #ff7eb9; 
+            --soft-pink: #fff4f9; 
+            --bg-pink: #fffafb;
+        }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-pink); margin: 0; padding-top: 80px; color: #444; }
+
+        /* --- 共通ナビゲーション：他ページと完全統一 --- */
+        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
+        .nav-logo-img { height: 30px; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; }
+        .nav-links a.active { color: var(--main-pink); }
+
+        /* 診断コンテンツエリア */
+        .container { padding: 60px 20px; text-align: center; }
+        .diag-box { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 50px 40px; 
+            border-radius: 40px; 
+            box-shadow: 0 15px 35px rgba(255,126,185,0.08); 
+        }
+
         .q-box { display: none; }
-        .q-box.active { display: block; animation: fadeIn 0.5s; }
-        .ans-btn {
-            display: block; width: 100%; max-width: 450px; margin: 10px auto;
-            padding: 15px; border: 2px solid #ff9ecb; border-radius: 15px;
-            background: white; cursor: pointer; transition: 0.2s; font-size: 15px;
+        .q-box.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .choice-btn { 
+            display: block; width: 100%; padding: 18px; margin: 12px 0; 
+            border: 2px solid var(--soft-pink); background: white; border-radius: 50px; 
+            cursor: pointer; font-size: 16px; font-weight: bold; color: #666;
+            transition: 0.3s; 
         }
-        .ans-btn:hover { background: #fff4f9; transform: translateY(-2px); border-color: #ff7eb9; }
-        #result-area { display: none; }
-        .res-main-card { background: #fff; border-radius: 30px; padding: 25px; margin-bottom: 20px; border: 2px solid #fff4f9; }
-        .res-img { width: 180px; margin: 15px 0; }
-        .compatibility-box {
-            background: #fff; border-radius: 20px; padding: 20px;
-            margin-top: 20px; border: 1px dashed #ff9ecb;
+        .choice-btn:hover { background: var(--soft-pink); border-color: var(--main-pink); color: var(--main-pink); }
+
+        #result-area { display: none; animation: fadeIn 0.8s ease; }
+        .result-char-img { width: 220px; margin: 20px 0; border-radius: 20px; }
+        
+        .btn-go-shop { 
+            display: inline-block; background: var(--main-pink); color: white; 
+            padding: 20px 60px; border-radius: 100px; text-decoration: none; 
+            font-weight: bold; font-size: 18px; box-shadow: 0 10px 25px rgba(255,126,185,0.3);
+            margin-top: 30px; transition: 0.3s;
         }
-        .sub-item img { width: 80px; border-radius: 50%; background: #fff4f9; padding: 5px; margin-bottom: 10px; }
-        .reason-text { font-size: 13px; color: #666; line-height: 1.6; text-align: left; margin-top: 10px; }
+        .btn-go-shop:hover { transform: scale(1.05); background: #ff60a8; }
+
+        .footer-notice { background: #fff0f5; border-top: 2px dashed var(--main-pink); padding: 40px 20px; text-align: center; margin-top: 100px; }
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <img src="./images/rogo.PNG" class="nav-logo-img">
+            <div class="nav-links">
+                <a href="index.html">HOME</a>
+                <a href="world.html">WORLD</a>
+                <a href="hagumo.html">HAGUMO</a>
+                <a href="diagnosis.html" class="active">DIAGNOSIS</a>
+                <a href="product.html">PRODUCT</a>
+                <a href="my.html">MY HAGUMO</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <h1>🌱 ハグモ本格性格診断</h1>
-        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-        
-        <div class="card">
-            <div id="q-container"></div>
-
-            <div id="result-area" style="text-align: center;">
-                <div class="res-main-card">
-                    <div id="main-catch" style="color:#ff7eb9; font-weight:bold; font-size: 14px;"></div>
-                    <div id="main-res-name" style="font-size:26px; margin:10px 0; font-family: 'Zen Maru Gothic';"></div>
-                    <img id="main-res-img" class="res-img" src="">
-                    <p id="main-desc" style="font-size:14px; line-height:1.6; color: #444;"></p>
+        <div class="diag-box">
+            <div id="q-area">
+                <div class="q-box active" id="q1">
+                    <span style="color: var(--main-pink); font-weight: bold;">STEP 01</span>
+                    <h2 style="margin-top: 10px;">どんな風に過ごしたい？</h2>
+                    <button class="choice-btn" onclick="nextQ(2)">穏やかで優しい時間を過ごしたい</button>
+                    <button class="choice-btn" onclick="nextQ(2)">毎日を全力で楽しみたい！</button>
                 </div>
-
-                <div class="compatibility-box">
-                    <div style="font-weight: bold; color: #ff7eb9; margin-bottom: 15px;">❤ ベストパートナー</div>
-                    <div id="sub-res-area"></div>
-                    <div id="comp-reason" class="reason-text"></div>
+                <div class="q-box" id="q2">
+                    <span style="color: var(--main-pink); font-weight: bold;">STEP 02</span>
+                    <h2 style="margin-top: 10px;">あなたの理想の姿は？</h2>
+                    <button class="choice-btn" onclick="showResult('risu')">心身ともにバランスの取れた人</button>
+                    <button class="choice-btn" onclick="showResult('buta')">周囲を包み込むような優しい人</button>
+                    <button class="choice-btn" onclick="showResult('tora')">情熱を持ってリードする人</button>
                 </div>
-                
-                <a href="diagnosis.html" class="button" style="margin-top:30px;">もう一度診断する</a>
+            </div>
+
+            <div id="result-area">
+                <p style="color:var(--main-pink); font-weight:bold; margin-bottom: 5px;">RESULT</p>
+                <p style="font-size: 14px; color: #888;">あなたにぴったりのパートナーは…</p>
+                <h1 id="res-name" style="color: var(--main-pink); margin: 10px 0;"></h1>
+                <img src="" id="res-img" class="result-char-img">
+                <p id="res-desc" style="font-size:14px; line-height:1.7; color:#666; background: var(--bg-pink); padding: 20px; border-radius: 20px; text-align: left;"></p>
+                <a href="product.html" class="btn-go-shop">この子をお迎えに行く 🌱</a>
             </div>
         </div>
     </div>
 
+    <footer class="footer-notice">
+        <p style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
+        <p style="font-size: 13px; color: #888; line-height: 1.6;">
+            このウェブサイトは学校の授業課題として制作された架空のサービス紹介ページです。<br>
+            実際に商品の販売、発送、グッズの配布などは行っておりません。
+        </p>
+    </footer>
+
     <script>
-        const questions = [
-            { q: "新しいことを始める時、まずは…", a: "ワクワクしてすぐ動く", b: "じっくり計画を立てる" },
-            { q: "友達と遊ぶなら？", a: "みんなでワイワイ！", b: "少人数で深く話したい" },
-            { q: "困っている人がいたら…", a: "すぐに声をかけて助ける", b: "陰ながら見守り、機を待つ" },
-            { q: "自分の性格を一言でいうと？", a: "直感で動く自由人", b: "理論で考える慎重派" },
-            { q: "休日の理想は？", a: "アクティブに外へ！", b: "家で趣味に没頭" },
-            { q: "トラブルが起きたら…", a: "周りに相談して解決", b: "自分一人でじっくり考える" },
-            { q: "褒められて嬉しいのは？", a: "『個性的で面白いね！』", b: "『しっかりしていて安心だね』" },
-            { q: "大切にしているのは？", a: "今の楽しさ", b: "未来への積み重ね" },
-            { q: "初対面の人とは…", a: "積極的に自分を出せる", b: "まずは相手を観察する" },
-            { q: "ハグモと一緒に何したい？", a: "賑やかにパーティー！", b: "静かに家庭菜園を楽しみたい" }
-        ];
+        const charData = {
+            risu: { name: "きゅうりす", img: "./images/risu.PNG", desc: "【バランス・調和】\n落ち着いたあなたには、きゅうりすがぴったり。キュウリのパックで火照った肌をクールダウン。自分自身のバランスを整える、癒やしの農業体験を。" },
+            buta: { name: "かぶた", img: "./images/buta.PNG", desc: "【優しさ・包容】\n穏やかな心の持ち主のあなたには、かぶたが寄り添います。カブの力で内側から透明感を。自分を優しくケアする、穏やかな時間を一緒に。" },
+            tora: { name: "とまとら", img: "./images/tora.PNG", desc: "【情熱・リーダー】\nアクティブなあなたには、情熱のとまとら！リコピンたっぷりのトマトで紫外線に負けない肌作り。強い味方と一緒に、パワフルな「美容の自給自足」を。" }
+        };
 
-        const characters = [
-            { name: "とまとら", catch: "情熱・リーダー", img: "tora.PNG", partner: "かぼちゃぼ", reason: "情熱的なリーダーのあなたを、明るいかぼちゃぼが笑顔で支えてくれます。お互いのポジティブさが合わさると最強の二人になれます。" },
-            { name: "きゅうりす", catch: "バランス・調和", img: "risu.PNG", partner: "かぶた", reason: "周りとの調和を大事にするきゅうりすと、包容力抜群のかぶた。お互いに気遣いができるので、一緒にいると心が一番落ち着く関係です。" },
-            { name: "れもんきー", catch: "ひらめき・自由", img: "saru.PNG", partner: "もももんが", reason: "自由奔放なれもんきーの発想を、愛嬌たっぷりなもももんがが「すごい！」と全力で楽しんでくれます。ワクワクが止まらないペアです。" },
-            { name: "ぶるーべりくがめ", catch: "知性・分析", img: "kame.PNG", partner: "くろいちじくま", reason: "知的な分析が得意なくがめと、静かな時間が好きないちじくま。言葉がなくても通じ合える、深く静かな信頼関係を築けます。" },
-            { name: "かぶた", catch: "優しさ・包容", img: "buta.PNG", partner: "きゅうりす", reason: "あなたの優しさを、きゅうりすがしっかり受け止めてくれます。お互いの「ありがとう」が絶えない、温かい空気感を作れる相性です。" },
-            { name: "さつまいもぐら", catch: "努力・継続", img: "imo.PNG", partner: "ばたふらいぴーこっく", reason: "コツコツ努力するあなたを、賢いぴーこっくが効率的なアドバイスで助けてくれます。二人三脚で大きな成果を出せる組み合わせです。" },
-            { name: "もももんが", catch: "愛嬌・甘え上手", img: "nga.PNG", partner: "れもんきー", reason: "甘え上手なあなたにとって、常に新しい刺激をくれるれもんきーは最高の遊び相手。二人でいれば、どんな場所でもテーマパークに早変わり！" },
-            { name: "くろいちじくま", catch: "静か・ミステリアス", img: "kuma.PNG", partner: "ぶるーべりくがめ", reason: "一人の時間を大切にするあなたを、くがめは無理に踏み込まずに理解してくれます。付かず離れずの心地よい距離感を保てるパートナーです。" },
-            { name: "かぼちゃぼ", catch: "明るい・ポジティブ", img: "chabo.PNG", partner: "とまとら", reason: "あなたの太陽のような明るさは、情熱的なとまとらの原動力になります。お互いを高め合いながら、目標に向かって突き進める熱い相性です。" },
-            { name: "ばたふらいぴーこっく", catch: "機転・賢さ", img: "jaku.PNG", partner: "さつまいもぐら", reason: "頭の回転が速いあなたにとって、実直に動いてくれるさつまいもぐらは最も信頼できる存在。あなたのアイデアを形にしてくれる最高の相棒です。" }
-        ];
-
-        let currentQ = 0;
-        let scoreA = 0;
-
-        function init() {
-            const container = document.getElementById('q-container');
-            questions.forEach((item, i) => {
-                const div = document.createElement('div');
-                div.className = `q-box ${i === 0 ? 'active' : ''}`;
-                div.id = `q${i}`;
-                div.innerHTML = `
-                    <p style="font-size:16px; margin-bottom:25px; line-height:1.4;">Q${i+1}. ${item.q}</p>
-                    <button class="ans-btn" onclick="answer(true)">${item.a}</button>
-                    <button class="ans-btn" onclick="answer(false)">${item.b}</button>
-                `;
-                container.appendChild(div);
-            });
+        function nextQ(num) {
+            document.querySelectorAll('.q-box').forEach(el => el.classList.remove('active'));
+            document.getElementById('q' + num).classList.add('active');
         }
 
-        function answer(isA) {
-            if(isA) scoreA++;
-            document.getElementById(`q${currentQ}`).classList.remove('active');
-            currentQ++;
-            document.getElementById('progress').style.width = `${(currentQ/questions.length)*100}%`;
-            if (currentQ < questions.length) {
-                document.getElementById(`q${currentQ}`).classList.add('active');
-            } else {
-                showResult();
-            }
-        }
-
-        function showResult() {
-            document.getElementById('q-container').style.display = 'none';
+        function showResult(key) {
+            document.getElementById('q-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'block';
-            
-            // スコアに基づいてキャラを決定
-            const index = Math.min(scoreA, characters.length - 1);
-            const main = characters[index];
-            
-            // 結果をローカルストレージに保存
-            localStorage.setItem('myHagumo', JSON.stringify(main));
-
-            const partner = characters.find(c => c.name === main.partner);
-
-            // 画面に表示
-            document.getElementById('main-catch').innerText = `― ${main.catch} ―`;
-            document.getElementById('main-res-name').innerText = main.name;
-            document.getElementById('main-res-img').src = `./images/${main.img}`;
-            document.getElementById('main-res-img').onerror = function(){ this.src = `./${main.img}`; };
-            document.getElementById('main-desc').innerText = `あなたの本質は「${main.catch}」。そんなあなたに寄り添うのは、${main.name}です。`;
-
-            document.getElementById('sub-res-area').innerHTML = `
-                <div class="sub-item">
-                    <img src="./images/${partner.img}" onerror="this.src='./${partner.img}'">
-                    <div style="font-weight:bold; font-size:14px;">${partner.name}</div>
-                </div>
-            `;
-            document.getElementById('comp-reason').innerText = main.reason;
+            const data = charData[key];
+            document.getElementById('res-name').innerText = data.name;
+            document.getElementById('res-img').src = data.img;
+            document.getElementById('res-desc').innerText = data.desc;
         }
-
-        init();
     </script>
-    <script src="./common.js"></script>
 </body>
 </html>
