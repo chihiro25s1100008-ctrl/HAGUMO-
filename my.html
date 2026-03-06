@@ -7,17 +7,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        /* 育成画面独自のパーツ（共通CSSにないもの）のみ残す */
-        .container { margin-top: 100px; padding: 20px; }
+        body { background-color: #fff9fb; margin: 0; padding: 0; }
+        .container { margin-top: 100px; padding: 20px; text-align: center; }
+        
         .stage {
             background: white; border-radius: 40px; padding: 40px 20px;
             box-shadow: 0 15px 40px rgba(255, 126, 185, 0.15);
-            text-align: center; position: relative; margin: 0 auto; max-width: 500px;
+            position: relative; margin: 0 auto; max-width: 500px;
         }
-        .my-img { width: 200px; transition: 0.3s ease; cursor: pointer; }
+
+        /* 虹色オーラ演出 */
+        .max-aura { filter: drop-shadow(0 0 20px #ff7eb9); animation: rainbow 2s infinite linear; }
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px #ff7eb9); }
+            100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px #ff7eb9); }
+        }
+
+        .my-img { width: 220px; transition: 0.3s; cursor: pointer; }
         .bounce { animation: bounce 0.8s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
-        
+
         .speech-bubble {
             background: #fff4f9; border: 3px solid #ffdaeb; border-radius: 25px;
             padding: 20px; margin-bottom: 30px; min-height: 80px;
@@ -27,17 +36,19 @@
         .speech-bubble::after {
             content: ""; position: absolute; bottom: -15px; left: 50%;
             border-width: 15px 15px 0; border-style: solid; border-color: #ffdaeb transparent;
-            display: block; width: 0; margin-left: -15px;
+            width: 0; margin-left: -15px;
         }
+
         .gauge-wrap { width: 80%; height: 16px; background: #ffeef2; border-radius: 10px; margin: 20px auto 5px; overflow: hidden; border: 2px solid #ffdaeb; }
-        #love-bar { height: 100%; background: linear-gradient(to right, #ffb6c1, #ff7eb9); width: 50%; transition: 1s; }
-        .play-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 500px; margin: 20px auto; }
+        #love-bar { height: 100%; background: linear-gradient(to right, #ffb6c1, #ff7eb9); transition: 1s; width: 0%; }
+        
         .kawaii-btn {
             background: white; border: 3px solid #ffb6c1; color: #ff7eb9;
             padding: 12px 20px; border-radius: 30px; font-weight: bold;
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 0 #ffdaeb;
-            font-size: 15px; outline: none; margin: 5px;
+            margin: 5px; font-size: 14px; outline: none;
         }
+        .kawaii-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #ffdaeb; }
     </style>
 </head>
 <body>
@@ -55,61 +66,128 @@
     </nav>
 
     <div class="container">
+        <div id="no-data" style="display:none;">
+            <div class="stage">
+                <div style="font-size: 50px; margin-bottom: 20px;">🥚</div>
+                <h3>まだハグモがいません</h3>
+                <p style="color: #666; font-size: 14px;">診断でパートナーを見つけましょう！</p>
+                <a href="diagnosis.html" class="kawaii-btn" style="display: inline-block; text-decoration: none; margin-top: 20px;">診断をはじめる 🌱</a>
+            </div>
+        </div>
+
         <div id="has-data" style="display:none;">
             <div class="stage">
-                <div id="status-label" style="font-size: 14px; color: #ff7eb9; font-weight: bold; margin-bottom: 15px; background: #fff0f5; display: inline-block; padding: 5px 15px; border-radius: 20px;"></div>
-                <div class="speech-bubble" id="msg-text">おかえり！待ってたよ！</div>
-                
+                <div id="status-label" style="font-size: 12px; color: #ff7eb9; margin-bottom: 10px; font-weight: bold;"></div>
+                <div class="speech-bubble" id="msg-text">...</div>
                 <img id="partner-img" class="my-img bounce" src="" onclick="playAction('なでる')">
-                
                 <div class="gauge-wrap"><div id="love-bar"></div></div>
-                <div style="font-size: 13px; color: #ff7eb9; font-weight: bold;">なかよしレベル: <span id="love-num">50</span>%</div>
+                <div style="font-size: 13px; color: #ff7eb9; font-weight: bold;">なかよしレベル: <span id="love-num">0</span>%</div>
                 <div id="choices" style="display: none; flex-direction: column; gap: 10px; margin-top: 20px;"></div>
             </div>
-
-            <div class="play-menu">
-                <button class="kawaii-btn" onclick="playAction('なでる')">👋 なでなでする</button>
-                <button class="kawaii-btn" onclick="startTalk()">💬 おしゃべりする</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 500px; margin: 20px auto;">
+                <button class="kawaii-btn" onclick="playAction('なでる')">👋 なでる</button>
+                <button class="kawaii-btn" onclick="startTalk()">💬 おしゃべり</button>
             </div>
         </div>
     </div>
 
-    <script src="./common.js"></script>
     <script>
-        // 育成用スクリプト（ページ独自の動き）
         let love = 50;
-        let partner = null;
+        let currentPartner = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
+        const charaData = {
+            "risu.PNG": { name: "きゅうりす", keyword: "バランス・調和", maxMsg: "君とのバランス、最高に整ってるよ。ずっと隣にいさせてね。", talks: [
+                { q: "心と体のバランス、ちゃんと取れてる？", choices: [{t: "意識してるよ", l: 10, r: "素晴らしいね。調和こそが美しさの源だよ。"}, {t: "難しいな", l: 5, r: "大丈夫、僕が君のリズムを整えてあげるよ。"}] }
+            ]},
+            "tora.PNG": { name: "とまとら", keyword: "情熱・リーダー", maxMsg: "お前となら、どこまででも熱く突き進めるぜ！ついてこい！", talks: [
+                { q: "お前の情熱を見せてくれ！今、何かに燃えてるか？", choices: [{t: "燃えてる！", l: 15, r: "その意気だ！お前こそ真のリーダーだぜ！"}, {t: "ぼちぼちかな", l: -5, r: "おいおい、もっと熱くなれよ！俺が火をつけてやる！"}] }
+            ]},
+            "saru.PNG": { name: "れもんきー", keyword: "ひらめき・自由", maxMsg: "君といると、面白いアイデアが止まらないよ！自由最高ー！", talks: [
+                { q: "ねぇねぇ、次はどんなイタズラ…じゃなくて、自由なことする？", choices: [{t: "旅に出る！", l: 10, r: "最高だね！新しいひらめきが待ってるよ！"}, {t: "家でゆっくり", l: 5, r: "それも自由のひとつだね！のんびりひらめこう！"}] }
+            ]},
+            "kame.PNG": { name: "ぶるーべりくがめ", keyword: "知性・分析", maxMsg: "あなたの行動は常に合理的で素晴らしい。私の知性はあなたの為にあります。", talks: [
+                { q: "今日の体調を分析します。何か変化はありましたか？", choices: [{t: "肌の調子が良い", l: 10, r: "分析通りですね。その習慣を継続しましょう。"}, {t: "少し寝不足", l: -5, r: "効率が落ちますね。すぐに休息をプランニングしてください。"}] }
+            ]},
+            "buta.PNG": { name: "かぶた", keyword: "優しさ・包容", maxMsg: "君の全部、僕が包み込んであげるからねぇ。安心していいんだよぉ。", talks: [
+                { q: "疲れてないですかぁ？僕がぎゅーってしてあげますよぉ。", choices: [{t: "お願い！", l: 15, r: "えへへ、あったかいですねぇ。癒やされますぅ。"}, {t: "大丈夫だよ", l: 5, r: "無理しちゃダメですよぉ。いつでもお膝貸しますからねぇ。"}] }
+            ]},
+            "imo.PNG": { name: "さつまいもぐら", keyword: "努力・継続", maxMsg: "地道な努力が、こんなに綺麗な花を咲かせたんだね。ずっと見てたよ。", talks: [
+                { q: "今日もコツコツ、自分磨き頑張った？", choices: [{t: "頑張った！", l: 15, r: "素晴らしい！継続は力なり、だね。"}, {t: "サボっちゃった", l: -10, r: "明日からまた一歩ずつ掘り進めれば大丈夫だよ。"}] }
+            ]},
+            "nga.PNG": { name: "もももんが", keyword: "愛嬌・甘え上手", maxMsg: "えへへ、君に甘えるのが世界で一番大好きなんだもん！離さないよ？", talks: [
+                { q: "ねぇねぇ、ももに もっと構ってほしいなー？だめ？", choices: [{t: "いいよ（なでる）", l: 10, r: "わーい！君のそういう優しいところ大好き！"}, {t: "あとでね", l: -10, r: "えぇー！寂しくて死んじゃうもん…！"}] }
+            ]},
+            "kuma.PNG": { name: "くろいちじくま", keyword: "静か・ミステリアス", maxMsg: "…言葉はいらない。君の隣の、この静かな時間が心地いいんだ。", talks: [
+                { q: "…静かな時間は好きか…？", choices: [{t: "好きだよ", l: 10, r: "…そうか。君とは気が合いそうだ…。"}, {t: "賑やかな方がいい", l: -5, r: "…賑やかなのも、悪くはないが…少し疲れるな…。"}] }
+            ]},
+            "chabo.PNG": { name: "かぼちゃぼ", keyword: "明るい・ポジティブ", maxMsg: "君の笑顔は太陽みたいだね！僕もハッピーが止まらないよ！", talks: [
+                { q: "ねぇ、今日あった最高にハッピーなこと教えて！", choices: [{t: "美味しいの食べた！", l: 10, r: "最高だね！美味しいは正義だよ！"}, {t: "まだないかな", l: 5, r: "じゃあ今から僕が最高に楽しくしてあげるよ！"}] }
+            ]},
+            "jaku.PNG": { name: "ばたふらいぴーこっく", keyword: "機転・賢さ", maxMsg: "あなたの機転には驚かされるわ。私たちが組めば、世界一の美しさが手に入るわね。", talks: [
+                { q: "トラブルが起きたとき、あなたならどう切り抜けるかしら？", choices: [{t: "冷静に考える", l: 10, r: "流石ね。賢い判断こそが窮地を救うのよ。"}, {t: "直感で動く", l: 5, r: "悪くないわ。その鋭さが思わぬ道を切り拓くこともあるしね。"}] }
+            ]}
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
             const saved = localStorage.getItem('myHagumo');
-            if (saved) {
-                const data = JSON.parse(saved);
-                document.getElementById('partner-img').src = `./images/${data.img}`;
-                document.getElementById('status-label').innerText = "マイハグモとお部屋にいます";
-                document.getElementById('has-data').style.display = 'block';
-                love = data.love || 50;
-                updateGauge();
+            if (!saved) { document.getElementById('no-data').style.display = 'block'; return; }
+
+            const data = JSON.parse(saved);
+            currentPartner = charaData[data.img];
+            
+            // 万が一データが壊れていた時のバックアップ
+            if (!currentPartner) {
+                currentPartner = charaData["risu.PNG"];
             }
+            
+            love = data.love || 50;
+
+            document.getElementById('has-data').style.display = 'block';
+            document.getElementById('partner-img').src = `./images/${data.img}`;
+            document.getElementById('status-label').innerText = `${currentPartner.name}（${currentPartner.keyword}）とお部屋にいます`;
+            document.getElementById('msg-text').innerText = "おかえり！待ってたよ。";
+            updateGauge();
         });
 
         function updateGauge() {
             document.getElementById('love-bar').style.width = love + '%';
             document.getElementById('love-num').innerText = Math.floor(love);
-            const saved = JSON.parse(localStorage.getItem('myHagumo')) || {};
+            const img = document.getElementById('partner-img');
+            if (love >= 100) img.classList.add('max-aura');
+            else img.classList.remove('max-aura');
+
+            const saved = JSON.parse(localStorage.getItem('myHagumo'));
             saved.love = love;
             localStorage.setItem('myHagumo', JSON.stringify(saved));
         }
 
         function playAction(type) {
-            if(type === 'なでる') {
-                love = Math.min(love + 1, 100);
-                document.getElementById('msg-text').innerText = "えへへ、気持ちいい〜！";
-                updateGauge();
+            if (type === 'なでる') {
+                if (love >= 100) { document.getElementById('msg-text').innerText = currentPartner.maxMsg; }
+                else { love = Math.min(100, love + 1); document.getElementById('msg-text').innerText = "えへへ、気持ちいい〜！"; updateGauge(); }
             }
         }
-        
+
         function startTalk() {
-            document.getElementById('msg-text').innerText = "ねぇねぇ、今日は何して遊ぶ？";
+            if (love >= 100) { document.getElementById('msg-text').innerText = currentPartner.maxMsg; return; }
+            const randomTalk = currentPartner.talks[Math.floor(Math.random() * currentPartner.talks.length)];
+            const msg = document.getElementById('msg-text');
+            const choiceBox = document.getElementById('choices');
+            msg.innerText = randomTalk.q;
+            choiceBox.innerHTML = '';
+            choiceBox.style.display = 'flex';
+            randomTalk.choices.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = 'kawaii-btn';
+                btn.innerText = c.t;
+                btn.onclick = () => {
+                    love = Math.max(0, Math.min(100, love + c.l));
+                    msg.innerText = c.r;
+                    choiceBox.style.display = 'none';
+                    updateGauge();
+                };
+                choiceBox.appendChild(btn);
+            });
         }
     </script>
 </body>
