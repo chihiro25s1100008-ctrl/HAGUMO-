@@ -2,134 +2,123 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HAGUMO | 運命のパートナー診断</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --main-pink: #ff7eb9;
-            --soft-pink: #fff4f9; /* ホームと同じ変数名に変更 */
-            --sub-pink: #ffdaeb;
-            --bg: #fff9fb;
-            --line-green: #06C755;
-            --text-gray: #444;
-        }
-
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background: var(--bg); 
-            font-family: 'Zen Maru Gothic', sans-serif; 
-            color: var(--text-gray); 
-        }
-
-        /* --- 【ホーム共通】ナビゲーション --- */
-        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 2000; border-bottom: 1px solid #f0f0f0; }
-        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
-        .nav-logo-img { height: 30px; cursor: pointer; }
-        .nav-links { display: flex; gap: 15px; }
-        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; }
-        .nav-links a.active { color: var(--main-pink); }
-
-        /* コンテンツ配置 */
-        .container { margin-top: 80px; padding: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
-        
-        /* 診断専用カードデザイン */
-        .card { 
-            background: white; 
-            border-radius: 35px; 
-            padding: 30px; 
-            box-shadow: 0 10px 30px rgba(255,126,185,0.15); 
-            border: 2px solid var(--sub-pink); 
-            text-align: center; 
-            margin-bottom: 25px; 
+        /* 診断画面専用の追加スタイル */
+        .container { 
+            margin-top: 20px; 
+            padding: 15px; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto;
         }
         
-        .progress-bar { font-size: 13px; color: var(--main-pink); font-weight: bold; margin-bottom: 10px; }
-        .question-text { font-size: 18px; font-weight: bold; margin: 25px 0; line-height: 1.5; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        /* 質問カード */
+        .q-card {
+            background: white;
+            border-radius: 35px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(255,126,185,0.15);
+            border: 2px solid var(--sub-pink);
+            text-align: center;
+        }
+
+        .progress-bar { font-size: 13px; color: var(--pink2); font-weight: bold; margin-bottom: 10px; }
         
-        .choice-btn { 
-            background: white; 
-            border: 2px solid var(--sub-pink); 
-            padding: 14px; 
-            border-radius: 30px; 
-            cursor: pointer; 
+        .question-text { 
+            font-size: 18px; 
             font-weight: bold; 
-            color: #666; 
-            font-size: 15px; 
-            transition: 0.2s; 
-            width: 100%; 
-            margin: 8px 0; 
-            outline: none; 
+            margin: 20px 0; 
+            line-height: 1.5; 
+            min-height: 80px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
         }
-        .choice-btn:hover { background: var(--main-pink); color: white; transform: translateY(-2px); }
+
+        /* 選択肢ボタン */
+        .choice-btn {
+            background: white;
+            border: 2px solid var(--sub-pink);
+            padding: 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+            font-size: 15px;
+            transition: 0.2s;
+            width: 100%;
+            margin: 8px 0;
+            font-family: inherit;
+        }
+        .choice-btn:active { transform: scale(0.95); background: var(--soft-pink); }
+        .choice-btn.primary { background: var(--pink2); color: white; border: none; margin-top: 20px; padding: 18px; }
 
         /* 結果表示エリア */
-        #result-area { display: none; }
-        .res-img { width: 220px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1)); margin: 15px 0; animation: bounce 2s infinite alternate ease-in-out; }
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
-        .res-name { color: var(--main-pink); font-size: 24px; margin: 10px 0; }
-        .res-desc { font-size: 14px; line-height: 1.7; color: #666; background: var(--soft-pink); padding: 15px; border-radius: 20px; margin-bottom: 20px; text-align: left; }
+        #result-area { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* シェアボタン */
-        .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .sns-btn { color: white; padding: 12px; border-radius: 25px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
-        .btn-x { background: #000; }
-        .btn-line { background: var(--line-green); }
+        .res-img { width: 200px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1)); margin: 15px 0; }
+        .res-name { color: var(--pink2); font-size: 24px; margin: 10px 0; font-weight: bold; }
+        .res-desc { font-size: 14px; line-height: 1.7; color: #666; background: var(--soft-pink); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: left; }
 
         /* 相性診断セクション */
-        .aisyo-section { margin-top: 30px; padding-top: 30px; border-top: 2px dashed var(--sub-pink); }
+        .aisyo-section { margin-top: 30px; padding: 25px; border-top: 2px dashed var(--sub-pink); }
         .f-select { width: 100%; padding: 12px; border-radius: 20px; border: 2px solid var(--sub-pink); margin-bottom: 10px; font-family: inherit; font-size: 14px; background: #fffaff; color: #666; }
         .comp-box { display: none; background: #fff0f5; border: 2px solid var(--sub-pink); border-radius: 20px; padding: 15px; margin-top: 15px; }
+
+        /* スマホ対応 */
+        @media screen and (max-width: 768px) {
+            .question-text { font-size: 16px; }
+            .choice-btn { font-size: 14px; padding: 12px; }
+            .res-img { width: 180px; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
-            <div class="nav-links">
-                <a href="index.html">HOME</a>
-                <a href="world.html">WORLD</a>
-                <a href="hagumo.html">HAGUMO</a>
-                <a href="diagnosis.html" class="active">DIAGNOSIS</a>
-                <a href="product.html">PRODUCT</a>
-                <a href="my.html">MY HAGUMO</a>
-            </div>
+    <nav class="nav">
+        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">HOME</a>
+            <a href="diagnosis.html" class="nav-link active">DIAGNOSIS</a>
+            <a href="my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
 
     <div class="container">
-        <div class="card" id="q-area">
+        <div class="q-card" id="q-area">
             <div class="progress-bar" id="q-progress">しつもん 1 / 20</div>
             <div class="question-text" id="q-text"></div>
             <div id="q-choices"></div>
         </div>
 
         <div id="result-area">
-            <div class="card">
-                <div style="font-size:13px; color:var(--main-pink); font-weight:bold;">あなたにぴったりのパートナー</div>
+            <div class="q-card">
+                <div style="font-size:13px; color:var(--pink2); font-weight:bold;">あなたにぴったりのパートナー</div>
                 <img id="res-img" class="res-img" src="">
                 <h2 id="res-name" class="res-name"></h2>
                 <div id="res-desc" class="res-desc"></div>
                 
-                <button class="choice-btn" style="background:var(--main-pink); color:white; border:none; padding:18px;" onclick="location.href='my.html'">この子をマイページでお迎え 🌱</button>
+                <button class="choice-btn primary" onclick="location.href='my.html'">この子をマイページでお迎え 🌱</button>
                 
-                <div class="share-grid">
-                    <button class="sns-btn btn-x" onclick="shareX()">𝕏でシェア</button>
-                    <button class="sns-btn btn-line" onclick="shareLine()">LINEで送る</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                    <button class="choice-btn" style="background:#000; color:white; border:none;" onclick="shareX()">𝕏シェア</button>
+                    <button class="choice-btn" style="background:#06C755; color:white; border:none;" onclick="shareLine()">LINE</button>
                 </div>
             </div>
 
-            <div class="card aisyo-section">
-                <h3 style="color:var(--main-pink); font-size:1.1rem; margin-bottom:5px;">🤝 ハグモ相性占い</h3>
+            <div class="q-card aisyo-section">
+                <h3 style="color:var(--pink2); font-size:1.1rem; margin-bottom:5px;">🤝 ハグモ相性占い</h3>
                 <p style="font-size:11px; color:#999; margin-bottom:15px;">気になる子との相性を占ってみよう！</p>
                 <select id="char1" class="f-select"></select>
                 <select id="char2" class="f-select"></select>
                 <button class="choice-btn" onclick="checkComp()">キズナをチェック！</button>
                 <div id="comp-result" class="comp-box">
-                    <div id="comp-score" style="font-size:26px; font-weight:bold; color:var(--main-pink);"></div>
+                    <div id="comp-score" style="font-size:26px; font-weight:bold; color:var(--pink2);"></div>
                     <div id="comp-reason" style="font-size:13px; margin-top:8px; line-height:1.5;"></div>
                 </div>
             </div>
@@ -137,6 +126,7 @@
     </div>
 
 <script>
+// キャラクターデータと質問データは千尋さんのものをそのまま使用
 const chars = [
     {id:"buta.PNG", name:"かぶた", type:"ISFJ", desc:"癒やし度No.1！いつもそばにいてくれる優しい子。"},
     {id:"tora.PNG", name:"とまとら", type:"ESTP", desc:"情熱たっぷり！冒険へ連れ出してくれるリーダー。"},
