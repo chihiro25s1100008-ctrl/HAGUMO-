@@ -237,3 +237,20 @@ body {
     .hero-btns { flex-direction: column; }
     .main-copy { font-size: 26px; }
 }
+
+/* 全ページ共通のスタイルに追加 */
+@media (max-width: 600px) {
+    .nav-content {
+        gap: 10px;
+        padding: 5px;
+    }
+    .nav-links {
+        gap: 8px;
+    }
+    .nav-links a {
+        font-size: 10px; /* 文字を小さくして1行に収める */
+    }
+    .nav-logo-img {
+        height: 20px;
+    }
+}
