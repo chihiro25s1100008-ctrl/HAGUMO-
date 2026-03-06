@@ -146,3 +146,94 @@ body {
         grid-template-columns: 1fr; /* 横並びをやめて1列に */
     }
 }
+  /* --- ホーム専用の豪華スタイル --- */
+.hero-section {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #fffcfd 0%, #fff4f9 100%);
+    border-radius: 0 0 50px 50px;
+    margin-top: -20px; /* ナビとの隙間を埋める */
+}
+
+.main-copy {
+    font-size: 32px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    color: #444;
+    line-height: 1.4;
+}
+
+.sub-copy {
+    color: #888;
+    margin: 20px 0 30px;
+    font-size: 15px;
+}
+
+/* ボタンの横並び */
+.hero-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.button-outline {
+    padding: 12px 25px;
+    border: 2px solid #ff9ecb;
+    color: #ff9ecb;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* 特徴グリッド */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 50px 0;
+}
+
+.feature-item {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(255, 126, 185, 0.1);
+    text-align: center;
+}
+
+.feature-item .icon { font-size: 40px; display: block; margin-bottom: 10px; }
+
+/* ステップ表示 */
+.steps-card {
+    background: #444; /* ちょっと締めるために暗めの色に */
+    color: white;
+    padding: 40px 20px;
+    border-radius: 30px;
+    margin-bottom: 50px;
+}
+
+.steps-card .section-title { color: white; margin-bottom: 30px; }
+
+.step {
+    margin-bottom: 15px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.step span {
+    background: #ff7eb9;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+/* スマホ対応の微調整 */
+@media screen and (max-width: 768px) {
+    .hero-btns { flex-direction: column; }
+    .main-copy { font-size: 26px; }
+}
