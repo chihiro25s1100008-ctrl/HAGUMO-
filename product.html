@@ -3,73 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAGUMO GROW KIT</title>
+    <title>SHOP | HAGUMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="./style.css">
     <style>
-        body {
-            margin: 0;
-            font-family: 'Noto Sans JP', sans-serif;
-            background: linear-gradient(180deg, #fffdf8, #fff6fb);
-            text-align: center;
-            color: #444;
-            overflow-x: hidden;
-        }
-
-        /* ヒーローセクション */
-        .hero {
-            padding: 120px 20px 60px; /* ナビが固定なので上の余白を少し増やしました */
-            position: relative;
-        }
-
-        .hero h1 {
-            font-family: 'Zen Maru Gothic', sans-serif;
-            font-size: 34px;
-            margin-bottom: 10px;
-            animation: fadeUp 1s ease forwards;
-        }
-
-        .hero p {
-            opacity: 0;
-            animation: fadeUp 1.2s ease forwards;
-            animation-delay: .3s;
-        }
-
-        .price {
-            font-size: 24px;
-            color: #ff6fa5;
-            font-weight: bold;
-            margin: 25px 0;
-            opacity: 0;
-            animation: fadeUp 1.4s ease forwards;
-            animation-delay: .6s;
-        }
-
-        .buy-button {
+        .difficulty-label {
             display: inline-block;
-            padding: 16px 45px;
+            padding: 4px 12px;
             border-radius: 999px;
-            background: linear-gradient(90deg, #ff9ecb, #ff7eb9);
-            color: white;
+            font-size: 12px;
             font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            transition: .3s;
-            box-shadow: 0 10px 30px rgba(255, 120, 170, .4);
-            animation: pulse 2s infinite;
+            margin-bottom: 10px;
         }
-
-        .buy-button:hover {
-            transform: scale(1.07);
+        .easy { background: #e0f9e0; color: #2d5a2d; }
+        .normal { background: #fff4e0; color: #855d10; }
+        .hard { background: #ffe0e0; color: #a32a2a; }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
-
-        /* コンテンツセクション */
-        .section {
-            max-width: 950px;
-            margin: 60px auto;
-            padding: 30px;
+        .item-card {
             background: white;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, .07);
-            opacity: 0;
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .item-card img { width: 100px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🛒 HAGUMO SHOP</h1>
+        <p>難易度を選んで、ハグモと一緒に家庭菜園をスタート！</p>
+
+        <div class="product-grid">
+            <div class="item-card">
+                <span class="difficulty-label easy">難易度：かんたん</span>
+                <img src="./images/buta.PNG" onerror="this.src='./buta.PNG'">
+                <h3>カブ / サツマイモ / バタフライピー</h3>
+                <p style="font-size:13px;">初心者さんにおすすめ！まずはここから。</p>
+                <button class="button" style="width:100%; border:none;">セットを注文</button>
+            </div>
+
+            <div class="item-card">
+                <span class="difficulty-label normal">難易度：ふつう</span>
+                <img src="./images/risu.PNG" onerror="this.src='./risu.PNG'">
+                <h3>キュウリ / ミニトマト / カボチャ</h3>
+                <p style="font-size:13px;">少し手応えが欲しいあなたに。</p>
+                <button class="button" style="width:100%; border:none;">セットを注文</button>
+            </div>
+
+            <div class="item-card">
+                <span class="difficulty-label hard">難易度：むずかしめ</span>
+                <img src="./images/saru.PNG" onerror="this.src='./saru.PNG'">
+                <h3>レモン / ブルーベリー / モモ / イチジク</h3>
+                <p style="font-size:13px;">じっくり育てて、超レアグッズを狙おう！</p>
+                <button class="button" style="width:100%; border:none;">セットを注文</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:40px; background:#fff4f9;">
+            <h3>🎁 育成報酬について</h3>
+            <p style="font-size:14px; text-align:left;">
+                収穫した野菜の写真を送ると、ランダムでハグモグッズをプレゼント！ <br>
+                <strong>「むずかしめ」</strong>をクリアすると、キラキラ仕様の限定アクリルキーホルダーが届く確率がアップします。
+            </p>
+        </div>
+
+        <div class="disclaimer" style="margin-top:50px; font-size:12px; color:#999; background:#f9f9f9; padding:20px; border-radius:15px;">
+            <strong>⚠️ ご注意</strong><br>
+            このページは学校の授業用の制作物です。 <br>
+            実際の種販売やグッズ発送、課金は一切行われません。
+        </div>
+    </div>
+
+    <script src="./common.js"></script>
+</body>
+</html>
