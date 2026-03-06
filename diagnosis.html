@@ -3,89 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAGUMO DIAGNOSIS</title>
-
+    <title>ハグモ性格診断 | HAGUMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
     <style>
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            background: linear-gradient(180deg, #fffdf8, #ffeef5);
-            text-align: center;
+        .q-box { display: none; }
+        .q-box.active { display: block; animation: fadeIn 0.5s; }
+        .ans-btn {
+            display: block; width: 100%; max-width: 400px; margin: 15px auto;
+            padding: 15px; border: 2px solid #ff9ecb; border-radius: 15px;
+            background: white; cursor: pointer; transition: 0.3s; font-size: 16px;
         }
-
-        /* 質問ボックス */
-        .question-box {
-            max-width: 500px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
-        }
-
-        button {
-            padding: 12px 25px;
-            margin: 10px;
-            border: none;
-            border-radius: 30px;
-            background: #ff9fcf;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #ff4fa3;
-        }
-
-        /* ローディング */
-        .loading {
-            display: none;
-            font-size: 20px;
-            margin-top: 40px;
-        }
-
-        /* 結果表示 */
-        .result {
-            display: none;
-            margin-top: 40px;
-            animation: fade 1s;
-        }
-
-        @keyframes fade {
-            from { opacity: 0 }
-            to { opacity: 1 }
-        }
-
-        .result img {
-            width: 200px;
-            border-radius: 20px;
-        }
+        .ans-btn:hover { background: #fff4f9; transform: scale(1.02); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #result-area { display: none; }
+        .result-img { width: 200px; margin: 20px 0; }
     </style>
 </head>
-
 <body>
+    <div class="container">
+        <h1>🌱 ハグモ性格診断</h1>
+        <div class="card">
+            <div id="q-container">
+                <div class="q-box active" id="q1">
+                    <p>Q1. 週末の過ごし方は？</p>
+                    <button class="ans-btn" onclick="next(1, 'A')">外で元気に遊びたい！</button>
+                    <button class="ans-btn" onclick="next(1, 'B')">家でゆっくり読書やゲーム</button>
+                </div>
+                <div class="q-box" id="q2">
+                    <p>Q2. 好きな食べ物の系統は？</p>
+                    <button class="ans-btn" onclick="next(2, 'A')">シャキシャキお野菜</button>
+                    <button class="ans-btn" onclick="next(2, 'B')">甘くてジューシーなフルーツ</button>
+                </div>
+            </div>
 
-    <h1>🌿 ハグモ覚醒診断</h1>
-
-    <div class="question-box" id="questionBox">
-        <h2 id="questionText"></h2>
-        <div id="answers"></div>
-    </div>
-
-    <div class="loading" id="loading">
-        🌈 ハグモが覚醒中...
-    </div>
-
-    <div class="result" id="result">
-        <h2 id="resultName"></h2>
-        <img id="resultImg">
-        <p id="resultDesc"></p>
-        <h3>💞 相性ハグモ</h3>
-        <img id="compatImg" width="120">
+            <div id="result-area">
+                <h2>あなたのパートナーは…</h2>
+                <div id="hagumo-res"></div>
+                <a href="diagnosis.html" class="button">もう一度診断する</a>
+            </div>
+        </div>
     </div>
 
     <script>
-        const hagumo = {
-            きゅうりす: { img: "images/risu.PNG", desc: "調和を大切にする森の守護者", compat: "とまとら" },
-            とまとら: { img: "images/tora.PNG", desc: "情熱的なリーダータイプ", compat: "きゅうりす" },
+        let score = "";
+        function next(qNum, choice) {
+            score += choice;
+            document.getElementById(`q${qNum}`).classList.remove('active');
+            if (qNum < 2) {
+                document.getElementById(`q${qNum + 1}`).classList.add('active');
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('q-container').style.display = 'none';
+            const resArea = document.getElementById('result-area');
+            const resDiv = document.getElementById('hagumo-res');
+            resArea.style.display = 'block';
+
+            // 簡易判定ロジック
+            let name = ""; let img = "";
+            if (score === "AA") { name = "とまとら"; img = "./images/tora.PNG"; }
+            else if (score === "AB") { name = "きゅうりす"; img = "./images/risu.PNG"; }
+            else if (score === "BA") { name = "かぶた"; img = "./images/buta.PNG"; }
+            else { name = "もももんが"; img = "./images/nga.PNG"; }
+
+            resDiv.innerHTML = `
+                <img src="${img}" class="result-img" onerror="this.src='${img.replace('./images/','./')}'">
+                <h3>${name}</h3>
+                <p>あなたにぴったりのハグモが見つかりました！</p>
+            `;
+        }
+    </script>
+    <script src="./common.js"></script>
+</body>
+</html>
