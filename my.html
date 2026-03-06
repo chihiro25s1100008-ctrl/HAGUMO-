@@ -7,23 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        body { background-color: #fff9fb; font-family: 'Zen Maru Gothic', sans-serif; }
+        body { background-color: #fff9fb; font-family: 'Zen Maru Gothic', sans-serif; overflow-x: hidden; }
         
-        /* ぷにぷにボタンの共通スタイル */
+        /* ぷにぷにボタン */
         .kawaii-btn {
-            background: white;
-            border: 3px solid #ffb6c1;
-            color: #ff7eb9;
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 0 #ffdaeb;
-            font-size: 15px;
-            outline: none;
+            background: white; border: 3px solid #ffb6c1; color: #ff7eb9;
+            padding: 12px 20px; border-radius: 30px; font-weight: bold;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 4px 0 #ffdaeb;
+            font-size: 15px; outline: none;
         }
-        .kawaii-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #ffdaeb; background: #fffcfd; }
+        .kawaii-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #ffdaeb; }
         .kawaii-btn:active { transform: translateY(2px); box-shadow: none; }
 
         .stage {
@@ -33,17 +26,20 @@
             max-width: 500px;
         }
 
-        .my-img { width: 200px; transition: 0.3s ease; cursor: pointer; filter: drop-shadow(0 10px 10px rgba(255,182,193,0.3)); }
+        .my-img { width: 200px; transition: 0.3s ease; cursor: pointer; }
         .bounce { animation: bounce 0.8s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); }
-        @keyframes bounce { from { transform: translateY(0) scale(1); } to { transform: translateY(-15px) scale(1.02); } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
         
+        /* 秘密のオーラ（なかよし度100で発動） */
+        .max-aura { filter: drop-shadow(0 0 15px #ff7eb9); animation: rainbow 2s infinite; }
+        @keyframes rainbow { 0% { filter: hue-rotate(0deg) drop-shadow(0 0 15px #ff7eb9); } 100% { filter: hue-rotate(360deg) drop-shadow(0 0 15px #ff7eb9); } }
+
         .speech-bubble {
             background: #fff4f9; border: 3px solid #ffdaeb; border-radius: 25px;
             padding: 20px; margin-bottom: 30px; min-height: 80px;
             display: flex; align-items: center; justify-content: center;
             font-weight: bold; color: #555; position: relative;
         }
-        /* 吹き出しのしっぽ */
         .speech-bubble::after {
             content: ""; position: absolute; bottom: -15px; left: 50%;
             border-width: 15px 15px 0; border-style: solid; border-color: #ffdaeb transparent;
@@ -51,9 +47,8 @@
         }
 
         .choice-container { display: none; flex-direction: column; gap: 10px; margin-top: 20px; }
-        
         .gauge-wrap { width: 80%; height: 16px; background: #ffeef2; border-radius: 10px; margin: 20px auto 5px; overflow: hidden; border: 2px solid #ffdaeb; }
-        #love-bar { height: 100%; background: linear-gradient(to right, #ffb6c1, #ff7eb9); width: 50%; transition: 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        #love-bar { height: 100%; background: linear-gradient(to right, #ffb6c1, #ff7eb9); width: 50%; transition: 1s; }
         
         .play-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 500px; margin: 20px auto; }
     </style>
@@ -75,12 +70,13 @@
         <div id="has-data" style="display:none;">
             <div class="stage">
                 <div id="status-label" style="font-size: 14px; color: #ff7eb9; font-weight: bold; margin-bottom: 15px; background: #fff0f5; display: inline-block; padding: 5px 15px; border-radius: 20px;"></div>
-                <div class="speech-bubble" id="msg-text">お迎えありがとうございます！</div>
+                <div class="speech-bubble" id="msg-text">おかえり！待ってたよ！</div>
                 
                 <img id="partner-img" class="my-img bounce" src="" onclick="playAction('なでる')">
                 
                 <div class="gauge-wrap"><div id="love-bar"></div></div>
                 <div style="font-size: 13px; color: #ff7eb9; font-weight: bold;">なかよしレベル: <span id="love-num">50</span>%</div>
+                <div id="last-time" style="font-size: 10px; color: #ccc; margin-top: 5px;"></div>
 
                 <div id="choices" class="choice-container"></div>
             </div>
@@ -95,43 +91,51 @@
     <script>
         let love = 50;
         let partner = null;
+        let charaKey = "";
 
         const charaSettings = {
             "risu.PNG": { 
                 name: "きゅうりす", 
                 talks: [
                     { q: "最近、心のバランスはどう？", choices: [{t: "バッチリ！", l: 10, r: "最高だね！僕も整っちゃうよ。"}, {t: "ちょっと不安…", l: 5, r: "大丈夫。僕と一緒に深呼吸しよう。"}] },
-                    { q: "キッチン、もう少し片付けてみる？", choices: [{t: "今すぐやる！", l: 10, r: "いい心がけだね！手伝うよ！"}, {t: "後でいいや…", l: -5, r: "耳が痛いなぁ。僕も気をつけるね。"}] }
-                ]
+                    { q: "今の自分、好きになれてる？", choices: [{t: "大好き！", l: 15, r: "その調子！自分を愛するのが一番の美容だよ。"}, {t: "まだ自信ない", l: 5, r: "ゆっくりでいいんだ。僕が君の味方だよ。"}] }
+                ],
+                maxMsg: "君との調和は完璧だよ。これからもずっと、隣にいさせてね。"
             },
             "buta.PNG": { 
                 name: "かぶた", 
                 talks: [
                     { q: "お腹空いてない？何か食べるぅ？", choices: [{t: "お菓子食べたい！", l: 10, r: "いいよぉ。半分こしようねぇ。"}, {t: "今は大丈夫", l: 5, r: "えらいねぇ。あとでお茶入れようねぇ。"}] },
-                    { q: "今日は一緒に寝てもいいかなぁ？", choices: [{t: "もちろん！", l: 15, r: "嬉しいなぁ。あったかくして寝ようねぇ。"}, {t: "一人がいいな", l: -10, r: "しゅん…枕の端っこで我慢するよぉ。"}] }
-                ]
-            },
-            "kuma.PNG": { 
-                name: "くろいちじくま", 
-                talks: [
-                    { q: "……月が綺麗だね。君はどう思う？", choices: [{t: "本当に綺麗だね", l: 10, r: "……心が通じ合った気がするよ。"}, {t: "団子が食べたい", l: 0, r: "……フフ、君らしいね。悪くない。"}] },
-                    { q: "……僕のミステリアスな部分、気になる？", choices: [{t: "もっと知りたい", l: 10, r: "……少しずつ、僕の秘密を教えてあげる。"}, {t: "そのままでいいよ", l: 5, r: "……君のそういう寛容なところ、好きだよ。"}] }
-                ]
+                    { q: "私のこと、ずっと可愛がってくれるぅ？", choices: [{t: "もちろん！", l: 15, r: "嬉しいなぁ。私も君のことがだ〜いすき！"}, {t: "どうかな？", l: -10, r: "しゅん…もっといい子にするから見捨てないでぇ。"}] }
+                ],
+                maxMsg: "君の優しさに包まれて、私は世界一幸せなかぶただよぉ♡"
             }
-            // 他のキャラも同様にtalks配列を増やせば無限に会話できます
+            // ...他のキャラも同様に追加可能
         };
 
-        // デフォルトの共通会話（設定がないキャラ用）
         const defaultTalks = [
-            { q: "ねぇねぇ、私のこと好き？", choices: [{t: "大好き！", l: 10, r: "わーい！私も大好きだよ！"}, {t: "普通かな", l: -5, r: "もっと仲良くなれるように頑張るね！"}] },
-            { q: "今日はおしゃれして出かけるの？", choices: [{t: "可愛くしていくよ！", l: 10, r: "楽しみ！写真撮らせてね！"}, {t: "家でゆっくりする", l: 5, r: "のんびりタイム、最高だよね。"}] }
+            { q: "ねぇねぇ、最近頑張ってることある？", choices: [{t: "自分磨き！", l: 10, r: "素敵！もっとキラキラになっちゃうね！"}, {t: "のんびりすること", l: 10, r: "それも大事な努力だよ。ゆっくり休もう。"}] },
+            { q: "私のこと、1日に何回くらい思い出す？", choices: [{t: "ずっと考えてる", l: 15, r: "えへへ、照れちゃうけど嬉しい！"}, {t: "たまにかな", l: -5, r: "もっとアピールしなきゃ！見ててね！"}] }
         ];
 
         document.addEventListener('DOMContentLoaded', function() {
             const saved = localStorage.getItem('myHagumo');
             if (saved) {
                 const data = JSON.parse(saved);
-                partner = charaSettings[data.img] || { name: "ハグモ", talks: defaultTalks };
+                charaKey = data.img;
+                partner = charaSettings[charaKey] || { name: "ハグモ", talks: defaultTalks, maxMsg: "君のことが一番大好きだよ！" };
+                love = data.love || 50;
+                
+                // 放置ペナルティ計算 (1時間につき1%減少)
+                const now = new Date().getTime();
+                if (data.lastUpdate) {
+                    const hours = Math.floor((now - data.lastUpdate) / (1000 * 60 * 60));
+                    if (hours > 0) {
+                        love = Math.max(0, love - hours);
+                        document.getElementById('msg-text').innerText = "しばらく会えなくて寂しかったよぉ…";
+                    }
+                }
+
                 document.getElementById('partner-img').src = `./images/${data.img}`;
                 document.getElementById('status-label').innerText = partner.name + "とお部屋にいます";
                 document.getElementById('has-data').style.display = 'block';
@@ -142,16 +146,37 @@
         function updateGauge() {
             document.getElementById('love-bar').style.width = love + '%';
             document.getElementById('love-num').innerText = love;
+            
+            const img = document.getElementById('partner-img');
+            if (love >= 100) {
+                img.classList.add('max-aura');
+            } else {
+                img.classList.remove('max-aura');
+            }
+            saveData();
+        }
+
+        function saveData() {
+            const saved = JSON.parse(localStorage.getItem('myHagumo'));
+            saved.love = love;
+            saved.lastUpdate = new Date().getTime();
+            localStorage.setItem('myHagumo', JSON.stringify(saved));
         }
 
         function playAction(type) {
             const msg = document.getElementById('msg-text');
+            if (love >= 100) {
+                msg.innerText = partner.maxMsg;
+                createHeart(true); // 特別な大きなハート
+                return;
+            }
+            
             if(type === 'なでる') {
                 love = Math.min(love + 1, 100);
-                const reactions = ["えへへ、気持ちいい〜！", "もっとやってぇ〜♡", "元気が出てきたよ！", "癒やされるぅ……"];
+                const reactions = ["えへへ、気持ちいい〜！", "もっとやってぇ〜♡", "元気が出てきたよ！"];
                 msg.innerText = reactions[Math.floor(Math.random() * reactions.length)];
                 updateGauge();
-                createHeart();
+                createHeart(false);
             }
         }
 
@@ -159,7 +184,11 @@
             const msg = document.getElementById('msg-text');
             const choiceBox = document.getElementById('choices');
             
-            // 全会話リストからランダムに選択
+            if (love >= 100) {
+                msg.innerText = "君と話してると、胸がいっぱいになっちゃう……。いつもありがとう！";
+                return;
+            }
+
             const allTalks = (partner.talks || []).concat(defaultTalks);
             const randomTalk = allTalks[Math.floor(Math.random() * allTalks.length)];
             
@@ -182,28 +211,26 @@
             });
         }
 
-        function createHeart() {
+        function createHeart(isMax) {
             const h = document.createElement('div');
-            h.innerText = '💗';
+            h.innerText = isMax ? '💖' : '💗';
             h.style.position = 'absolute';
-            h.style.left = (Math.random() * 60 + 20) + '%';
-            h.style.top = '40%';
-            h.style.fontSize = '30px';
+            h.style.left = '50%';
+            h.style.fontSize = isMax ? '60px' : '30px';
             h.style.pointerEvents = 'none';
-            h.style.animation = 'floatUp 1.2s forwards';
+            h.style.animation = 'floatUp 1.5s forwards';
             document.querySelector('.stage').appendChild(h);
-            setTimeout(() => h.remove(), 1200);
+            setTimeout(() => h.remove(), 1500);
         }
     </script>
     <style>
-        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-120px) scale(1.5); } }
-        /* ナビゲーション等の共通CSS */
+        @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -150px) scale(2); } }
+        /* ナビゲーション共通 */
         .navbar { position: fixed; top: 0; width: 100%; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 1000; }
         .nav-content { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: 'Zen Maru Gothic'; font-weight: bold; font-size: 20px; color: #ff7eb9; text-decoration: none; }
-        .nav-links a { margin-left: 20px; text-decoration: none; color: #888; font-size: 14px; font-weight: bold; transition: 0.3s; }
-        .nav-links a.active, .nav-links a:hover { color: #ff7eb9; }
+        .nav-links a { margin-left: 20px; text-decoration: none; color: #888; font-size: 14px; font-weight: bold; }
+        .nav-links a.active { color: #ff7eb9; }
     </style>
-    <script src="./common.js"></script>
 </body>
 </html>
