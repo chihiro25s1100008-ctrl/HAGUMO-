@@ -50,4 +50,13 @@ body {
   color: white;
   text-decoration: none;
   font-weight: bold;
+.nav {
+  display: flex;
+  justify-content: space-between; /* ロゴとリンクを離す */
+  align-items: center;
+  padding: 10px 40px;
+}
+.nav-links {
+  display: flex;
+  gap: 20px;
 }
