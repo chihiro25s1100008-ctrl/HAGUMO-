@@ -3,28 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAGUMO 精密診断＆相性占い</title>
+    <title>HAGUMO | 運命のパートナー診断</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-pink: #ff7eb9; --sub-pink: #ffdaeb; --bg: #fff9fb; }
+        :root { --main-pink: #ff7eb9; --sub-pink: #ffdaeb; --bg: #fff9fb; --line-green: #06C755; }
         body { margin: 0; background: var(--bg); font-family: 'Zen Maru Gothic', sans-serif; color: #444; }
         
-        /* ナビゲーション復活 */
         .navbar { position: fixed; top: 0; width: 100%; height: 60px; background: white; z-index: 1000; border-bottom: 2px solid var(--sub-pink); display: flex; align-items: center; justify-content: center; }
         .nav-logo-img { height: 35px; }
 
-        .container { margin-top: 80px; padding: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 25px rgba(255,126,185,0.1); border: 2px solid var(--sub-pink); margin-bottom: 25px; text-align: center; }
-        .btn { background: white; border: 2px solid var(--sub-pink); padding: 14px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #666; font-size: 14px; transition: 0.2s; width: 100%; margin: 8px 0; }
-        .btn:hover { background: var(--main-pink); color: white; transform: translateY(-2px); }
-        .f-select { width: 100%; padding: 12px; border-radius: 15px; border: 1px solid var(--sub-pink); margin-bottom: 12px; font-family: inherit; }
+        .container { margin-top: 100px; padding: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
         
-        /* 診断結果エリア */
+        /* 共通カードスタイル */
+        .card { background: white; border-radius: 35px; padding: 30px; box-shadow: 0 10px 30px rgba(255,126,185,0.15); border: 2px solid var(--sub-pink); text-align: center; margin-bottom: 25px; }
+        
+        /* 質問エリア */
+        .progress-bar { font-size: 13px; color: var(--main-pink); font-weight: bold; margin-bottom: 10px; }
+        .question-text { font-size: 18px; font-weight: bold; margin: 25px 0; line-height: 1.5; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        .choice-btn { background: white; border: 2px solid var(--sub-pink); padding: 14px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #666; font-size: 15px; transition: 0.2s; width: 100%; margin: 8px 0; outline: none; }
+        .choice-btn:hover { background: var(--main-pink); color: white; transform: translateY(-2px); }
+
+        /* 結果エリア */
         #result-area { display: none; }
-        .best-partner { background: #fff0f5; border-radius: 15px; padding: 10px; margin-top: 15px; border: 1px dashed var(--main-pink); }
+        .res-img { width: 220px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1)); margin: 15px 0; animation: bounce 2s infinite alternate ease-in-out; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
         
-        /* 相性の理由 */
-        #comp-reason { font-size: 13px; color: #777; margin-top: 10px; line-height: 1.5; padding: 10px; background: #fafafa; border-radius: 10px; }
+        .res-name { color: var(--main-pink); font-size: 24px; margin: 10px 0; }
+        .res-desc { font-size: 14px; line-height: 1.7; color: #666; background: #fffafa; padding: 15px; border-radius: 20px; margin-bottom: 20px; }
+
+        /* シェアボタン */
+        .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .sns-btn { color: white; padding: 12px; border-radius: 25px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .sns-btn:hover { opacity: 0.8; transform: scale(1.02); }
+        .btn-x { background: #000; }
+        .btn-line { background: var(--line-green); }
+
+        /* 相性占いエリア */
+        .aisyo-section { margin-top: 30px; padding-top: 30px; border-top: 2px dashed var(--sub-pink); }
+        .f-select { width: 100%; padding: 12px; border-radius: 20px; border: 2px solid var(--sub-pink); margin-bottom: 10px; font-family: inherit; font-size: 14px; background: #fffaff; color: #666; }
+        .comp-box { display: none; background: #fff0f5; border: 2px solid var(--sub-pink); border-radius: 20px; padding: 15px; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -33,135 +50,142 @@
 
 <div class="container">
     <div class="card" id="q-area">
-        <div id="q-progress" style="font-size:12px; color:var(--main-pink); font-weight:bold;">Q 1 / 20</div>
-        <div id="q-text" style="font-size:1.1rem; font-weight:bold; margin: 20px 0;"></div>
+        <div class="progress-bar" id="q-progress">しつもん 1 / 20</div>
+        <div class="question-text" id="q-text"></div>
         <div id="q-choices"></div>
     </div>
 
-    <div class="card" id="result-area">
-        <h2 style="color:var(--main-pink);">診断結果</h2>
-        <img id="res-img" src="" style="width:200px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));">
-        <h2 id="res-name"></h2>
-        <p id="res-desc" style="font-size:14px;"></p>
-        <div class="best-partner">
-            <span style="font-size:12px; font-weight:bold; color:var(--main-pink);">❤️ あなたと最も相性がいいのは...</span>
-            <div id="best-partner-name" style="font-weight:bold; margin-top:5px;"></div>
+    <div id="result-area">
+        <div class="card">
+            <div style="font-size:13px; color:var(--main-pink); font-weight:bold;">あなたにぴったりのパートナーは…</div>
+            <img id="res-img" class="res-img" src="">
+            <h2 id="res-name" class="res-name"></h2>
+            <div id="res-desc" class="res-desc"></div>
+            
+            <button class="choice-btn" style="background:var(--main-pink); color:white; border:none; padding:18px;" onclick="location.href='my.html'">この子に会いに行く！</button>
+            
+            <div class="share-grid">
+                <button class="sns-btn btn-x" onclick="shareX()">𝕏でシェア</button>
+                <button class="sns-btn btn-line" onclick="shareLine()">LINEで送る</button>
+            </div>
         </div>
-        <button class="btn" style="background:var(--main-pink); color:white; margin-top:20px;" onclick="goToMyPage()">この子をマイページで育てる！</button>
-    </div>
 
-    <div class="card">
-        <h3 style="color:var(--main-pink);">🤝 ハグモ相性占い</h3>
-        <select id="my-s" class="f-select"></select>
-        <select id="fr-s" class="f-select"></select>
-        <button class="btn" onclick="checkComp()">二人の相性を占う！</button>
-        <div id="comp-res" style="margin-top:15px; font-weight:bold; color:var(--main-pink); font-size:1.2rem;"></div>
-        <div id="comp-reason">ハグモを選択して占ってみてね！</div>
+        <div class="card aisyo-section">
+            <h3 style="color:var(--main-pink); font-size:1.1rem; margin-bottom:5px;">🤝 ハグモ相性占い</h3>
+            <p style="font-size:12px; color:#999; margin-bottom:15px;">気になる子との相性を占ってみよう！</p>
+            <select id="char1" class="f-select"></select>
+            <select id="char2" class="f-select"></select>
+            <button class="choice-btn" onclick="checkComp()">キズナをチェック！</button>
+            <div id="comp-result" class="comp-box">
+                <div id="comp-score" style="font-size:26px; font-weight:bold; color:var(--main-pink);"></div>
+                <div id="comp-reason" style="font-size:13px; margin-top:8px; line-height:1.5;"></div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
 const chars = [
-    {id:"buta.PNG", name:"かぶた", type:"ISFJ", best:"jaku.PNG", desc:"献身的で優しい平和主義者。"},
-    {id:"tora.PNG", name:"とまとら", type:"ESTP", best:"kuma.PNG", desc:"情熱的でスリルを愛する挑戦者。"},
-    {id:"risu.PNG", name:"きゅうりす", type:"INFJ", best:"chabo.PNG", desc:"深い洞察力を持つ共感の天才。"},
-    {id:"saru.PNG", name:"れもんきー", type:"ENFP", best:"imo.PNG", desc:"自由な発想で周りを明るくする自由人。"},
-    {id:"kame.PNG", name:"ぶるーべりくがめ", type:"INTJ", desc:"冷静沈着で知的な戦略家。", best:"nga.PNG"},
-    {id:"imo.PNG", name:"さつまいもぐら", type:"ISTJ", desc:"コツコツ積み上げる誠実な努力家。", best:"saru.PNG"},
-    {id:"nga.PNG", name:"もももんが", type:"ESFP", desc:"今この瞬間を楽しむ愛されアイドル。", best:"kame.PNG"},
-    {id:"kuma.PNG", name:"くろいちじくま", type:"INFP", desc:"独自の感性を持つ心優しい芸術家。", best:"tora.PNG"},
-    {id:"chabo.PNG", name:"かぼちゃぼ", type:"ENTP", desc:"知的好奇心旺盛なアイデアマン。", best:"risu.PNG"},
-    {id:"jaku.PNG", name:"ばたふらいぴーこっく", type:"ENTJ", desc:"自信に満ち溢れたカリスマリーダー。", best:"buta.PNG"}
+    {id:"buta.PNG", name:"かぶた", type:"ISFJ", desc:"癒やし度No.1！いつもそばにいてくれる優しい子。"},
+    {id:"tora.PNG", name:"とまとら", type:"ESTP", desc:"情熱たっぷり！冒険へ連れ出してくれるリーダー。"},
+    {id:"risu.PNG", name:"きゅうりす", type:"INFJ", desc:"あなたの心に静かに寄り添う、理解者さん。"},
+    {id:"saru.PNG", name:"れもんきー", type:"ENFP", desc:"毎日をワクワクに変える、自由なアイディアマン。"},
+    {id:"kame.PNG", name:"ぶるーべりくがめ", type:"INTJ", desc:"冷静でスマート。あなたのピンチを救う戦略家。"},
+    {id:"imo.PNG", name:"さつまいもぐら", type:"ISTJ", desc:"誠実で真面目。一歩ずつ一緒に歩める努力家。"},
+    {id:"nga.PNG", name:"もももんが", type:"ESFP", desc:"笑顔の天才！甘えん坊な愛されアイドル。"},
+    {id:"kuma.PNG", name:"くろいちじくま", type:"INFP", desc:"独自の世界観を持つ、心優しい芸術家。"},
+    {id:"chabo.PNG", name:"かぼちゃぼ", type:"ENTP", desc:"ポジティブ全開！驚きをくれる魔法使い。"},
+    {id:"jaku.PNG", name:"ばたふらいぴーこっく", type:"ENTJ", desc:"自信満々！あなたをリードする頼れる存在。"}
 ];
 
 const questions = [
-    {t:"休日は一人で静かに過ごすのが好きだ", v:"I"}, {t:"直感よりも、具体的な事実を信じる", v:"S"},
-    {t:"決断するときは理屈より感情を優先する", v:"F"}, {t:"散らかった部屋にいると落ち着かない", v:"J"},
-    {t:"初対面の人ともすぐに打ち解けられる", v:"E"}, {t:"未来の可能性について考えるのが好きだ", v:"N"},
-    {t:"人の気持ちより、正論の方が大切だと思う", v:"T"}, {t:"予定は決めず、その時の気分で動きたい", v:"P"},
-    {t:"パーティーより静かなカフェが好きだ", v:"I"}, {t:"細かい作業やルーチンワークが得意だ", v:"S"},
-    {t:"物語の裏に隠された意味を考えるのが好きだ", v:"N"}, {t:"何かを決める時はメリット・デメリットで考える", v:"T"},
-    {t:"自分から話題を振るのが得意だ", v:"E"}, {t:"他人の感情の変化に敏感な方だ", v:"F"},
-    {t:"期限は必ず守るし、準備も早めにする", v:"J"}, {t:"想定外のハプニングも楽しめる", v:"P"},
-    {t:"グループの中でリーダーになることが多い", v:"E"}, {t:"伝統や実績があるものを信頼する", v:"S"},
-    {t:"他人の悩みを聞くのが得意だ", v:"F"}, {t:"物事を整理・分類するのが好きだ", v:"J"}
+    {t:"休日は外で遊ぶより、お家でのんびりしたい", v:"I"},
+    {t:"映画を観るとき、ストーリーより映像の美しさが気になる", v:"S"},
+    {t:"理由よりも「その時の気持ち」を大切にしたい", v:"F"},
+    {t:"予定はきっちり決めてから動きたい", v:"J"},
+    {t:"知らない人がいる場所でもすぐに馴染める", v:"E"},
+    {t:"「もしも魔法が使えたら」と空想するのが好き", v:"N"},
+    {t:"悩み相談には、共感より解決策がほしい", v:"T"},
+    {t:"机の上は散らかっているほうが落ち着く", v:"P"},
+    {t:"大人数より、1人や少人数のほうが楽だ", v:"I"},
+    {t:"マニュアルを読むより、まずやってみる派だ", v:"S"},
+    {t:"物語の裏側や伏線を考えるのが好き", v:"N"},
+    {t:"物事は感情を挟まず冷静に考えたい", v:"T"},
+    {t:"自分から声をかけるより、待つほうだ", v:"I"},
+    {t:"困っている人を放っておけない", v:"F"},
+    {t:"提出物は期限のずっと前に終わらせる", v:"J"},
+    {t:"その場の思いつきで動くのが楽しい", v:"P"},
+    {t:"人前で注目されるのは嫌いじゃない", v:"E"},
+    {t:"新しいものより、いつものやり方が安心する", v:"S"},
+    {t:"誰かの笑顔を見ると自分も嬉しくなる", v:"F"},
+    {t:"部屋の片付けは完璧にしたい", v:"J"}
 ];
 
-let step = 0; let mbti = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+let step = 0, score = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}, finalChar = null;
 
 function showQ() {
     const q = questions[step];
-    document.getElementById('q-progress').innerText = `Q ${step+1} / 20`;
-    document.getElementById('q-text').innerText = q.text || q.t;
-    const box = document.getElementById('q-choices'); box.innerHTML = '';
-    [{l:"そう思う", a:1}, {l:"そう思わない", a:0}].forEach(o => {
-        const b = document.createElement('button'); b.className='btn'; b.innerText=o.l;
-        b.onclick=()=>{ 
-            const val = o.a ? q.v : {E:"I",I:"E",S:"N",N:"S",T:"F",F:"T",J:"P",P:"J"}[q.v];
-            mbti[val]++;
-            step++; if(step<questions.length) showQ(); else showRes(); 
+    document.getElementById('q-progress').innerText = `しつもん ${step+1} / 20`;
+    document.getElementById('q-text').innerText = q.t;
+    const box = document.getElementById('q-choices');
+    box.innerHTML = '';
+    [{t:"すごくそう思う", a:2}, {t:"そう思う", a:1}, {t:"あまり思わない", a:-1}, {t:"全然思わない", a:-2}].forEach(o => {
+        const b = document.createElement('button');
+        b.className='choice-btn';
+        b.innerText=o.t;
+        b.onclick=()=>{
+            let k = o.a>0 ? q.v : {E:"I",I:"E",S:"N",N:"S",T:"F",F:"T",J:"P",P:"J"}[q.v];
+            score[k] += Math.abs(o.a);
+            step++;
+            if(step < questions.length) showQ(); else showRes();
         };
         box.appendChild(b);
     });
 }
 
 function showRes() {
-    let type = (mbti.E>=mbti.I?"E":"I")+(mbti.N>=mbti.S?"N":"S")+(mbti.T>=mbti.F?"T":"F")+(mbti.J>=mbti.P?"J":"P");
-    let best = chars[0]; let max = -1;
-    chars.forEach(c => {
-        let match = 0; for(let i=0; i<4; i++) if(c.type[i]===type[i]) match++;
-        if(match > max) { max = match; best = c; }
-    });
+    let type = (score.E>=score.I?"E":"I")+(score.N>=score.S?"N":"S")+(score.T>=score.F?"T":"F")+(score.J>=score.P?"J":"P");
+    finalChar = chars.find(c => c.type === type) || chars[0];
+    localStorage.setItem('myHagumo', JSON.stringify({img: finalChar.id, love: 50}));
+    
     document.getElementById('q-area').style.display='none';
     document.getElementById('result-area').style.display='block';
-    document.getElementById('res-img').src = `./images/${best.id}`;
-    document.getElementById('res-name').innerText = best.name;
-    document.getElementById('res-desc').innerText = `あなたは【${type}】タイプ。${best.desc}`;
-    const partner = chars.find(c => c.id === best.best);
-    document.getElementById('best-partner-name').innerText = partner.name;
-    localStorage.setItem('myHagumo_ID', best.id);
+    document.getElementById('res-img').src = `./images/${finalChar.id}`;
+    document.getElementById('res-name').innerText = finalChar.name;
+    document.getElementById('res-desc').innerText = finalChar.desc;
+
+    const s1 = document.getElementById('char1'), s2 = document.getElementById('char2');
+    chars.forEach(c => {
+        s1.add(new Option(c.name, c.id));
+        s2.add(new Option(c.name, c.id));
+    });
+    s1.value = finalChar.id;
+}
+
+function shareX() {
+    const text = `私にぴったりのハグモは「${finalChar.name}」でした！🎀\nみんなも運命のパートナーを見つけてね！\n#MYHAGUMO #ハグモ診断`;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
+}
+
+function shareLine() {
+    const text = `私にぴったりのハグモは「${finalChar.name}」だったよ！🎀 みんなは何タイプかな？診断してみてね！\n${window.location.href}`;
+    window.open(`https://social-plugins.line.me/lineit/share?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 function checkComp() {
-    const s1 = document.getElementById('my-s').value;
-    const s2 = document.getElementById('fr-s').value;
-    const c1 = chars.find(c=>c.id===s1);
-    const c2 = chars.find(c=>c.id===s2);
+    const c1 = chars.find(c => c.id === document.getElementById('char1').value);
+    const c2 = chars.find(c => c.id === document.getElementById('char2').value);
+    let m = 0;
+    for(let i=0; i<4; i++) if(c1.type[i] === c2.type[i]) m++;
+    let s = 60 + (m * 10);
+    if(c1.id === c2.id) s = 99;
     
-    // 性格の共通点数を計算
-    let matches = 0;
-    for(let i=0; i<4; i++) if(c1.type[i]===c2.type[i]) matches++;
-    
-    let score = 0;
-    let reason = "";
-
-    if(matches === 4) {
-        score = 95;
-        reason = "似た者同士で、言葉がなくても分かり合える最高の理解者です！";
-    } else if(matches === 0) {
-        score = 88;
-        reason = "正反対だからこそ、お互いの持っていない部分を補い合える最強の凸凹コンビ！";
-    } else if(matches >= 2) {
-        score = 75 + (matches * 5);
-        reason = "価値観のベースが同じなので、一緒にいてとても居心地が良い関係です。";
-    } else {
-        score = 60 + (Math.random() * 10);
-        reason = "刺激し合える関係。お互いの違いを認め合うことで、新しい発見があるはず！";
-    }
-
-    document.getElementById('comp-res').innerText = `相性：${Math.floor(score)}%！`;
-    document.getElementById('comp-reason').innerText = reason;
+    document.getElementById('comp-result').style.display = 'block';
+    document.getElementById('comp-score').innerText = `相性 ${s}%`;
+    document.getElementById('comp-reason').innerText = m >= 3 ? "お互いのことが手に取るようにわかる、運命のパズルが重なる相性です！" : "お互いの個性を高め合える、ポジティブで楽しい関係になれそう！";
 }
 
-window.onload = () => {
-    const s1 = document.getElementById('my-s'); const s2 = document.getElementById('fr-s');
-    chars.forEach(c => { 
-        s1.innerHTML+=`<option value="${c.id}">${c.name}</option>`; 
-        s2.innerHTML+=`<option value="${c.id}">${c.name}</option>`; 
-    });
-    showQ();
-};
-function goToMyPage() { window.location.href = 'mypage.html'; }
+window.onload = showQ;
 </script>
 </body>
 </html>
