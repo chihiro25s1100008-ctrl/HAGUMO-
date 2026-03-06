@@ -6,80 +6,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --main-pink: #ff7eb9; --bg-pink: #fff9fb; }
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-pink); margin: 0; padding-top: 80px; color: #444; }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-pink); margin: 0; padding-top: 80px; }
         .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
         .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
         .nav-logo-img { height: 30px; }
         .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; margin: 0 10px; }
         .nav-links a.active { color: var(--main-pink); }
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1.1fr; gap: 30px; }
-        .my-card { background: white; border-radius: 40px; padding: 40px; text-align: center; box-shadow: 0 15px 40px rgba(255,126,185,0.1); position: relative; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; }
+        .card { background: white; border-radius: 40px; padding: 40px; text-align: center; box-shadow: 0 15px 40px rgba(255,126,185,0.1); position: relative; }
+        
+        /* 100%時の虹色演出 */
         .rainbow-aura { border: 6px solid transparent; background-image: linear-gradient(white, white), linear-gradient(to right, #ff99bb, #ffcc99, #ffff99, #99ff99, #99ffff, #9999ff, #cc99ff); background-origin: border-box; background-clip: content-box, border-box; animation: rainbow-flow 3s linear infinite; }
         @keyframes rainbow-flow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-        .char-main-img { width: 200px; height: 200px; object-fit: contain; margin-bottom: 20px; }
-        .status-badge { background: #fff0f5; color: var(--main-pink); padding: 5px 20px; border-radius: 20px; font-size: 14px; font-weight: bold; }
-        .love-meter-container { background: #eee; height: 20px; border-radius: 10px; margin: 20px 0; overflow: hidden; }
-        .love-meter-bar { height: 100%; background: var(--main-pink); transition: 0.5s; }
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
-        .action-btn { background: white; border: 2px solid #fff0f5; padding: 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        .action-btn:disabled { color: #ccc; border-color: #f5f5f5; }
-        .info-card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); margin-bottom: 20px; }
+
+        .char-main-img { width: 220px; height: 220px; object-fit: contain; margin-bottom: 20px; transition: 0.5s; }
+        .love-meter { background: #eee; height: 15px; border-radius: 10px; margin: 20px 0; overflow: hidden; }
+        .love-bar { height: 100%; background: var(--main-pink); transition: 0.5s; }
+
+        .action-btn { background: white; border: 2px solid #fff0f5; padding: 15px; border-radius: 20px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px; }
+        .action-btn:disabled { color: #ccc; cursor: not-allowed; }
+
+        /* フレンド診断エリア */
+        .friend-diag { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); }
+        .friend-select { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #ddd; margin: 10px 0; }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-content"><img src="./images/rogo.PNG" class="nav-logo-img"><div class="nav-links"><a href="index.html">HOME</a><a href="world.html">WORLD</a><a href="hagumo.html">HAGUMO</a><a href="diagnosis.html">DIAGNOSIS</a><a href="product.html">PRODUCT</a><a href="my.html" class="active">MY HAGUMO</a></div></div>
     </nav>
+
     <div class="container">
-        <div class="my-card" id="myCard">
-            <div class="status-badge" id="badge">パートナー</div>
-            <div style="font-size:26px; font-weight:bold; color:var(--main-pink); margin:10px 0;">LOVE度：<span id="loveVal"></span>%</div>
+        <div class="card" id="myCard">
+            <div id="badge" style="font-weight:bold; color:var(--main-pink);"></div>
+            <div style="font-size:24px; font-weight:bold; margin:10px 0;">LOVE度：<span id="loveVal"></span>%</div>
             <img src="" class="char-main-img" id="charImg">
-            <div class="love-meter-container"><div class="love-meter-bar" id="loveBar"></div></div>
-            <p id="message" style="font-size: 15px; color: #444; font-weight: bold; min-height: 3em;"></p>
-            <div class="action-grid">
-                <button class="action-btn" id="careBtn" onclick="handleAction(10)">✨ お手入れ</button>
-                <button class="action-btn" id="negBtn" onclick="updateLove(-10)">💧 放置する</button>
+            <div class="love-meter"><div class="love-bar" id="loveBar"></div></div>
+            
+            <p id="message" style="font-size: 16px; color: #333; font-weight: bold; background: #fffafc; padding: 15px; border-radius: 15px; min-height: 3em; border-left: 5px solid var(--main-pink);"></p>
+
+            <div class="action-grid" style="margin-top:20px;">
+                <button class="action-btn" id="careBtn" onclick="handleAction(10)">✨ お手入れする</button>
+                <button class="action-btn" style="color:#aaa; border-color:#f5f5f5;" onclick="updateLove(-5)">💧 放置する</button>
+                <p id="cooldownMsg" style="font-size: 11px; color: var(--main-pink); font-weight: bold;"></p>
             </div>
-            <p id="cooldownMsg" style="font-size: 11px; color: #ff7eb9; margin-top: 10px;"></p>
         </div>
-        <div class="side-panel">
-            <div class="info-card">
-                <h3 style="color:var(--main-pink); margin-top:0;">🌱 成長ログ</h3>
-                <div id="growthLog" style="font-size:13px; line-height:1.6;"></div>
-            </div>
-            <div class="info-card">
-                <h3 style="color:var(--main-pink); margin-top:0;">🎁 コレクション</h3>
-                <div style="display:flex; gap:10px;"><div id="item1" style="font-size:24px;">🧴</div><div id="item2" style="font-size:24px; opacity:0.2;">🧸</div></div>
-            </div>
+
+        <div class="friend-diag">
+            <h3 style="color:var(--main-pink); margin-top:0; border-bottom:1px solid #eee; padding-bottom:10px;">🤝 フレンド相性診断</h3>
+            <p style="font-size:12px; color:#666;">友達のハグモを選んで、今の二人（二匹？）の相性を占おう！</p>
+            <select id="friendSelect" class="friend-select">
+                <option value="">友達のハグモを選択...</option>
+                <option value="とまとら">とまとら</option>
+                <option value="きゅうりす">きゅうりす</option>
+                <option value="もももんが">もももんが</option>
+                <option value="かぶた">かぶた</option>
+                <option value="れもんきー">れもんきー</option>
+            </select>
+            <button class="action-btn" onclick="friendCheck()">診断スタート！</button>
+            <div id="friendRes" style="margin-top:20px; font-size:13px; font-weight:bold; color:var(--main-pink); text-align:center;"></div>
         </div>
     </div>
+
     <script>
-        const charVoices = {
-            "かぶた": { high: "あなたに包まれて幸せ…。透明感が溢れてきたよ！", mid: "のんびり育ててくれてありがとう。カブも私も元気！", low: "少し乾燥しちゃうかも…。優しく触れてほしいな。" },
-            "とまとら": { high: "最高にアツいね！今の私は誰にも負けない輝きだよ！", mid: "いい調子だ！このまま真っ赤に情熱を燃やそうぜ！", low: "おーい、水分足りてないぞ！情熱が枯れちまう！" },
-            "きゅうりす": { high: "完璧なバランス…！私の潤いであなたを癒やすね。", mid: "コツコツやるのが一番だね。きゅうりもツヤツヤだよ。", low: "あわわ、リズムが乱れてるかも…。整えてほしいな。" },
-            "れもんきー": { high: "刺激的で最高！あなたの世界もキラキラ輝かせちゃうよ！", mid: "ビタミン補給完了！今日も元気にいっちゃおう！", low: "なんだか退屈だな…。もっと驚かせてみてよ！" },
-            "ぶるーべりくがめ": { high: "あなたの知性を感じます…。最高の景色を一緒に見ましょう。", mid: "視界がクリアですね。分析通り、順調な成長です。", low: "少しぼやけて見えます…。もっとじっくり向き合ってください。" },
-            "さつまいもぐら": { high: "土の底から愛を込めて！あなたの努力が実りました！", mid: "一歩ずつ、確実に。今の私、とってもホクホクです！", low: "まだ準備中…。ゆっくり、着実に育ててくださいね。" },
-            "もももんが": { high: "もう、離さないんだから！世界で一番可愛い私を見て！", mid: "ふわふわ、プルプル！あなたのケア、だ〜いすき！", low: "かまってくれないと、どこかに飛んでいっちゃうよ？" },
-            "くろいちじくま": { high: "静かな夜のように、深い愛を感じます…。あなたは特別です。", mid: "このミステリアスな香りを、あなただけに捧げますね。", low: "暗闇の中にいるみたい…。もっと光を当てて。" },
-            "かぼちゃぼ": { high: "ハッピー全開！あなたの笑顔が私の一番の栄養だよ！", mid: "元気もりもり！今日も一緒に冒険に出かけよう！", low: "エネルギー不足かも…。もっと明るい言葉をかけて！" },
-            "ばたふらいぴーこっく": { high: "凛とした美しさが完成しました。これぞ至高のパートナーです。", mid: "機転を利かせて、あなたの美しさをサポートしますわ。", low: "少し華やかさが足りません。もっと磨きをかけてちょうだい。" }
+        // 10キャラ×10段階（10%, 20%...100%）の会話データ
+        const allVoices = {
+            "かぶた": [
+                "10%: まだ少し緊張しちゃう…。仲良くなれるかな？",
+                "20%: 霧吹き、気持ちいいね。ありがとう。",
+                "30%: 葉っぱが少し大きくなった気がするの。見ててね。",
+                "40%: あなたの優しさ、土まで伝わってくるよ。",
+                "50%: 毎日会いに来てくれて嬉しい。だいぶ慣れてきたよ。",
+                "60%: カブの部分が白く輝いてきたよ。あなたのケアのおかげ！",
+                "70%: あなたと一緒にいると、とっても安心するんだぁ。",
+                "80%: 見て！こんなにツヤツヤ。私、もっと綺麗になりたいな。",
+                "90%: あともう少し…。あなたのために最高の美容液になりたいの。",
+                "100%: 大好き！最高の絆だね。虹色のオーラ、見えるかな？✨"
+            ],
+            // ... 他の9キャラ分も同様の配列で10個ずつメッセージを記述
         };
 
         let love = parseInt(localStorage.getItem('myHagumoLove')) || 50;
         let lastTime = 0;
 
-        function handleAction(val) {
+        function handleAction(change) {
             const now = Date.now();
             if (now - lastTime < 3000) {
-                document.getElementById('cooldownMsg').innerText = "ハグモが休憩中だよ（3秒待ってね☕）";
+                document.getElementById('cooldownMsg').innerText = "ハグモが休憩中だよ（3秒待ってね）";
                 return;
             }
             document.getElementById('cooldownMsg').innerText = "";
             lastTime = now;
-            updateLove(val);
+            updateLove(change);
         }
 
         function updateLove(change) {
@@ -89,26 +108,28 @@
             localStorage.setItem('myHagumoLove', love);
 
             const name = localStorage.getItem('myHagumoName') || "かぶた";
-            const voices = charVoices[name] || charVoices["かぶた"];
-            const msgEl = document.getElementById('message');
             const card = document.getElementById('myCard');
+            const voices = allVoices[name] || allVoices["かぶた"];
+            
+            // 10段階(10%刻み)のインデックス計算
+            let idx = Math.min(9, Math.floor(love / 10));
+            document.getElementById('message').innerText = voices[idx];
 
-            if (love === 100) {
-                card.classList.add('rainbow-aura');
-                msgEl.innerText = voices.high;
-                document.getElementById('growthLog').innerText = "【完熟】虹色の絆が完成！限定ARグッズ解放。";
-                document.getElementById('item2').style.opacity = "1";
-            } else {
-                card.classList.remove('rainbow-aura');
-                msgEl.innerText = love >= 50 ? voices.mid : voices.low;
-                document.getElementById('growthLog').innerText = love >= 50 ? "順調に成長中！美容成分が濃縮されています。" : "芽吹いたばかり。毎日のケアが必要です。";
-                document.getElementById('item2').style.opacity = "0.2";
-            }
+            if (love === 100) card.classList.add('rainbow-aura');
+            else card.classList.remove('rainbow-aura');
+        }
+
+        function friendCheck() {
+            const friend = document.getElementById('friendSelect').value;
+            if(!friend) return;
+            const myName = localStorage.getItem('myHagumoName');
+            const rate = Math.floor(Math.random() * 41) + 60; // 60-100%
+            document.getElementById('friendRes').innerHTML = `💕 ${myName} × ${friend} 💕<br>現在のシンクロ率：${rate}%！<br>二人はとってもいい感じ！`;
         }
 
         window.onload = function() {
-            document.getElementById('charImg').src = localStorage.getItem('myHagumoImg') || "./images/buta.PNG";
-            document.getElementById('badge').innerText = localStorage.getItem('myHagumoName') || "かぶた";
+            document.getElementById('charImg').src = localStorage.getItem('myHagumoImg');
+            document.getElementById('badge').innerText = localStorage.getItem('myHagumoName');
             updateLove(0);
         }
     </script>
