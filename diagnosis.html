@@ -3,55 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ハグモ性格診断 | HAGUMO</title>
+    <title>ハグモ本格性格診断 | HAGUMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
+        .progress-bar { width: 100%; height: 8px; background: #eee; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: #ff9ecb; transition: 0.3s; }
         .q-box { display: none; }
         .q-box.active { display: block; animation: fadeIn 0.5s; }
         .ans-btn {
-            display: block; width: 100%; max-width: 400px; margin: 15px auto;
+            display: block; width: 100%; max-width: 450px; margin: 10px auto;
             padding: 15px; border: 2px solid #ff9ecb; border-radius: 15px;
-            background: white; cursor: pointer; transition: 0.3s; font-size: 16px;
+            background: white; cursor: pointer; transition: 0.2s; font-size: 15px;
         }
-        .ans-btn:hover { background: #fff4f9; transform: scale(1.02); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .ans-btn:hover { background: #fff4f9; transform: translateY(-2px); border-color: #ff7eb9; }
         #result-area { display: none; }
-        .result-img { width: 200px; margin: 20px 0; }
+        .res-main-card { background: #fff; border-radius: 30px; padding: 20px; margin-bottom: 20px; }
+        .res-img { width: 180px; margin: 15px 0; }
+        .sub-res { display: flex; justify-content: center; gap: 15px; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ff9ecb; }
+        .sub-item img { width: 60px; border-radius: 50%; background: #fff4f9; padding: 5px; }
+        .sub-title { font-size: 13px; font-weight: bold; color: #ff7eb9; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌱 ハグモ性格診断</h1>
+        <h1>🌱 ハグモ本格性格診断</h1>
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        
         <div class="card">
             <div id="q-container">
-                <div class="q-box active" id="q1">
-                    <p>Q1. 週末の過ごし方は？</p>
-                    <button class="ans-btn" onclick="next(1, 'A')">外で元気に遊びたい！</button>
-                    <button class="ans-btn" onclick="next(1, 'B')">家でゆっくり読書やゲーム</button>
                 </div>
-                <div class="q-box" id="q2">
-                    <p>Q2. 好きな食べ物の系統は？</p>
-                    <button class="ans-btn" onclick="next(2, 'A')">シャキシャキお野菜</button>
-                    <button class="ans-btn" onclick="next(2, 'B')">甘くてジューシーなフルーツ</button>
-                </div>
-            </div>
 
             <div id="result-area">
-                <h2>あなたのパートナーは…</h2>
-                <div id="hagumo-res"></div>
-                <a href="diagnosis.html" class="button">もう一度診断する</a>
+                <p>診断結果</p>
+                <div class="res-main-card">
+                    <div id="main-catch" style="color:#ff7eb9; font-weight:bold;"></div>
+                    <div id="main-res-name" style="font-size:24px; margin:10px 0;"></div>
+                    <img id="main-res-img" class="res-img" src="">
+                    <p id="main-desc" style="font-size:14px; line-height:1.6;"></p>
+                </div>
+
+                <div class="sub-title">❤ 相性ぴったりのハグモ</div>
+                <div class="sub-res" id="sub-res-area"></div>
+                
+                <a href="diagnosis.html" class="button" style="margin-top:30px;">もう一度診断する</a>
             </div>
         </div>
     </div>
 
     <script>
-        let score = "";
-        function next(qNum, choice) {
-            score += choice;
-            document.getElementById(`q${qNum}`).classList.remove('active');
-            if (qNum < 2) {
-                document.getElementById(`q${qNum + 1}`).classList.add('active');
+        const questions = [
+            { q: "新しいことを始める時、まずは…", a: "ワクワクしてすぐ動く", b: "じっくり計画を立てる" },
+            { q: "友達と遊ぶなら？", a: "みんなでワイワイ！", b: "少人数で深く話したい" },
+            { q: "困っている人がいたら…", a: "すぐに声をかけて助ける", b: "陰ながら見守り、機を待つ" },
+            { q: "自分の性格を一言でいうと？", a: "感情豊かなタイプ", b: "冷静で理性的なタイプ" },
+            { q: "休日の理想は？", a: "アクティブに外へ！", b: "家で趣味に没頭" },
+            { q: "トラブルが起きたら…", a: "直感でなんとかする", b: "原因を分析して解決する" },
+            { q: "褒められて嬉しいのは？", a: "『面白いね！』", b: "『頼りになるね！』" },
+            { q: "大切にしているのは？", a: "自由と変化", b: "安定と継続" },
+            { q: "初対面の人とは…", a: "自分から話しかける", b: "相手の様子を見る" },
+            { q: "ハグモと一緒に何したい？", a: "冒険に出かけたい！", b: "のんびり育てたい" }
+        ];
+
+        const characters = [
+            { name: "とまとら", catch: "情熱・リーダー", img: "tora.PNG", partner: "かぼちゃぼ" },
+            { name: "きゅうりす", catch: "バランス・調和", img: "risu.PNG", partner: "かぶた" },
+            { name: "れもんきー", catch: "ひらめき・自由", img: "saru.PNG", partner: "もももんが" },
+            { name: "ぶるーべりくがめ", catch: "知性・分析", img: "kame.PNG", partner: "くろいちじくま" },
+            { name: "かぶた", catch: "優しさ・包容", img: "buta.PNG", partner: "きゅうりす" },
+            { name: "さつまいもぐら", catch: "努力・継続", img: "imo.PNG", partner: "ばたふらいぴーこっく" },
+            { name: "もももんが", catch: "愛嬌・甘え上手", img: "nga.PNG", partner: "れもんきー" },
+            { name: "くろいちじくま", catch: "静か・ミステリアス", img: "kuma.PNG", partner: "ぶるーべりくがめ" },
+            { name: "かぼちゃぼ", catch: "明るい・ポジティブ", img: "chabo.PNG", partner: "とまとら" },
+            { name: "ばたふらいぴーこっく", catch: "機転・賢さ", img: "jaku.PNG", partner: "さつまいもぐら" }
+        ];
+
+        let currentQ = 0;
+        let scoreA = 0;
+
+        function init() {
+            const container = document.getElementById('q-container');
+            questions.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = `q-box ${i === 0 ? 'active' : ''}`;
+                div.id = `q${i}`;
+                div.innerHTML = `
+                    <p style="font-weight:bold; margin-bottom:20px;">Q${i+1}. ${item.q}</p>
+                    <button class="ans-btn" onclick="answer(true)">${item.a}</button>
+                    <button class="ans-btn" onclick="answer(false)">${item.b}</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function answer(isA) {
+            if(isA) scoreA++;
+            document.getElementById(`q${currentQ}`).classList.remove('active');
+            currentQ++;
+            
+            const progress = (currentQ / questions.length) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+
+            if (currentQ < questions.length) {
+                document.getElementById(`q${currentQ}`).classList.add('active');
             } else {
                 showResult();
             }
@@ -59,23 +113,28 @@
 
         function showResult() {
             document.getElementById('q-container').style.display = 'none';
-            const resArea = document.getElementById('result-area');
-            const resDiv = document.getElementById('hagumo-res');
-            resArea.style.display = 'block';
+            document.getElementById('result-area').style.display = 'block';
+            
+            // スコアに応じて10キャラの中から選出（簡易ロジック）
+            const index = Math.min(scoreA, characters.length - 1);
+            const main = characters[index];
+            const partner = characters.find(c => c.name === main.partner);
 
-            // 簡易判定ロジック
-            let name = ""; let img = "";
-            if (score === "AA") { name = "とまとら"; img = "./images/tora.PNG"; }
-            else if (score === "AB") { name = "きゅうりす"; img = "./images/risu.PNG"; }
-            else if (score === "BA") { name = "かぶた"; img = "./images/buta.PNG"; }
-            else { name = "もももんが"; img = "./images/nga.PNG"; }
+            document.getElementById('main-catch').innerText = `― ${main.catch} ―`;
+            document.getElementById('main-res-name').innerText = main.name;
+            document.getElementById('main-res-img').src = `./images/${main.img}`;
+            document.getElementById('main-res-img').onerror = function(){ this.src = `./${main.img}`; };
+            document.getElementById('main-desc').innerText = `あなたは${main.catch}の持ち主。${main.name}が、あなたの日常をより豊かにサポートしてくれます。`;
 
-            resDiv.innerHTML = `
-                <img src="${img}" class="result-img" onerror="this.src='${img.replace('./images/','./')}'">
-                <h3>${name}</h3>
-                <p>あなたにぴったりのハグモが見つかりました！</p>
+            document.getElementById('sub-res-area').innerHTML = `
+                <div class="sub-item">
+                    <img src="./images/${partner.img}" onerror="this.src='./${partner.img}'">
+                    <div style="font-size:11px; margin-top:5px;">${partner.name}</div>
+                </div>
             `;
         }
+
+        init();
     </script>
     <script src="./common.js"></script>
 </body>
