@@ -1,75 +1,151 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY HAGUMO | マイページ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <title>MY HAGUMO | あなたのパートナー</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        .my-card { background: white; border-radius: 30px; padding: 40px; text-align: center; }
-        .my-img { width: 220px; margin-bottom: 20px; }
-        .status-badge { display: inline-block; padding: 5px 15px; background: #fff4f9; color: #ff7eb9; border-radius: 20px; font-weight: bold; margin-bottom: 10px; }
-        .no-data { padding: 60px 20px; color: #999; }
-        .reset-btn {
-            background: none; border: 1px solid #ddd; color: #999;
-            padding: 8px 15px; border-radius: 20px; cursor: pointer;
-            font-size: 12px; margin-top: 40px; transition: 0.3s;
+        /* --- マイページ専用スタイル --- */
+        .my-header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(to bottom, #fff4f9, #fff);
+            border-radius: 0 0 40px 40px;
         }
-        .reset-btn:hover { background: #f0f0f0; color: #666; }
+
+        .my-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 診断結果カード */
+        .my-card {
+            background: white;
+            border-radius: 35px;
+            padding: 40px 20px;
+            box-shadow: 0 15px 40px rgba(255, 126, 185, 0.1);
+            border: 2px solid #fff4f9;
+            display: none; /* 初期状態は隠す */
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .my-img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            margin: 20px 0;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1));
+        }
+
+        .my-status-box {
+            background: #fafafa;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* 未診断時の表示 */
+        #no-data {
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .share-btn {
+            display: inline-block;
+            margin-top: 30px;
+            background: #444;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        @media screen and (max-width: 768px) {
+            .my-img { width: 140px; height: 140px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>👤 MY HAGUMO</h1>
-        <p>あなたのパートナー情報</p>
 
-        <div id="my-content" class="my-card">
+    <div class="container" style="margin-top: 80px;">
+        
+        <header class="my-header">
+            <h1 style="font-family: 'Zen Maru Gothic'; color: #444;">🐾 MY HAGUMO</h1>
+            <p style="color: #ff7eb9; font-weight: bold; margin-top: 10px;">あなたと歩む、大切なパートナー</p>
+        </header>
+
+        <div class="my-container">
+            <div id="has-data" class="my-card">
+                <span style="color: #ff7eb9; font-weight: bold; font-size: 13px; letter-spacing: 2px;">YOUR PARTNER</span>
+                <h2 id="partner-name" style="font-family: 'Zen Maru Gothic'; font-size: 32px; margin: 10px 0;"></h2>
+                
+                <img id="partner-img" class="my-img" src="" alt="ハグモ">
+                
+                <div class="my-status-box">
+                    <div class="status-item"><span>タイプ</span><b id="partner-type"></b></div>
+                    <div class="status-item"><span>今日のきげん</span><b>にこにこ</b></div>
+                    <div class="status-item"><span>なかよし度</span><b>★★★★★</b></div>
+                    <p id="partner-desc" style="font-size: 13px; color: #666; margin-top: 15px; line-height: 1.6;"></p>
+                </div>
+
+                <a href="diagnosis.html" class="share-btn">もう一度診断する</a>
             </div>
 
-        <button class="reset-btn" onclick="resetData()">データをリセットして最初からやり直す</button>
+            <div id="no-data">
+                <p>まだあなたのパートナーが見つかっていないようです…</p>
+                <div style="margin-top: 30px;">
+                    <a href="diagnosis.html" class="button">🌱 運命の診断をはじめる</a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        function loadMyPage() {
-            const container = document.getElementById('my-content');
-            const data = localStorage.getItem('myHagumo');
+        document.addEventListener('DOMContentLoaded', function() {
+            // ローカルストレージからデータを取得
+            const savedData = localStorage.getItem('myHagumo');
 
-            if (!data) {
-                // まだ診断していない場合
-                container.innerHTML = `
-                    <div class="no-data">
-                        <p>まだパートナーが見つかっていません。</p>
-                        <a href="diagnosis.html" class="button" style="margin-top:20px;">診断をはじめる</a>
-                    </div>
-                `;
-                return;
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                
+                // データを画面に反映
+                document.getElementById('partner-name').innerText = data.name;
+                document.getElementById('partner-type').innerText = data.catch;
+                document.getElementById('partner-desc').innerText = data.reason;
+                
+                // 画像パスの設定（onerror付き）
+                const imgElement = document.getElementById('partner-img');
+                imgElement.src = `./images/${data.img}`;
+                imgElement.onerror = function() { this.src = `./${data.img}`; };
+
+                // 表示を切り替え
+                document.getElementById('has-data').style.display = 'block';
+                document.getElementById('no-data').style.display = 'none';
             }
-
-            const my = JSON.parse(data);
-            container.innerHTML = `
-                <div class="status-badge">あなたのパートナー</div>
-                <div style="font-size: 14px; color: #ff7eb9; font-weight: bold;">― ${my.catch} ―</div>
-                <h2 style="font-size: 28px; margin: 10px 0;">${my.name}</h2>
-                <img src="./images/${my.img}" class="my-img" onerror="this.src='./${my.img}'">
-                <p style="font-size: 14px; line-height: 1.6; color: #666;">
-                    ${my.name}はあなたの最高の相棒です。<br>
-                    一緒に家庭菜園を楽しみながら、理想の自分を目指しましょう！
-                </p>
-                <div style="margin-top: 30px;">
-                    <a href="product.html" class="button">この子の種を注文する</a>
-                </div>
-            `;
-        }
-
-        function resetData() {
-            if (confirm("診断結果とパートナー情報をリセットしますか？")) {
-                localStorage.removeItem('myHagumo');
-                location.reload(); // ページを再読み込みして表示を更新
-            }
-        }
-
-        window.onload = loadMyPage;
+        });
     </script>
     <script src="./common.js"></script>
 </body>
