@@ -111,11 +111,30 @@
         }
 
         function showResult() {
-            document.getElementById('q-container').style.display = 'none';
-            document.getElementById('result-area').style.display = 'block';
-            const index = Math.min(scoreA, characters.length - 1);
-            const main = characters[index];
-            const partner = characters.find(c => c.name === main.partner);
+    document.getElementById('q-container').style.display = 'none';
+    document.getElementById('result-area').style.display = 'block';
+    const index = Math.min(scoreA, characters.length - 1);
+    const main = characters[index];
+    
+    // --- 追加：結果を保存する ---
+    localStorage.setItem('myHagumo', JSON.stringify(main));
+    // -------------------------
+
+    const partner = characters.find(c => c.name === main.partner);
+    document.getElementById('main-catch').innerText = `― ${main.catch} ―`;
+    document.getElementById('main-res-name').innerText = main.name;
+    document.getElementById('main-res-img').src = `./images/${main.img}`;
+    document.getElementById('main-res-img').onerror = function(){ this.src = `./${main.img}`; };
+    document.getElementById('main-desc').innerText = `あなたは${main.catch}。${main.name}が、あなたの日常をサポートしてくれます。`;
+
+    document.getElementById('sub-res-area').innerHTML = `
+        <div class="sub-item">
+            <img src="./images/${partner.img}" onerror="this.src='./${partner.img}'">
+            <div style="font-weight:bold; font-size:14px;">${partner.name}</div>
+        </div>
+    `;
+    document.getElementById('comp-reason').innerText = main.reason;
+}
 
             document.getElementById('main-catch').innerText = `― ${main.catch} ―`;
             document.getElementById('main-res-name').innerText = main.name;
