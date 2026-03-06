@@ -1,32 +1,53 @@
-// common.js
-function layoutNav() {
-  const navHTML = `
-    <div class="nav">
-      <a href="index.html" class="nav-link">HOME</a>
-      <a href="world.html" class="nav-link">WORLD</a>
-      <a href="hagumo.html" class="nav-link">HAGUMO</a>
-      <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-      <a href="product.html" class="nav-link">PRODUCT</a>
-      <a href="my.html" class="nav-link">MY HAGUMO</a>
-    </div>
-  `;
-
-  // bodyの先頭にナビを挿入
-  document.body.insertAdjacentHTML('afterbegin', navHTML);
-
-  // カレント表示（今いるページのリンクを強調）
-  const links = document.querySelectorAll(".nav-link");
-  const currentPath = window.location.pathname.split("/").pop() || "index.html";
-
-  links.forEach(link => {
-    const linkPath = link.getAttribute("href");
-    if (linkPath === currentPath) {
-      // style.cssで指定した変数 --pink2 を使うとおしゃれ！
-      link.style.color = "#ff7eb9"; 
-      link.style.borderBottom = "2px solid #ff7eb9";
-      link.style.fontWeight = "bold";
-    }
-  });
+:root {
+  --pink: #ff9ecb;
+  --pink2: #ff7eb9;
+  --bg: linear-gradient(#fff4f9, #f3fbff);
 }
-
-window.addEventListener('DOMContentLoaded', layoutNav);
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: #444;
+  text-align: center;
+}
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 15px 10px;
+  background: rgba(255, 255, 255, .9);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.nav a {
+  text-decoration: none;
+  color: #444;
+  font-size: 14px;
+  font-weight: bold;
+}
+.container {
+  margin-top: 100px;
+  padding: 20px;
+}
+.card {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.08);
+  padding: 25px;
+  max-width: 600px;
+  margin: 30px auto;
+}
+.button {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--pink), var(--pink2));
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
