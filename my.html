@@ -2,113 +2,90 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HAGUMO | MY HAGUMO 育成モード</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --main-pink: #ff7eb9;
-            --soft-pink: #fff4f9;
-            --sub-pink: #ffdaeb;
-            --bg: #fff9fb;
+        /* 育成画面専用の追加スタイル */
+        .container { 
+            margin-top: 20px; /* style.cssのnavに合わせる */
+            padding: 15px; 
+            text-align: center; 
+            position: relative; 
+            z-index: 10; 
         }
 
-        body { margin: 0; padding: 0; background-color: var(--bg); font-family: 'Zen Maru Gothic', sans-serif; color: #444; overflow-x: hidden; }
-        
-        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 2000; border-bottom: 1px solid #f0f0f0; }
-        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
-        .nav-logo-img { height: 30px; cursor: pointer; }
-        .nav-links { display: flex; gap: 15px; }
-        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; }
-        .nav-links a.active { color: var(--main-pink); }
-
-        .container { margin-top: 100px; padding: 20px; text-align: center; position: relative; z-index: 10; }
-
-        /* ステージ台 */
         .stage { 
-            background: white; border-radius: 40px; padding: 40px 20px; 
+            background: white; border-radius: 40px; padding: 30px 15px; 
             box-shadow: 0 15px 40px rgba(255, 126, 185, 0.15); 
             margin: 0 auto; max-width: 500px; position: relative; border: 3px solid var(--sub-pink);
-            z-index: 5; transition: 0.5s;
+            z-index: 5; transition: 0.5s; overflow: hidden;
         }
 
-        /* キャラ画像：通常 */
         .my-img { width: 220px; transition: 0.5s; position: relative; z-index: 6; }
 
-        /* 🎰 激熱・虹色パチンコ演出 🎰 */
+        /* 🎰 激熱・虹色パチンコ演出（style.cssにも入っていますが念のため） 🎰 */
         .max-aura {
-            animation: rainbow-flash 0.2s infinite alternate, shake 0.1s infinite;
+            animation: rainbow-flash 0.2s infinite alternate, shake 0.1s infinite !important;
             filter: drop-shadow(0 0 30px #fff) drop-shadow(0 0 50px #ff00de) !important;
             transform: scale(1.1);
         }
 
-        /* キャラクターが激しく色を変える */
         @keyframes rainbow-flash {
             0% { filter: hue-rotate(0deg) brightness(1.2) drop-shadow(0 0 30px #ff0000); }
-            20% { filter: hue-rotate(72deg) brightness(1.5) drop-shadow(0 0 30px #ffff00); }
-            40% { filter: hue-rotate(144deg) brightness(1.2) drop-shadow(0 0 30px #00ff00); }
-            60% { filter: hue-rotate(216deg) brightness(1.5) drop-shadow(0 0 30px #00ffff); }
-            80% { filter: hue-rotate(288deg) brightness(1.2) drop-shadow(0 0 30px #0000ff); }
             100% { filter: hue-rotate(360deg) brightness(1.5) drop-shadow(0 0 30px #ff00ff); }
         }
 
-        /* ガタガタ揺れる（期待感） */
         @keyframes shake {
             0% { transform: translate(1px, 1px) scale(1.1); }
-            50% { transform: translate(-1px, -2px) scale(1.12); }
-            100% { transform: translate(1px, 2px) scale(1.1); }
+            100% { transform: translate(-1px, -2px) scale(1.12); }
         }
 
-        /* 背景が回る（虹色の後光） */
         .rainbow-bg {
-            display: none;
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 800px; height: 800px;
+            display: none; position: absolute; top: 50%; left: 50%;
+            width: 800px; height: 800px; border-radius: 50%;
             background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            border-radius: 50%;
-            animation: rotate-bg 2s linear infinite;
-            opacity: 0.4;
-            filter: blur(20px);
+            transform: translate(-50%, -50%); z-index: -1;
+            animation: rotate-bg 2s linear infinite; opacity: 0.4; filter: blur(20px);
         }
         @keyframes rotate-bg { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
         .speech-bubble { 
             background: var(--soft-pink); border: 3px solid var(--sub-pink); border-radius: 25px; 
-            padding: 20px; margin-bottom: 30px; min-height: 60px; display: flex; 
+            padding: 20px; margin-bottom: 25px; min-height: 60px; display: flex; 
             align-items: center; justify-content: center; font-weight: bold; color: #555; 
             position: relative; font-size: 14px; line-height: 1.6; z-index: 10;
         }
 
-        .gauge-wrap { width: 80%; height: 20px; background: #ffeef2; border-radius: 10px; margin: 20px auto 5px; overflow: hidden; border: 2px solid var(--sub-pink); }
+        .gauge-wrap { width: 85%; height: 20px; background: #ffeef2; border-radius: 10px; margin: 20px auto 5px; overflow: hidden; border: 2px solid var(--sub-pink); }
         #love-bar { height: 100%; background: linear-gradient(to right, #ffb6c1, #ff00de, #ff7eb9); transition: 0.3s; width: 0%; }
         
-        .kawaii-btn { 
-            background: white; border: 3px solid #ffb6c1; color: var(--main-pink); 
-            padding: 12px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; 
-            margin: 5px; font-size: 14px; transition: 0.2s; font-family: inherit;
-        }
-        .kawaii-btn:hover { background: #fff0f5; transform: scale(1.05); }
-        
-        .choice-container { display: none; flex-direction: column; gap: 10px; margin-top: 20px; }
         .main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 500px; margin: 20px auto; }
+        .kawaii-btn { 
+            background: white; border: 3px solid #ffb6c1; color: var(--pink2); 
+            padding: 12px 10px; border-radius: 30px; font-weight: bold; cursor: pointer; 
+            font-size: 14px; transition: 0.2s; font-family: inherit;
+        }
+
+        /* スマホ専用の微調整 */
+        @media screen and (max-width: 768px) {
+            .container { margin-top: 10px; }
+            .my-img { width: 180px; }
+            .stage { width: 95%; padding: 20px 10px; }
+            .main-actions { grid-template-columns: 1fr; width: 90%; }
+            .rainbow-bg { width: 500px; height: 500px; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
-            <div class="nav-links">
-                <a href="index.html">HOME</a>
-                <a href="world.html">WORLD</a>
-                <a href="hagumo.html">HAGUMO</a>
-                <a href="diagnosis.html">DIAGNOSIS</a>
-                <a href="product.html">PRODUCT</a>
-                <a href="my.html" class="active">MY HAGUMO</a>
-            </div>
+    <nav class="nav">
+        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">HOME</a>
+            <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
+            <a href="my.html" class="nav-link active">MY HAGUMO</a>
         </div>
     </nav>
 
@@ -116,13 +93,12 @@
         <div id="has-data">
             <div class="stage" id="main-stage">
                 <div id="rainbow-bg" class="rainbow-bg"></div>
-                
-                <div id="status-label" style="font-size: 12px; color: var(--main-pink); margin-bottom: 10px; font-weight: bold;">---</div>
+                <div id="status-label" style="font-size: 12px; color: var(--pink2); margin-bottom: 10px; font-weight: bold;">---</div>
                 <div class="speech-bubble" id="msg-text">読み込み中...</div>
                 <img id="partner-img" class="my-img" src="">
                 <div class="gauge-wrap"><div id="love-bar"></div></div>
-                <div style="font-size: 13px; color: var(--main-pink); font-weight: bold;">なかよしレベル: <span id="love-num">0</span>%</div>
-                <div id="choices" class="choice-container"></div>
+                <div style="font-size: 13px; color: var(--pink2); font-weight: bold;">なかよしレベル: <span id="love-num">0</span>%</div>
+                <div id="choices" style="display: none; flex-direction: column; gap: 10px; margin-top: 20px;"></div>
             </div>
 
             <div id="main-actions" class="main-actions">
@@ -132,7 +108,7 @@
         </div>
         <div id="no-data" style="display:none; margin-top: 50px;">
             <p>まだパートナーがいないみたい...</p>
-            <button class="kawaii-btn" onclick="location.href='diagnosis.html'">診断ページへ</button>
+            <button class="button" onclick="location.href='diagnosis.html'">診断ページへ</button>
         </div>
     </div>
 
@@ -181,7 +157,7 @@
         "nga.PNG": { name: "もももんが", key: "愛嬌・甘え上手", maxMsg: "【超☆溺愛】もも、世界一幸せだもん！大好きだもん！", talks: [
             {q:"ももに 構ってよぉ〜！", a:[{t:"なでなで", l:15, r:"えへへ〜！幸せだもん！大好きだもん！"}]},
             {q:"もも、可愛いでしょぉ？", a:[{t:"可愛い！", l:10, r:"でしょ？もっといっぱい言って！だもん！"}]},
-            {q:"一生離さないでね？", a:[{t:"離さないよ", l:20, r:"やったー！もも、幸せだもん！"}]}
+            {q:"一生離さないね？", a:[{t:"離さないよ", l:20, r:"やったー！もも、幸せだもん！"}]}
         ]},
         "kuma.PNG": { name: "くろいちじくま", key: "静か・ミステリアス", maxMsg: "【深淵☆真実】…君の隣が、私の聖域だ。", talks: [
             {q:"…静かな時間は好きか？", a:[{t:"好き", l:10, r:"…心地いいな。君とは気が合う。"}]},
@@ -207,7 +183,6 @@
         currentPartner = charaData[partnerImgName] || charaData["risu.PNG"];
         love = data.love || 50;
 
-        // 放置による減少
         const now = Date.now();
         const lastTime = data.lastTime || now;
         const diffHours = Math.floor((now - lastTime) / (1000 * 60 * 60));
@@ -233,7 +208,7 @@
         
         if (love >= 100) {
             img.classList.add('max-aura');
-            rbg.style.display = 'block'; // 虹背景出現
+            rbg.style.display = 'block';
             document.getElementById('msg-text').innerText = currentPartner.maxMsg;
             document.getElementById('main-stage').style.borderColor = "#ff00de";
         } else {
@@ -242,15 +217,12 @@
             document.getElementById('main-stage').style.borderColor = "var(--sub-pink)";
         }
         
-        const saved = { img: partnerImgName, love: love, lastTime: Date.now() };
-        localStorage.setItem('myHagumo', JSON.stringify(saved));
+        localStorage.setItem('myHagumo', JSON.stringify({ img: partnerImgName, love: love, lastTime: Date.now() }));
     }
 
     function playAction() {
         love = Math.min(100, love + 1);
-        if (love < 100) {
-            document.getElementById('msg-text').innerText = "なでなで、うれしいな！";
-        }
+        if (love < 100) document.getElementById('msg-text').innerText = "なでなで、うれしいな！";
         updateGauge();
     }
 
