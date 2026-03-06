@@ -36,7 +36,6 @@
         .zero-num { font-size: 32px; font-weight: bold; color: #ff7eb9; font-family: 'Zen Maru Gothic'; }
         .zero-text { font-size: 14px; color: #666; font-weight: bold; }
 
-        /* 商品カードリスト */
         .product-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -64,7 +63,6 @@
             border-color: #ff9ecb; 
         }
 
-        /* 難易度バッジ */
         .difficulty-tag {
             display: inline-block;
             margin: 0 auto 15px;
@@ -90,7 +88,6 @@
         .price-val { font-size: 30px; color: #444; font-family: 'Zen Maru Gothic'; margin: 15px 0; }
         .price-val span { font-size: 14px; color: #999; }
 
-        /* 追加：詳細セクション */
         .detail-section {
             background: #fff;
             padding: 60px 20px;
@@ -107,11 +104,7 @@
             margin-top: 30px;
         }
 
-        .unboxing-item {
-            width: 150px;
-            text-align: center;
-        }
-
+        .unboxing-item { width: 150px; text-align: center; }
         .unboxing-item div {
             width: 80px; height: 80px;
             background: #fff4f9;
@@ -219,8 +212,49 @@
 
         <section class="detail-section reveal">
             <h2 style="font-family: 'Zen Maru Gothic';">箱を開けたその瞬間、<br>物語が始まります。</h2>
-            <p style="font-size: 14px; color: #888; margin-top: 10px;">お届けするのは、あなただけの小さな聖域。</p>
-            
             <div class="unboxing-box">
                 <div class="unboxing-item"><div>🏺</div><p style="font-size:12px;">土を捨てなくて良い<br>エコポット</p></div>
-                <div class="un
+                <div class="unboxing-item"><div>🧪</div><p style="font-size:12px;">美容成分を最大化する<br>専用土</p></div>
+                <div class="unboxing-item"><div>📱</div><p style="font-size:12px;">スマホで相談できる<br>育成コンシェルジュ</p></div>
+            </div>
+        </section>
+
+        <section class="qa-section reveal">
+            <h2 style="text-align: center; font-family: 'Zen Maru Gothic'; margin-bottom: 30px;">よくあるご質問</h2>
+            <div class="qa-item">
+                <span class="qa-q">Q. 庭やベランダがなくても大丈夫ですか？</span>
+                <p class="qa-a">A. はい！室内やキッチンのわずかなスペースで育てられるよう設計されています。</p>
+            </div>
+            <div class="qa-item">
+                <span class="qa-q">Q. 虫が苦手なのですが…</span>
+                <p class="qa-a">A. 室内栽培に特化した「虫がつきにくい土」を封入していますので、安心して始められます。</p>
+            </div>
+            <div class="qa-item">
+                <span class="qa-q">Q. 本当に「0」からできますか？</span>
+                <p class="qa-a">A. 準備するものは「水」だけです。ハサミやシャベルすら必要ありません。</p>
+            </div>
+        </section>
+
+        <div style="text-align: center; color: #999; font-size: 11px; margin: 80px 0 50px;">
+            ※これは学校課題の制作物であり、実際の販売は行っておりません。
+        </div>
+
+    </div>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
+    <script src="./common.js"></script>
+</body>
+</html>
