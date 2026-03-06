@@ -4,65 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MY HAGUMO | 育成モード</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        /* --- サイトのデザインに合わせたナビゲーション --- */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: white; /* 白背景に修正 */
-            border-bottom: 1px solid #eee; /* 薄い境界線 */
-            padding: 1rem 0;
-            z-index: 1000;
-        }
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        .logo {
-            font-family: 'Zen Maru Gothic', sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ff7eb9; /* ロゴのピンク */
-            text-decoration: none;
-        }
-        .nav-links a {
-            color: #333; /* 文字は暗いグレー（黒） */
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            color: #ff7eb9; /* ホバーでピンク */
-        }
-
-        /* --- 育成画面専用スタイル --- */
-        body { background-color: #fff9fb; font-family: 'Zen Maru Gothic', sans-serif; margin: 0; padding: 0; }
-        
+        /* 育成画面独自のパーツ（共通CSSにないもの）のみ残す */
         .container { margin-top: 100px; padding: 20px; }
-
         .stage {
             background: white; border-radius: 40px; padding: 40px 20px;
             box-shadow: 0 15px 40px rgba(255, 126, 185, 0.15);
-            text-align: center; position: relative; margin: 0 auto;
-            max-width: 500px;
+            text-align: center; position: relative; margin: 0 auto; max-width: 500px;
         }
-
         .my-img { width: 200px; transition: 0.3s ease; cursor: pointer; }
         .bounce { animation: bounce 0.8s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
         
-        .max-aura { filter: drop-shadow(0 0 15px #ff7eb9); animation: rainbow 2s infinite; }
-        @keyframes rainbow { 0% { filter: hue-rotate(0deg) drop-shadow(0 0 15px #ff7eb9); } 100% { filter: hue-rotate(360deg) drop-shadow(0 0 15px #ff7eb9); } }
-
         .speech-bubble {
             background: #fff4f9; border: 3px solid #ffdaeb; border-radius: 25px;
             padding: 20px; margin-bottom: 30px; min-height: 80px;
@@ -74,31 +29,27 @@
             border-width: 15px 15px 0; border-style: solid; border-color: #ffdaeb transparent;
             display: block; width: 0; margin-left: -15px;
         }
-
         .gauge-wrap { width: 80%; height: 16px; background: #ffeef2; border-radius: 10px; margin: 20px auto 5px; overflow: hidden; border: 2px solid #ffdaeb; }
         #love-bar { height: 100%; background: linear-gradient(to right, #ffb6c1, #ff7eb9); width: 50%; transition: 1s; }
-        
+        .play-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 500px; margin: 20px auto; }
         .kawaii-btn {
             background: white; border: 3px solid #ffb6c1; color: #ff7eb9;
             padding: 12px 20px; border-radius: 30px; font-weight: bold;
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 0 #ffdaeb;
             font-size: 15px; outline: none; margin: 5px;
         }
-        .kawaii-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #ffdaeb; }
-        
-        .play-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 500px; margin: 20px auto; }
-        .choice-container { display: none; flex-direction: column; gap: 10px; margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="nav-content">
-            <a href="./index.html" class="logo">HAGUMO</a>
+            <a href="index.html" class="logo">HAGUMO</a>
             <div class="nav-links">
-                <a href="./index.html">TOP</a>
-                <a href="./product.html">SHOP</a>
-                <a href="./my.html" class="active">MY HAGUMO</a>
+                <a href="index.html">TOP</a>
+                <a href="world.html">WORLD</a>
+                <a href="product.html">PRODUCT</a>
+                <a href="my.html" class="active">MY HAGUMO</a>
             </div>
         </div>
     </nav>
@@ -113,8 +64,7 @@
                 
                 <div class="gauge-wrap"><div id="love-bar"></div></div>
                 <div style="font-size: 13px; color: #ff7eb9; font-weight: bold;">なかよしレベル: <span id="love-num">50</span>%</div>
-
-                <div id="choices" class="choice-container"></div>
+                <div id="choices" style="display: none; flex-direction: column; gap: 10px; margin-top: 20px;"></div>
             </div>
 
             <div class="play-menu">
@@ -124,39 +74,20 @@
         </div>
     </div>
 
+    <script src="./common.js"></script>
     <script>
-        // --- 育成ロジック（そのまま維持） ---
+        // 育成用スクリプト（ページ独自の動き）
         let love = 50;
         let partner = null;
-
-        const charaSettings = {
-            "risu.PNG": { name: "きゅうりす", maxMsg: "君との調和は完璧だよ。これからもずっと、隣にいさせてね。", talks: [
-                { q: "最近、心のバランスはどう？", choices: [{t: "バッチリ！", l: 10, r: "最高だね！僕も整っちゃうよ。"}, {t: "ちょっと不安…", l: 5, r: "大丈夫。僕と一緒に深呼吸しよう。"}] }
-            ]},
-            "buta.PNG": { name: "かぶた", maxMsg: "君の優しさに包まれて、私は世界一幸せなかぶただよぉ♡", talks: [
-                { q: "お腹空いてない？何か食べるぅ？", choices: [{t: "お菓子食べたい！", l: 10, r: "いいよぉ。半分こしようねぇ。"}, {t: "今は大丈夫", l: 5, r: "えらいねぇ。あとでお茶入れようねぇ。"}] }
-            ]}
-        };
 
         document.addEventListener('DOMContentLoaded', function() {
             const saved = localStorage.getItem('myHagumo');
             if (saved) {
                 const data = JSON.parse(saved);
-                partner = charaSettings[data.img] || { name: "ハグモ", talks: [], maxMsg: "大好き！" };
-                love = data.love || 50;
-                
-                const now = new Date().getTime();
-                if (data.lastUpdate) {
-                    const hours = Math.floor((now - data.lastUpdate) / (1000 * 60 * 60));
-                    if (hours > 0) {
-                        love = Math.max(0, love - (hours * 2));
-                        document.getElementById('msg-text').innerText = "寂しかったよぉ…忘れられたかと思った…";
-                    }
-                }
-
                 document.getElementById('partner-img').src = `./images/${data.img}`;
-                document.getElementById('status-label').innerText = partner.name + "とお部屋にいます";
+                document.getElementById('status-label').innerText = "マイハグモとお部屋にいます";
                 document.getElementById('has-data').style.display = 'block';
+                love = data.love || 50;
                 updateGauge();
             }
         });
@@ -164,64 +95,22 @@
         function updateGauge() {
             document.getElementById('love-bar').style.width = love + '%';
             document.getElementById('love-num').innerText = Math.floor(love);
-            const img = document.getElementById('partner-img');
-            if (love >= 100) img.classList.add('max-aura');
-            else img.classList.remove('max-aura');
-            saveData();
-        }
-
-        function saveData() {
-            const saved = JSON.parse(localStorage.getItem('myHagumo'));
+            const saved = JSON.parse(localStorage.getItem('myHagumo')) || {};
             saved.love = love;
-            saved.lastUpdate = new Date().getTime();
             localStorage.setItem('myHagumo', JSON.stringify(saved));
         }
 
         function playAction(type) {
-            const msg = document.getElementById('msg-text');
-            if (love >= 100) { msg.innerText = partner.maxMsg; createHeart(true); return; }
             if(type === 'なでる') {
                 love = Math.min(love + 1, 100);
-                msg.innerText = "えへへ、気持ちいい〜！";
+                document.getElementById('msg-text').innerText = "えへへ、気持ちいい〜！";
                 updateGauge();
-                createHeart(false);
             }
         }
-
+        
         function startTalk() {
-            const msg = document.getElementById('msg-text');
-            const choiceBox = document.getElementById('choices');
-            if (love >= 100) { msg.innerText = "君の隣が、私の特等席なんだ！"; return; }
-            
-            const randomTalk = partner.talks[0] || { q: "ねぇ、最近頑張ってる？", choices: [{t: "頑張ってる！", l: 10, r: "えらい！見てるよ！"}] };
-            msg.innerText = randomTalk.q;
-            choiceBox.innerHTML = '';
-            choiceBox.style.display = 'flex';
-            randomTalk.choices.forEach(c => {
-                const btn = document.createElement('button');
-                btn.className = 'kawaii-btn';
-                btn.innerText = c.t;
-                btn.onclick = () => {
-                    love = Math.max(0, Math.min(100, love + c.l));
-                    msg.innerText = c.r;
-                    choiceBox.style.display = 'none';
-                    updateGauge();
-                };
-                choiceBox.appendChild(btn);
-            });
-        }
-
-        function createHeart(isMax) {
-            const h = document.createElement('div');
-            h.innerText = isMax ? '💖' : '💗';
-            h.style.position = 'absolute'; h.style.left = '50%'; h.style.fontSize = isMax ? '60px' : '30px';
-            h.style.pointerEvents = 'none'; h.style.animation = 'floatUp 1.5s forwards';
-            document.querySelector('.stage').appendChild(h);
-            setTimeout(() => h.remove(), 1500);
+            document.getElementById('msg-text').innerText = "ねぇねぇ、今日は何して遊ぶ？";
         }
     </script>
-    <style>
-        @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, 0) scale(1); } 100% { opacity: 0; transform: translate(-50%, -150px) scale(2); } }
-    </style>
 </body>
 </html>
