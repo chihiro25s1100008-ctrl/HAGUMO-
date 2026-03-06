@@ -1,46 +1,35 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="UTF-8">
-<title>HAGUMO Official</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAGUMO Official</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+    <div class="container">
+        <h1>HAGUMO</h1>
 
+        <div class="card">
+            <p>
+                ハグモとは、<br>
+                野菜や果物のエネルギーと動物の心が結びついて生まれた<br>
+                不思議なキメラ生命体。
+            </p>
 
-<script>
-const links=document.querySelectorAll(".nav-link");
-links.forEach(link=>{
-if(link.href===window.location.href){
-link.style.color="#ff4fa3";
-link.style.borderBottom="3px solid #ff4fa3";
-}
-});
-</script>
-  
-<div class="container">
+            <p>
+                あなたの中にも、まだ目覚めていないハグモが眠っている。
+            </p>
 
-<h1>HAGUMO</h1>
+            <a href="diagnosis.html" class="button">
+                🌱 あなたはどのハグモ？
+            </a>
+        </div>
+    </div>
 
-<div class="card">
-<p>
-ハグモとは、<br>
-野菜や果物のエネルギーと動物の心が結びついて生まれた<br>
-不思議なキメラ生命体。
-</p>
-
-<p>
-あなたの中にも、まだ目覚めていないハグモが眠っている。
-</p>
-
-<a href="diagnosis.html" class="button">
-🌱 あなたはどのハグモ？
-</a>
-</div>
-
-</div>
+    <script src="common.js"></script>
 </body>
 </html>
