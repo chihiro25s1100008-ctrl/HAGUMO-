@@ -1,170 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAGUMO WORLD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Noto+Sans+JP&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-
-    <style>
-        .section {
-            margin: 60px 0;
-        }
-
-        .world-box {
-            background: white;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,.08);
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .rank-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .rank-card {
-            background: #fdfdfd;
-            padding: 25px;
-            border-radius: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,.06);
-            transition: .3s;
-            text-align: center;
-        }
-
-        .rank-card:hover {
-            transform: translateY(-6px);
-        }
-
-        .rank-title {
-            font-family: 'Zen Maru Gothic', sans-serif;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .rank-desc {
-            font-size: 14px;
-            line-height: 1.8;
-        }
-
-        .highlight {
-            font-weight: bold;
-            color: #6aa84f;
-        }
-
-        /* マップ部分のデザイン */
-        .map {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 400px;
-            margin: 40px auto;
-        }
-
-        .map div {
-            padding: 30px;
-            background: linear-gradient(90deg, #ffeaf4, #fff);
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 10px 30px rgba(0,0,0,.1);
-            transition: 0.3s;
-        }
-
-        .map div:hover {
-            transform: scale(1.02);
-            background: linear-gradient(90deg, #ffdaed, #fff);
-        }
-
-        @media(max-width:600px) {
-            h1 { font-size: 22px; }
-        }
-    </style>
+    <meta charset="UTF-8"><title>HAGUMO WORLD</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
-
     <div class="container">
-
         <h1>🌍 HAGUMO WORLD</h1>
-
-        <div class="section world-box">
+        <div class="card">
             <h2>― ハグモ誕生の神話 ―</h2>
-            <p>
-                はるか昔。<br><br>
-                大地には「育てたい」という人の想いが静かに積み重なっていました。<br><br>
-                種をまく祈り。<br>
-                芽が出る喜び。<br>
-                枯れないでほしいという願い。<br><br>
-                その想いと野菜の生命力、そして動物たちの魂が共鳴したとき――<br><br>
-                <span class="highlight">ハグモ</span>は誕生します。
-            </p>
+            <p>「育てたい」という人の想いが積み重なり、野菜と魂が共鳴してハグモは誕生します。</p>
         </div>
-
-        <div class="section world-box">
-            <h2>― グロウ・フォレスト ―</h2>
-            <p>
-                ハグモたちは「育成の森（グロウ・フォレスト）」に住んでいます。<br><br>
-                そこは土が光り、果実が宙に浮かび、<br>
-                四季が同時に存在する不思議な世界。<br><br>
-                ハグモは人間界とこの森を行き来できる存在。<br><br>
-                本気で育てる人のもとにだけ、その姿を現します。
-            </p>
-        </div>
-
-        <div class="section">
-            <h2>― ハグモの階級 ―</h2>
-            <div class="rank-grid">
-                <div class="rank-card">
-                    <div class="rank-title">🟢 妖精ランク（見守り系）</div>
-                    <div class="rank-desc">
-                        地上にもっとも近い存在。<br>
-                        育成を優しくサポートする初心者の守り神。<br><br>
-                        カブ・サツマイモ・バタフライピー
-                    </div>
-                </div>
-                <div class="rank-card">
-                    <div class="rank-title">🟡 守護獣ランク</div>
-                    <div class="rank-desc">
-                        人間との結びつきが強い存在。<br>
-                        エネルギーと成長を加速させる。<br><br>
-                        キュウリ・ミニトマト・カボチャ
-                    </div>
-                </div>
-                <div class="rank-card">
-                    <div class="rank-title">🔴 精霊王ランク（果樹系）</div>
-                    <div class="rank-desc">
-                        森の奥に住む高位存在。<br>
-                        長い時間をかけて力を蓄える存在。<br><br>
-                        レモン・ブルーベリー・モモ・イチジク
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section world-box">
-            <h2>― ハグモとあなた ―</h2>
-            <p>
-                種をまく。育てる。写真を撮る。<br><br>
-                その瞬間、<span class="highlight">ハグモは具現化</span>します。<br><br>
-                あなたの庭に現れる、もう一人の小さなパートナー。
-            </p>
-        </div>
-
-        <h2>🗺️ グロウ・フォレスト・マップ</h2>
-        <div class="map">
-            <div onclick="alert('初心者エリア：ハグモたちが種から生まれる場所です')">🌱 妖精ゾーン</div>
-            <div onclick="alert('育成中級：太陽の光を浴びて元気に育つエリアです')">🍅 バランスゾーン</div>
-            <div onclick="alert('果樹エリア：試練を乗り越えた賢者たちが住んでいます')">🍋 試練ゾーン</div>
-        </div>
-
     </div>
-
-    <script src="common.js"></script>
+    <script src="./common.js"></script>
 </body>
 </html>
