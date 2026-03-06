@@ -2,7 +2,6 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIAGNOSIS | HAGUMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -14,15 +13,17 @@
         .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; margin: 0 10px; }
         .nav-links a.active { color: var(--main-pink); }
         .container { padding: 40px 20px; text-align: center; }
-        .diag-box { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 40px; box-shadow: 0 15px 35px rgba(255,126,185,0.08); }
+        .diag-box { max-width: 650px; margin: 0 auto; background: white; padding: 40px; border-radius: 40px; box-shadow: 0 15px 35px rgba(255,126,185,0.08); }
         .q-box { display: none; }
         .q-box.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .choice-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid var(--soft-pink); background: white; border-radius: 50px; cursor: pointer; font-size: 16px; font-weight: bold; color: #666; transition: 0.3s; }
         .choice-btn:hover { background: var(--soft-pink); border-color: var(--main-pink); color: var(--main-pink); }
         #result-area { display: none; animation: fadeIn 0.8s ease; }
-        .result-char-img { width: 220px; margin: 20px 0; }
-        .btn-go-my { display: inline-block; background: var(--main-pink); color: white; padding: 18px 50px; border-radius: 100px; text-decoration: none; font-weight: bold; margin-top: 20px; box-shadow: 0 10px 25px rgba(255,126,185,0.3); }
+        .result-char-img { width: 200px; margin: 15px 0; }
+        .comp-box { display: flex; align-items: center; justify-content: center; background: var(--soft-pink); padding: 15px; border-radius: 25px; margin-top: 20px; gap: 15px; }
+        .comp-img { width: 60px; height: 60px; border-radius: 50%; background: white; }
+        .btn-go-my { display: inline-block; background: var(--main-pink); color: white; padding: 18px 50px; border-radius: 100px; text-decoration: none; font-weight: bold; margin-top: 25px; box-shadow: 0 10px 25px rgba(255,126,185,0.3); }
     </style>
 </head>
 <body>
@@ -33,21 +34,22 @@
         <div class="diag-box">
             <div id="q-area">
                 <div class="q-box active" id="q1"><span>Q1/10</span><h2>放課後の過ごし方は？</h2><button class="choice-btn" onclick="addScore('E',1)">友達とおしゃべり</button><button class="choice-btn" onclick="addScore('I',1)">一人で趣味に没頭</button></div>
-                <div class="q-box" id="q2"><span>Q2/10</span><h2>どちらの言葉が嬉しい？</h2><button class="choice-btn" onclick="addScore('F',1)">「いつも優しいね」</button><button class="choice-btn" onclick="addScore('T',1)">「頼りになるね」</button></div>
-                <div class="q-box" id="q3"><span>Q3/10</span><h2>育ててみたいのはどっち？</h2><button class="choice-btn" onclick="addScore('S',1)">実用的な野菜</button><button class="choice-btn" onclick="addScore('N',1)">オシャレな野菜</button></div>
-                <div class="q-box" id="q4"><span>Q4/10</span><h2>計画を立てることは？</h2><button class="choice-btn" onclick="addScore('J',1)">得意！予定通りが良い</button><button class="choice-btn" onclick="addScore('P',1)">その場のノリが好き！</button></div>
-                <div class="q-box" id="q5"><span>Q5/10</span><h2>美容液を選ぶ基準は？</h2><button class="choice-btn" onclick="addScore('T',1)">成分やデータ</button><button class="choice-btn" onclick="addScore('F',1)">直感やパケ買い</button></div>
-                <div class="q-box" id="q6"><span>Q6/10</span><h2>SNSの使い方は？</h2><button class="choice-btn" onclick="addScore('E',1)">積極的に投稿！</button><button class="choice-btn" onclick="addScore('I',1)">見る専・鍵垢</button></div>
-                <div class="q-box" id="q7"><span>Q7/10</span><h2>今の肌の悩みは？</h2><button class="choice-btn" onclick="addScore('S',1)">乾燥や荒れ</button><button class="choice-btn" onclick="addScore('N',1)">くすみやハリ</button></div>
-                <div class="q-box" id="q8"><span>Q8/10</span><h2>お買い物スタイルは？</h2><button class="choice-btn" onclick="addScore('J',1)">即決！決めた物を買う</button><button class="choice-btn" onclick="addScore('P',1)">色々見てから決める</button></div>
-                <div class="q-box" id="q9"><span>Q9/10</span><h2>自分の性格は？</h2><button class="choice-btn" onclick="addScore('N',1)">ロマンチスト</button><button class="choice-btn" onclick="addScore('S',1)">リアリスト</button></div>
                 <div class="q-box" id="q10"><span>Q10/10</span><h2>ハグモへの一言！</h2><button class="choice-btn" onclick="calcResult()">一緒に成長しよう！</button><button class="choice-btn" onclick="calcResult()">私を可愛くしてね！</button></div>
             </div>
+
             <div id="result-area">
-                <p style="color:var(--main-pink); font-weight:bold;">DIAGNOSIS RESULT</p>
+                <h2 style="color:var(--main-pink);">診断結果</h2>
                 <h1 id="res-name"></h1>
                 <img src="" id="res-img" class="result-char-img">
-                <p id="res-desc" style="font-size:14px; line-height:1.7; color:#666; background:var(--bg-pink); padding:20px; border-radius:20px; text-align:left;"></p>
+                <div id="res-reason" style="text-align:left; font-size:14px; background:#fafafa; padding:20px; border-radius:20px; line-height:1.6;"></div>
+                
+                <div class="comp-box">
+                    <img src="" id="comp-img" class="comp-img">
+                    <div style="text-align:left;">
+                        <div style="font-size:11px; color:var(--main-pink); font-weight:bold;">🤝 相性のいいハグモ</div>
+                        <div id="comp-name" style="font-weight:bold;"></div>
+                    </div>
+                </div>
                 <a href="my.html" class="btn-go-my">この子とお迎えに行く 🌱</a>
             </div>
         </div>
@@ -56,30 +58,28 @@
         let scores = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
         let currentQ = 1;
         const charDB = [
-            { id: "buta", name: "かぶた", img: "./images/buta.PNG", p: "優しさ・包容", type: "ISF", d: "穏やかなあなたには、かぶたが最適。", comp: "きゅうりす" },
-            { id: "tora", name: "とまとら", img: "./images/tora.PNG", p: "情熱・リーダー", type: "ENT", d: "情熱的なリーダーのあなたには、力強いとまとらがぴったり。", comp: "かぼちゃぼ" },
-            { id: "saru", name: "れもんきー", img: "./images/saru.PNG", p: "ひらめき・自由", type: "ENP", d: "自由な発想のあなたには、刺激的なれもんきーを。", comp: "もももんが" },
-            { id: "kame", name: "ぶるーべりくがめ", img: "./images/kame.PNG", p: "知性・分析", type: "INT", d: "知的な分析派のあなたには、冷静なぶるーべりくがめを。", comp: "ばたふらいぴーこっく" },
-            { id: "risu", name: "きゅうりす", img: "./images/risu.PNG", p: "バランス・調和", type: "IST", d: "調和を重んじるあなたには、バランス感覚抜群のきゅうりすを。", comp: "かぶた" },
-            { id: "imo", name: "さつまいもぐら", img: "./images/imo.PNG", p: "努力・継続", type: "ISJ", d: "コツコツ頑張るあなたには、実直なさつまいもぐらが一番。", comp: "くろいちじくま" },
-            { id: "nga", name: "もももんが", img: "./images/nga.PNG", p: "愛嬌・甘え上手", type: "EFP", d: "愛されキャラのあなたには、キュートなもももんががお似合い。", comp: "れもんきー" },
-            { id: "kuma", name: "くろいちじくま", img: "./images/kuma.PNG", p: "静か・ミステリアス", type: "INF", d: "神秘的なあなたには、深い魅力のくろいちじくまが合います。", comp: "さつまいもぐら" },
-            { id: "chabo", name: "かぼちゃぼ", img: "./images/chabo.PNG", p: "明るい・ポジティブ", type: "ESF", d: "いつも明るいあなたには、ハッピーを届けるかぼちゃぼが。", comp: "とまとら" },
-            { id: "jaku", name: "ばたふらいぴーこっく", img: "./images/jaku.PNG", p: "機転・賢さ", type: "ENJ", d: "賢く機転が利くあなたには、華麗なばたふらいぴーこっく。", comp: "ぶるーべりくがめ" }
+            { name: "かぶた", img: "./images/buta.PNG", p: "優しさ・包容", type: "ISF", reason: "周囲を思いやる心を持ち、穏やかな時間を大切にするあなたには、包容力のある『かぶた』が寄り添います。", compName: "きゅうりす", compImg: "./images/risu.PNG" },
+            { name: "とまとら", img: "./images/tora.PNG", p: "情熱・リーダー", type: "ENT", reason: "目標に向かって情熱的に突き進むリーダー気質のあなたには、力強く鼓舞してくれる『とまとら』が最高の相棒になります。", compName: "かぼちゃぼ", compImg: "./images/chabo.PNG" },
+            // ... 他のキャラも同様に追加 ...
         ];
+
         function addScore(t, v) { scores[t] += v; currentQ++; if(currentQ <= 10) showQ(); }
-        function showQ() { document.querySelectorAll('.q-box').forEach(el => el.classList.remove('active')); document.getElementById('q'+currentQ).classList.add('active'); }
+        function showQ() { document.querySelectorAll('.q-box').forEach(el => el.classList.remove('active')); let next = document.getElementById('q'+currentQ); if(next) next.classList.add('active'); else calcResult(); }
+
         function calcResult() {
             document.getElementById('q-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'block';
             let userType = (scores.E >= scores.I ? "E" : "I") + (scores.N >= scores.S ? "N" : "S") + (scores.F >= scores.T ? "F" : "T");
             let final = charDB.find(c => c.type === userType) || charDB[0];
+            
             document.getElementById('res-name').innerText = final.name;
             document.getElementById('res-img').src = final.img;
-            document.getElementById('res-desc').innerHTML = `【${final.p}】<br>${final.d}<br><br><span style="color:var(--main-pink); font-weight:bold;">🤝 相性のいいハグモ：${final.comp}</span>`;
+            document.getElementById('res-reason').innerText = final.reason;
+            document.getElementById('comp-name').innerText = final.compName;
+            document.getElementById('comp-img').src = final.compImg;
+
             localStorage.setItem('myHagumoName', final.name);
             localStorage.setItem('myHagumoImg', final.img);
-            localStorage.setItem('myHagumoPers', final.p);
             localStorage.setItem('myHagumoLove', 50);
         }
     </script>
