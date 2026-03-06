@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENTRY KIT | HAGUMO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --main-pink: #ff7eb9; --soft-pink: #fff0f5; --entry-green: #e0f9e0; }
+        body { background: #fffafb; font-family: 'Zen Maru Gothic', sans-serif; margin: 0; padding: 0; }
+        
+        .order-hero {
+            background: linear-gradient(135deg, #fff 0%, #fff0f5 100%);
+            padding: 60px 20px; text-align: center; border-radius: 0 0 50px 50px;
+        }
+        
+        .product-container {
+            max-width: 1000px; margin: -40px auto 100px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+            padding: 40px; background: white; border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(255,126,185,0.1);
+        }
+
+        .reward-timeline {
+            margin-top: 30px; padding: 25px;
+            background: #fdf2f7; border-radius: 25px; border: 2px dashed var(--main-pink);
+        }
+        .timeline-item { display: flex; gap: 15px; margin-bottom: 20px; }
+        .timeline-icon {
+            background: var(--main-pink); color: white; width: 30px; height: 30px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; flex-shrink: 0; font-weight: bold;
+        }
+        .timeline-text b { display: block; color: var(--main-pink); font-size: 14px; }
+        .timeline-text p { font-size: 12px; color: #666; margin: 4px 0; }
+
+        .btn-order {
+            background: var(--main-pink); color: white; border: none;
+            padding: 20px; width: 100%; border-radius: 50px;
+            font-size: 20px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255,126,185,0.3);
+            transition: 0.3s;
+        }
+        .btn-order:hover { transform: scale(1.02); background: #ff60a8; }
+        
+        @media (max-width: 768px) { .product-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="order-hero">
+        <span style="background:var(--entry-green); color:#2d5a2d; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:12px;">RANK C : ENTRY</span>
+        <h1 style="color:var(--main-pink); margin:10px 0;">はじめてのHAGUMOセット</h1>
+        <p style="font-size:14px; color:#888;">「絶対枯らしたくない」あなたへ。ハグモが手取り足取り教えます。</p>
+    </div>
+
+    <div class="product-container">
+        <div class="image-area">
+            <img src="./images/buta.PNG" style="width:100%; border-radius:30px;">
+            <div style="margin-top:20px; padding:20px; background:var(--entry-green); border-radius:20px;">
+                <h4 style="margin:0; font-size:14px; color:#2d5a2d;">🍼 安心の同梱物</h4>
+                <ul style="font-size:13px; color:#444; padding-left:20px;">
+                    <li>失敗ゼロ！保水力抜群の「ぷるぷる土」</li>
+                    <li>お迎えキャラの「なかよしスマホステッカー」</li>
+                    <li>推し色エコポット（ベビーピンク）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="info-area">
+            <h2 style="margin:0; font-size:22px;">HAGUMO "入門" 育成キット</h2>
+            <p style="font-size:28px; font-weight:bold; color:#444; margin:15px 0;">¥1,980 <span style="font-size:14px; color:#999;">(税込)</span></p>
+            
+            <div class="reward-timeline">
+                <h4 style="margin:0 0 15px 0; font-size:15px; text-align:center;">📮 成長報告で届くご褒美グッズ</h4>
+                <div class="timeline-item">
+                    <div class="timeline-icon">1</div>
+                    <div class="timeline-text">
+                        <b>芽生え報告（郵送）</b>
+                        <p>「芽が出たよ！おめでとう」キラキラ限定ホログラムシールを郵送。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">2</div>
+                    <div class="timeline-text">
+                        <b>収穫報告（郵送）</b>
+                        <p>ハグモ直伝！収穫野菜で作る「うるつや美容レシピカード」を郵送。</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-order">この子をお迎えして育てる 🐽</button>
+        </div>
+    </div>
+</body>
+</html>
