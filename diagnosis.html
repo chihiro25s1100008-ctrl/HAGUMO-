@@ -7,23 +7,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --main-pink: #ff7eb9; --sub-pink: #ffdaeb; --bg: #fff9fb; --line-green: #06C755; }
-        body { margin: 0; background: var(--bg); font-family: 'Zen Maru Gothic', sans-serif; color: #444; }
+        body { margin: 0; background: var(--bg); font-family: 'Zen Maru Gothic', sans-serif; color: #444; padding-top: 80px; } /* ナビの高さ分余白を追加 */
         
-        .navbar { position: fixed; top: 0; width: 100%; height: 60px; background: white; z-index: 1000; border-bottom: 2px solid var(--sub-pink); display: flex; align-items: center; justify-content: center; }
-        .nav-logo-img { height: 35px; }
+        /* 【復活】ナビゲーションバー */
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: white; z-index: 2000; border-bottom: 2px solid var(--sub-pink); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(255,126,185,0.1); }
+        .nav-logo-img { height: 40px; cursor: pointer; }
 
-        .container { margin-top: 100px; padding: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .container { padding: 20px; max-width: 500px; margin: 0 auto; }
         
-        /* 共通カードスタイル */
-        .card { background: white; border-radius: 35px; padding: 30px; box-shadow: 0 10px 30px rgba(255,126,185,0.15); border: 2px solid var(--sub-pink); text-align: center; margin-bottom: 25px; }
+        .card { background: white; border-radius: 35px; padding: 30px; box-shadow: 0 10px 30px rgba(255,126,185,0.15); border: 2px solid var(--sub-pink); text-align: center; margin-bottom: 25px; position: relative; }
         
-        /* 質問エリア */
         .progress-bar { font-size: 13px; color: var(--main-pink); font-weight: bold; margin-bottom: 10px; }
         .question-text { font-size: 18px; font-weight: bold; margin: 25px 0; line-height: 1.5; min-height: 60px; display: flex; align-items: center; justify-content: center; }
         .choice-btn { background: white; border: 2px solid var(--sub-pink); padding: 14px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #666; font-size: 15px; transition: 0.2s; width: 100%; margin: 8px 0; outline: none; }
         .choice-btn:hover { background: var(--main-pink); color: white; transform: translateY(-2px); }
 
-        /* 結果エリア */
         #result-area { display: none; }
         .res-img { width: 220px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1)); margin: 15px 0; animation: bounce 2s infinite alternate ease-in-out; }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
@@ -31,14 +29,12 @@
         .res-name { color: var(--main-pink); font-size: 24px; margin: 10px 0; }
         .res-desc { font-size: 14px; line-height: 1.7; color: #666; background: #fffafa; padding: 15px; border-radius: 20px; margin-bottom: 20px; }
 
-        /* シェアボタン */
         .share-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .sns-btn { color: white; padding: 12px; border-radius: 25px; border: none; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
         .sns-btn:hover { opacity: 0.8; transform: scale(1.02); }
         .btn-x { background: #000; }
         .btn-line { background: var(--line-green); }
 
-        /* 相性占いエリア */
         .aisyo-section { margin-top: 30px; padding-top: 30px; border-top: 2px dashed var(--sub-pink); }
         .f-select { width: 100%; padding: 12px; border-radius: 20px; border: 2px solid var(--sub-pink); margin-bottom: 10px; font-family: inherit; font-size: 14px; background: #fffaff; color: #666; }
         .comp-box { display: none; background: #fff0f5; border: 2px solid var(--sub-pink); border-radius: 20px; padding: 15px; margin-top: 15px; }
@@ -46,7 +42,9 @@
 </head>
 <body>
 
-<nav class="navbar"><img src="./images/rogo.PNG" class="nav-logo-img"></nav>
+<nav class="navbar">
+    <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.reload()">
+</nav>
 
 <div class="container">
     <div class="card" id="q-area">
@@ -85,6 +83,7 @@
 </div>
 
 <script>
+// (中身のロジックは先ほどと同じなので省略せずにそのまま組み込んでいます)
 const chars = [
     {id:"buta.PNG", name:"かぶた", type:"ISFJ", desc:"癒やし度No.1！いつもそばにいてくれる優しい子。"},
     {id:"tora.PNG", name:"とまとら", type:"ESTP", desc:"情熱たっぷり！冒険へ連れ出してくれるリーダー。"},
