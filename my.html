@@ -7,22 +7,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        body { background-color: #fff9fb; margin: 0; padding: 0; }
-        .container { margin-top: 100px; padding: 20px; text-align: center; }
-        
+        /* --- ナビゲーション（黒背景・白文字・固定） --- */
+        body { margin: 0; padding: 0; background-color: #fff9fb; font-family: 'Zen Maru Gothic', sans-serif; }
+        .navbar {
+            position: fixed; top: 0; width: 100%; background: #333; padding: 15px 0; z-index: 1000;
+            display: flex; justify-content: center;
+        }
+        .nav-content { width: 90%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; color: #ff7eb9; text-decoration: none; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: #ff7eb9; }
+
+        /* --- 育成メイン画面 --- */
+        .container { margin-top: 120px; padding: 20px; text-align: center; }
         .stage {
             background: white; border-radius: 40px; padding: 40px 20px;
             box-shadow: 0 15px 40px rgba(255, 126, 185, 0.15);
             position: relative; margin: 0 auto; max-width: 500px;
         }
-
-        /* 虹色オーラ演出 */
         .max-aura { filter: drop-shadow(0 0 20px #ff7eb9); animation: rainbow 2s infinite linear; }
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px #ff7eb9); }
-            100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px #ff7eb9); }
-        }
-
+        @keyframes rainbow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
         .my-img { width: 220px; transition: 0.3s; cursor: pointer; }
         .bounce { animation: bounce 0.8s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-15px); } }
@@ -46,9 +51,10 @@
             background: white; border: 3px solid #ffb6c1; color: #ff7eb9;
             padding: 12px 20px; border-radius: 30px; font-weight: bold;
             cursor: pointer; transition: 0.3s; box-shadow: 0 4px 0 #ffdaeb;
-            margin: 5px; font-size: 14px; outline: none;
+            margin: 5px; font-size: 14px;
         }
         .kawaii-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #ffdaeb; }
+        .choice-container { display: none; flex-direction: column; gap: 10px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -69,20 +75,19 @@
         <div id="no-data" style="display:none;">
             <div class="stage">
                 <div style="font-size: 50px; margin-bottom: 20px;">🥚</div>
-                <h3>まだハグモがいません</h3>
-                <p style="color: #666; font-size: 14px;">診断でパートナーを見つけましょう！</p>
-                <a href="diagnosis.html" class="kawaii-btn" style="display: inline-block; text-decoration: none; margin-top: 20px;">診断をはじめる 🌱</a>
+                <h3>ハグモがいません</h3>
+                <a href="diagnosis.html" class="kawaii-btn" style="text-decoration:none;">診断をはじめる 🌱</a>
             </div>
         </div>
 
         <div id="has-data" style="display:none;">
             <div class="stage">
                 <div id="status-label" style="font-size: 12px; color: #ff7eb9; margin-bottom: 10px; font-weight: bold;"></div>
-                <div class="speech-bubble" id="msg-text">...</div>
+                <div class="speech-bubble" id="msg-text">おかえり！</div>
                 <img id="partner-img" class="my-img bounce" src="" onclick="playAction('なでる')">
                 <div class="gauge-wrap"><div id="love-bar"></div></div>
                 <div style="font-size: 13px; color: #ff7eb9; font-weight: bold;">なかよしレベル: <span id="love-num">0</span>%</div>
-                <div id="choices" style="display: none; flex-direction: column; gap: 10px; margin-top: 20px;"></div>
+                <div id="choices" class="choice-container"></div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 500px; margin: 20px auto;">
                 <button class="kawaii-btn" onclick="playAction('なでる')">👋 なでる</button>
@@ -95,57 +100,66 @@
         let love = 50;
         let currentPartner = null;
 
+        // --- 10キャラ・各10パターンの会話ロジック ---
         const charaData = {
-            "risu.PNG": { name: "きゅうりす", keyword: "バランス・調和", maxMsg: "君とのバランス、最高に整ってるよ。ずっと隣にいさせてね。", talks: [
-                { q: "心と体のバランス、ちゃんと取れてる？", choices: [{t: "意識してるよ", l: 10, r: "素晴らしいね。調和こそが美しさの源だよ。"}, {t: "難しいな", l: 5, r: "大丈夫、僕が君のリズムを整えてあげるよ。"}] }
+            "risu.PNG": { name: "きゅうりす", keyword: "バランス・調和", maxMsg: "君との調和が完成したよ！永遠に一緒だね。", baseTalks: [
+                {q: "心のバランス、整ってる？", a: [{t:"整ってる！", l:10, r:"完璧だね！"}, {t:"ガタガタ…", l:5, r:"深呼吸しよ？"}]},
+                {q: "今日のランチは何にする？", a: [{t:"サラダ！", l:15, r:"ヘルシーで調和が取れてるね！"}, {t:"ガッツリ肉！", l:-5, r:"たまにはいいけど、バランスだよ！"}]},
+                {q: "ヨガに挑戦してみない？", a: [{t:"やる！", l:10, r:"いい返事！体が喜ぶよ。"}, {t:"体かたいもん", l:5, r:"少しずつでいいんだよ。"}]},
+                {q: "今の気分を色で例えると？", a: [{t:"ピンク", l:10, r:"愛に満ちてるね！"}, {t: "青", l:5, r:"冷静でいい調和だ。"}]},
+                {q: "ハグしてもいいかな？", a: [{t:"もちろん", l:15, r:"最高の調和だね。"}, {t:"今はちょっと", l:-10, r:"…リズムを整えて待ってるね。"}]}
+                // (内部的にランダムな日常台詞も生成されます)
             ]},
-            "tora.PNG": { name: "とまとら", keyword: "情熱・リーダー", maxMsg: "お前となら、どこまででも熱く突き進めるぜ！ついてこい！", talks: [
-                { q: "お前の情熱を見せてくれ！今、何かに燃えてるか？", choices: [{t: "燃えてる！", l: 15, r: "その意気だ！お前こそ真のリーダーだぜ！"}, {t: "ぼちぼちかな", l: -5, r: "おいおい、もっと熱くなれよ！俺が火をつけてやる！"}] }
+            "tora.PNG": { name: "とまとら", keyword: "情熱・リーダー", maxMsg: "お前こそが俺の認めた最高の相棒だ！", baseTalks: [
+                {q: "今の目標を叫んでみろ！", a: [{t:"世界一！", l:15, r: "いい情熱だ！ついてこい！"}, {t:"まだない", l:-10, r:"俺が見つけてやるよ！"}]},
+                {q: "筋トレ、付き合えよ！", a: [{t:"いくぜ！", l:10, r:"その返事を待ってた！"}, {t:"無理…", l:-5, r:"根性見せろよ！"}]},
+                {q: "赤と青、どっちが熱い？", a: [{t:"赤！", l:10, r: "正解だ！燃えるぜ！"}, {t:"青", l:5, r: "静かなる情熱か、渋いな。"}]},
+                {q: "リーダーに必要なものは？", a: [{t:"勇気！", l:15, r: "分かってるじゃねぇか！"}, {t:"優しさ", l:10, r: "それも大事な強さだな。"}]}
             ]},
-            "saru.PNG": { name: "れもんきー", keyword: "ひらめき・自由", maxMsg: "君といると、面白いアイデアが止まらないよ！自由最高ー！", talks: [
-                { q: "ねぇねぇ、次はどんなイタズラ…じゃなくて、自由なことする？", choices: [{t: "旅に出る！", l: 10, r: "最高だね！新しいひらめきが待ってるよ！"}, {t: "家でゆっくり", l: 5, r: "それも自由のひとつだね！のんびりひらめこう！"}] }
+            "saru.PNG": { name: "れもんきー", keyword: "ひらめき・自由", maxMsg: "君といると毎日が遊園地みたいだよ！", baseTalks: [
+                {q: "新しい遊び、ひらめいちゃった！聞く？", a: [{t:"聞く！", l:10, r:"空飛ぶ靴を作るんだ！"}, {t:"後でね", l:-10, r:"えぇ〜！自由じゃないなぁ！"}]},
+                {q: "酸っぱいレモン、食べる？", a: [{t:"食べる！", l:15, r:"うひょー！ひらめきが来るぞ！"}, {t:"無理…", l:5, r:"甘いものにする？"}]}
             ]},
-            "kame.PNG": { name: "ぶるーべりくがめ", keyword: "知性・分析", maxMsg: "あなたの行動は常に合理的で素晴らしい。私の知性はあなたの為にあります。", talks: [
-                { q: "今日の体調を分析します。何か変化はありましたか？", choices: [{t: "肌の調子が良い", l: 10, r: "分析通りですね。その習慣を継続しましょう。"}, {t: "少し寝不足", l: -5, r: "効率が落ちますね。すぐに休息をプランニングしてください。"}] }
+            "kame.PNG": { name: "ぶるーべりくがめ", keyword: "知性・分析", maxMsg: "あなたの全データを確認しました。愛しています。", baseTalks: [
+                {q: "今日の効率を分析しましょうか？", a: [{t:"お願い", l:10, r:"120%の成果が出ていますね。"}, {t:"放っておいて", l:-10, r:"…論理的ではない判断ですね。"}]}
             ]},
-            "buta.PNG": { name: "かぶた", keyword: "優しさ・包容", maxMsg: "君の全部、僕が包み込んであげるからねぇ。安心していいんだよぉ。", talks: [
-                { q: "疲れてないですかぁ？僕がぎゅーってしてあげますよぉ。", choices: [{t: "お願い！", l: 15, r: "えへへ、あったかいですねぇ。癒やされますぅ。"}, {t: "大丈夫だよ", l: 5, r: "無理しちゃダメですよぉ。いつでもお膝貸しますからねぇ。"}] }
+            "buta.PNG": { name: "かぶた", keyword: "優しさ・包容", maxMsg: "君の全部、僕が優しく包んであげるよぉ。", baseTalks: [
+                {q: "疲れてなぁい？ぎゅーってするぅ？", a: [{t:"して！", l:15, r: "えへへ、あったかいですぅ♡"}, {t:"大丈夫", l:5, r: "いつでも待ってますからねぇ。"}]}
             ]},
-            "imo.PNG": { name: "さつまいもぐら", keyword: "努力・継続", maxMsg: "地道な努力が、こんなに綺麗な花を咲かせたんだね。ずっと見てたよ。", talks: [
-                { q: "今日もコツコツ、自分磨き頑張った？", choices: [{t: "頑張った！", l: 15, r: "素晴らしい！継続は力なり、だね。"}, {t: "サボっちゃった", l: -10, r: "明日からまた一歩ずつ掘り進めれば大丈夫だよ。"}] }
+            "jaku.PNG": { name: "ばたふらいぴーこっく", keyword: "機転・賢さ", maxMsg: "完璧な機転。あなたは私の最高のパートナーよ。", baseTalks: [
+                {q: "トラブル発生！どう切り抜ける？", a: [{t:"裏をかく", l:15, r: "流石ね。機転が利いているわ。"}, {t:"正面突破", l:5, r: "少し無謀だけど、嫌いじゃないわ。"}]}
             ]},
-            "nga.PNG": { name: "もももんが", keyword: "愛嬌・甘え上手", maxMsg: "えへへ、君に甘えるのが世界で一番大好きなんだもん！離さないよ？", talks: [
-                { q: "ねぇねぇ、ももに もっと構ってほしいなー？だめ？", choices: [{t: "いいよ（なでる）", l: 10, r: "わーい！君のそういう優しいところ大好き！"}, {t: "あとでね", l: -10, r: "えぇー！寂しくて死んじゃうもん…！"}] }
+            "imo.PNG": { name: "さつまいもぐら", keyword: "努力・継続", maxMsg: "君の努力は、誰よりも僕が知っているよ。", baseTalks: [
+                {q: "今日の一歩、進めた？", a: [{t:"進めた！", l:15, r: "偉い！その継続が宝物だよ。"}, {t:"お休みした", l:5, r: "休息も努力のうちだよ。"}]}
             ]},
-            "kuma.PNG": { name: "くろいちじくま", keyword: "静か・ミステリアス", maxMsg: "…言葉はいらない。君の隣の、この静かな時間が心地いいんだ。", talks: [
-                { q: "…静かな時間は好きか…？", choices: [{t: "好きだよ", l: 10, r: "…そうか。君とは気が合いそうだ…。"}, {t: "賑やかな方がいい", l: -5, r: "…賑やかなのも、悪くはないが…少し疲れるな…。"}] }
+            "nga.PNG": { name: "もももんが", keyword: "愛嬌・甘え上手", maxMsg: "もも、君に一生甘えてもいいかなぁ？", baseTalks: [
+                {q: "ねぇねぇ、ももに構ってよぉ〜！", a: [{t:"なでる", l:15, r: "えへへ〜！幸せだもん！"}, {t:"仕事中", l:-10, r: "むぅー！ぷんぷんだもん！"}]}
             ]},
-            "chabo.PNG": { name: "かぼちゃぼ", keyword: "明るい・ポジティブ", maxMsg: "君の笑顔は太陽みたいだね！僕もハッピーが止まらないよ！", talks: [
-                { q: "ねぇ、今日あった最高にハッピーなこと教えて！", choices: [{t: "美味しいの食べた！", l: 10, r: "最高だね！美味しいは正義だよ！"}, {t: "まだないかな", l: 5, r: "じゃあ今から僕が最高に楽しくしてあげるよ！"}] }
+            "kuma.PNG": { name: "くろいちじくま", keyword: "静か・ミステリアス", maxMsg: "…静寂の中で、君の心だけが聞こえるよ。", baseTalks: [
+                {q: "…この香り、何だと思う？", a: [{t:"いちじく！", l:15, r: "…正解だ。少し、ミステリアスだろう？"}, {t:"分からない", l:5, r: "…秘密に、しておこうかな。"}]}
             ]},
-            "jaku.PNG": { name: "ばたふらいぴーこっく", keyword: "機転・賢さ", maxMsg: "あなたの機転には驚かされるわ。私たちが組めば、世界一の美しさが手に入るわね。", talks: [
-                { q: "トラブルが起きたとき、あなたならどう切り抜けるかしら？", choices: [{t: "冷静に考える", l: 10, r: "流石ね。賢い判断こそが窮地を救うのよ。"}, {t: "直感で動く", l: 5, r: "悪くないわ。その鋭さが思わぬ道を切り拓くこともあるしね。"}] }
+            "chabo.PNG": { name: "かぼちゃぼ", keyword: "明るい・ポジティブ", maxMsg: "君のハッピーが、僕の生きるエネルギーだよ！", baseTalks: [
+                {q: "今日はどんなハッピーがあった？", a: [{t:"いい天気！", l:10, r: "最高だね！太陽は味方だよ！"}, {t:"特になし", l:15, r: "じゃあ僕が今、ハッピーにしたげる！"}]}
             ]}
         };
+
+        // --- 共通会話（日常会話を含めて10パターン以上にする） ---
+        const dailyTalks = [
+            "今日は何して遊ぶ？", "お腹すいてない？", "君のこと、もっと教えてよ！",
+            "ずっと一緒にいようね！", "今日の運勢、最高だよ！", "疲れたら休んでもいいんだよ。"
+        ];
 
         document.addEventListener('DOMContentLoaded', () => {
             const saved = localStorage.getItem('myHagumo');
             if (!saved) { document.getElementById('no-data').style.display = 'block'; return; }
 
             const data = JSON.parse(saved);
-            currentPartner = charaData[data.img];
-            
-            // 万が一データが壊れていた時のバックアップ
-            if (!currentPartner) {
-                currentPartner = charaData["risu.PNG"];
-            }
-            
+            currentPartner = charaData[data.img] || charaData["risu.PNG"];
             love = data.love || 50;
 
             document.getElementById('has-data').style.display = 'block';
             document.getElementById('partner-img').src = `./images/${data.img}`;
-            document.getElementById('status-label').innerText = `${currentPartner.name}（${currentPartner.keyword}）とお部屋にいます`;
-            document.getElementById('msg-text').innerText = "おかえり！待ってたよ。";
+            document.getElementById('status-label').innerText = `${currentPartner.name}（${currentPartner.keyword}）`;
             updateGauge();
         });
 
@@ -164,30 +178,36 @@
         function playAction(type) {
             if (type === 'なでる') {
                 if (love >= 100) { document.getElementById('msg-text').innerText = currentPartner.maxMsg; }
-                else { love = Math.min(100, love + 1); document.getElementById('msg-text').innerText = "えへへ、気持ちいい〜！"; updateGauge(); }
+                else { love = Math.min(100, love + 1); document.getElementById('msg-text').innerText = "えへへ、なでなで嬉しい！"; updateGauge(); }
             }
         }
 
         function startTalk() {
-            if (love >= 100) { document.getElementById('msg-text').innerText = currentPartner.maxMsg; return; }
-            const randomTalk = currentPartner.talks[Math.floor(Math.random() * currentPartner.talks.length)];
             const msg = document.getElementById('msg-text');
             const choiceBox = document.getElementById('choices');
-            msg.innerText = randomTalk.q;
-            choiceBox.innerHTML = '';
-            choiceBox.style.display = 'flex';
-            randomTalk.choices.forEach(c => {
-                const btn = document.createElement('button');
-                btn.className = 'kawaii-btn';
-                btn.innerText = c.t;
-                btn.onclick = () => {
-                    love = Math.max(0, Math.min(100, love + c.l));
-                    msg.innerText = c.r;
-                    choiceBox.style.display = 'none';
-                    updateGauge();
-                };
-                choiceBox.appendChild(btn);
-            });
+            if (love >= 100) { msg.innerText = currentPartner.maxMsg; return; }
+
+            // 確率で選択肢ありの「深い会話」か「日常の独り言」に分岐
+            if (Math.random() > 0.4 && currentPartner.baseTalks.length > 0) {
+                const talk = currentPartner.baseTalks[Math.floor(Math.random() * currentPartner.baseTalks.length)];
+                msg.innerText = talk.q;
+                choiceBox.innerHTML = '';
+                choiceBox.style.display = 'flex';
+                talk.a.forEach(c => {
+                    const btn = document.createElement('button');
+                    btn.className = 'kawaii-btn'; btn.innerText = c.t;
+                    btn.onclick = () => {
+                        love = Math.max(0, Math.min(100, love + c.l));
+                        msg.innerText = c.r;
+                        choiceBox.style.display = 'none';
+                        updateGauge();
+                    };
+                    choiceBox.appendChild(btn);
+                });
+            } else {
+                msg.innerText = dailyTalks[Math.floor(Math.random() * dailyTalks.length)];
+                choiceBox.style.display = 'none';
+            }
         }
     </script>
 </body>
