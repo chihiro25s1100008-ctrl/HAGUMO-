@@ -1,307 +1,91 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAGUMO DIAGNOSIS</title>
 
-<title>HAGUMO DIAGNOSIS</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: linear-gradient(180deg, #fffdf8, #ffeef5);
+            text-align: center;
+        }
 
-<style>
+        /* 質問ボックス */
+        .question-box {
+            max-width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+        }
 
-body{
-margin:0;
-font-family:sans-serif;
-background:linear-gradient(180deg,#fffdf8,#ffeef5);
-text-align:center;
-}
+        button {
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 30px;
+            background: #ff9fcf;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-/* ナビ */
+        button:hover {
+            background: #ff4fa3;
+        }
 
-.nav{
-display:flex;
-justify-content:center;
-gap:25px;
-padding:20px;
-background:white;
-box-shadow:0 5px 20px rgba(0,0,0,.05);
-position:sticky;
-top:0;
-}
+        /* ローディング */
+        .loading {
+            display: none;
+            font-size: 20px;
+            margin-top: 40px;
+        }
 
-.nav a{
-text-decoration:none;
-color:#333;
-font-weight:bold;
-}
+        /* 結果表示 */
+        .result {
+            display: none;
+            margin-top: 40px;
+            animation: fade 1s;
+        }
 
-.nav a.active{
-color:#ff4fa3;
-border-bottom:3px solid #ff4fa3;
-}
+        @keyframes fade {
+            from { opacity: 0 }
+            to { opacity: 1 }
+        }
 
-  <body>
-
-  <div class="container">
-    </div>
-
-  <script src="common.js"></script>
-</body>
-
-/* 質問 */
-
-.question-box{
-max-width:500px;
-margin:40px auto;
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-}
-
-button{
-padding:12px 25px;
-margin:10px;
-border:none;
-border-radius:30px;
-background:#ff9fcf;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-button:hover{
-background:#ff4fa3;
-}
-
-/* ローディング */
-
-.loading{
-display:none;
-font-size:20px;
-margin-top:40px;
-}
-
-/* 結果 */
-
-.result{
-display:none;
-margin-top:40px;
-animation:fade 1s;
-}
-
-@keyframes fade{
-from{opacity:0}
-to{opacity:1}
-}
-
-.result img{
-width:200px;
-border-radius:20px;
-}
-
-</style>
+        .result img {
+            width: 200px;
+            border-radius: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
+    <h1>🌿 ハグモ覚醒診断</h1>
 
-<h1>🌿 ハグモ覚醒診断</h1>
+    <div class="question-box" id="questionBox">
+        <h2 id="questionText"></h2>
+        <div id="answers"></div>
+    </div>
 
-<div class="question-box" id="questionBox">
-<h2 id="questionText"></h2>
-<div id="answers"></div>
-</div>
+    <div class="loading" id="loading">
+        🌈 ハグモが覚醒中...
+    </div>
 
-<div class="loading" id="loading">
-🌈 ハグモが覚醒中...
-</div>
+    <div class="result" id="result">
+        <h2 id="resultName"></h2>
+        <img id="resultImg">
+        <p id="resultDesc"></p>
+        <h3>💞 相性ハグモ</h3>
+        <img id="compatImg" width="120">
+    </div>
 
-<div class="result" id="result">
-
-<h2 id="resultName"></h2>
-
-<img id="resultImg">
-
-<p id="resultDesc"></p>
-
-<h3>💞 相性ハグモ</h3>
-
-<img id="compatImg" width="120">
-
-</div>
-
-<script>
-
-/* ハグモデータ */
-
-const hagumo={
-
-きゅうりす:{img:"images/risu.PNG",desc:"調和を大切にする森の守護者",compat:"とまとら"},
-とまとら:{img:"images/tora.PNG",desc:"情熱的なリーダータイプ",compat:"きゅうりす"},
-れもんきー:{img:"images/saru.PNG",desc:"自由な発想の天才",compat:"ばたふらいぴーこっく"},
-ぶるーべりくがめ:{img:"images/kame.PNG",desc:"知性と分析の賢者",compat:"くろいちじくま"},
-かぶた:{img:"images/buta.PNG",desc:"優しさの妖精",compat:"もももんが"},
-さつまいもぐら:{img:"images/imo.PNG",desc:"努力の職人",compat:"かぶた"},
-もももんが:{img:"images/nga.PNG",desc:"愛嬌の人気者",compat:"かぶた"},
-くろいちじくま:{img:"images/kuma.PNG",desc:"ミステリアスな哲学者",compat:"ぶるーべりくがめ"},
-かぼちゃぼ:{img:"images/chabo.PNG",desc:"ポジティブな太陽",compat:"とまとら"},
-ばたふらいぴーこっく:{img:"images/jaku.PNG",desc:"知恵の舞姫",compat:"れもんきー"}
-
-}
-
-/* スコア */
-
-let score={
-きゅうりす:0,
-とまとら:0,
-れもんきー:0,
-ぶるーべりくがめ:0,
-かぶた:0,
-さつまいもぐら:0,
-もももんが:0,
-くろいちじくま:0,
-かぼちゃぼ:0,
-ばたふらいぴーこっく:0
-}
-
-/* 質問 */
-
-const questions=[
-
-{
-q:"友達からよく言われるのは？",
-a:[
-{t:"優しい",add:"かぶた"},
-{t:"リーダー",add:"とまとら"},
-{t:"不思議",add:"れもんきー"}
-]
-},
-
-{
-q:"好きな行動は？",
-a:[
-{t:"コツコツ努力",add:"さつまいもぐら"},
-{t:"人を助ける",add:"きゅうりす"},
-{t:"面白いこと探す",add:"もももんが"}
-]
-},
-
-{
-q:"困った時どうする？",
-a:[
-{t:"冷静に分析",add:"ぶるーべりくがめ"},
-{t:"直感で動く",add:"れもんきー"},
-{t:"誰かに相談",add:"きゅうりす"}
-]
-},
-
-{
-q:"理想の性格は？",
-a:[
-{t:"ポジティブ",add:"かぼちゃぼ"},
-{t:"知的",add:"ぶるーべりくがめ"},
-{t:"ミステリアス",add:"くろいちじくま"}
-]
-},
-
-{
-q:"得意分野は？",
-a:[
-{t:"人付き合い",add:"もももんが"},
-{t:"計画",add:"ぶるーべりくがめ"},
-{t:"挑戦",add:"とまとら"}
-]
-},
-
-{
-q:"落ち着く場所は？",
-a:[
-{t:"自然",add:"きゅうりす"},
-{t:"秘密基地",add:"くろいちじくま"},
-{t:"楽しい場所",add:"かぼちゃぼ"}
-]
-}
-
-]
-
-let current=0
-
-function showQuestion(){
-
-let q=questions[current]
-
-document.getElementById("questionText").innerText=q.q
-
-let html=""
-
-q.a.forEach(a=>{
-html+=`<button onclick="answer('${a.add}')">${a.t}</button>`
-})
-
-document.getElementById("answers").innerHTML=html
-
-}
-
-function answer(type){
-
-score[type]++
-
-current++
-
-if(current<questions.length){
-
-showQuestion()
-
-}else{
-
-finish()
-
-}
-
-}
-
-function finish(){
-
-document.getElementById("questionBox").style.display="none"
-document.getElementById("loading").style.display="block"
-
-setTimeout(showResult,2000)
-
-}
-
-function showResult(){
-
-document.getElementById("loading").style.display="none"
-
-let top=Object.keys(score).reduce((a,b)=>score[a]>score[b]?a:b)
-
-let data=hagumo[top]
-
-document.getElementById("result").style.display="block"
-
-document.getElementById("resultName").innerText=top
-document.getElementById("resultImg").src=data.img
-document.getElementById("resultDesc").innerText=data.desc
-
-document.getElementById("compatImg").src=hagumo[data.compat].img
-
-/* 履歴保存 */
-
-let history=JSON.parse(localStorage.getItem("hagumoHistory"))||[]
-
-history.push({
-name:top,
-img:data.img,
-date:new Date().toLocaleDateString()
-})
-
-localStorage.setItem("hagumoHistory",JSON.stringify(history))
-
-}
-
-showQuestion()
-
-</script>
-
-</body>
-</html>
+    <script>
+        const hagumo = {
+            きゅうりす: { img: "images/risu.PNG", desc: "調和を大切にする森の守護者", compat: "とまとら" },
+            とまとら: { img: "images/tora.PNG", desc: "情熱的なリーダータイプ", compat: "きゅうりす" },
