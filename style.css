@@ -96,3 +96,53 @@ body {
 .nav-link:hover {
   color: #ff7eb9;
 }
+/* --- スマホ対応 (画面幅が768px以下のとき) --- */
+@media screen and (max-width: 768px) {
+    /* 1. 全体の余白を調整 */
+    .container {
+        padding: 15px;
+        width: 100%;
+    }
+
+    /* 2. ナビゲーションを縦並び、またはスクロールに */
+    .nav {
+        flex-direction: column; /* ロゴとメニューを上下に */
+        padding: 10px;
+    }
+    .nav-links {
+        gap: 8px;
+        flex-wrap: wrap; /* メニューが入り切らない時に折り返す */
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .nav-link {
+        font-size: 11px; /* スマホ用に文字を少し小さく */
+        padding: 5px;
+    }
+
+    /* 3. カードやボタンの横幅を画面いっぱいに */
+    .card, .res-main-card, .price-card {
+        padding: 20px;
+        margin-bottom: 15px;
+        width: 100% !important;
+        box-sizing: border-box; /* 枠線を含めて100%にする */
+    }
+
+    /* 4. 文字サイズをスマホで見やすく調整 */
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; }
+    p { font-size: 14px; line-height: 1.6; }
+
+    /* 5. 診断ボタンなどの大きなボタン */
+    .button, .ans-btn {
+        width: 100%;
+        max-width: none;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    /* 6. 商品リストを1列にする */
+    .product-list {
+        grid-template-columns: 1fr; /* 横並びをやめて1列に */
+    }
+}
