@@ -7,102 +7,142 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
+        :root {
+            --main-pink: #ff7eb9;
+            --sub-pink: #ffdaeb;
+            --gold: #d4af37;
+            --bg-grad: linear-gradient(135deg, #fff5f8 0%, #fee2e2 100%);
+        }
+
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: #fff9fb; color: #444; }
+
         .shop-hero {
-            background: linear-gradient(135deg, #fff5f8 0%, #fee2e2 100%);
-            padding: 80px 20px;
+            background: var(--bg-grad);
+            padding: 100px 20px 140px;
             text-align: center;
-            border-radius: 0 0 50px 50px;
-        }
-
-        .concept-box {
-            background: white;
-            padding: 30px;
-            border-radius: 30px;
-            margin: -40px auto 40px;
-            max-width: 800px;
-            box-shadow: 0 15px 30px rgba(255,126,185,0.1);
+            border-radius: 0 0 80px 80px;
             position: relative;
-            z-index: 10;
         }
 
-        .zero-grid {
+        /* 仕組み解説セクション（ここが設定盛り盛りポイント） */
+        .system-guide {
+            max-width: 900px;
+            margin: -80px auto 60px;
+            background: white;
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(255,126,185,0.15);
+            position: relative;
+            z-index: 20;
+            border: 3px solid var(--sub-pink);
+        }
+
+        .system-step-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
-        .zero-item { text-align: center; }
-        .zero-num { font-size: 24px; font-weight: bold; color: #ff7eb9; font-family: 'Zen Maru Gothic'; }
-        .zero-text { font-size: 13px; color: #666; font-weight: bold; }
+        .step-box {
+            text-align: center;
+            padding: 15px;
+            background: var(--soft-pink);
+            border-radius: 20px;
+            border: 1px solid var(--sub-pink);
+        }
+        .step-icon { font-size: 24px; margin-bottom: 5px; }
+        .step-label { font-size: 11px; font-weight: bold; color: var(--main-pink); }
 
+        /* 商品カードの豪華版 */
         .product-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 40px;
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .price-card {
             background: white;
-            border-radius: 30px;
-            padding: 30px;
+            border-radius: 40px;
+            padding: 40px 30px;
+            position: relative;
             border: 2px solid #fff0f5;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            flex-direction: column;
-            text-align: center;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        /* ランクバッジ */
+        .rank-badge {
+            position: absolute;
+            top: 20px; left: -30px;
+            background: var(--main-pink);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(-45deg);
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
         }
 
         .price-card:hover { 
-            transform: translateY(-10px) scale(1.02); 
-            box-shadow: 0 20px 40px rgba(255,182,193,0.3); 
-            border-color: #ffb6c1; 
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(255,126,185,0.25);
+            border-color: var(--main-pink);
         }
 
-        .difficulty-tag {
-            display: inline-block;
-            margin: 0 auto 10px;
-            padding: 4px 12px;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-        .level-1 { background: #e0f9e0; color: #2d5a2d; }
-        .level-2 { background: #fff4e0; color: #855d10; }
-        .level-3 { background: #fee2e2; color: #991b1b; }
-
-        /* グッズリストのスタイル */
-        .goods-box {
-            background: #fff9fb;
-            border: 1.5px dashed #ffb6c1;
-            padding: 15px;
-            border-radius: 20px;
-            margin: 15px 0;
+        /* 【重要】成長報告でもらえるグッズリスト */
+        .reward-list-box {
+            background: linear-gradient(to bottom, #fff, #fff0f5);
+            border: 2px dashed var(--main-pink);
+            border-radius: 25px;
+            padding: 20px;
+            margin: 20px 0;
             text-align: left;
         }
-        .goods-box span {
-            display: block;
-            font-size: 12px;
-            color: #ff7eb9;
-            font-weight: bold;
-            margin-bottom: 8px;
+        .reward-list-box h4 {
+            font-size: 14px;
+            color: var(--main-pink);
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
         }
-        .goods-box ul { list-style: none; padding: 0; margin: 0; }
-        .goods-box li { font-size: 13px; color: #555; margin-bottom: 4px; display: flex; align-items: center; }
-        .goods-box li::before { content: "🎀"; margin-right: 8px; font-size: 12px; }
+        .reward-list-box h4::before { content: "🎁"; margin-right: 5px; }
 
-        .price-val { font-size: 28px; color: #444; font-family: 'Zen Maru Gothic'; margin: 15px 0; }
-        .price-val span { font-size: 14px; color: #999; }
+        .reward-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted var(--sub-pink);
+        }
+        .reward-item b { color: #555; }
+        .reward-item span { background: var(--main-pink); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
+        /* ボタン */
+        .buy-btn {
+            width: 100%;
+            background: var(--main-pink);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255,126,185,0.3);
+            transition: 0.3s;
+        }
+        .buy-btn:hover { background: #ff60a8; transform: scale(1.02); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @media screen and (max-width: 768px) {
-            .product-list { grid-template-columns: 1fr; }
-            .zero-grid { grid-template-columns: 1fr; }
-        }
+        /* キラキラ演出用 */
+        .kira { position: absolute; font-size: 20px; animation: blink 2s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -110,99 +150,106 @@
     <div class="container" style="margin-top: 80px;">
         
         <section class="shop-hero">
-            <h1 style="font-family: 'Zen Maru Gothic'; color: #ff7eb9;">HAGUMO SHOP</h1>
-            <p style="color: #888; font-size: 14px;">自分だけのハグモと、可愛い毎日を届けるね。</p>
+            <h1 style="font-size: 40px; color: var(--main-pink); margin-bottom: 10px;">HAGUMO Premium Shop</h1>
+            <p style="color: #666; font-weight: bold;">「育てる」から「届く」、新感覚の美容体験。</p>
         </section>
 
-        <section class="concept-box reveal">
-            <div class="zero-grid">
-                <div class="zero-item">
-                    <div class="zero-num">#準備0</div>
-                    <div class="zero-text">届いてすぐスタート</div>
+        <section class="system-guide reveal">
+            <h2 style="text-align: center; color: var(--main-pink); font-size: 20px; margin-top: 0;">📸 成長報告でグッズが届く！成長ランクシステム</h2>
+            <p style="text-align: center; font-size: 13px; color: #888;">HAGUMOはキットを買って終わりじゃありません。<br>マイページから写真を送るごとに、あなたの家へリアルなグッズが郵送されます！</p>
+            
+            <div class="system-step-grid">
+                <div class="step-box">
+                    <div class="step-icon">📦</div>
+                    <div class="step-label">1. キット届く</div>
                 </div>
-                <div class="zero-item">
-                    <div class="zero-num">#映え100</div>
-                    <div class="zero-text">限定グッズがセット</div>
+                <div class="step-box">
+                    <div class="step-icon">📸</div>
+                    <div class="step-label">2. 写真を送る</div>
                 </div>
-                <div class="zero-item">
-                    <div class="zero-num">#失敗0</div>
-                    <div class="zero-text">ハグモが教えるよ</div>
+                <div class="step-box">
+                    <div class="step-icon">💌</div>
+                    <div class="step-label">3. グッズ届く</div>
+                </div>
+                <div class="step-box">
+                    <div class="step-icon">💖</div>
+                    <div class="step-label">4. 絆深まる</div>
                 </div>
             </div>
         </section>
-
-        <h2 style="text-align: center; font-family: 'Zen Maru Gothic'; margin: 40px 0 20px;">どのハグモをお迎えする？</h2>
 
         <div class="product-list">
             <div class="price-card reveal">
-                <div class="difficulty-tag level-1">難易度：★☆☆☆☆</div>
-                <img src="./images/buta.PNG" style="width:120px; margin: 0 auto;">
-                <h3 style="margin-top:10px; font-size: 18px;">はじめてのHAGUMOセット</h3>
+                <div class="rank-badge">RANK C</div>
+                <img src="./images/buta.PNG" style="width:140px; margin: 0 auto; display: block;">
+                <h3 style="text-align:center; color: var(--main-pink);">はじめてのHAGUMOセット</h3>
+                <p style="font-size: 12px; color: #888; text-align: center;">まずはここから！育てやすさNo.1の入門キット。</p>
                 
-                <div class="goods-box">
-                    <span>❤️ 限定グッズも同梱！</span>
-                    <ul>
-                        <li>お迎えキャラのスマホステッカー</li>
-                        <li>推し色エコポット（全3色）</li>
-                        <li>ハグモの美容レシピカード</li>
-                    </ul>
+                <div class="reward-list-box">
+                    <h4>報告でもらえる成長報酬</h4>
+                    <div class="reward-item"><b>[芽生え時] 限定スマホ用ステッカー</b> <span>郵送</span></div>
+                    <div class="reward-item"><b>[収穫時] キャラ別美容レシピBOOK</b> <span>郵送</span></div>
                 </div>
                 
-                <div class="price-val">¥1,980 <span>(税込)</span></div>
-                <button class="button" style="width:100%; border:none; background: #ff7eb9; color: white; padding: 12px; border-radius: 15px; cursor: pointer; font-weight: bold;">予約注文する</button>
+                <div style="text-align:center; margin-bottom: 20px;">
+                    <span style="font-size: 32px; font-weight: bold; color: #444;">¥1,980</span> <span style="font-size: 12px; color: #999;">(送料別)</span>
+                </div>
+                <button class="buy-btn">この子をお迎えする 🌱</button>
             </div>
 
-            <div class="price-card reveal">
-                <div class="difficulty-tag level-2">難易度：★★★☆☆</div>
-                <img src="./images/risu.PNG" style="width:120px; margin: 0 auto;">
-                <h3 style="margin-top:10px; font-size: 18px;">こだわり菜園セット</h3>
+            <div class="price-card reveal" style="border-color: var(--sub-pink);">
+                <div class="rank-badge" style="background: #ffb6c1;">RANK B</div>
+                <img src="./images/risu.PNG" style="width:140px; margin: 0 auto; display: block;">
+                <h3 style="text-align:center; color: var(--main-pink);">こだわり美肌菜園セット</h3>
+                <p style="font-size: 12px; color: #888; text-align: center;">少し難しいけど、その分リターンも豪華！</p>
                 
-                <div class="goods-box">
-                    <span>❤️ 限定グッズも同梱！</span>
-                    <ul>
-                        <li>ふわふわ♪キャラとお揃いヘアバンド</li>
-                        <li>お名前刻印入りプランターカバー</li>
-                        <li>ARで飛び出す！限定フォトカード</li>
-                    </ul>
+                <div class="reward-list-box">
+                    <h4>報告でもらえる成長報酬</h4>
+                    <div class="reward-item"><b>[芽生え時] お名前入りネームプレート</b> <span>郵送</span></div>
+                    <div class="reward-item"><b>[成長時] ふわふわ洗顔ヘアバンド</b> <span>郵送</span></div>
+                    <div class="reward-item"><b>[収穫時] 2Dキャラアクリルスタンド</b> <span>郵送</span></div>
                 </div>
                 
-                <div class="price-val">¥2,480 <span>(税込)</span></div>
-                <button class="button" style="width:100%; border:none; background: #ff7eb9; color: white; padding: 12px; border-radius: 15px; cursor: pointer; font-weight: bold;">予約注文する</button>
+                <div style="text-align:center; margin-bottom: 20px;">
+                    <span style="font-size: 32px; font-weight: bold; color: #444;">¥2,980</span> <span style="font-size: 12px; color: #999;">(送料別)</span>
+                </div>
+                <button class="buy-btn">この子をお迎えする 🌿</button>
             </div>
 
-            <div class="price-card reveal">
-                <div class="difficulty-tag level-3">難易度：★★★★★</div>
-                <img src="./images/kuma.PNG" style="width:120px; margin: 0 auto;">
-                <h3 style="margin-top:10px; font-size: 18px;">匠のハグモ極みセット</h3>
+            <div class="price-card reveal" style="border: 3px solid #f9d5e5;">
+                <div class="rank-badge" style="background: var(--gold);">RANK A</div>
+                <img src="./images/kuma.PNG" style="width:140px; margin: 0 auto; display: block;">
+                <h3 style="text-align:center; color: var(--main-pink);">匠のハグモ極みセット</h3>
+                <p style="font-size: 12px; color: #888; text-align: center;">最高級の土と種。プロ志向のあなたへ。</p>
                 
-                <div class="goods-box">
-                    <span>❤️ 限定グッズも同梱！</span>
-                    <ul>
-                        <li>匠限定！オーロラアクリルキーホルダー</li>
-                        <li>シリアルナンバー入りクリスタル瓶</li>
-                        <li>剪定用ピンクゴールドハサミ</li>
-                    </ul>
+                <div class="reward-list-box">
+                    <h4>報告でもらえる成長報酬</h4>
+                    <div class="reward-item"><b>[芽生え時] ピンクゴールド剪定バサミ</b> <span>郵送</span></div>
+                    <div class="reward-item"><b>[成長時] シリアル入りクリスタル瓶</b> <span>郵送</span></div>
+                    <div class="reward-item"><b>[収穫時] 匠限定！刺繍入りエプロン</b> <span>郵送</span></div>
                 </div>
                 
-                <div class="price-val">¥3,980 <span>(税込)</span></div>
-                <button class="button" style="width:100%; border:none; background: #ff7eb9; color: white; padding: 12px; border-radius: 15px; cursor: pointer; font-weight: bold;">予約注文する</button>
+                <div style="text-align:center; margin-bottom: 20px;">
+                    <span style="font-size: 32px; font-weight: bold; color: #444;">¥4,500</span> <span style="font-size: 12px; color: #999;">(送料別)</span>
+                </div>
+                <button class="buy-btn" style="background: var(--gold);">この子をお迎えする ✨</button>
             </div>
         </div>
 
-        <section class="qa-section reveal" style="max-width: 800px; margin: 60px auto; padding: 0 20px;">
-            <h2 style="text-align: center; font-family: 'Zen Maru Gothic'; margin-bottom: 30px;">Q&A</h2>
-            <div class="qa-item" style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #eee;">
-                <span style="font-weight: bold; color: #ff7eb9;">Q. 「匠セット」はキッチンでも育てられますか？</span>
-                <p style="font-size: 14px; color: #666; margin-top: 5px;">A. はい！すべてのハグモはキッチンカウンターや棚で育てられるように調整されています。大きくならない品種なので安心してくださいね。</p>
+        <section class="qa-section reveal" style="max-width: 800px; margin: 100px auto; padding: 40px; background: white; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h2 style="text-align: center; color: var(--main-pink); margin-bottom: 40px;">よくあるご質問</h2>
+            <div style="margin-bottom: 30px;">
+                <p style="font-weight: bold; border-left: 4px solid var(--main-pink); padding-left: 15px;">Q. 報告写真はどこから送ればいいですか？</p>
+                <p style="font-size: 14px; color: #666; padding-left: 19px;">A. 購入後に利用可能になる「MY HAGUMO」ページ内にある、各成長フェーズの報告ボタンからアップロードいただけます！</p>
             </div>
-            <div class="qa-item" style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #eee;">
-                <span style="font-weight: bold; color: #ff7eb9;">Q. グッズだけをコレクションすることはできますか？</span>
-                <p style="font-size: 14px; color: #666; margin-top: 5px;">A. セット内のグッズはここでしか手に入らない非売品です。お迎えするハグモごとに違うステッカーやカードが届くので、ぜひ集めてみてください！</p>
+            <div style="margin-bottom: 30px;">
+                <p style="font-weight: bold; border-left: 4px solid var(--main-pink); padding-left: 15px;">Q. グッズの送料はかかりますか？</p>
+                <p style="font-size: 14px; color: #666; padding-left: 19px;">A. 成長報告でのグッズ送付費用はすべてキット代金に含まれています！追加費用なしで届くので、安心して育ててくださいね。</p>
             </div>
         </section>
 
-        <div style="text-align: center; color: #999; font-size: 11px; margin: 80px 0 50px;">
-            ※これは学校課題の制作物であり、実際の販売は行っておりません。
+        <div style="text-align: center; color: #ccc; font-size: 11px; margin-bottom: 60px;">
+            ※これは学校課題の制作物であり、実際の販売・発送は行っておりません。
         </div>
     </div>
 
@@ -220,6 +267,5 @@
         window.addEventListener("scroll", reveal);
         reveal();
     </script>
-    <script src="./common.js"></script>
 </body>
 </html>
