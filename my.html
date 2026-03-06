@@ -3,164 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY HAGUMO | パートナーと遊ぶ</title>
+    <title>MY HAGUMO | 育成モード</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <style>
-        .my-header { text-align: center; padding: 40px 20px; background: #fff4f9; border-radius: 0 0 40px 40px; }
-        .my-container { max-width: 500px; margin: 0 auto; padding: 20px; text-align: center; }
-
-        /* ハグモの表示エリア */
         .stage {
-            background: white;
-            border-radius: 40px;
-            padding: 40px 20px;
-            box-shadow: 0 15px 40px rgba(255, 126, 185, 0.1);
-            position: relative;
-            margin-bottom: 20px;
-            overflow: hidden;
+            background: white; border-radius: 40px; padding: 30px;
+            box-shadow: 0 15px 40px rgba(255, 126, 185, 0.15);
+            text-align: center; position: relative; margin-top: 20px;
         }
+        .my-img { width: 180px; transition: 0.3s ease; cursor: pointer; }
+        .bounce { animation: bounce 0.6s infinite alternate; }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+        
+        .speech-bubble {
+            background: #fff4f9; border: 2px solid #ffdaeb; border-radius: 20px;
+            padding: 15px; margin-bottom: 20px; min-height: 60px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: #444; font-size: 14px;
+        }
+        .choice-container { display: none; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; }
+        .choice-btn {
+            background: white; border: 2px solid #ff7eb9; color: #ff7eb9;
+            padding: 12px; border-radius: 15px; cursor: pointer; font-size: 14px; font-weight: bold;
+        }
+        .choice-btn:hover { background: #ff7eb9; color: white; }
 
-        /* ハグモの画像（アニメーション付） */
-        .my-img {
-            width: 180px; height: 180px;
-            object-fit: contain;
-            transition: 0.3s;
-            cursor: pointer;
-            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1));
-        }
-        .my-img:active { transform: scale(0.9) rotate(5deg); } /* クリックで動く */
-
-        /* ハートが出るエフェクト */
-        .heart-fx {
-            position: absolute; color: #ff7eb9; font-size: 24px;
-            animation: floatUp 1s forwards; pointer-events: none;
-        }
-        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100px); } }
-
-        /* 仲良し度ゲージ */
-        .love-gauge-container {
-            background: #eee;
-            height: 12px; border-radius: 10px;
-            margin: 20px 0 10px; overflow: hidden;
-        }
-        #love-bar {
-            background: linear-gradient(to right, #ff9ecb, #ff7eb9);
-            width: 30%; height: 100%; transition: 0.5s;
-        }
-
-        /* 遊びメニュー */
-        .play-menu {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-            margin-top: 20px;
-        }
-        .play-btn {
-            background: white; border: 2px solid #ffdaeb;
-            padding: 12px; border-radius: 20px;
-            font-size: 14px; font-weight: bold; color: #444;
-            cursor: pointer; transition: 0.2s;
-        }
-        .play-btn:hover { background: #fff4f9; transform: translateY(-2px); }
-
-        /* メッセージウィンドウ */
-        .msg-bubble {
-            background: #fafafa; border-radius: 20px;
-            padding: 15px; margin-top: 20px;
-            font-size: 13px; color: #666; min-height: 40px;
-        }
+        .gauge-wrap { width: 100%; height: 12px; background: #eee; border-radius: 6px; margin: 15px 0 5px; overflow: hidden; }
+        #love-bar { height: 100%; background: linear-gradient(to right, #ff9ecb, #ff7eb9); width: 50%; transition: 0.5s; }
+        
+        .play-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="container" style="margin-top: 80px;">
-        <header class="my-header">
-            <h1 style="font-family: 'Zen Maru Gothic'; color: #444;">🐾 MY HAGUMO</h1>
-            <p id="partner-status" style="color: #ff7eb9; font-size: 12px; margin-top: 5px; font-weight: bold;">お腹が空いているみたい…</p>
-        </header>
-
+    <div class="container" style="margin-top: 60px;">
         <div class="my-container">
             <div id="has-data" style="display:none;">
                 <div class="stage">
-                    <h2 id="partner-name" style="font-family: 'Zen Maru Gothic'; margin-bottom: 20px;"></h2>
-                    <img id="partner-img" class="my-img" src="" onclick="playAction('なでる')">
+                    <div id="status-label" style="font-size: 12px; color: #ff7eb9; font-weight: bold; margin-bottom: 10px;"></div>
+                    <div class="speech-bubble" id="msg-text">……。</div>
                     
-                    <div style="font-size: 12px; color: #999; margin-top: 10px;">仲良し度</div>
-                    <div class="love-gauge-container"><div id="love-bar"></div></div>
-                    <div id="love-percent" style="font-size: 11px; color: #ff7eb9; font-weight: bold;">30%</div>
+                    <img id="partner-img" class="my-img bounce" src="" onclick="playAction('なでる')">
+                    
+                    <div class="gauge-wrap"><div id="love-bar"></div></div>
+                    <div style="font-size: 12px; color: #999;">なかよし度: <span id="love-num">50</span>%</div>
+
+                    <div id="choices" class="choice-container"></div>
                 </div>
 
                 <div class="play-menu">
                     <button class="play-btn" onclick="playAction('なでる')">👋 なでる</button>
-                    <button class="play-btn" onclick="playAction('おやつ')">🍎 おやつ</button>
-                    <button class="play-btn" onclick="playAction('おしゃべり')">💬 話す</button>
-                    <button class="play-btn" onclick="playAction('お掃除')">🧹 お掃除</button>
+                    <button class="play-btn" onclick="startTalk()">💬 おしゃべり</button>
                 </div>
-
-                <div class="msg-bubble" id="msg">タップして遊んでね！</div>
-            </div>
-
-            <div id="no-data" style="padding: 60px 20px;">
-                <p>まだあなたのパートナーがいません。</p>
-                <a href="diagnosis.html" class="button" style="margin-top: 20px; display: inline-block;">診断をはじめる 🌱</a>
             </div>
         </div>
     </div>
 
     <script>
-        let loveScore = 30;
-        let partnerData = null;
+        let love = 50;
+        let partner = null;
+
+        const charaSettings = {
+            "risu.PNG": { name: "きゅうりす", trait: "バランス・調和", greet: "心も体も、バランスが大事だよ！", pet: "心が整っていくのを感じるよ…", talk: "今日はどんな一日だった？", choices: [{text: "穏やかな一日だったよ", love: 10, res: "それが一番だね。僕も嬉しいよ！"}, {text: "バタバタしちゃった", love: 5, res: "深呼吸して。僕と一緒に休もう？"}]},
+            "tora.PNG": { name: "とまとら", trait: "情熱・リーダー", greet: "今日も熱く行こうぜ！ついてきな！", pet: "おっ、お前の手の温もり、熱いな！", talk: "お前の「目標」を教えてくれ！", choices: [{text: "世界一の美肌！", love: 10, res: "最高だ！俺が全力で導いてやるぜ！"}, {text: "のんびりしたい", love: -5, res: "おっと、今は情熱が足りないようだな！"}]},
+            "saru.PNG": { name: "れもんきー", trait: "ひらめき・自由", greet: "ウキッ！新しいこと、探しに行こう！", pet: "ウキウキしてきちゃうよ〜！", talk: "ねぇねぇ、面白いこと思いついた？", choices: [{text: "新しいレシピを考えたよ", love: 10, res: "天才！さすが僕のパートナー！"}, {text: "特にないかな…", love: -2, res: "え〜、何か探そうよ！ウキッ！"}]},
+            "kame.PNG": { name: "ぶるーべりくがめ", trait: "知性・分析", greet: "……。効率的な育成計画を立てましょうか。", pet: "……心地よいリズムです。分析完了。", talk: "今後の健康管理について相談があります。", choices: [{text: "詳しく教えて！", love: 10, res: "いい返事です。まずは睡眠から見直しましょう。"}, {text: "後でいい？", love: -5, res: "……後回しは推奨されませんね。"}]},
+            "buta.PNG": { name: "かぶた", trait: "優しさ・包容", greet: "大丈夫だよぉ。私がついてるからねぇ。", pet: "ふふっ、あったかい手だねぇ。", talk: "最近、疲れてない？無理しちゃだめだよぉ。", choices: [{text: "ちょっと疲れたかも", love: 10, res: "よしよし、今日は早く寝ようねぇ。"}, {text: "元気だよ！", love: 5, res: "よかったぁ！お顔が見れて嬉しいよぉ。"}]},
+            "jaku.PNG": { name: "ばたふらいぴーこっく", trait: "機転・賢さ", greet: "ふふ、私を呼び出したのは賢い選択ね。", pet: "美しい触れ方ね。嫌いじゃないわ。", talk: "今のあなたに必要なものは何だと思う？", choices: [{text: "自分を磨く時間！", love: 10, res: "正解。あなたをさらに輝かせてあげる。"}, {text: "美味しいお菓子！", love: 0, res: "たまにはそれも、いいかもしれないわね。"}]},
+            "imo.PNG": { name: "さつまいもぐら", trait: "努力・継続", greet: "一歩ずつ、コツコツ頑張るであります！", pet: "継続的ななでなで、感謝であります！", talk: "自分を信じて続けることが大事であります！", choices: [{text: "毎日頑張ってるよ", love: 10, res: "素晴らしい！自分を褒めてあげてほしいであります！"}, {text: "すぐ飽きちゃう…", love: -5, res: "諦めたらそこで終わりであります！喝！"}]},
+            "nga.PNG": { name: "もももんが", trait: "愛嬌・甘え上手", greet: "もっと近くに来てぇ？ねぇ〜！", pet: "も〜っと！もっとやってぇ〜♡", talk: "ねぇ、私のこと、世界で一番好きだよね？", choices: [{text: "もちろん大好き！", love: 15, res: "やったぁ！私もだ〜いすき♡"}, {text: "みんな好きだよ", love: -10, res: "え〜！私だけがいいのぉ〜！"}]},
+            "kuma.PNG": { name: "くろいちじくま", trait: "静か・ミステリアス", greet: "……。君の瞳、何かを映しているね……。", pet: "……深い安らぎだ……。", talk: "……静寂を楽しめるのは、大人な証拠だよ……。", choices: [{text: "一緒に静かに過ごそう", love: 10, res: "……ありがとう。良い時間だね。"}, {text: "何か話してよ", love: -5, res: "……今は、言葉はいらないと思うけれど……。"}]},
+            "chabo.PNG": { name: "かぼちゃぼ", trait: "明るい・ポジティブ", greet: "ハッピー！今日もいいことが起きるよ！", pet: "元気がみなぎってくるね！サンキュー！", talk: "ねぇねぇ！今の気分を叫んでみて！", choices: [{text: "最高ーーー！", love: 10, res: "その調子！最高が最高を呼ぶよ！"}, {text: "まあまあかな…", love: 5, res: "大丈夫！これからどんどん良くなるよ！"}]}
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
-            const savedData = localStorage.getItem('myHagumo');
-            if (savedData) {
-                partnerData = JSON.parse(savedData);
-                document.getElementById('partner-name').innerText = partnerData.name;
-                const img = document.getElementById('partner-img');
-                img.src = `./images/${partnerData.img}`;
-                img.onerror = () => img.src = `./${partnerData.img}`;
+            const saved = localStorage.getItem('myHagumo');
+            if (saved) {
+                const data = JSON.parse(saved);
+                // 保存されている画像名に一致するデータを取得
+                partner = charaSettings[data.img] || charaSettings["buta.PNG"];
                 
+                document.getElementById('partner-img').src = `./images/${data.img}`;
+                document.getElementById('status-label').innerText = `${partner.name}（${partner.trait}）`;
+                document.getElementById('msg-text').innerText = partner.greet;
                 document.getElementById('has-data').style.display = 'block';
-                document.getElementById('no-data').style.display = 'none';
+                updateGauge();
             }
         });
 
+        function updateGauge() {
+            document.getElementById('love-bar').style.width = love + '%';
+            document.getElementById('love-num').innerText = love;
+        }
+
         function playAction(type) {
-            const msgBox = document.getElementById('msg');
-            const bar = document.getElementById('love-bar');
-            const percent = document.getElementById('love-percent');
-            const status = document.getElementById('partner-status');
-
-            // 仲良し度アップ
-            loveScore = Math.min(loveScore + 5, 100);
-            bar.style.width = loveScore + '%';
-            percent.innerText = loveScore + '%';
-
-            // エフェクト
-            createHeart();
-
-            // メッセージ切り替え
+            const msg = document.getElementById('msg-text');
             if(type === 'なでる') {
-                msgBox.innerText = `${partnerData.name}は気持ちよさそうに目を細めている！`;
-                status.innerText = "ごきげん：ハッピー！";
-            } else if(type === 'おやつ') {
-                msgBox.innerText = `おいしいおやつを食べて、ツヤツヤになった！`;
-                status.innerText = "ごきげん：お腹いっぱい！";
-            } else if(type === 'おしゃべり') {
-                msgBox.innerText = `${partnerData.name}はあなたの話を一生懸命聞いている…。`;
-            } else {
-                msgBox.innerText = `お部屋がきれいになって、${partnerData.name}も嬉しそう！`;
+                love = Math.min(love + 2, 100);
+                msg.innerText = partner.pet;
+                updateGauge();
+                createHeart();
             }
         }
 
+        function startTalk() {
+            const msg = document.getElementById('msg-text');
+            const choiceBox = document.getElementById('choices');
+            msg.innerText = partner.talk;
+            choiceBox.innerHTML = '';
+            choiceBox.style.display = 'grid';
+
+            partner.choices.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.innerText = c.text;
+                btn.onclick = () => {
+                    love = Math.max(0, Math.min(100, love + c.love));
+                    msg.innerText = c.res;
+                    choiceBox.style.display = 'none';
+                    updateGauge();
+                };
+                choiceBox.appendChild(btn);
+            });
+        }
+
         function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart-fx';
-            heart.innerText = '❤';
-            heart.style.left = (Math.random() * 60 + 20) + '%';
-            heart.style.top = '50%';
-            document.querySelector('.stage').appendChild(heart);
-            setTimeout(() => heart.remove(), 1000);
+            const h = document.createElement('div');
+            h.innerText = '❤';
+            h.style.position = 'absolute';
+            h.style.left = '50%'; h.style.top = '40%';
+            h.style.color = '#ff7eb9'; h.style.fontSize = '24px';
+            h.style.pointerEvents = 'none';
+            h.style.animation = 'floatUp 1s forwards';
+            document.querySelector('.stage').appendChild(h);
+            setTimeout(() => h.remove(), 1000);
         }
     </script>
-    <script src="./common.js"></script>
+    <style>
+        @keyframes floatUp { 0% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -100px); } }
+    </style>
 </body>
 </html>
