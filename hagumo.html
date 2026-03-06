@@ -2,221 +2,39 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHARACTERS | HAGUMO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAGUMO FRIENDS</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* キャラクターページ専用スタイル */
-        .hero { text-align: center; padding: 40px 20px; background: white; }
-        .hero h1 { color: var(--pink2); font-size: 28px; margin-bottom: 5px; letter-spacing: 2px; }
-        .hero p { color: #888; font-size: 14px; }
-
-        .char-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* スマホで2列になりやすく調整 */
-            gap: 15px;
-            max-width: 1000px;
-            margin: 0 auto 80px;
-            padding: 0 15px;
-        }
-
-        .char-card {
-            background: white;
-            border-radius: 25px;
-            padding: 20px 15px;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(255,192,203,0.2);
-            border: 2px solid transparent;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        /* PCではホバーでピンクの枠線 */
-        @media screen and (min-width: 768px) {
-            .char-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-            .char-card:hover { transform: translateY(-5px); border-color: var(--pink2); }
-        }
-
-        .char-img { 
-            width: 120px; 
-            height: 120px; 
-            object-fit: contain; 
-            margin-bottom: 10px; 
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05));
-        }
-        
-        .char-name { font-size: 18px; font-weight: bold; color: var(--pink2); margin-bottom: 4px; }
-        .char-personality { font-size: 11px; color: #aaa; margin-bottom: 12px; }
-        
-        .beauty-info {
-            background: var(--soft-pink);
-            border-radius: 15px;
-            padding: 12px;
-            font-size: 12px;
-            text-align: left;
-            line-height: 1.5;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .beauty-info b { color: var(--pink2); display: block; margin-bottom: 3px; font-size: 12px; }
-
-        /* 難易度バッジ */
-        .difficulty-tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .tag-easy { background: #e0f9e0; color: #2d5a2d; }
-        .tag-normal { background: #fff4e0; color: #855d10; }
-        .tag-hard { background: #f9d5e5; color: #991b1b; }
-
-        footer {
-            background: var(--soft-pink);
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 2px dashed var(--pink2);
-        }
+        .char-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
+        .char-card { background: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid var(--soft-pink); }
+        .char-img { width: 100px; height: 100px; object-fit: contain; }
+        .char-name { color: var(--pink2); font-weight: bold; font-size: 16px; margin: 5px 0; }
+        .beauty-info { background: var(--soft-pink); font-size: 11px; padding: 8px; border-radius: 10px; text-align: left; }
     </style>
 </head>
 <body>
-
     <nav class="nav">
         <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
         <div class="nav-links">
             <a href="index.html" class="nav-link">HOME</a>
+            <a href="world.html" class="nav-link">WORLD</a>
             <a href="hagumo.html" class="nav-link active">HAGUMO</a>
             <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
+            <a href="product.html" class="nav-link">PRODUCT</a>
             <a href="my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
-
-    <div class="hero">
-        <h1>HAGUMO FRIENDS</h1>
-        <p>あなたを導く、10人のパートナーたち</p>
+    <div class="container">
+        <h2 style="text-align:center; color: var(--pink2);">HAGUMO FRIENDS</h2>
+        <div class="char-grid">
+            <div class="char-card">
+                <img src="./images/buta.PNG" class="char-img">
+                <div class="char-name">かぶた</div>
+                <div class="beauty-info"><b>✨ 透明感アップ</b><br>消化を助けるアミラーゼが豊富。</div>
+            </div>
+            </div>
     </div>
-
-    <div class="char-grid">
-        <div class="char-card">
-            <span class="difficulty-tag tag-easy">かんたん 🌱</span>
-            <img src="./images/buta.PNG" class="char-img">
-            <div class="char-name">かぶた</div>
-            <div class="char-personality">性格：優しさ・包容</div>
-            <div class="beauty-info">
-                <b>✨ 透明感アップ</b>
-                消化を助けるアミラーゼが豊富。体の中からスッキリさせて肌荒れを防ぎます。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-easy">かんたん 🌱</span>
-            <img src="./images/imo.PNG" class="char-img">
-            <div class="char-name">さつまいもぐら</div>
-            <div class="char-personality">性格：努力・継続</div>
-            <div class="beauty-info">
-                <b>✨ デトックス効果</b>
-                食物繊維の王様。毎日の継続が、美肌の土台を作ります。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-easy">かんたん 🌱</span>
-            <img src="./images/jaku.PNG" class="char-img">
-            <div class="char-name">ばたふらいぴーこっく</div>
-            <div class="char-personality">性格：機転・賢さ</div>
-            <div class="beauty-info">
-                <b>✨ エイジングケア</b>
-                高い抗酸化作用。青いお花をハーブティーにして、サビない美しさを。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-normal">ふつう 🌿</span>
-            <img src="./images/risu.PNG" class="char-img">
-            <div class="char-name">きゅうりす</div>
-            <div class="char-personality">性格：バランス・調和</div>
-            <div class="beauty-info">
-                <b>✨ むくみ解消</b>
-                スライスして肌にのせる「きゅうりパック」で、火照った肌をクールダウン。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-normal">ふつう 🌿</span>
-            <img src="./images/tora.PNG" class="char-img">
-            <div class="char-name">とまとら</div>
-            <div class="char-personality">性格：情熱・リーダー</div>
-            <div class="beauty-info">
-                <b>✨ 紫外線ケア</b>
-                リコピンパワー！ハチミツを混ぜた「トマトパック」でもっちり白肌へ。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-normal">ふつう 🌿</span>
-            <img src="./images/chabo.PNG" class="char-img">
-            <div class="char-name">かぼちゃぼ</div>
-            <div class="char-personality">性格：明るい・ポジティブ</div>
-            <div class="beauty-info">
-                <b>✨ 血行促進</b>
-                ビタミンEが豊富。お肌の血色を良くして、健康的でハッピーな表情に。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-hard">むずかしめ 💎</span>
-            <img src="./images/saru.PNG" class="char-img">
-            <div class="char-name">れもんきー</div>
-            <div class="char-personality">性格：ひらめき・自由</div>
-            <div class="beauty-info">
-                <b>✨ ビタミンC補給</b>
-                レモン果汁を絞ってフレッシュに。キメを整えて明るい印象を作ります。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-hard">むずかしめ 💎</span>
-            <img src="./images/kame.PNG" class="char-img">
-            <div class="char-name">ぶるーべりくがめ</div>
-            <div class="char-personality">性格：知性・分析</div>
-            <div class="beauty-info">
-                <b>✨ 眼精疲労ケア</b>
-                アントシアニンでスマホ疲れの目をケア。澄んだ瞳は美しさの基本。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-hard">むずかしめ 💎</span>
-            <img src="./images/nga.PNG" class="char-img">
-            <div class="char-name">もももんが</div>
-            <div class="char-personality">性格：愛嬌・甘え上手</div>
-            <div class="beauty-info">
-                <b>✨ うるおい保持</b>
-                ジューシーな桃のように、プルプルの保湿力をキープする成分がたっぷり。
-            </div>
-        </div>
-
-        <div class="char-card">
-            <span class="difficulty-tag tag-hard">むずかしめ 💎</span>
-            <img src="./images/kuma.PNG" class="char-img">
-            <div class="char-name">くろいちじくま</div>
-            <div class="char-personality">性格：静か・ミステリアス</div>
-            <div class="beauty-info">
-                <b>✨ 揺らぎ肌ケア</b>
-                「不老長寿の果実」。揺らぎがちな時期の肌コンディションを整えます。
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 14px; margin-bottom: 5px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
-        <p style="font-size: 10px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p>
-    </footer>
-
 </body>
 </html>
