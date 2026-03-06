@@ -3,232 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HAGUMO | 運命のパートナー診断</title>
+    <title>DIAGNOSIS | HAGUMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 診断画面専用の追加スタイル */
-        .container { 
-            margin-top: 20px; 
-            padding: 15px; 
-            max-width: 600px; 
-            margin-left: auto; 
-            margin-right: auto;
+        .diag-hero {
+            padding: 80px 20px 40px;
+            background: linear-gradient(135deg, #fff 0%, var(--soft-pink) 100%);
+            text-align: center;
+            border-radius: 0 0 50px 50px;
         }
-        
-        /* 質問カード */
+
+        .diag-container {
+            max-width: 600px;
+            margin: 20px auto 100px;
+            padding: 0 20px;
+        }
+
         .q-card {
             background: white;
-            border-radius: 35px;
-            padding: 30px 20px;
-            box-shadow: 0 10px 30px rgba(255,126,185,0.15);
-            border: 2px solid var(--sub-pink);
+            border-radius: 40px;
+            padding: 40px 20px;
+            box-shadow: 0 15px 35px rgba(255,105,180,0.15);
+            text-align: center;
+            border: 3px solid #fff0f5;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 25px;
+            left: 10%;
+            width: 80%;
+            height: 8px;
+            background: var(--soft-pink);
+            border-radius: 4px;
+        }
+
+        .progress-inner {
+            height: 100%;
+            background: var(--pink2);
+            border-radius: 4px;
+            transition: 0.4s ease-out;
+            width: 10%;
+        }
+
+        .q-text {
+            font-size: 19px;
+            color: var(--pink2);
+            font-weight: bold;
+            margin: 20px 0 30px;
+            line-height: 1.5;
+        }
+
+        .ans-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* こだわりのぷっくり3Dボタン */
+        .puffy-ans-btn {
+            display: block;
+            width: 100%;
+            background: white;
+            color: var(--pink2);
+            border: 2px solid var(--pink1);
+            padding: 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 6px 0 var(--pink1), 0 10px 15px rgba(255,105,180,0.1);
+            transition: 0.2s;
+            position: relative;
+            top: 0;
+            cursor: pointer;
             text-align: center;
         }
+        .puffy-ans-btn:active {
+            top: 6px;
+            box-shadow: 0 0 0 var(--pink1), 0 5px 5px rgba(255,105,180,0.1);
+            background: var(--soft-pink);
+            border-color: var(--pink2);
+        }
 
-        .progress-bar { font-size: 13px; color: var(--pink2); font-weight: bold; margin-bottom: 10px; }
+        #result-area { display: none; animation: fadeIn 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .result-img-box {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            background: var(--soft-pink);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(255,192,203,0.3);
+            border: 3px dashed var(--pink2);
+        }
+        .result-img { width: 140px; height: 140px; object-fit: contain; }
         
-        .question-text { 
-            font-size: 18px; 
-            font-weight: bold; 
-            margin: 20px 0; 
-            line-height: 1.5; 
-            min-height: 80px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-
-        /* 選択肢ボタン */
-        .choice-btn {
-            background: white;
-            border: 2px solid var(--sub-pink);
-            padding: 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #666;
-            font-size: 15px;
-            transition: 0.2s;
-            width: 100%;
-            margin: 8px 0;
-            font-family: inherit;
-        }
-        .choice-btn:active { transform: scale(0.95); background: var(--soft-pink); }
-        .choice-btn.primary { background: var(--pink2); color: white; border: none; margin-top: 20px; padding: 18px; }
-
-        /* 結果表示エリア */
-        #result-area { display: none; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .res-img { width: 200px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1)); margin: 15px 0; }
-        .res-name { color: var(--pink2); font-size: 24px; margin: 10px 0; font-weight: bold; }
-        .res-desc { font-size: 14px; line-height: 1.7; color: #666; background: var(--soft-pink); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: left; }
-
-        /* 相性診断セクション */
-        .aisyo-section { margin-top: 30px; padding: 25px; border-top: 2px dashed var(--sub-pink); }
-        .f-select { width: 100%; padding: 12px; border-radius: 20px; border: 2px solid var(--sub-pink); margin-bottom: 10px; font-family: inherit; font-size: 14px; background: #fffaff; color: #666; }
-        .comp-box { display: none; background: #fff0f5; border: 2px solid var(--sub-pink); border-radius: 20px; padding: 15px; margin-top: 15px; }
-
-        /* スマホ対応 */
-        @media screen and (max-width: 768px) {
-            .question-text { font-size: 16px; }
-            .choice-btn { font-size: 14px; padding: 12px; }
-            .res-img { width: 180px; }
-        }
+        .result-name { font-size: 26px; color: var(--pink2); font-weight: bold; margin-bottom: 10px; letter-spacing: 1px; }
+        .result-desc { font-size: 14px; color: #666; text-align: left; line-height: 1.8; margin-bottom: 30px; background: #fff5f7; padding: 20px; border-radius: 20px; }
     </style>
 </head>
 <body>
 
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'" style="cursor:pointer;">
         <div class="nav-links">
             <a href="index.html" class="nav-link">HOME</a>
+            <a href="world.html" class="nav-link">WORLD</a>
+            <a href="hagumo.html" class="nav-link">HAGUMO</a>
             <a href="diagnosis.html" class="nav-link active">DIAGNOSIS</a>
+            <a href="product.html" class="nav-link">PRODUCT</a>
             <a href="my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
 
     <div class="container">
-        <div class="q-card" id="q-area">
-            <div class="progress-bar" id="q-progress">しつもん 1 / 20</div>
-            <div class="question-text" id="q-text"></div>
-            <div id="q-choices"></div>
-        </div>
+        <section class="diag-hero">
+            <h1 style="color: var(--pink2); font-size: 26px; letter-spacing: 2px;">PARTNER DIAGNOSIS</h1>
+            <p style="color: #888; font-size: 13px;">10問の質問で、全10種からあなたにぴったりの子を導き出します</p>
+        </section>
 
-        <div id="result-area">
-            <div class="q-card">
-                <div style="font-size:13px; color:var(--pink2); font-weight:bold;">あなたにぴったりのパートナー</div>
-                <img id="res-img" class="res-img" src="">
-                <h2 id="res-name" class="res-name"></h2>
-                <div id="res-desc" class="res-desc"></div>
-                
-                <button class="choice-btn primary" onclick="location.href='my.html'">この子をマイページでお迎え 🌱</button>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
-                    <button class="choice-btn" style="background:#000; color:white; border:none;" onclick="shareX()">𝕏シェア</button>
-                    <button class="choice-btn" style="background:#06C755; color:white; border:none;" onclick="shareLine()">LINE</button>
-                </div>
+        <div class="diag-container">
+            <div id="question-area" class="q-card">
+                <div class="progress-bar"><div id="p-inner" class="progress-inner"></div></div>
+                <div class="q-text" id="q-text">読み込み中...</div>
+                <div class="ans-list" id="ans-list"></div>
             </div>
 
-            <div class="q-card aisyo-section">
-                <h3 style="color:var(--pink2); font-size:1.1rem; margin-bottom:5px;">🤝 ハグモ相性占い</h3>
-                <p style="font-size:11px; color:#999; margin-bottom:15px;">気になる子との相性を占ってみよう！</p>
-                <select id="char1" class="f-select"></select>
-                <select id="char2" class="f-select"></select>
-                <button class="choice-btn" onclick="checkComp()">キズナをチェック！</button>
-                <div id="comp-result" class="comp-box">
-                    <div id="comp-score" style="font-size:26px; font-weight:bold; color:var(--pink2);"></div>
-                    <div id="comp-reason" style="font-size:13px; margin-top:8px; line-height:1.5;"></div>
+            <div id="result-area" class="q-card">
+                <p style="color:#aaa; font-size:12px; font-weight:bold; margin-bottom:15px;">あなたのパートナーは...</p>
+                
+                <div class="result-img-box">
+                    <img src="" class="result-img" id="res-img">
                 </div>
+                
+                <div class="result-name" id="res-name"></div>
+                <div class="result-desc" id="res-desc"></div>
+                
+                <a href="product.html" class="puffy-ans-btn" style="background:var(--pink2); color:white; border-color:var(--pink2); box-shadow: 0 6px 0 #d1478e, 0 10px 15px rgba(255,105,180,0.3); margin-bottom:15px;">この子をお迎えする 🌱</a>
+                <a href="diagnosis.html" style="color:#ccc; font-size:12px; text-decoration:none; display:inline-block; margin-top:10px;">もう一度診断する</a>
             </div>
         </div>
     </div>
 
-<script>
-// キャラクターデータと質問データは千尋さんのものをそのまま使用
-const chars = [
-    {id:"buta.PNG", name:"かぶた", type:"ISFJ", desc:"癒やし度No.1！いつもそばにいてくれる優しい子。"},
-    {id:"tora.PNG", name:"とまとら", type:"ESTP", desc:"情熱たっぷり！冒険へ連れ出してくれるリーダー。"},
-    {id:"risu.PNG", name:"きゅうりす", type:"INFJ", desc:"あなたの心に静かに寄り添う、理解者さん。"},
-    {id:"saru.PNG", name:"れもんきー", type:"ENFP", desc:"毎日をワクワクに変える、自由なアイディアマン。"},
-    {id:"kame.PNG", name:"ぶるーべりくがめ", type:"INTJ", desc:"冷静でスマート。あなたのピンチを救う戦略家。"},
-    {id:"imo.PNG", name:"さつまいもぐら", type:"ISTJ", desc:"誠実で真面目。一歩ずつ一緒に歩める努力家。"},
-    {id:"nga.PNG", name:"もももんが", type:"ESFP", desc:"笑顔の天才！甘えん坊な愛されアイドル。"},
-    {id:"kuma.PNG", name:"くろいちじくま", type:"INFP", desc:"独自の世界観を持つ、心優しい芸術家。"},
-    {id:"chabo.PNG", name:"かぼちゃぼ", type:"ENTP", desc:"ポジティブ全開！驚きをくれる魔法使い。"},
-    {id:"jaku.PNG", name:"ばたふらいぴーこっく", type:"ENTJ", desc:"自信満々！あなたをリードする頼れる存在。"}
-];
+    <script>
+        // 10問の質問と、各回答でポイントが入るキャラクターID
+        const questions = [
+            {
+                q: "休日の過ごし方は？",
+                a: [
+                    { t: "家でのんびり癒やされたい", p: ["kabuta", "momo", "kuma"] },
+                    { t: "外に出てアクティブに遊ぶ！", p: ["tomatora", "kabocha", "kyurisu"] },
+                    { t: "趣味や勉強に没頭する", p: ["kugame", "mogura", "peacock"] },
+                    { t: "気まぐれにふらっと出かける", p: ["remonkey"] }
+                ]
+            },
+            {
+                q: "周りからどんな性格って言われる？",
+                a: [
+                    { t: "優しくて聞き上手", p: ["kabuta", "mogura"] },
+                    { t: "明るいムードメーカー", p: ["kabocha", "tomatora", "momo"] },
+                    { t: "落ち着いていてミステリアス", p: ["kuma", "kugame", "peacock"] },
+                    { t: "個性的で自由人", p: ["remonkey", "kyurisu"] }
+                ]
+            },
+            {
+                q: "今、一番解決したい肌や体の悩みは？",
+                a: [
+                    { t: "乾燥してカサカサする", p: ["momo", "kabocha"] },
+                    { t: "透明感がなく、くすみがち", p: ["kabuta", "tomatora"] },
+                    { t: "むくみや疲れを取りたい", p: ["kyurisu", "remonkey"] },
+                    { t: "スマホやPCで目が疲れている", p: ["kugame", "peacock"] }
+                ]
+            },
+            {
+                q: "新しいことに挑戦する時、どう動く？",
+                a: [
+                    { t: "みんなを引っ張って進む", p: ["tomatora", "kabocha"] },
+                    { t: "しっかり分析・計画してから", p: ["kugame", "peacock"] },
+                    { t: "直感とひらめきで即行動！", p: ["remonkey", "kyurisu"] },
+                    { t: "毎日コツコツ地道に努力する", p: ["mogura", "kuma"] }
+                ]
+            },
+            {
+                q: "疲れたときのご褒美、何が欲しい？",
+                a: [
+                    { t: "あま〜いスイーツで満たされたい", p: ["momo", "kabuta"] },
+                    { t: "さっぱりした飲み物でリフレッシュ", p: ["remonkey", "kyurisu"] },
+                    { t: "栄養満点の美味しいご飯", p: ["tomatora", "kabocha", "mogura"] },
+                    { t: "少し高級なスキンケアや入浴剤", p: ["peacock", "kuma", "kugame"] }
+                ]
+            },
+            {
+                q: "友達といるときのポジションは？",
+                a: [
+                    { t: "リーダーシップをとる", p: ["tomatora"] },
+                    { t: "みんなを笑わせる・盛り上げる", p: ["kabocha", "remonkey"] },
+                    { t: "優しく見守る・話を聞く", p: ["kabuta", "momo"] },
+                    { t: "的確なアドバイスをする", p: ["kugame", "peacock", "kuma"] }
+                ]
+            },
+            {
+                q: "直感で選ぶなら、どの色が好き？",
+                a: [
+                    { t: "赤やオレンジなど情熱的な色", p: ["tomatora", "kabocha"] },
+                    { t: "ピンクや白など可愛い色", p: ["momo", "kabuta"] },
+                    { t: "青や紫などクールな色", p: ["kugame", "peacock", "kuma"] },
+                    { t: "黄色や緑などフレッシュな色", p: ["remonkey", "kyurisu", "mogura"] }
+                ]
+            },
+            {
+                q: "理想の自分像に近いのは？",
+                a: [
+                    { t: "愛嬌たっぷりで誰からも愛される", p: ["momo", "kabocha"] },
+                    { t: "クールで知的、自立している", p: ["kugame", "peacock"] },
+                    { t: "わが道を行く、自由でユニーク", p: ["remonkey", "kuma"] },
+                    { t: "誰かの支えになる包容力がある", p: ["kabuta", "mogura"] }
+                ]
+            },
+            {
+                q: "「農業」と聞いて一番ワクワクするのは？",
+                a: [
+                    { t: "土いじりをして地道に育てる時間", p: ["mogura", "kuma", "kabuta"] },
+                    { t: "太陽の下で元気いっぱいに育つ姿", p: ["tomatora", "kabocha"] },
+                    { t: "収穫した時のひらめきや達成感", p: ["remonkey", "kyurisu", "peacock"] },
+                    { t: "育っていく過程をじっくり観察する", p: ["kugame", "momo"] }
+                ]
+            },
+            {
+                q: "最後に、パートナーに一番求めるものは？",
+                a: [
+                    { t: "絶対的な癒やしと安心感", p: ["kabuta", "momo", "kabocha"] },
+                    { t: "一緒に高め合える刺激と元気", p: ["remonkey", "tomatora", "kyurisu"] },
+                    { t: "賢くサポートしてくれる信頼感", p: ["kugame", "peacock"] },
+                    { t: "ブレない軸と努力を支える力", p: ["mogura", "kuma"] }
+                ]
+            }
+        ];
 
-const questions = [
-    {t:"休日は外で遊ぶより、お家でのんびりしたい", v:"I"},
-    {t:"映画を観るとき、ストーリーより映像の美しさが気になる", v:"S"},
-    {t:"理由よりも「その時の気持ち」を大切にしたい", v:"F"},
-    {t:"予定はきっちり決めてから動きたい", v:"J"},
-    {t:"知らない人がいる場所でもすぐに馴染める", v:"E"},
-    {t:"「もしも魔法が使えたら」と空想するのが好き", v:"N"},
-    {t:"悩み相談には、共感より解決策がほしい", v:"T"},
-    {t:"机の上は散らかっているほうが落ち着く", v:"P"},
-    {t:"大人数より、1人や少人数のほうが楽だ", v:"I"},
-    {t:"マニュアルを読むより、まずやってみる派だ", v:"S"},
-    {t:"物語の裏側や伏線を考えるのが好き", v:"N"},
-    {t:"物事は感情を挟まず冷静に考えたい", v:"T"},
-    {t:"自分から声をかけるより、待つほうだ", v:"I"},
-    {t:"困っている人を放っておけない", v:"F"},
-    {t:"提出物は期限のずっと前に終わらせる", v:"J"},
-    {t:"その場の思いつきで動くのが楽しい", v:"P"},
-    {t:"人前で注目されるのは嫌いじゃない", v:"E"},
-    {t:"新しいものより、いつものやり方が安心する", v:"S"},
-    {t:"誰かの笑顔を見ると自分も嬉しくなる", v:"F"},
-    {t:"部屋の片付けは完璧にしたい", v:"J"}
-];
+        // 全10キャラクターのデータ
+        const characters = [
+            { id:"kabuta", name:"かぶた", img:"./images/buta.PNG", desc:"【優しさ×包容】\n控えめで優しい『かぶた』。アミラーゼたっぷりのカブで、お肌のくすみを飛ばしてピュアな透明感を引き出します。" },
+            { id:"momo", name:"もももんが", img:"./images/nga.PNG", desc:"【愛嬌×甘え上手】\n甘えん坊な『もももんが』。桃のようなジューシーな潤い成分で、触れたくなるようなモチモチ肌を一緒に作りましょう。" },
+            { id:"kyurisu", name:"きゅうりす", img:"./images/risu.PNG", desc:"【バランス×調和】\n働き者の『きゅうりす』。カリウムたっぷりのキュウリでむくみをリフレッシュ！シュッとしたフェイスラインを目指せます。" },
+            { id:"kugame", name:"ぶるーべりくがめ", img:"./images/kame.PNG", desc:"【知性×分析】\n落ち着いた『ぶるーべりくがめ』。アントシアニンの魔法で、スマホ疲れの瞳をパッチリ輝かせてくれます。" },
+            { id:"tomatora", name:"とまとら", img:"./images/tora.PNG", desc:"【情熱×リーダー】\nパワフルな『とまとら』。リコピンの力で太陽に負けない美しさを。あなたをポジティブな美しさへと導きます。" },
+            { id:"kuma", name:"くろいちじくま", img:"./images/kuma.PNG", desc:"【静か×ミステリアス】\n匠の精神を持つ『くろいちじくま』。フィシンが角質をケアし、磨き上げられたようなツヤ肌をプロデュースしてくれます。" },
+            { id:"remonkey", name:"れもんきー", img:"./images/remonkey.PNG", desc:"【ひらめき×自由】\n好奇心旺盛な『れもんきー』。ビタミンCたっぷりのレモンで、心もお肌もパッと明るくリフレッシュ！" },
+            { id:"mogura", name:"さつまいもぐら", img:"./images/mogura.PNG", desc:"【努力×継続】\nコツコツ頑張る『さつまいもぐら』。食物繊維とビタミンEで、内側からブレない健康的な美しさを支えます。" },
+            { id:"kabocha", name:"かぼちゃぼ", img:"./images/kabocha.PNG", desc:"【明るい×ポジティブ】\n元気いっぱいな『かぼちゃぼ』。βカロテンの力で、乾燥に負けないふっくらと温かみのあるお肌に。" },
+            { id:"peacock", name:"ばたふらいぴーこっく", img:"./images/peacock.PNG", desc:"【機転×賢さ】\n優雅で賢い『ばたふらいぴーこっく』。抗酸化作用でエイジングケア。凛とした大人の美しさを引き出します。" }
+        ];
 
-let step = 0, score = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0}, finalChar = null;
+        let currentIdx = 0;
+        let points = {};
 
-function showQ() {
-    const q = questions[step];
-    document.getElementById('q-progress').innerText = `しつもん ${step+1} / 20`;
-    document.getElementById('q-text').innerText = q.t;
-    const box = document.getElementById('q-choices');
-    box.innerHTML = '';
-    [{t:"すごくそう思う", a:2}, {t:"そう思う", a:1}, {t:"あまり思わない", a:-1}, {t:"全然思わない", a:-2}].forEach(o => {
-        const b = document.createElement('button');
-        b.className='choice-btn';
-        b.innerText=o.t;
-        b.onclick=()=>{
-            let k = o.a>0 ? q.v : {E:"I",I:"E",S:"N",N:"S",T:"F",F:"T",J:"P",P:"J"}[q.v];
-            score[k] += Math.abs(o.a);
-            step++;
-            if(step < questions.length) showQ(); else showRes();
-        };
-        box.appendChild(b);
-    });
-}
+        function init() {
+            currentIdx = 0;
+            points = {};
+            showNext();
+        }
 
-function showRes() {
-    let type = (score.E>=score.I?"E":"I")+(score.N>=score.S?"N":"S")+(score.T>=score.F?"T":"F")+(score.J>=score.P?"J":"P");
-    finalChar = chars.find(c => c.type === type) || chars[0];
-    localStorage.setItem('myHagumo', JSON.stringify({img: finalChar.id, love: 50}));
-    
-    document.getElementById('q-area').style.display='none';
-    document.getElementById('result-area').style.display='block';
-    document.getElementById('res-img').src = `./images/${finalChar.id}`;
-    document.getElementById('res-name').innerText = finalChar.name;
-    document.getElementById('res-desc').innerText = finalChar.desc;
+        function showNext() {
+            const q = questions[currentIdx];
+            // プログレスバーの更新
+            document.getElementById('p-inner').style.width = ((currentIdx + 1) / questions.length) * 100 + "%";
+            document.getElementById('q-text').innerText = q.q;
+            
+            const list = document.getElementById('ans-list');
+            list.innerHTML = "";
+            
+            // 選択肢ボタンの生成
+            q.a.forEach(ans => {
+                const b = document.createElement('button');
+                b.className = "puffy-ans-btn";
+                b.innerText = ans.t;
+                b.onclick = () => {
+                    // 選んだ選択肢に紐づくキャラにポイントを加算
+                    ans.p.forEach(id => {
+                        points[id] = (points[id] || 0) + 1;
+                    });
+                    
+                    currentIdx++;
+                    if(currentIdx < questions.length) {
+                        showNext();
+                    } else {
+                        showResult();
+                    }
+                };
+                list.appendChild(b);
+            });
+        }
 
-    const s1 = document.getElementById('char1'), s2 = document.getElementById('char2');
-    chars.forEach(c => {
-        s1.add(new Option(c.name, c.id));
-        s2.add(new Option(c.name, c.id));
-    });
-    s1.value = finalChar.id;
-    window.scrollTo(0, 0);
-}
+        function showResult() {
+            document.getElementById('question-area').style.display = 'none';
+            document.getElementById('result-area').style.display = 'block';
 
-function shareX() {
-    const text = `私にぴったりのハグモは「${finalChar.name}」でした！🎀\nみんなも運命のパートナーを見つけてね！\n#MYHAGUMO #ハグモ診断`;
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`, '_blank');
-}
+            // 最もポイントが高いキャラクターを探す
+            let bestId = characters[0].id;
+            let maxScore = -1;
 
-function shareLine() {
-    const text = `私にぴったりのハグモは「${finalChar.name}」だったよ！🎀 みんなは何タイプかな？診断してみてね！\n${window.location.href}`;
-    window.open(`https://social-plugins.line.me/lineit/share?text=${encodeURIComponent(text)}`, '_blank');
-}
+            for(let id in points) {
+                if(points[id] > maxScore) {
+                    maxScore = points[id];
+                    bestId = id;
+                }
+            }
 
-function checkComp() {
-    const c1 = chars.find(c => c.id === document.getElementById('char1').value);
-    const c2 = chars.find(c => c.id === document.getElementById('char2').value);
-    let m = 0;
-    for(let i=0; i<4; i++) if(c1.type[i] === c2.type[i]) m++;
-    let s = 60 + (m * 10);
-    if(c1.id === c2.id) s = 99;
-    
-    document.getElementById('comp-result').style.display = 'block';
-    document.getElementById('comp-score').innerText = `相性 ${s}%`;
-    document.getElementById('comp-reason').innerText = m >= 3 ? "お互いのことが手に取るようにわかる、運命的なキズナです！" : "お互いの個性を高め合える、ポジティブで楽しい関係になれそう！";
-}
+            const bestChar = characters.find(c => c.id === bestId) || characters[0];
 
-window.onload = showQ;
-</script>
+            // 結果画面に反映
+            document.getElementById('res-img').src = bestChar.img;
+            document.getElementById('res-name').innerText = bestChar.name;
+            document.getElementById('res-desc').innerText = bestChar.desc;
+        }
+
+        // 診断スタート
+        init();
+    </script>
+
+    <footer>
+        <p style="color: var(--pink2); font-weight: bold; font-size: 14px; margin-bottom: 8px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
+        <p style="font-size: 10px; color: #888;">これは授業課題であり、実際の診断結果に基づく発送は行っていません。</p>
+    </footer>
 </body>
 </html>
