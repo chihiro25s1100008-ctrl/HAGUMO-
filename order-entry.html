@@ -2,94 +2,67 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENTRY KIT | HAGUMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
     <style>
-        :root { --main-pink: #ff7eb9; --soft-pink: #fff0f5; --entry-green: #e0f9e0; }
-        body { background: #fffafb; font-family: 'Zen Maru Gothic', sans-serif; margin: 0; padding: 0; }
-        
-        .order-hero {
-            background: linear-gradient(135deg, #fff 0%, #fff0f5 100%);
-            padding: 60px 20px; text-align: center; border-radius: 0 0 50px 50px;
-        }
-        
-        .product-container {
-            max-width: 1000px; margin: -40px auto 100px;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-            padding: 40px; background: white; border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(255,126,185,0.1);
-        }
-
-        .reward-timeline {
-            margin-top: 30px; padding: 25px;
-            background: #fdf2f7; border-radius: 25px; border: 2px dashed var(--main-pink);
-        }
-        .timeline-item { display: flex; gap: 15px; margin-bottom: 20px; }
-        .timeline-icon {
-            background: var(--main-pink); color: white; width: 30px; height: 30px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 14px; flex-shrink: 0; font-weight: bold;
-        }
-        .timeline-text b { display: block; color: var(--main-pink); font-size: 14px; }
-        .timeline-text p { font-size: 12px; color: #666; margin: 4px 0; }
-
-        .btn-order {
-            background: var(--main-pink); color: white; border: none;
-            padding: 20px; width: 100%; border-radius: 50px;
-            font-size: 20px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255,126,185,0.3);
-            transition: 0.3s;
-        }
-        .btn-order:hover { transform: scale(1.02); background: #ff60a8; }
-        
-        @media (max-width: 768px) { .product-container { grid-template-columns: 1fr; } }
+        :root { --main-pink: #ff7eb9; --easy-green: #e0f9e0; }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: #fffafb; margin: 0; padding-top: 80px; }
+        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
+        .nav-logo-img { height: 30px; }
+        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; margin: 0 10px; }
+        .order-hero { background: linear-gradient(135deg, #fff 0%, var(--easy-green) 100%); padding: 50px 20px; text-align: center; }
+        .container { max-width: 1000px; margin: 20px auto 100px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .char-tag { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 12px; background: #f0f0f0; margin-bottom: 10px; }
+        .reward-box { background: #fdf2f7; padding: 25px; border-radius: 25px; border: 2px dashed var(--main-pink); margin: 20px 0; }
+        .btn-order { background: var(--main-pink); color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 10px 20px rgba(255,126,185,0.3); transition: 0.3s; }
+        .footer-notice { background: #fff0f5; padding: 40px; text-align: center; border-top: 2px dashed var(--main-pink); }
     </style>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-content"><img src="./images/rogo.PNG" class="nav-logo-img"><div class="nav-links"><a href="index.html">HOME</a><a href="world.html">WORLD</a><a href="hagumo.html">HAGUMO</a><a href="diagnosis.html">DIAGNOSIS</a><a href="product.html" class="active">PRODUCT</a><a href="my.html">MY HAGUMO</a></div></div>
+    </nav>
+
     <div class="order-hero">
-        <span style="background:var(--entry-green); color:#2d5a2d; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:12px;">RANK C : ENTRY</span>
+        <span style="font-weight:bold; color:#2d5a2d;">RANK C : ENTRY</span>
         <h1 style="color:var(--main-pink); margin:10px 0;">はじめてのHAGUMOセット</h1>
-        <p style="font-size:14px; color:#888;">「絶対枯らしたくない」あなたへ。ハグモが手取り足取り教えます。</p>
+        <p>初心者さんでも安心。優しく育てる美容の自給自足。</p>
     </div>
 
-    <div class="product-container">
-        <div class="image-area">
-            <img src="./images/buta.PNG" style="width:100%; border-radius:30px;">
-            <div style="margin-top:20px; padding:20px; background:var(--entry-green); border-radius:20px;">
-                <h4 style="margin:0; font-size:14px; color:#2d5a2d;">🍼 安心の同梱物</h4>
-                <ul style="font-size:13px; color:#444; padding-left:20px;">
-                    <li>失敗ゼロ！保水力抜群の「ぷるぷる土」</li>
-                    <li>お迎えキャラの「なかよしスマホステッカー」</li>
-                    <li>推し色エコポット（ベビーピンク）</li>
-                </ul>
+    <div class="container">
+        <div>
+            <img src="./images/buta.PNG" style="width:100%; border-radius:20px;">
+            <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+                <img src="./images/buta.PNG" style="width:60px; opacity:1;">
+                <img src="./images/imo.PNG" style="width:60px; opacity:0.5;">
+                <img src="./images/jaku.PNG" style="width:60px; opacity:0.5;">
             </div>
+            <p style="text-align:center; font-size:12px; color:#999; margin-top:10px;">※お迎えする子（品種）は注文時に選べます</p>
         </div>
-
-        <div class="info-area">
-            <h2 style="margin:0; font-size:22px;">HAGUMO "入門" 育成キット</h2>
-            <p style="font-size:28px; font-weight:bold; color:#444; margin:15px 0;">¥1,980 <span style="font-size:14px; color:#999;">(税込)</span></p>
+        <div>
+            <div class="char-tag">代表キャラ：かぶた（優しさ・包容）</div>
+            <h2 style="margin:0;">育成キット（簡単）</h2>
+            <p style="font-size:32px; font-weight:bold; color:#444;">¥1,980</p>
             
-            <div class="reward-timeline">
-                <h4 style="margin:0 0 15px 0; font-size:15px; text-align:center;">📮 成長報告で届くご褒美グッズ</h4>
-                <div class="timeline-item">
-                    <div class="timeline-icon">1</div>
-                    <div class="timeline-text">
-                        <b>芽生え報告（郵送）</b>
-                        <p>「芽が出たよ！おめでとう」キラキラ限定ホログラムシールを郵送。</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-icon">2</div>
-                    <div class="timeline-text">
-                        <b>収穫報告（郵送）</b>
-                        <p>ハグモ直伝！収穫野菜で作る「うるつや美容レシピカード」を郵送。</p>
-                    </div>
-                </div>
+            <div class="reward-box">
+                <h4 style="margin:0 0 15px; color:var(--main-pink);">🎁 コンプリート報酬（郵送）</h4>
+                <p style="font-size:13px; line-height:1.6;">
+                    ・芽生え報告：なかよしスマホステッカー<br>
+                    ・収穫報告：ハーブティーレシピカード
+                </p>
             </div>
 
-            <button class="btn-order">この子をお迎えして育てる 🐽</button>
+            <p style="font-size:13px; color:#666; margin-bottom:20px;">
+                <b>選べるパートナー：</b><br>
+                かぶた（カブ）、さつまいもぐら（サツマイモ）、ばたふらいぴーこっく（バタフライピー）
+            </p>
+
+            <button class="btn-order">この子をお迎え（契約）する 🌱</button>
         </div>
     </div>
+
+    <footer class="footer-notice"><p style="color: var(--main-pink); font-weight: bold;">🎀 HAGUMO project by 千葉9人形班 🎀</p><p style="font-size: 11px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p></footer>
 </body>
 </html>
