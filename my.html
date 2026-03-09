@@ -7,50 +7,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --main-pink: #ff7eb9; --bg-room: #fff5f7; }
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-room); margin: 0; padding-top: 90px; overflow-x: hidden; }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--bg-room); margin: 0; padding-top: 80px; overflow-x: hidden; }
 
-        /* --- 鉄壁ナビゲーション --- */
-        .navbar { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: white; z-index: 5000; border-bottom: 2px solid #fff0f6; display: flex; align-items: center; justify-content: center; }
-        .nav-content { width: 100%; max-width: 1000px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-        .nav-logo-img { height: 40px; cursor: pointer; flex-shrink: 0; }
-        .nav-links { display: flex; gap: 15px; flex-shrink: 0; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 14px; font-weight: bold; padding: 5px 10px; }
-        .nav-links a.active { color: var(--main-pink); border-bottom: 2px solid var(--main-pink); }
+        /* --- 【共通ナビゲーション】ここを他のページにも使えば統一されます --- */
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: white; z-index: 5000; border-bottom: 2px solid #fff0f6; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .nav-content { width: 100%; max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; }
+        .nav-logo-img { height: 35px; cursor: pointer; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; font-weight: bold; position: relative; padding: 5px 0; }
+        .nav-links a.active { color: var(--main-pink); }
+        .nav-links a.active::after { content: ""; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: var(--main-pink); }
 
-        /* ステータス */
-        .status-container { max-width: 400px; margin: 10px auto; padding: 15px; background: white; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; }
+        /* ステータス周り */
+        .status-container { max-width: 450px; margin: 15px auto; padding: 15px; background: white; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; }
         .love-bar-bg { width: 85%; height: 12px; background: #eee; border-radius: 10px; margin: 8px auto; overflow: hidden; }
         .love-bar-fill { height: 100%; background: linear-gradient(90deg, #ff9a9e, #ff7eb9); width: 50%; transition: 0.8s; }
         
-        /* 演出 */
-        @keyframes rainbow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+        /* 虹色覚醒 */
+        @keyframes rainbow { 0% { filter: hue-rotate(0deg) drop-shadow(0 0 10px #ffb3d9); } 100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px #ffb3d9); } }
         .rainbow-active { animation: rainbow 3s linear infinite !important; transform: scale(1.1); }
 
-        /* メイン */
-        .room-main { position: relative; height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .hagumo-img { width: 200px; transition: 0.5s; cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
+        /* メインエリア */
+        .room-main { position: relative; height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .hagumo-img { width: 220px; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
         .bounce { animation: bounce 2.5s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        .bubble { position: relative; background: white; padding: 18px; border-radius: 25px; width: 80%; max-width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); margin-bottom: 25px; text-align: center; font-weight: bold; color: #555; font-size: 14px; }
+        .bubble { position: relative; background: white; padding: 18px; border-radius: 25px; width: 85%; max-width: 320px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); margin-bottom: 25px; text-align: center; font-weight: bold; color: #555; font-size: 14px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
         .bubble::after { content: ""; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); border-width: 10px 10px 0; border-style: solid; border-color: white transparent transparent; }
 
-        .choice-container { display: none; flex-direction: column; gap: 8px; width: 90%; max-width: 300px; margin: 0 auto 20px auto; }
-        .choice-btn { background: white; border: 2px solid var(--main-pink); padding: 12px; border-radius: 50px; cursor: pointer; font-weight: bold; color: var(--main-pink); font-size: 13px; }
+        .choice-container { display: none; flex-direction: column; gap: 8px; width: 90%; max-width: 320px; margin: 0 auto 20px; }
+        .choice-btn { background: white; border: 2px solid var(--main-pink); padding: 12px; border-radius: 50px; cursor: pointer; font-weight: bold; color: var(--main-pink); font-size: 13px; transition: 0.2s; }
+        .choice-btn:hover { background: var(--main-pink); color: white; }
 
-        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .action-btn { background: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: pointer; font-size: 12px; }
-        
-        #name-modal, .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,192,203,0.98); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-bottom: 30px; }
+        .action-btn { background: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .action-btn:active { transform: scale(0.95); }
+
+        /* モーダル */
+        #name-modal, .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,245,247,0.98); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
         .overlay { background: rgba(0,0,0,0.9); color: white; }
     </style>
 </head>
 <body>
 
     <div id="name-modal">
-        <h2 style="color:var(--main-pink);">お名前を教えて？</h2>
-        <input type="text" id="user-name-input" style="padding:15px; border-radius:20px; border:2px solid var(--main-pink); margin-bottom:20px; text-align:center;">
-        <button class="action-btn" onclick="saveName()">決定 🎀</button>
+        <h2 style="color:var(--main-pink);">お名前を教えてくれる？</h2>
+        <input type="text" id="user-name-input" placeholder="ここに入力..." style="padding:15px; border-radius:20px; border:2px solid var(--main-pink); margin-bottom:20px; text-align:center; font-size: 16px; outline: none;">
+        <button class="action-btn" onclick="saveName()" style="background:var(--main-pink); color:white;">決定 🎀</button>
     </div>
 
     <nav class="navbar">
@@ -65,7 +69,7 @@
     </nav>
 
     <div class="status-container">
-        <select id="char-selector" onchange="changeChar()" style="border:none; font-weight:bold; color:var(--main-pink); font-size:16px; font-family:inherit;">
+        <select id="char-selector" onchange="changeChar()" style="border:none; font-weight:bold; color:var(--main-pink); font-size:16px; font-family:inherit; outline:none; background:transparent; cursor:pointer;">
             <option value="buta">かぶた</option>
             <option value="imo">さつまいもぐら</option>
             <option value="jaku">ばたふらいぴーこっく</option>
@@ -82,7 +86,7 @@
     </div>
 
     <div class="room-main">
-        <div id="chat-bubble" class="bubble">……</div>
+        <div id="chat-bubble" class="bubble">……（こちらを見ている）</div>
         <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="撫でる()">
     </div>
 
@@ -95,8 +99,8 @@
     <div class="action-menu">
         <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり (<span id="talk-count">5</span>)</button>
         <button id="stroke-btn" class="action-btn" onclick="撫でる()">👋 なでなで (<span id="stroke-count">10</span>)</button>
-        <button class="action-btn" onclick="sayGoodbye()" style="color:#cc0000; opacity:0.6;">お別れ</button>
-        <button class="action-btn" onclick="resetGame()" style="color:#888; opacity:0.6;">リセット</button>
+        <button class="action-btn" onclick="sayGoodbye()" style="color:#cc0000; font-size: 10px;">お別れ</button>
+        <button class="action-btn" onclick="resetGame()" style="color:#888; font-size: 10px;">リセット</button>
     </div>
 
     <div id="farewell-overlay" class="overlay">
@@ -107,26 +111,101 @@
 
     <script>
         let talkQuota = 5, strokeQuota = 10, userName = "あなた", currentChar = "buta", currentScenario = null;
-        // キャラごとの好感度を保持するオブジェクト
         let loveData = { buta:50, imo:50, jaku:50, risu:50, tora:50, chabo:50, saru:50, kame:50, nga:50, kuma:50 };
 
-        const charConfigs = {
-            buta: { stroke: "えへへ、いい気持ち……♪", good: "わあ！すごく嬉しいな！✨", soso: "そうだね。わかるよ。", bad: "……そっか。ごめんね。", max: "${N}、君との絆はもう永遠だね。世界で一番幸せなカブだよ！" },
-            imo: { stroke: "ホクホクしちゃうなぁ……。", good: "えへへ、君といると心が温まるよ。", soso: "うん、僕もそう思うよ。", bad: "土の中に隠れたくなっちゃうな…。", max: "${N}、君といると心がポカポカするんだ。ずっと一緒にいようね。" },
-            jaku: { stroke: "あら、優しいのね。うふふ。", good: "あら、素敵な答え。気に入ったわ。", soso: "ええ、そうね。悪くないわ。", bad: "……少し、香りが乱れてしまったわ。", max: "愛という名の最高の一杯を貴方に。${N}、貴方の側が一番美しい場所だわ。" },
-            risu: { stroke: "ほっぺが落ちちゃいそう！", good: "最高！君って本当に気が合うね！", soso: "ポリポリ……うん、いいんじゃない？", bad: "うーん、今はきゅうり気分じゃないかも。", max: "カリッ、ポリッ！${N}とおしゃべりするのは最高のリフレッシュだよ！大好き！" },
-            tora: { stroke: "ガオーッ！もっとやってくれ！", good: "最高だぜ！お前、わかってるな！", soso: "おう、それもアリだな！", bad: "……なんだよ、つまんねーの。", max: "ガオーッ！${N}の笑顔が俺の元気の源だ！最強のバディだぜ！" },
-            chabo: { stroke: "よしよし、落ち着くのう……。", good: "おお、お主は話がわかるやつじゃ。", soso: "ふむ、それも一理あるな。", bad: "……少し、カボチャが硬くなった気分じゃ。", max: "${N}、どっしり構えて待っておるぞ。お主の居場所はここにあるからな。" },
-            saru: { stroke: "ウッキー！ビタミン感じるー！", good: "最高にフレッシュ！ウッキー！！", soso: "まあまあだね！酸っぱいね！", bad: "ウ……酸っぱすぎて涙が出ちゃうよ。", max: "ウッキー！${N}、酸いも甘いも一緒に乗り越えていこうね！ずっと親友だよ！" },
-            kame: { stroke: "……ゆっくり、幸せ……。", good: "……嬉しい。時間はたっぷりあるからね。", soso: "……うん。いいと思うよ。", bad: "……（そっと甲羅に閉じこもった）", max: "……（ゆっくり擦り寄ってきた） ${N}、君と歩く時間が一番幸せなんだ。" },
-            nga: { stroke: "ふわああ、とろけちゃうよお。", good: "わあーい！${N}、大好きー！", soso: "うん、桃色な気分だねっ！", bad: "えーん、桃が傷んじゃうよお。", max: "ふわふわ、とろとろ。${N}、僕のハートは君でいっぱいだよ！えへへ！" },
-            kuma: { stroke: "……悪くないな。", good: "……ふっ。君は面白い人だ。", soso: "……ああ。そうかもしれないな。", bad: "……これ以上は、踏み込まないでくれ。", max: "……${N}。言葉はいらないな。君の側にいられるだけで、十分だ。" }
-        };
-
-        const allPatterns = {
-            buta: [{ q: "ねえ${N}、一緒に食べる？", a: ["喜んで！", "あとでね", "苦手…"], scores: [10, 5, -5] }, { q: "パックしてあげようか？", a: ["お願い！", "大丈夫", "やだ"], scores: [10, 5, -5] }, { q: "${N}、大好きだよ！", a: ["私も！", "そうなんだ", "照れるな〜"], scores: [10, 5, 5] }, { q: "ずっと隣にいてもいい？", a: ["もちろんだよ！", "たまにね", "重いかな"], scores: [10, 5, -5] }, { q: "頑張ったから褒めて？", a: ["えらいえらい！", "普通だよ", "もっと頑張れ"], scores: [10, 5, -5] }],
-            tora: [{ q: "元気？ガオー！", a: ["超元気！", "そこそこ", "ない…"], scores: [10, 5, 0] }, { q: "走りに行く？", a: ["行こう！", "歩きなら", "寝てたい"], scores: [10, 5, -5] }, { q: "俺、かっこいい？", a: ["一番！", "可愛いよ", "派手"], scores: [10, 5, -5] }, { q: "何か食いもんある？", a: ["トマト！", "後で作るぜ", "自分で探せ"], scores: [10, 5, -5] }, { q: "笑わせてやるよ！", a: ["ありがとな", "放っておけ", "面白いことして"], scores: [10, -5, 5] }]
-            // ※他のキャラも同様にallDataから引き継ぎ（省略してもプログラム上はbutaをコピーして動くように下で調整）
+        // キャラクター別：全セリフ・口調データ
+        const charData = {
+            buta: { 
+                stroke: "えへへ、いい気持ち……♪", 
+                good: "わあ！すごく嬉しいな！✨", soso: "そうだね。わかるよ。", bad: "……そっか。ごめんね。",
+                max: "${N}、君との絆はもう永遠だね。世界で一番幸せなカブだよ！",
+                patterns: [
+                    { q: "ねえ${N}、採れたてのカブだよ！一緒に食べる？", a: ["喜んで食べる！", "あとでね", "カブは苦手…"], scores: [10, 5, -5] },
+                    { q: "お肌が疲れ気味かも。カブパックしてあげようか？", a: ["お願い！", "気持ちだけで十分だよ", "変なもの塗らないで"], scores: [10, 5, -5] },
+                    { q: "${N}のこと、カブの次に大好きだよ！えへへ。", a: ["私も大好き！", "カブには勝てないか〜", "ちょっと複雑…"], scores: [10, 5, -5] }
+                ]
+            },
+            imo: { 
+                stroke: "ホクホクしちゃうなぁ……。", 
+                good: "えへへ、君といると心が温まるよ。", soso: "うん、僕もそう思うよ。", bad: "土の中に隠れたくなっちゃうな…。",
+                max: "${N}、君といると心がポカポカするんだ。ずっと一緒にいようね。",
+                patterns: [
+                    { q: "土の中って落ち着くんだよ。${N}も入ってみる？", a: ["入ってみたい！", "狭そうだからいいや", "絶対嫌だよ！"], scores: [10, 5, -5] },
+                    { q: "焼きたての石焼き芋、半分こしよ？", a: ["嬉しい！半分こだね", "全部食べていいよ", "今は欲しくないかな"], scores: [10, 5, -5] }
+                ]
+            },
+            jaku: { 
+                stroke: "あら、優しいのね。うふふ。", 
+                good: "あら、素敵な答え。気に入ったわ。", soso: "ええ、そうね。悪くないわ。", bad: "……少し、香りが乱れてしまったわ。",
+                max: "愛という名の最高の一杯を。${N}、貴方の側が一番美しい場所だわ。",
+                patterns: [
+                    { q: "今日のハーブティーは色が綺麗。${N}も飲む？", a: ["いただくわ", "不思議な色だね", "苦そう…"], scores: [10, 5, -5] },
+                    { q: "羽を休める場所を探しているの。${N}の膝がいいわ。", a: ["おいで！", "ちょっと狭いかも", "今はダメ"], scores: [10, 5, -5] }
+                ]
+            },
+            risu: { 
+                stroke: "ほっぺが落ちちゃいそう！", 
+                good: "最高！君って本当に気が合うね！", soso: "ポリポリ……うん、いいんじゃない？", bad: "うーん、今はきゅうり気分じゃないかも。",
+                max: "カリッ、ポリッ！${N}とおしゃべりするのは最高だよ！大好き！",
+                patterns: [
+                    { q: "カリッ、ポリッ。いい音でしょ？${N}もどう？", a: ["いい音！", "少しうるさいかも", "お腹空いてない"], scores: [10, -5, 5] },
+                    { q: "水分補給、忘れてない？お肌が乾いちゃうよ。", a: ["今すぐ飲む！", "後で飲むよ", "喉乾いてない"], scores: [10, 5, -5] }
+                ]
+            },
+            tora: { 
+                stroke: "ガオーッ！もっとやってくれ！", 
+                good: "最高だぜ！お前、わかってるな！", soso: "おう、それもアリだな！", bad: "……なんだよ、つまんねーの。",
+                max: "ガオーッ！${N}の笑顔が俺の元気の源だ！最強のバディだぜ！",
+                patterns: [
+                    { q: "リコピンパワー全開！一緒に走りに行くか？", a: ["行こうぜ！", "歩きならいいよ", "家で寝てたい"], scores: [10, 5, -5] },
+                    { q: "${N}、俺の赤色、かっこいいだろ？", a: ["一番かっこいい！", "可愛いよ", "派手すぎる"], scores: [10, 5, -5] }
+                ]
+            },
+            chabo: { 
+                stroke: "よしよし、落ち着くのう……。", 
+                good: "おお、お主は話がわかるやつじゃ。", soso: "ふむ、それも一理あるな。", bad: "……少し、カボチャが硬くなった気分じゃ。",
+                max: "${N}、どっしり構えて待っておるぞ。お主の居場所はここじゃ。",
+                patterns: [
+                    { q: "ドシッと構えていれば大丈夫。${N}、悩みあるか？", a: ["聞いてくれる？", "今は大丈夫", "秘密だよ"], scores: [10, 5, -5] },
+                    { q: "眠いのか？わしの背中、乗っていいぞ。", a: ["おやすみなさい…", "大丈夫だよ", "硬そうだな"], scores: [10, 5, -5] }
+                ]
+            },
+            saru: { 
+                stroke: "ウッキー！ビタミン感じるー！", 
+                good: "最高にフレッシュ！ウッキー！！", soso: "まあまあだね！酸っぱいね！", bad: "ウ……酸っぱすぎて涙が出ちゃうよ。",
+                max: "ウッキー！${N}、酸いも甘いも一緒に乗り越えよう！親友だよ！",
+                patterns: [
+                    { q: "酸っぱい！でもこれが癖になるんだ。一口いく？", a: ["酸っぱ美味い！", "無理、無理！", "美容に良さそう"], scores: [10, -5, 5] },
+                    { q: "ビタミン補給の時間だ！ウッキー！", a: ["テンション高いね", "少し静かにして", "一緒に叫ぶ！"], scores: [5, -5, 10] }
+                ]
+            },
+            kame: { 
+                stroke: "……ゆっくり、幸せ……。", 
+                good: "……嬉しい。時間はたっぷりあるからね。", soso: "……うん。いいと思うよ。", bad: "……（そっと甲羅に閉じこもった）",
+                max: "……（ゆっくり擦り寄ってきた） ${N}、君と歩くのが幸せなんだ。",
+                patterns: [
+                    { q: "のんびり、のんびり……。${N}、急いでない？", a: ["のんびりいこう", "急いでるんだ", "カメのペースだね"], scores: [10, -5, 5] },
+                    { q: "一歩ずつ、確実に進むのが僕のやり方。", a: ["尊敬するよ", "遅すぎない？", "私もそうする"], scores: [10, -5, 10] }
+                ]
+            },
+            nga: { 
+                stroke: "ふわああ、とろけちゃうよお。", 
+                good: "わあーい！${N}、大好きー！", soso: "うん、桃色な気分だねっ！", bad: "えーん、桃が傷んじゃうよお。",
+                max: "ふわふわ、とろとろ。${N}、ハートは君でいっぱいだよ！えへへ！",
+                patterns: [
+                    { q: "${N}のところまで飛んでいってもいい？", a: ["飛んできて！", "危ないよ", "キャッチする！"], scores: [10, 5, 10] },
+                    { q: "ぎゅーってして？桃のクッションみたいでしょ？", a: ["ぎゅー！", "暑いから嫌だよ", "優しくね"], scores: [10, -5, 5] }
+                ]
+            },
+            kuma: { 
+                stroke: "……悪くないな。", 
+                good: "……ふっ。君は面白い人だ。", soso: "……ああ。そうかもしれないな。", bad: "……これ以上は、踏み込まないでくれ。",
+                max: "……${N}。言葉はいらないな。君の側にいられれば十分だ。",
+                patterns: [
+                    { q: "……（静かにイチジクを差し出してきた）", a: ["ありがとう", "これ何？", "いらない"], scores: [10, 5, -5] },
+                    { q: "夜の森は静かだ。${N}と二人なら、悪くない。", a: ["私も同感だよ", "少し寂しいね", "帰りたい…"], scores: [10, 5, -5] }
+                ]
+            }
         };
 
         window.onload = () => {
@@ -160,11 +239,10 @@
         }
 
         function updateCharDisplay() { 
-            document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
-            const love = loveData[currentChar];
-            const sprite = document.getElementById('hagumo-sprite');
-            if(love >= 100) sprite.classList.add('rainbow-active');
-            else sprite.classList.remove('rainbow-active');
+            const img = document.getElementById('hagumo-sprite');
+            img.src = `./images/${currentChar}.PNG`;
+            if(loveData[currentChar] >= 100) img.classList.add('rainbow-active');
+            else img.classList.remove('rainbow-active');
         }
 
         function updateLove(v) {
@@ -172,23 +250,21 @@
             localStorage.setItem('hLoveData', JSON.stringify(loveData));
             updateUI();
             
-            const love = loveData[currentChar];
             const sprite = document.getElementById('hagumo-sprite');
             const bubble = document.getElementById('chat-bubble');
 
-            if (love >= 100) {
+            if (loveData[currentChar] >= 100) {
                 sprite.classList.add('rainbow-active');
-                bubble.innerText = charConfigs[currentChar].max.replace("${N}", userName);
+                bubble.innerText = charData[currentChar].max.replace("${N}", userName);
             } else {
                 sprite.classList.remove('rainbow-active');
             }
-            if (love === 0) showFarewell();
         }
 
         function updateUI() {
-            const love = loveData[currentChar];
-            document.getElementById('love-val').innerText = love;
-            document.getElementById('love-fill').style.width = love + '%';
+            const val = loveData[currentChar];
+            document.getElementById('love-val').innerText = val;
+            document.getElementById('love-fill').style.width = val + '%';
             document.getElementById('talk-count').innerText = talkQuota;
             document.getElementById('stroke-count').innerText = strokeQuota;
         }
@@ -196,16 +272,16 @@
         function 撫でる() {
             if (strokeQuota > 0) {
                 strokeQuota--; updateLove(1);
-                document.getElementById('chat-bubble').innerText = charConfigs[currentChar].stroke;
-                document.getElementById('stroke-btn').disabled = true;
-                setTimeout(() => { if(strokeQuota > 0) document.getElementById('stroke-btn').disabled = false; }, 1000);
+                document.getElementById('chat-bubble').innerText = charData[currentChar].stroke;
+                const b = document.getElementById('stroke-btn'); b.disabled = true;
+                setTimeout(() => { if(strokeQuota > 0) b.disabled = false; }, 1000);
             }
         }
 
         function startTalk() {
             if (talkQuota > 0) {
                 talkQuota--;
-                const p = allPatterns[currentChar] || allPatterns["buta"]; // 全キャラデータある前提
+                const p = charData[currentChar].patterns;
                 const r = Math.floor(Math.random() * p.length);
                 currentScenario = JSON.parse(JSON.stringify(p[r]));
                 currentScenario.q = currentScenario.q.replace("${N}", userName);
@@ -214,20 +290,21 @@
                 currentScenario.a.forEach((t, i) => { bs[i].innerText = t; });
                 document.getElementById('choices').style.display = 'flex';
                 document.getElementById('talk-btn').disabled = true;
+                document.getElementById('stroke-btn').disabled = true;
             }
         }
 
         function handleChoice(i) {
             const s = currentScenario.scores[i]; updateLove(s);
-            const cfg = charConfigs[currentChar];
+            const cfg = charData[currentChar];
             document.getElementById('chat-bubble').innerText = s >= 10 ? cfg.good : s >= 5 ? cfg.soso : cfg.bad;
             document.getElementById('choices').style.display = 'none';
             document.getElementById('talk-btn').disabled = false;
+            document.getElementById('stroke-btn').disabled = false;
         }
 
-        function sayGoodbye() { if(confirm("本当にお別れしちゃうの…？")) showFarewell(); }
-        function resetGame() { if(confirm("全部リセットして最初からにする？")) { localStorage.clear(); location.reload(); } }
-        function showFarewell() { document.getElementById('farewell-overlay').style.display = 'flex'; }
+        function sayGoodbye() { if(confirm("本当にお別れしちゃうの？")) document.getElementById('farewell-overlay').style.display = 'flex'; }
+        function resetGame() { if(confirm("全データを消去して最初からにする？")) { localStorage.clear(); location.reload(); } }
     </script>
 </body>
 </html>
