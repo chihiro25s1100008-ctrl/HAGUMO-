@@ -8,21 +8,42 @@
     <style>
         :root { --main-pink: #ff7eb9; --master-gold: #d4af37; }
         body { font-family: 'Zen Maru Gothic', sans-serif; background: #fffafb; margin: 0; padding-top: 80px; }
-        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
-        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
-        .nav-logo-img { height: 30px; }
-        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; margin: 0 10px; }
+        
+        /* ナビゲーション統一 */
+        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 15px 0; z-index: 1000; border-bottom: 2px solid #fff0f6; }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .nav-logo-img { height: 35px; cursor: pointer; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 13px; font-weight: bold; margin-left: 15px; }
+        .nav-links a.active { color: var(--main-pink); border-bottom: 2px solid var(--main-pink); }
+
         .order-hero { background: linear-gradient(135deg, #fff 0%, #f9d5e5 100%); padding: 50px 20px; text-align: center; }
         .container { max-width: 1000px; margin: 20px auto 100px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .char-tag { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 12px; background: #fdf2f7; border: 1px solid var(--master-gold); color:var(--master-gold); margin-bottom: 10px; }
+        
+        /* サムネイルスタイル */
+        .thumb-img { width: 65px; height: 65px; object-fit: contain; cursor: pointer; transition: 0.3s; border: 2px solid transparent; border-radius: 15px; padding: 5px; background: #fdfdfd; opacity: 0.6; }
+        .thumb-img:hover { transform: scale(1.1); background: #fff9fb; }
+        .thumb-img.active { border-color: var(--master-gold); opacity: 1 !important; background: #fff9fb; }
+
+        .char-tag { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 12px; background: #fdf2f7; border: 1px solid var(--master-gold); color:var(--master-gold); margin-bottom: 10px; font-weight: bold; }
         .reward-box { background: #fff9fb; padding: 25px; border-radius: 25px; border: 2px solid var(--master-gold); margin: 20px 0; }
-        .btn-order { background: var(--master-gold); color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 10px 20px rgba(212,175,55,0.3); }
+        .btn-order { background: var(--master-gold); color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 10px 20px rgba(212,175,55,0.3); transition: 0.3s; }
+        .btn-order:active { transform: translateY(5px); box-shadow: none; }
         .footer-notice { background: #fff0f5; padding: 40px; text-align: center; border-top: 2px dashed var(--main-pink); }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-content"><img src="./images/rogo.PNG" class="nav-logo-img"><div class="nav-links"><a href="index.html">HOME</a><a href="world.html">WORLD</a><a href="hagumo.html">HAGUMO</a><a href="diagnosis.html">DIAGNOSIS</a><a href="product.html" class="active">PRODUCT</a><a href="my.html">MY HAGUMO</a></div></div>
+        <div class="nav-content">
+            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+            <div class="nav-links">
+                <a href="index.html">HOME</a>
+                <a href="world.html">WORLD</a>
+                <a href="hagumo.html">HAGUMO</a>
+                <a href="diagnosis.html">DIAGNOSIS</a>
+                <a href="product.html" class="active">PRODUCT</a>
+                <a href="my.html">MY HAGUMO</a>
+            </div>
+        </div>
     </nav>
 
     <div class="order-hero">
@@ -33,16 +54,17 @@
 
     <div class="container">
         <div>
-            <img src="./images/kuma.PNG" style="width:100%; border-radius:20px;">
+            <img id="main-img" src="./images/kuma.PNG" style="width:100%; height:350px; object-fit:contain; border-radius:20px; background:#fafafa;">
             <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
-                <img src="./images/saru.PNG" style="width:60px; opacity:0.5;">
-                <img src="./images/kame.PNG" style="width:60px; opacity:0.5;">
-                <img src="./images/nga.PNG" style="width:60px; opacity:0.5;">
-                <img src="./images/kuma.PNG" style="width:60px;">
+                <img src="./images/saru.PNG" class="thumb-img" onclick="changeImage(this, 'れもんきー（レモン）')">
+                <img src="./images/kame.PNG" class="thumb-img" onclick="changeImage(this, 'ぶるーべりくがめ（ブルーベリー）')">
+                <img src="./images/nga.PNG" class="thumb-img" onclick="changeImage(this, 'もももんが（モモ）')">
+                <img src="./images/kuma.PNG" class="thumb-img active" style="opacity:1;" onclick="changeImage(this, 'くろいちじくま（静か・ミステリアス）')">
             </div>
+            <p style="text-align:center; font-size:12px; color:#999; margin-top:10px;">※画像をクリックして選んでね！</p>
         </div>
         <div>
-            <div class="char-tag">代表キャラ：くろいちじくま（静か・ミステリアス）</div>
+            <div id="char-name-tag" class="char-tag">代表キャラ：くろいちじくま（静か・ミステリアス）</div>
             <h2 style="margin:0;">育成キット（難しい）</h2>
             <p style="font-size:32px; font-weight:bold; color:#444;">¥4,500</p>
             
@@ -56,13 +78,30 @@
 
             <p style="font-size:13px; color:#666; margin-bottom:20px;">
                 <b>選べるパートナー：</b><br>
-                れもんきー（レモン）、ぶるーべりくがめ（ブルーベリー）、もももんが（モモ）、くろいちじくま（イチジク）
+                れもんきー、ぶるーべりくがめ、もももんが、くろいちじくま
             </p>
 
-            <button class="btn-order">この子をお迎え（契約）する ✨</button>
+            <button class="btn-order" onclick="alert('匠のお迎え申し込みを承りました。最高の結果をお約束します。✨')">この子をお迎え（契約）する ✨</button>
         </div>
     </div>
 
-    <footer class="footer-notice"><p style="color: var(--main-pink); font-weight: bold;">🎀 HAGUMO project by 千葉9人形班 🎀</p><p style="font-size: 11px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p></footer>
+    <footer class="footer-notice">
+        <p style="color: var(--main-pink); font-weight: bold;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 11px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p>
+    </footer>
+
+    <script>
+        function changeImage(element, name) {
+            document.getElementById('main-img').src = element.src;
+            document.getElementById('char-name-tag').innerText = "パートナー： " + name;
+            const thumbs = document.querySelectorAll('.thumb-img');
+            thumbs.forEach(t => {
+                t.classList.remove('active');
+                t.style.opacity = "0.6";
+            });
+            element.classList.add('active');
+            element.style.opacity = "1";
+        }
+    </script>
 </body>
 </html>
