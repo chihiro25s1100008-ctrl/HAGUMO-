@@ -20,10 +20,10 @@ body {
   color: var(--text-color);
   text-align: center;
   line-height: 1.6;
-  overflow-x: hidden; /* スマホで横揺れ防止 */
+  overflow-x: hidden;
 }
 
-/* --- ナビゲーション (スマホ対応) --- */
+/* --- ナビゲーション --- */
 .nav {
   position: sticky;
   top: 0;
@@ -31,7 +31,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 5%;
+  padding: 10px 5%; /* 上下を少し詰めました */
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   z-index: 2000;
@@ -45,7 +45,9 @@ body {
 
 .nav-links {
   display: flex;
-  gap: 15px;
+  gap: 12px; /* リンクが増えたので間隔を少し調整 */
+  flex-wrap: wrap; /* 折り返しを許可 */
+  justify-content: flex-end;
 }
 
 .nav-link {
@@ -53,8 +55,9 @@ body {
   color: #888;
   font-size: 13px;
   font-weight: bold;
-  padding: 5px 10px;
+  padding: 5px 8px;
   transition: 0.3s;
+  white-space: nowrap; /* 文字の途中で改行させない */
 }
 
 .nav-link.active {
@@ -66,141 +69,46 @@ body {
   color: var(--pink2);
 }
 
-/* --- 基本の箱 (カード) --- */
-.container {
-  margin-top: 20px;
-  padding: 20px;
-}
-
-.card {
-  background: white;
-  border-radius: 30px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-  padding: 25px;
-  max-width: 600px;
-  margin: 30px auto;
-}
-
-/* --- ボタン --- */
-.button {
-  display: inline-block;
-  padding: 12px 28px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--pink), var(--pink2));
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(255, 126, 185, 0.4);
-}
-
-/* --- ホーム専用：ヒーローセクション --- */
-.hero-section {
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #fffcfd 0%, #fff4f9 100%);
-  border-radius: 0 0 50px 50px;
-}
-
-.main-copy {
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--text-color);
-  line-height: 1.4;
-  margin: 0;
-}
-
-.sub-copy {
-  color: #888;
-  margin: 20px 0 30px;
-  font-size: 15px;
-}
+/* --- 基本の箱・ボタン・ヒーローセクション（変更なし） --- */
+.container { margin-top: 20px; padding: 20px; }
+.card { background: white; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); padding: 25px; max-width: 600px; margin: 30px auto; }
+.button { display: inline-block; padding: 12px 28px; border-radius: 999px; background: linear-gradient(90deg, var(--pink), var(--pink2)); color: white; text-decoration: none; font-weight: bold; border: none; cursor: pointer; transition: 0.3s; }
+.button:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 126, 185, 0.4); }
+.hero-section { padding: 60px 20px; background: linear-gradient(135deg, #fffcfd 0%, #fff4f9 100%); border-radius: 0 0 50px 50px; }
+.main-copy { font-size: 32px; font-weight: bold; color: var(--text-color); line-height: 1.4; margin: 0; }
+.sub-copy { color: #888; margin: 20px 0 30px; font-size: 15px; }
 
 /* --- スマホ対応 (レスポンシブ) --- */
 @media screen and (max-width: 768px) {
   .nav {
-    flex-direction: column; /* ロゴとメニューを上下に */
-    padding: 10px;
+    flex-direction: column; 
+    padding: 10px 5px;
   }
   
   .nav-links {
-    margin-top: 10px;
-    gap: 5px;
+    margin-top: 8px;
+    gap: 4px; /* スマホではギリギリまで詰める */
+    justify-content: center; /* 中央寄せで見やすく */
+    width: 100%;
   }
 
   .nav-link {
-    font-size: 11px;
-    padding: 5px;
+    font-size: 10.5px; /* 6つ並ぶので少し小さめに */
+    padding: 4px 6px;
   }
 
-  .main-copy {
-    font-size: 24px;
-  }
-
-  .container {
-    padding: 10px;
-  }
-
-  .card {
-    width: 95%;
-    padding: 20px;
-  }
-
-  .button {
-    width: 100%; /* スマホではボタンを横いっぱいに */
-    text-align: center;
-  }
+  .main-copy { font-size: 24px; }
+  .card { width: 95%; padding: 20px; }
+  .button { width: 100%; text-align: center; }
 }
 
-/* --- 育成画面用 (my.html) の特殊スタイル --- */
-/* これを共通CSSに入れておくことで、my.html側の記述を減らせます */
-.max-aura {
-  animation: rainbow-flash 0.2s infinite alternate, shake 0.1s infinite !important;
-  filter: drop-shadow(0 0 20px #fff) drop-shadow(0 0 40px #ff00de) !important;
-}
-
-@keyframes rainbow-flash {
-  0% { filter: hue-rotate(0deg) brightness(1.2); }
-  100% { filter: hue-rotate(360deg) brightness(1.5); }
-}
-
-@keyframes shake {
-  0% { transform: translate(1px, 1px) scale(1.1); }
-  100% { transform: translate(-1px, -2px) scale(1.1); }
-}
-/* SNSシェアボタンのスタイル */
-.share-area {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.share-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border-radius: 15px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: bold;
-    color: white;
-    transition: 0.2s;
-}
-
-.share-btn img {
-    height: 18px;
-    margin-right: 8px;
-}
-
-.btn-x { background-color: #000; } /* Xは黒 */
-.btn-line { background-color: #06C755; } /* LINEは緑 */
-
+/* --- 育成・SNS系（変更なし） --- */
+.max-aura { animation: rainbow-flash 0.2s infinite alternate, shake 0.1s infinite !important; filter: drop-shadow(0 0 20px #fff) drop-shadow(0 0 40px #ff00de) !important; }
+@keyframes rainbow-flash { 0% { filter: hue-rotate(0deg) brightness(1.2); } 100% { filter: hue-rotate(360deg) brightness(1.5); } }
+@keyframes shake { 0% { transform: translate(1px, 1px) scale(1.1); } 100% { transform: translate(-1px, -2px) scale(1.1); } }
+.share-area { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+.share-btn { flex: 1; display: flex; align-items: center; justify-content: center; padding: 10px; border-radius: 15px; text-decoration: none; font-size: 13px; font-weight: bold; color: white; transition: 0.2s; }
+.share-btn img { height: 18px; margin-right: 8px; }
+.btn-x { background-color: #000; }
+.btn-line { background-color: #06C755; }
 .share-btn:active { transform: scale(0.95); opacity: 0.8; }
