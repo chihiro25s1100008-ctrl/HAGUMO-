@@ -27,7 +27,7 @@
             box-shadow: 0 15px 35px rgba(255,105,180,0.15);
             text-align: center;
             border: 3px solid #fff0f5;
-            min-height: 480px;
+            min-height: 520px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -49,7 +49,7 @@
             background: var(--pink2);
             border-radius: 4px;
             transition: 0.4s ease-out;
-            width: 10%;
+            width: 0%;
         }
 
         .q-text {
@@ -66,7 +66,7 @@
             gap: 15px;
         }
 
-        /* こだわりのぷっくり3Dボタン */
+        /* ぷっくり3Dボタンを完全復活 */
         .puffy-ans-btn {
             display: block;
             width: 100%;
@@ -83,12 +83,12 @@
             top: 0;
             cursor: pointer;
             text-align: center;
+            text-decoration: none;
         }
         .puffy-ans-btn:active {
             top: 6px;
-            box-shadow: 0 0 0 var(--pink1), 0 5px 5px rgba(255,105,180,0.1);
+            box-shadow: 0 0 0 var(--pink1);
             background: var(--soft-pink);
-            border-color: var(--pink2);
         }
 
         #result-area { display: none; animation: fadeIn 0.8s ease; }
@@ -108,14 +108,22 @@
         }
         .result-img { width: 140px; height: 140px; object-fit: contain; }
         
-        .result-name { font-size: 26px; color: var(--pink2); font-weight: bold; margin-bottom: 10px; letter-spacing: 1px; }
-        .result-desc { font-size: 14px; color: #666; text-align: left; line-height: 1.8; margin-bottom: 30px; background: #fff5f7; padding: 20px; border-radius: 20px; }
+        .result-name { font-size: 26px; color: var(--pink2); font-weight: bold; margin-bottom: 10px; }
+        .result-desc { 
+            font-size: 14px; color: #666; text-align: left; line-height: 1.8; 
+            margin-bottom: 30px; background: #fff5f7; padding: 20px; 
+            border-radius: 20px; white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
 
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'" style="cursor:pointer;">
+        <div class="nav-logo">
+            <a href="./index.html">
+                <img src="./images/rogo.PNG" alt="HAGUMO" style="height: 35px;">
+            </a>
+        </div>
         <div class="nav-links">
             <a href="index.html" class="nav-link">HOME</a>
             <a href="world.html" class="nav-link">WORLD</a>
@@ -129,7 +137,7 @@
     <div class="container">
         <section class="diag-hero">
             <h1 style="color: var(--pink2); font-size: 26px; letter-spacing: 2px;">PARTNER DIAGNOSIS</h1>
-            <p style="color: #888; font-size: 13px;">10問の質問で、全10種からあなたにぴったりの子を導き出します</p>
+            <p style="color: #888; font-size: 13px;">10問の質問で、あなたにぴったりの子を導き出します</p>
         </section>
 
         <div class="diag-container">
@@ -141,127 +149,41 @@
 
             <div id="result-area" class="q-card">
                 <p style="color:#aaa; font-size:12px; font-weight:bold; margin-bottom:15px;">あなたのパートナーは...</p>
-                
-                <div class="result-img-box">
-                    <img src="" class="result-img" id="res-img">
-                </div>
-                
+                <div class="result-img-box"><img src="" class="result-img" id="res-img"></div>
                 <div class="result-name" id="res-name"></div>
                 <div class="result-desc" id="res-desc"></div>
                 
-                <a href="product.html" class="puffy-ans-btn" style="background:var(--pink2); color:white; border-color:var(--pink2); box-shadow: 0 6px 0 #d1478e, 0 10px 15px rgba(255,105,180,0.3); margin-bottom:15px;">この子をお迎えする 🌱</a>
+                <a href="my.html" class="puffy-ans-btn" style="background:var(--pink2); color:white; border-color:var(--pink2); box-shadow: 0 6px 0 #d1478e, 0 10px 15px rgba(255,105,180,0.3); margin-bottom:15px;">この子をお迎えする 🌱</a>
                 <a href="diagnosis.html" style="color:#ccc; font-size:12px; text-decoration:none; display:inline-block; margin-top:10px;">もう一度診断する</a>
             </div>
         </div>
     </div>
 
     <script>
-        // 10問の質問と、各回答でポイントが入るキャラクターID
         const questions = [
-            {
-                q: "休日の過ごし方は？",
-                a: [
-                    { t: "家でのんびり癒やされたい", p: ["kabuta", "momo", "kuma"] },
-                    { t: "外に出てアクティブに遊ぶ！", p: ["tomatora", "kabocha", "kyurisu"] },
-                    { t: "趣味や勉強に没頭する", p: ["kugame", "mogura", "peacock"] },
-                    { t: "気まぐれにふらっと出かける", p: ["remonkey"] }
-                ]
-            },
-            {
-                q: "周りからどんな性格って言われる？",
-                a: [
-                    { t: "優しくて聞き上手", p: ["kabuta", "mogura"] },
-                    { t: "明るいムードメーカー", p: ["kabocha", "tomatora", "momo"] },
-                    { t: "落ち着いていてミステリアス", p: ["kuma", "kugame", "peacock"] },
-                    { t: "個性的で自由人", p: ["remonkey", "kyurisu"] }
-                ]
-            },
-            {
-                q: "今、一番解決したい肌や体の悩みは？",
-                a: [
-                    { t: "乾燥してカサカサする", p: ["momo", "kabocha"] },
-                    { t: "透明感がなく、くすみがち", p: ["kabuta", "tomatora"] },
-                    { t: "むくみや疲れを取りたい", p: ["kyurisu", "remonkey"] },
-                    { t: "スマホやPCで目が疲れている", p: ["kugame", "peacock"] }
-                ]
-            },
-            {
-                q: "新しいことに挑戦する時、どう動く？",
-                a: [
-                    { t: "みんなを引っ張って進む", p: ["tomatora", "kabocha"] },
-                    { t: "しっかり分析・計画してから", p: ["kugame", "peacock"] },
-                    { t: "直感とひらめきで即行動！", p: ["remonkey", "kyurisu"] },
-                    { t: "毎日コツコツ地道に努力する", p: ["mogura", "kuma"] }
-                ]
-            },
-            {
-                q: "疲れたときのご褒美、何が欲しい？",
-                a: [
-                    { t: "あま〜いスイーツで満たされたい", p: ["momo", "kabuta"] },
-                    { t: "さっぱりした飲み物でリフレッシュ", p: ["remonkey", "kyurisu"] },
-                    { t: "栄養満点の美味しいご飯", p: ["tomatora", "kabocha", "mogura"] },
-                    { t: "少し高級なスキンケアや入浴剤", p: ["peacock", "kuma", "kugame"] }
-                ]
-            },
-            {
-                q: "友達といるときのポジションは？",
-                a: [
-                    { t: "リーダーシップをとる", p: ["tomatora"] },
-                    { t: "みんなを笑わせる・盛り上げる", p: ["kabocha", "remonkey"] },
-                    { t: "優しく見守る・話を聞く", p: ["kabuta", "momo"] },
-                    { t: "的確なアドバイスをする", p: ["kugame", "peacock", "kuma"] }
-                ]
-            },
-            {
-                q: "直感で選ぶなら、どの色が好き？",
-                a: [
-                    { t: "赤やオレンジなど情熱的な色", p: ["tomatora", "kabocha"] },
-                    { t: "ピンクや白など可愛い色", p: ["momo", "kabuta"] },
-                    { t: "青や紫などクールな色", p: ["kugame", "peacock", "kuma"] },
-                    { t: "黄色や緑などフレッシュな色", p: ["remonkey", "kyurisu", "mogura"] }
-                ]
-            },
-            {
-                q: "理想の自分像に近いのは？",
-                a: [
-                    { t: "愛嬌たっぷりで誰からも愛される", p: ["momo", "kabocha"] },
-                    { t: "クールで知的、自立している", p: ["kugame", "peacock"] },
-                    { t: "わが道を行く、自由でユニーク", p: ["remonkey", "kuma"] },
-                    { t: "誰かの支えになる包容力がある", p: ["kabuta", "mogura"] }
-                ]
-            },
-            {
-                q: "「農業」と聞いて一番ワクワクするのは？",
-                a: [
-                    { t: "土いじりをして地道に育てる時間", p: ["mogura", "kuma", "kabuta"] },
-                    { t: "太陽の下で元気いっぱいに育つ姿", p: ["tomatora", "kabocha"] },
-                    { t: "収穫した時のひらめきや達成感", p: ["remonkey", "kyurisu", "peacock"] },
-                    { t: "育っていく過程をじっくり観察する", p: ["kugame", "momo"] }
-                ]
-            },
-            {
-                q: "最後に、パートナーに一番求めるものは？",
-                a: [
-                    { t: "絶対的な癒やしと安心感", p: ["kabuta", "momo", "kabocha"] },
-                    { t: "一緒に高め合える刺激と元気", p: ["remonkey", "tomatora", "kyurisu"] },
-                    { t: "賢くサポートしてくれる信頼感", p: ["kugame", "peacock"] },
-                    { t: "ブレない軸と努力を支える力", p: ["mogura", "kuma"] }
-                ]
-            }
+            { q: "休日の過ごし方は？", a: [{ t: "家でのんびり癒やされたい", p: ["kabuta", "momo", "kuma"] }, { t: "外に出てアクティブに遊ぶ！", p: ["tomatora", "kabocha", "kyurisu"] }, { t: "趣味や勉強に没頭する", p: ["kugame", "mogura", "peacock"] }, { t: "気まぐれにふらっと出かける", p: ["remonkey"] }] },
+            { q: "周りからどんな性格って言われる？", a: [{ t: "優しくて聞き上手", p: ["kabuta", "mogura"] }, { t: "明るいムードメーカー", p: ["kabocha", "tomatora", "momo"] }, { t: "落ち着いていてミステリアス", p: ["kuma", "kugame", "peacock"] }, { t: "個性的で自由人", p: ["remonkey", "kyurisu"] }] },
+            { q: "今、一番解決したい肌や体の悩みは？", a: [{ t: "乾燥してカサカサする", p: ["momo", "kabocha"] }, { t: "透明感がなく、くすみがち", p: ["kabuta", "tomatora"] }, { t: "むくみや疲れを取りたい", p: ["kyurisu", "remonkey"] }, { t: "スマホやPCで目が疲れている", p: ["kugame", "peacock"] }] },
+            { q: "新しいことに挑戦する時、どう動く？", a: [{ t: "みんなを引っ張って進む", p: ["tomatora", "kabocha"] }, { t: "しっかり分析・計画してから", p: ["kugame", "peacock"] }, { t: "直感とひらめきで即行動！", p: ["remonkey", "kyurisu"] }, { t: "毎日コツコツ地道に努力する", p: ["mogura", "kuma"] }] },
+            { q: "疲れたときのご褒美、何が欲しい？", a: [{ t: "あま〜いスイーツで満たされたい", p: ["momo", "kabuta"] }, { t: "さっぱりした飲み物でリフレッシュ", p: ["remonkey", "kyurisu"] }, { t: "栄養満点の美味しいご飯", p: ["tomatora", "kabocha", "mogura"] }, { t: "少し高級なスキンケアや入浴剤", p: ["peacock", "kuma", "kugame"] }] },
+            { q: "友達といるときのポジションは？", a: [{ t: "リーダーシップをとる", p: ["tomatora"] }, { t: "盛り上げる", p: ["kabocha", "remonkey"] }, { t: "優しく見守る", p: ["kabuta", "momo"] }, { t: "的なアドバイスをする", p: ["kugame", "peacock", "kuma"] }] },
+            { q: "直感で選ぶなら、どの色が好き？", a: [{ t: "赤やオレンジなど情熱的な色", p: ["tomatora", "kabocha"] }, { t: "ピンクや白など可愛い色", p: ["momo", "kabuta"] }, { t: "青や紫などクールな色", p: ["kugame", "peacock", "kuma"] }, { t: "黄色や緑などフレッシュな色", p: ["remonkey", "kyurisu", "mogura"] }] },
+            { q: "理想の自分像に近いのは？", a: [{ t: "誰からも愛される愛嬌", p: ["momo", "kabocha"] }, { t: "クールで知的な自立", p: ["kugame", "peacock"] }, { t: "自由でユニークなわが道", p: ["remonkey", "kuma"] }, { t: "誰かを支える包容力", p: ["kabuta", "mogura"] }] },
+            { q: "「農業」と聞いて一番ワクワクするのは？", a: [{ t: "土いじりをして地道に育てる時間", p: ["mogura", "kuma", "kabuta"] }, { t: "太陽の下で元気に育つ姿", p: ["tomatora", "kabocha"] }, { t: "収穫した時の達成感", p: ["remonkey", "kyurisu", "peacock"] }, { t: "育つ過程をじっくり観察する", p: ["kugame", "momo"] }] },
+            { q: "最後に、パートナーに一番求めるものは？", a: [{ t: "絶対的な癒やしと安心感", p: ["kabuta", "momo", "kabocha"] }, { t: "一緒に高め合える刺激と元気", p: ["remonkey", "tomatora", "kyurisu"] }, { t: "賢くサポートしてくれる信頼感", p: ["kugame", "peacock"] }, { t: "ブレない軸と努力を支える力", p: ["mogura", "kuma"] }] }
         ];
 
-        // 全10キャラクターのデータ
         const characters = [
             { id:"kabuta", name:"かぶた", img:"./images/buta.PNG", desc:"【優しさ×包容】\n控えめで優しい『かぶた』。アミラーゼたっぷりのカブで、お肌のくすみを飛ばしてピュアな透明感を引き出します。" },
             { id:"momo", name:"もももんが", img:"./images/nga.PNG", desc:"【愛嬌×甘え上手】\n甘えん坊な『もももんが』。桃のようなジューシーな潤い成分で、触れたくなるようなモチモチ肌を一緒に作りましょう。" },
-            { id:"kyurisu", name:"きゅうりす", img:"./images/risu.PNG", desc:"【バランス×調和】\n働き者の『きゅうりす』。カリウムたっぷりのキュウリでむくみをリフレッシュ！シュッとしたフェイスラインを目指せます。" },
+            { id:"kyurisu", name:"きゅうりす", img:"./images/risu.PNG", desc:"【バランス×調和】\n働き者の『きゅうりす』。カリウムたっぷりのキュウリでむくみをリフレッシュ！" },
             { id:"kugame", name:"ぶるーべりくがめ", img:"./images/kame.PNG", desc:"【知性×分析】\n落ち着いた『ぶるーべりくがめ』。アントシアニンの魔法で、スマホ疲れの瞳をパッチリ輝かせてくれます。" },
-            { id:"tomatora", name:"とまとら", img:"./images/tora.PNG", desc:"【情熱×リーダー】\nパワフルな『とまとら』。リコピンの力で太陽に負けない美しさを。あなたをポジティブな美しさへと導きます。" },
-            { id:"kuma", name:"くろいちじくま", img:"./images/kuma.PNG", desc:"【静か×ミステリアス】\n匠の精神を持つ『くろいちじくま』。フィシンが角質をケアし、磨き上げられたようなツヤ肌をプロデュースしてくれます。" },
-            { id:"remonkey", name:"れもんきー", img:"./images/remonkey.PNG", desc:"【ひらめき×自由】\n好奇心旺盛な『れもんきー』。ビタミンCたっぷりのレモンで、心もお肌もパッと明るくリフレッシュ！" },
-            { id:"mogura", name:"さつまいもぐら", img:"./images/mogura.PNG", desc:"【努力×継続】\nコツコツ頑張る『さつまいもぐら』。食物繊維とビタミンEで、内側からブレない健康的な美しさを支えます。" },
-            { id:"kabocha", name:"かぼちゃぼ", img:"./images/kabocha.PNG", desc:"【明るい×ポジティブ】\n元気いっぱいな『かぼちゃぼ』。βカロテンの力で、乾燥に負けないふっくらと温かみのあるお肌に。" },
-            { id:"peacock", name:"ばたふらいぴーこっく", img:"./images/peacock.PNG", desc:"【機転×賢さ】\n優雅で賢い『ばたふらいぴーこっく』。抗酸化作用でエイジングケア。凛とした大人の美しさを引き出します。" }
+            { id:"tomatora", name:"とまとら", img:"./images/tora.PNG", desc:"【情熱×リーダー】\nパワフルな『とまとら』。リコピンの力で太陽に負けない美しさを。" },
+            { id:"kuma", name:"くろいちじくま", img:"./images/kuma.PNG", desc:"【静か×ミステリアス】\n匠の精神を持つ『くろいちじくま』。磨き上げられたようなツヤ肌をプロデュースしてくれます。" },
+            { id:"remonkey", name:"れもんきー", img:"./images/saru.PNG", desc:"【ひらめき×自由】\n好奇心旺盛な『れもんきー』。ビタミンCたっぷりのレモンで、心もお肌もパッと明るくリフレッシュ！" },
+            { id:"mogura", name:"さつまいもぐら", img:"./images/imo.PNG", desc:"【努力×継続】\nコツコツ頑張る『さつまいもぐら』。内側からブレない健康的な美しさを支えます。" },
+            { id:"kabocha", name:"かぼちゃぼ", img:"./images/chabo.PNG", desc:"【明るい×ポジティブ】\n元気いっぱいな『かぼちゃぼ』。乾燥に負けないふっくらと温かみのあるお肌に。" },
+            { id:"peacock", name:"ばたふらいぴーこっく", img:"./images/jaku.PNG", desc:"【機転×賢さ】\n優雅で賢い『ばたふらいぴーこっく』。凛とした大人の美しさを引き出します。" }
         ];
 
         let currentIdx = 0;
@@ -275,24 +197,16 @@
 
         function showNext() {
             const q = questions[currentIdx];
-            // プログレスバーの更新
             document.getElementById('p-inner').style.width = ((currentIdx + 1) / questions.length) * 100 + "%";
             document.getElementById('q-text').innerText = q.q;
-            
             const list = document.getElementById('ans-list');
             list.innerHTML = "";
-            
-            // 選択肢ボタンの生成
             q.a.forEach(ans => {
                 const b = document.createElement('button');
                 b.className = "puffy-ans-btn";
                 b.innerText = ans.t;
                 b.onclick = () => {
-                    // 選んだ選択肢に紐づくキャラにポイントを加算
-                    ans.p.forEach(id => {
-                        points[id] = (points[id] || 0) + 1;
-                    });
-                    
+                    ans.p.forEach(id => { points[id] = (points[id] || 0) + 1; });
                     currentIdx++;
                     if(currentIdx < questions.length) {
                         showNext();
@@ -308,32 +222,27 @@
             document.getElementById('question-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'block';
 
-            // 最もポイントが高いキャラクターを探す
-            let bestId = characters[0].id;
+            let bestId = "kabuta";
             let maxScore = -1;
-
             for(let id in points) {
                 if(points[id] > maxScore) {
                     maxScore = points[id];
                     bestId = id;
                 }
             }
-
             const bestChar = characters.find(c => c.id === bestId) || characters[0];
 
-            // 結果画面に反映
+            // 🌟 データの抜き出しと保存
+            const fileName = bestChar.img.split('/').pop();
+            localStorage.setItem('myHagumo', JSON.stringify({ img: fileName, love: 50 }));
+
+            // 画面反映
             document.getElementById('res-img').src = bestChar.img;
             document.getElementById('res-name').innerText = bestChar.name;
             document.getElementById('res-desc').innerText = bestChar.desc;
         }
 
-        // 診断スタート
         init();
     </script>
-
-    <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 14px; margin-bottom: 8px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
-        <p style="font-size: 10px; color: #888;">これは授業課題であり、実際の診断結果に基づく発送は行っていません。</p>
-    </footer>
 </body>
 </html>
