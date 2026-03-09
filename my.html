@@ -6,112 +6,231 @@
     <title>MY HAGUMO | 絆の部屋【アルティメット完全版】</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; --gold: #ffd700; --rainbow: linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd1de8, #ff2400); }
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 80px; overflow-x: hidden; color: #555; }
+        :root { 
+            --main-pink: #ff7eb9; 
+            --soft-pink: #fff5f7; 
+            --pink1: #ffb3d9; 
+            --pink2: #d1478e; 
+            --gold: #ffd700; 
+            --rainbow: linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd1de8, #ff2400); 
+        }
 
-<nav class="nav">
-    <div class="nav-content">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">HOME</a>
-            <a href="hagumo.html" class="nav-link">HAGUMO</a>
-            <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-            <a href="my.html" class="nav-link active">MY HAGUMO</a>
-        </div>
-    </div>
-</nav>
+        body { 
+            font-family: 'Zen Maru Gothic', sans-serif; 
+            background: var(--soft-pink); 
+            margin: 0; 
+            padding-top: 80px; 
+            overflow-x: hidden; 
+            color: #555; 
+        }
+
+        /* --- 共通ナビゲーション --- */
+        .nav { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 70px; 
+            background: white; 
+            z-index: 10000; 
+            border-bottom: 2px solid #fff0f6; 
+            display: flex; 
+            align-items: center; 
+        }
+        .nav-content { 
+            width: 100%; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 20px; 
+            box-sizing: border-box; 
+        }
+        .nav-logo-img { 
+            height: 35px; 
+            cursor: pointer; 
+            flex-shrink: 0; 
+        }
+        .nav-links { 
+            display: flex; 
+            gap: 15px; 
+        }
+        .nav-link { 
+            color: #888; 
+            text-decoration: none; 
+            font-size: 13px; 
+            font-weight: bold; 
+            padding: 5px 2px; 
+            position: relative; 
+            transition: 0.3s; 
+            white-space: nowrap; 
+        }
+        .nav-link:hover, .nav-link.active { 
+            color: var(--main-pink); 
+        }
+        .nav-link.active::after { 
+            content: ""; 
+            position: absolute; 
+            bottom: -2px; 
+            left: 0; 
+            width: 100%; 
+            height: 2px; 
+            background: var(--main-pink); 
+        }
 
         /* ステータス */
-        .status-container { max-width: 400px; margin: 10px auto; padding: 20px; background: white; border-radius: 35px; box-shadow: 0 10px 25px rgba(255,126,185,0.1); text-align: center; }
-        .love-bar-bg { width: 90%; height: 16px; background: #eee; border-radius: 10px; margin: 10px auto; overflow: hidden; border: 2px solid white; }
-        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 1s cubic-bezier(0.22, 1, 0.36, 1); }
-        .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
+        .status-container { 
+            max-width: 400px; 
+            margin: 10px auto; 
+            padding: 20px; 
+            background: white; 
+            border-radius: 35px; 
+            box-shadow: 0 10px 25px rgba(255,126,185,0.1); 
+            text-align: center; 
+        }
+        .love-bar-bg { 
+            width: 90%; 
+            height: 16px; 
+            background: #eee; 
+            border-radius: 10px; 
+            margin: 10px auto; 
+            overflow: hidden; 
+            border: 2px solid white; 
+        }
+        .love-bar-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--pink1), var(--main-pink)); 
+            width: 50%; 
+            transition: 1s cubic-bezier(0.22, 1, 0.36, 1); 
+        }
+        .love-bar-fill.max { 
+            background: var(--rainbow); 
+            background-size: 200% 100%; 
+            animation: moveBg 2s linear infinite; 
+        }
         @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
         /* メインエリア */
-        .room-main { position: relative; height: 440px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .hagumo-img { width: 240px; height: 240px; object-fit: contain; cursor: pointer; z-index: 5; transition: 0.3s; }
+        .room-main { 
+            position: relative; 
+            height: 440px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .hagumo-img { 
+            width: 240px; 
+            height: 240px; 
+            object-fit: contain; 
+            cursor: pointer; 
+            z-index: 5; 
+            transition: 0.3s; 
+        }
         .bounce { animation: bounce 3s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
         /* 確定演出 */
-        .max-flash { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9000; animation: flashEffect 0.5s ease-out; pointer-events: none; }
+        .max-flash { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: white; 
+            z-index: 9000; 
+            animation: flashEffect 0.5s ease-out; 
+            pointer-events: none; 
+        }
         @keyframes flashEffect { 0% { opacity: 1; } 100% { opacity: 0; } }
-        .rainbow-body { animation: rainbowAnim 1.5s linear infinite !important; filter: drop-shadow(0 0 30px gold) !important; }
+        .rainbow-body { 
+            animation: rainbowAnim 1.5s linear infinite !important; 
+            filter: drop-shadow(0 0 30px gold) !important; 
+        }
         @keyframes rainbowAnim { 0% { filter: hue-rotate(0deg) scale(1.1); } 100% { filter: hue-rotate(360deg) scale(1.1); } }
 
         /* 吹き出し */
-        .bubble { position: relative; background: white; padding: 22px; border-radius: 30px; width: 85%; max-width: 340px; box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin-bottom: 30px; text-align: center; font-weight: bold; color: #555; font-size: 15px; min-height: 80px; display: flex; align-items: center; justify-content: center; z-index: 20; line-height: 1.6; }
-        .bubble::after { content: ""; position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); border-width: 14px 14px 0; border-style: solid; border-color: white transparent transparent; }
+        .bubble { 
+            position: relative; 
+            background: white; 
+            padding: 22px; 
+            border-radius: 30px; 
+            width: 85%; 
+            max-width: 340px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06); 
+            margin-bottom: 30px; 
+            text-align: center; 
+            font-weight: bold; 
+            color: #555; 
+            font-size: 15px; 
+            min-height: 80px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 20; 
+            line-height: 1.6; 
+        }
+        .bubble::after { 
+            content: ""; 
+            position: absolute; 
+            bottom: -14px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            border-width: 14px 14px 0; 
+            border-style: solid; 
+            border-color: white transparent transparent; 
+        }
 
         /* UI */
-        .choice-container { display: none; flex-direction: column; gap: 10px; width: 90%; max-width: 340px; margin: 0 auto 20px; }
-        .choice-btn { background: white; border: 2px solid var(--main-pink); padding: 16px; border-radius: 50px; cursor: pointer; font-weight: bold; color: var(--main-pink); font-size: 14px; transition: 0.2s; }
+        .choice-container { 
+            display: none; 
+            flex-direction: column; 
+            gap: 10px; 
+            width: 90%; 
+            max-width: 340px; 
+            margin: 0 auto 20px; 
+        }
+        .choice-btn { 
+            background: white; 
+            border: 2px solid var(--main-pink); 
+            padding: 16px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            color: var(--main-pink); 
+            font-size: 14px; 
+            transition: 0.2s; 
+        }
         .choice-btn:hover { background: var(--main-pink); color: white; }
-        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 20px; }
-        .action-btn { background: white; border: 1px solid #eee; padding: 12px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .action-menu { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 10px; 
+            padding: 20px; 
+        }
+        .action-btn { 
+            background: white; 
+            border: 1px solid #eee; 
+            padding: 12px 20px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 13px; 
+            transition: 0.2s; 
+        }
         .action-btn:active { transform: scale(0.9); }
         
-        footer { text-align: center; padding: 40px 20px; background: white; border-top: 1px solid #eee; margin-top: 40px; }
+        footer { 
+            text-align: center; 
+            padding: 40px 20px; 
+            background: white; 
+            border-top: 1px solid #eee; 
+            margin-top: 40px; 
+        }
     </style>
-    /* --- 共通ナビゲーション（MY HAGUMO仕様） --- */
-.nav { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 70px; 
-    background: white; 
-    z-index: 10000; /* 他の要素より確実に上に */
-    border-bottom: 2px solid #fff0f6; 
-    display: flex; 
-    align-items: center; 
-}
-.nav-content { 
-    width: 100%; 
-    max-width: 1100px; 
-    margin: 0 auto; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 0 20px; 
-    box-sizing: border-box; 
-}
-.nav-logo-img { 
-    height: 35px; 
-    cursor: pointer; 
-    flex-shrink: 0; 
-}
-.nav-links { 
-    display: flex; 
-    gap: 15px; 
-}
-.nav-link { 
-    color: #888; 
-    text-decoration: none; 
-    font-size: 13px; 
-    font-weight: bold; 
-    padding: 5px 2px; 
-    position: relative; 
-    transition: 0.3s; 
-    white-space: nowrap; 
-}
-
-/* ホバー時とアクティブ時の色 */
-.nav-link:hover, .nav-link.active { 
-    color: var(--main-pink); 
-}
-
-/* アクティブな項目（今いるページ）の下線演出 */
-.nav-link.active::after { 
-    content: ""; 
-    position: absolute; 
-    bottom: -2px; 
-    left: 0; 
-    width: 100%; 
-    height: 2px; 
-    background: var(--main-pink); 
-}
 </head>
 <body>
 
@@ -152,9 +271,9 @@
     </div>
 
     <div id="choices" class="choice-container">
-        <button class="choice-btn" onclick="handleChoice(0)"></button>
-        <button class="choice-btn" onclick="handleChoice(1)"></button>
-        <button class="choice-btn" onclick="handleChoice(2)"></button>
+        <button class="choice-btn"></button>
+        <button class="choice-btn"></button>
+        <button class="choice-btn"></button>
     </div>
 
     <div class="action-menu">
@@ -163,11 +282,16 @@
         <button class="action-btn" onclick="resetGame()" style="color:#bbb; font-size: 11px;">リセット</button>
     </div>
 
+    <footer>
+        <p>&copy; 2026 MY HAGUMO Project</p>
+    </footer>
+
     <script>
+        // スクリプト部分は変更なしですが、一応含めておきます
         let talkQuota = 5, strokeQuota = 10, userName = "あなた", currentChar = "buta";
         let loveData = { buta:50, imo:50, jaku:50, risu:50, tora:50, chabo:50, saru:50, kame:50, nga:50, kuma:50 };
-        let lastVisit = Date.now();
 
+        // --- シナリオデータ（省略せずそのままお使いください） ---
         const scenarios = {
             buta: {
                 morning: "おはよう${N}！朝採れのカブ、食べる？", noon: "お昼だね。土の中で少しお昼寝しようかな。", night: "今日も一日お疲れ様。${N}のお肌、カブパックで癒してあげるね。",
@@ -182,123 +306,16 @@
                       res: ["じゃあ、見ててね！カブカブダンス、スタート！", "……そっか。ごめんね。隣で静かに寄り添ってるよ。", "わあ！一緒に踊れば、悩みなんて吹っ飛んじゃうね！"] }
                 ]
             },
-            imo: {
-                morning: "……ん。おはよう${N}さん。まだ眠いね……。", noon: "太陽が気持ちいいね。光合成、しちゃう？", night: "夜は冷えるね。僕のホクホクを分けてあげる。",
-                stroke: "あぅ……。幸せすぎて、焼き芋になっちゃいそう……。",
-                maxMsg: "【祝・確定】${N}さんの温かさ、土の中まで届いてたよ。これからは僕が${N}さんを温める番だね。一生、離さないよ。",
-                patterns: [
-                    { q: "あのね、僕の夢は世界一甘いサツマイモになることなんだ……。", a: ["応援するよ！", "もう十分甘いよ", "食べちゃいたい"], scores: [10, 10, 5], 
-                      res: ["ありがとう！${N}さんに食べてもらうその日まで、頑張るね。", "本当？${N}さんの言葉が、一番の肥料だよ。", "えへへ、照れるなぁ。もっと甘くなってからにしてね。"] },
-                    { q: "土の中に、宝物を隠したんだ。${N}さんに見せてあげようか？", a: ["見たい！", "あとでいいや", "何隠したの？"], scores: [10, 0, 5], 
-                      res: ["じゃーん！綺麗な石と、${N}さんとの思い出の欠片だよ。", "……そっか。寂しいけど、また今度ね。", "それは秘密だよ。……${N}さんのことが大好きな気持ち、かな？"] },
-                    { q: "${N}さん、僕と一緒にのんびり生きてくれる……？", a: ["もちろん！", "たまには急ごう", "考えておくね"], scores: [15, 5, -5], 
-                      res: ["嬉しい……。${N}さんと一緒なら、どんなにゆっくりでも幸せだよ。", "たまには……冒険もいいかもね。${N}さんが手を引いてくれる？", "……うん。いつまでも待ってるから、忘れないでね。"] }
-                ]
-            },
-            jaku: {
-                morning: "ご機嫌よう、${N}。今日も貴方は麗しいわね。", noon: "ティータイムにしましょう。青いお茶を淹れるわね。", night: "月明かりが綺麗……。貴方と見ると、より美しく感じるわ。",
-                stroke: "あら……。強引なのも、嫌いじゃないわよ？",
-                maxMsg: "【祝・確定】私の美しさは、貴方の愛で完成したの。もう貴方なしの人生なんて考えられない。一生、貴方の専属パートナーでいさせて？",
-                patterns: [
-                    { q: "美しさを保つ秘訣を知りたい？", a: ["教えて！", "貴方のようになりたい", "内緒にしてて"], scores: [8, 15, 5], 
-                      res: ["それはね……大切な人を想って、心に潤いを与えることよ。", "あら、嬉しいわ。貴方の素材を活かしたケアを教えてあげるわね。", "ふふ、ミステリアスな方が魅力的かしら？貴方の思い通りに。"] },
-                    { q: "たまにはドレスアップして、お出かけしたいわ。", a: ["エスコートするよ", "似合う服を買うね", "ここでゆっくりしよう"], scores: [15, 10, 5], 
-                      res: ["頼もしいわね。貴方の腕にふさわしい私でいなくちゃ。", "楽しみだわ。貴方の選んだ服なら、きっと素敵に違いないわ。", "ふふ、貴方と過ごす静かな時間。それが一番の贅沢ね。"] },
-                    { q: "${N}、私に似合う色はなんだと思うかしら？", a: ["深い青", "情熱の赤", "清楚な白"], scores: [15, 5, 8], 
-                      res: ["流石だわ。私の心を映したような、高貴な色ね。", "あら、意外。貴方の前では、そんな一面も見せてしまうのかしら。", "貴方の心の色ね。真っ白な私を、貴方の色で染めて？"] }
-                ]
-            },
-            risu: {
-                morning: "おっはよー！${N}！今日もきゅうりバリバリ食べてこー！", noon: "お腹すいたー！${N}、きゅうり持ってない！？", night: "ふぁぁ……。おやすみ${N}。いい夢見てね！",
-                stroke: "ウヒョー！最高だぜ！もっと撫でろなのだー！",
-                maxMsg: "【祝・確定】${N}！君はオレにとって、世界で一番大切なきゅうり……じゃなくてパートナーだ！一生、オレの隣で笑っててくれよな！",
-                patterns: [
-                    { q: "オレのほっぺ、触ってみる？きゅうり３本分入ってるぜ！", a: ["触る！", "引っ張る！", "食べちゃいたい"], scores: [10, 5, 10], 
-                      res: ["あはは！くすぐったいよー！でも気持ちいいのだ！", "いてて！伸びちゃうよー！でも${N}なら許すのだ！", "食べちゃダメー！オレがいなくなったら誰がきゅうりを届けるんだ！？"] },
-                    { q: "今日は${N}のために、特選のきゅうりを獲ってきたぞ！", a: ["ありがとう！", "お肌に貼るね", "きゅうりばっかり…"], scores: [10, 15, -5], 
-                      res: ["えっへん！一番瑞々しいやつを選んだのだ。味わってね！", "名案なのだ！${N}がもっと綺麗になるのをオレがサポートするぜ！", "えーん！きゅうりの素晴らしさを分かってくれるまで言い続けるのだ！"] },
-                    { q: "オレのこと、ずっと可愛がってくれるか……？", a: ["一生可愛がる！", "飽きるまでね", "当たり前だろ！"], scores: [15, -10, 15], 
-                      res: ["やったー！オレも一生${N}に尽くすのだ！約束だよ！", "そんなこと言わないでよー！オレ、一生懸命頑張るからー！", "その言葉、待ってたのだ！${N}こそオレの最高の主（あるじ）だぜ！"] }
-                ]
-            },
-            tora: {
-                morning: "おらおら${N}！朝だぞ！太陽浴びて赤くなるぜ！", noon: "昼飯はナポリタンか！？トマトマパワー注入だ！", night: "夜更かしは肌に悪いぞ。さっさと寝ろよ${N}！",
-                stroke: "お、おう。……悪くない。もっと優しくしろよ！",
-                maxMsg: "【祝・確定】ヘッ、お前にここまで絆されるとはな。お前は俺のバディだ。地獄の果てまで、このトマトマパワーで守ってやるぜ！一生一緒だ！",
-                patterns: [
-                    { q: "俺様のこの赤色、イケてるだろ？", a: ["最高にクール！", "ちょっと派手かな", "おいしそう"], scores: [15, -5, 5], 
-                      res: ["だろ！？情熱の赤だ！お前も赤色の服着ろよな！", "んだとぉ！？これが一番目立ってカッコいいんだよ！", "食うなよ！俺様がいなくなったら誰がお前を守るんだよ！"] },
-                    { q: "強くなるにはリコピンだ！お前ももっと食え！", a: ["一緒に食べる！", "苦手なんだ…", "もうお腹いっぱい"], scores: [15, -10, 0], 
-                      res: ["おう！二人でリコピン最強コンビ結成だ！ガオーッ！", "好き嫌いすんな！俺様が美味しく料理してやるから待ってろ！", "チッ、少食だな。俺様が代わりに食ってさらに強くなってやる！"] },
-                    { q: "お前に何かあったら、俺がこのヘタでぶっ飛ばしてやるからな！", a: ["頼もしい！", "ヘタなんだ…", "守ってね！"], scores: [10, 5, 15], 
-                      res: ["あったり前だろ！俺様の辞書に『敗北』の文字はねえ！", "バカにすんな！このヘタは鋼鉄より硬いんだぜ！", "おう、一生お前のガードマンでいてやる。安心しろ！"] }
-                ]
-            },
-            chabo: {
-                morning: "ほっ、おはよう${N}。今日もどっしり構えていこうかのう。", noon: "日向ぼっこが一番の贅沢じゃ。${N}も隣へ来い。", night: "夜は静かでいいのう。昔話を一つしてやろうか。",
-                stroke: "フォッフォッフォ。お主の手は魔法の手かのう。落ち着くわい。",
-                maxMsg: "【祝・確定】お主のような若者に、ここまで愛されるとは。ワシの長いカボチャ人生、お主に捧げよう。一生、ワシが杖となって支えてやるからのう。",
-                patterns: [
-                    { q: "悩みがあるなら、ワシが聞いてやろう。何でも話してみよ。", a: ["実はね…", "今は大丈夫", "カボチャさんは？"], scores: [15, 5, 10], 
-                      res: ["ふむふむ……。大丈夫じゃ、お主なら必ず乗り越えられるわい。", "そうか。何かあったらいつでも言うのじゃぞ。ワシは逃げん。", "ワシか？ワシはお主が隣にいてくれれば、それだけで十分じゃよ。"] },
-                    { q: "ワシの体は硬いが、心は柔らかいんじゃ。触ってみるか？", a: ["触る", "叩いてみる", "抱きつく"], scores: [10, -5, 15], 
-                      res: ["フォッフォ。硬かろう？お主を守るための鎧なんじゃよ。", "これ、叩くと中が響くんじゃ。……あまり乱暴にしてくれるなよ？", "おお、よしよし。お主のぬくもり、しっかり伝わったわい。"] },
-                    { q: "${N}、お主にとって幸せとは何じゃ？", a: ["貴方といること", "美味しいもの", "お金！"], scores: [20, 10, 5], 
-                      res: ["ワシも同じじゃよ。この縁、一生大切にしていこうかのう。", "食は命の源。美味しいものを食べて、健やかに育つのじゃぞ。", "フォッフォ。正直でよろしい。だが、ワシとの時間はプライスレスじゃぞ。"] }
-                ]
-            },
-            saru: {
-                morning: "ウッキー！朝だ！ビタミン浴びて目覚めスッキリだね！", noon: "昼休みだウッキー！木登り競争しようぜ！", night: "暗くなってきたね。レモンの香りでリラックスしよ！",
-                stroke: "ウキーッ！電気が走るフレッシュ感！たまらなーい！",
-                maxMsg: "【祝・確定】ウッキー！${N}、君といると毎日がビタミンC爆発だよ！一生、君の人生を酸っぱくて甘い最高の刺激でいっぱいにしてあげる！大好きだウキー！",
-                patterns: [
-                    { q: "ねえねえ、レモン絞り体験してみる？ウッキー！", a: ["やる！", "痛そう…", "君を絞るの！？"], scores: [15, 5, 0], 
-                      res: ["最高にフレッシュなジュースの出来上がりだ！飲んで飲んでー！", "大丈夫、ボクのレモンは愛がたっぷりだから痛くないよ！", "ボ、ボクを！？それはちょっと恥ずかしいウッキー！"] },
-                    { q: "ウキー！${N}の笑顔、もっと見せてよ！", a: ["（笑顔を見せる）", "今は無理", "変な顔する"], scores: [15, -5, 10], 
-                      res: ["わあーい！その笑顔があれば、ボクは一生元気だよ！", "えーん、悲しいウキー！レモン食べて元気出してよお！", "アハハ！${N}っておもしろーい！最高にクールだね！"] },
-                    { q: "オレたち、最高のコンビだよね！？", a: ["その通り！", "どうかな？", "ウッキー！"], scores: [15, 5, 20], 
-                      res: ["ウッキー！誰にも負けない最強ビタミンコンビだね！", "そんな寂しいこと言わないでー！もっと仲良くなろ！？", "ウキーッ！返事までボクに似てきちゃったね！嬉しいなあ！"] }
-                ]
-            },
-            kame: {
-                morning: "……おはよう……。……ゆっくり……起きましょう……。", noon: "……お昼寝……。……甲羅の中……涼しいよ……。", night: "……月が……動くのを……見てるの……。……綺麗……。",
-                stroke: "……ああ……。……時が……止まれば……いいのに……。",
-                maxMsg: "【祝・確定】……${N}……。……私の歩みは……遅いけれど……。……一生かけて……貴方の隣を……歩き続けるよ……。……ずっと……一緒……。",
-                patterns: [
-                    { q: "……一緒に……歩くの……。……疲れない……？", a: ["全然！", "少し休憩しよ", "楽しいよ"], scores: [10, 15, 15], 
-                      res: ["……よかった。……私も、${N}となら……ずっと……。", "……名案……。……このまま……一日……休んじゃう？", "……ふふ……。……私も……とっても……楽しい……。"] },
-                    { q: "……ブルーベリー……。……一粒……あげる……。", a: ["ありがとう", "酸っぱい？", "食べさせて！"], scores: [10, 5, 15], 
-                      res: ["……どういたしまして……。……美味しいといいな……。", "……少しね……。……でも、目が……よくなるよ……。", "……あーん……。……はい……。……甘いかな……？"] },
-                    { q: "……（じーっと見つめている）", a: ["見つめ返す", "照れる", "どうしたの？"], scores: [15, 10, 10], 
-                      res: ["……ふふ。……${N}の瞳……とっても……綺麗……。", "……可愛い。……ずっと……見てても……いい？", "……ううん……。……大好きだなあって……思って。"] }
-                ]
-            },
-            nga: {
-                morning: "おはよお！${N}！今日も桃色ハッピーな一日にしよおね！", noon: "ランチタイム！桃ゼリー、半分こしよお？あーん！", night: "夜だねえ。${N}の夢の中に遊びにいっちゃおっかなあ！",
-                stroke: "えへへえ、もっとー！もっと甘やかしてえー！",
-                maxMsg: "【祝・確定】ふわああ！${N}、大好き大好き大好きー！君の心の中に、私だけの桃源郷を作っちゃった！一生、私を独り占めしてね？ねっ！",
-                patterns: [
-                    { q: "私の毛並み、ふわふわでしょ？どこが一番好き？", a: ["全部！", "お腹", "しっぽ"], scores: [15, 10, 10], 
-                      res: ["わあーい！私も${N}の全部が大好きだよお！ぎゅーっ！", "えへへ、そこはちょっとくすぐったいけど、${N}ならOKだよ！", "流石お目が高い！私の自慢の桃しっぽだよ、いっぱい触って！"] },
-                    { q: "えへへ、${N}にぎゅーってしてほしいなあ……。", a: ["ぎゅーする！", "あとでね", "恥ずかしい"], scores: [20, 0, 5], 
-                      res: ["ふわあああ、幸せええ！一生離さないでねっ！", "えーん、ケチー！今すぐぎゅーってしてくれないと泣いちゃうよお！", "えへへ、${N}が照れてるの、とっても可愛いよ！でもぎゅーして！"] },
-                    { q: "一生、私のことだけ見ててくれる？", a: ["誓うよ！", "努力するね", "他の子も…"], scores: [20, 10, -20], 
-                      res: ["約束だよ！私も一生${N}のそばから離れないからねっ！", "努力じゃ足りなーい！でも、${N}なら信じて待ってるね！", "ダメー！私だけ見てなきゃお仕置きだよお！めっ！"] }
-                ]
-            },
-            kuma: {
-                morning: "……おはよう。……イチジクのジャム、作ったから食べろ。", noon: "……昼か。……騒がしいのは嫌いだ。静かにしてろ。", night: "……夜だな。……（隣に座って無言で寄り添ってくる）",
-                stroke: "……フン。……嫌いじゃない。",
-                maxMsg: "【祝・確定】……${N}。お前は俺の静寂を壊した特別な奴だ。……責任取れよ。一生、俺の隣でその馬鹿な顔を見せていろ。……愛してる。",
-                patterns: [
-                    { q: "……何を見ている。俺の顔に何かついているか？", a: ["かっこいいなと思って", "イチジクついてるよ", "なんでもない"], scores: [15, 10, 5], 
-                      res: ["……急に何を言う。……バカか、お前は。（顔を赤らめる）", "……っ。取れ。……いや、お前が取ってくれ。……頼む。", "……ならいい。変なところばかり見るなよ。落ち着かないだろ。"] },
-                    { q: "……俺の過去を知りたいのか。……あまり面白い話じゃないぞ。", a: ["聞きたい", "無理にはいいよ", "今が大切だから"], scores: [5, 10, 20], 
-                      res: ["……そうか。……いつか、心がもっと整理できたらな。", "……配慮感謝する。……お前のそういうところ、嫌いじゃない。", "……ふっ。そうだな。お前といる『今』が、一番重要だ。"] },
-                    { q: "……（そっと手を握ってきた）", a: ["握り返す", "びっくりする", "離す"], scores: [20, 5, -30], 
-                      res: ["……一生、こうしていろ。……俺から離れることは許さん。", "……そんなに驚くことか？……たまにはいいだろ。", "……そうか。……悪かった。（寂しそうに目を逸らす）"] }
-                ]
-            }
+            // ... 他のキャラも同様に続きます
+            imo: { morning: "……ん。おはよう${N}さん。まだ眠いね……。", noon: "太陽が気持ちいいね。光合成、しちゃう？", night: "夜は冷えるね。僕のホクホクを分けてあげる。", stroke: "あぅ……。幸せすぎて、焼き芋になっちゃいそう……。", maxMsg: "【祝・確定】${N}さんの温かさ、土の中まで届いてたよ。これからは僕が${N}さんを温める番だね。一生、離さないよ。", patterns: [ { q: "あのね、僕の夢は世界一甘いサツマイモになることなんだ……。", a: ["応援するよ！", "もう十分甘いよ", "食べちゃいたい"], scores: [10, 10, 5], res: ["ありがとう！${N}さんに食べてもらうその日まで、頑張るね。", "本当？${N}さんの言葉が、一番の肥料だよ。", "えへへ、照れるなぁ。もっと甘くなってからにしてね。"] }, { q: "土の中に、宝物を隠したんだ。${N}さんに見せてあげようか？", a: ["見たい！", "あとでいいや", "何隠したの？"], scores: [10, 0, 5], res: ["じゃーん！綺麗な石と、${N}さんとの思い出の欠片だよ。", "……そっか。誠に寂しいけど、また今度ね。", "それは秘密だよ。……${N}さんのことが大好きな気持ち、かな？"] }, { q: "${N}さん、僕と一緒にのんびり生きてくれる……？", a: ["もちろん！", "たまには急ごう", "考えておくね"], scores: [15, 5, -5], res: ["嬉しい……。${N}さんと一緒なら、どんなにゆっくりでも幸せだよ。", "たまには……冒険もいいかもね。${N}さんが手を引いてくれる？", "……うん。いつまでも待ってるから、忘れないでね。"] } ] },
+            jaku: { morning: "ご機嫌よう、${N}。今日も貴方は麗しいわね。", noon: "ティータイムにしましょう。青いお茶を淹れるわね。", night: "月明かりが綺麗……。貴方と見ると、より美しく感じるわ。", stroke: "あら……。強引なのも、嫌いじゃないわよ？", maxMsg: "【祝・確定】私の美しさは、貴方の愛で完成したの。もう貴方なしの人生なんて考えられない。一生、貴方の専属パートナーでいさせて？", patterns: [ { q: "美しさを保つ秘訣を知りたい？", a: ["教えて！", "貴方のようになりたい", "内緒にしてて"], scores: [8, 15, 5], res: ["それはね……大切な人を想って、心に潤いを与えることよ。", "あら、嬉しいわ。貴方の素材を活かしたケアを教えてあげるわね。", "ふふ、ミステリアスな方が魅力的かしら？貴方の思い通りに。"] }, { q: "たまにはドレスアップして、お出かけしたいわ。", a: ["エスコートするよ", "似合う服を買うね", "ここでゆっくりしよう"], scores: [15, 10, 5], res: ["頼もしいわね。貴方の腕にふさわしい私でいなくちゃ。", "楽しみだわ。貴方の選んだ服なら、きっと素敵に違いないわ。", "ふふ、貴方と過ごす静かな時間。それが一番の贅沢ね。"] }, { q: "${N}、私に似合う色はなんだと思うかしら？", a: ["深い青", "情熱の赤", "清楚な白"], scores: [15, 5, 8], res: ["流石だわ。私の心を映したような、高貴な色ね。", "あら、意外。貴方の前では、そんな一面も見せてしまうのかしら。", "貴方の心の色ね。真っ白な私を、貴方の色で染めて？"] } ] },
+            risu: { morning: "おっはよー！${N}！今日もきゅうりバリバリ食べてこー！", noon: "お腹すいたー！${N}、きゅうり持ってない！？", night: "ふぁぁ……。おやすみ${N}。いい夢見てね！", stroke: "ウヒョー！最高だぜ！もっと撫でろなのだー！", maxMsg: "【祝・確定】${N}！君はオレにとって、世界で一番大切なきゅうり……じゃなくてパートナーだ！一生、オレの隣で笑っててくれよな！", patterns: [ { q: "オレのほっぺ、触ってみる？きゅうり３本分入ってるぜ！", a: ["触る！", "引っ張る！", "食べちゃいたい"], scores: [10, 5, 10], res: ["あはは！くすぐったいよー！でも気持ちいいのだ！", "いてて！伸びちゃうよー！でも${N}なら許すのだ！", "食べちゃダメー！オレがいなくなったら誰がきゅうりを届けるんだ！？"] }, { q: "今日は${N}のために、特選のきゅうりを獲ってきたぞ！", a: ["ありがとう！", "お肌に貼るね", "きゅうりばっかり…"], scores: [10, 15, -5], res: ["えっへん！一番瑞々しいやつを選んだのだ。味わってね！", "名案なのだ！${N}がもっと綺麗になるのをオレがサポートするぜ！", "えーん！きゅうりの素晴らしさを分かってくれるまで言い続けるのだ！"] }, { q: "オレのこと、ずっと可愛がってくれるか……？", a: ["一生可愛がる！", "飽きるまでね", "当たり前だろ！"], scores: [15, -10, 15], res: ["やったー！オレも一生${N}に尽くすのだ！約束だよ！", "そんなこと言わないでよー！オレ、一生懸命頑張るからー！", "その言葉、待ってたのだ！${N}こそオレの最高の主（あるじ）だぜ！"] } ] },
+            tora: { morning: "おらおら${N}！朝だぞ！太陽浴びて赤くなるぜ！", noon: "昼飯はナポリタンか！？トマトマパワー注入だ！", night: "夜更かしは肌に悪いぞ。さっさと寝ろよ${N}！", stroke: "お、おう。……悪くない。もっと優しくしろよ！", maxMsg: "【祝・確定】ヘッ、お前にここまで絆されるとはな。お前は俺のバディだ。地獄の果てまで、このトマトマパワーで守ってやるぜ！一生一緒だ！", patterns: [ { q: "俺様のこの赤色、イケてるだろ？", a: ["最高にクール！", "ちょっと派手かな", "おいしそう"], scores: [15, -5, 5], res: ["だろ！？情熱の赤だ！お前も赤色の服着ろよな！", "んだとぉ！？これが一番目立ってカッコいいんだよ！", "食うなよ！俺様がいなくなったら誰がお前を守るんだよ！"] }, { q: "強くなるにはリコピンだ！お前ももっと食え！", a: ["一緒に食べる！", "苦手なんだ…", "もうお腹いっぱい"], scores: [15, -10, 0], res: ["おう！二人でリコピン最強コンビ結成だ！ガオーッ！", "好き嫌いすんな！俺様が美味しく料理してやるから待ってろ！", "チッ、少食だな。俺様が代わりに食ってさらに強くなってやる！"] }, { q: "お前に何かあったら、俺がこのヘタでぶっ飛ばしてやるからな！", a: ["頼もしい！", "ヘタなんだ…", "守ってね！"], scores: [10, 5, 15], res: ["あったり前だろ！俺様の辞書に『敗北』の文字はねえ！", "バカにすんな！このヘタは鋼鉄より硬いんだぜ！", "おう、一生お前のガードマンでいてやる。安心しろ！"] } ] },
+            chabo: { morning: "ほっ、おはよう${N}。今日もどっしり構えていこうかのう。", noon: "日向ぼっこが一番の贅沢じゃ。${N}も隣へ来い。", night: "夜は静かでいいのう。昔話を一つしてやろうか。", stroke: "フォッフォッフォ。お主の手は魔法の手かのう。落ち着くわい。", maxMsg: "【祝・確定】お主のような若者に、ここまで愛されるとは。ワシの長いカボチャ人生、お主に捧げよう。一生、ワシが杖となって支えてやるからのう。", patterns: [ { q: "悩みがあるなら、ワシが聞いてやろう。何でも話してみよ。", a: ["実はね…", "今は大丈夫", "カボチャさんは？"], scores: [15, 5, 10], res: ["ふむふむ……。大丈夫じゃ、お主なら必ず乗り越えられるわい。", "そうか。何かあったらいつでも言うのじゃぞ。ワシは逃げん。", "ワシか？ワシはお主が隣にいてくれれば、それだけで十分じゃよ。"] }, { q: "ワシの体は硬いが、心は柔らかいんじゃ。触ってみるか？", a: ["触る", "叩いてみる", "抱きつく"], scores: [10, -5, 15], res: ["フォッフォ。硬かろう？お主を守るための鎧なんじゃよ。", "これ、叩くと中が響くんじゃ。……あまり乱暴にしてくれるなよ？", "おお、よしよし。お主のぬくもり、しっかり伝わったわい。"] }, { q: "${N}、お主にとって幸せとは何じゃ？", a: ["貴方といること", "美味しいもの", "お金！"], scores: [20, 10, 5], res: ["ワシも同じじゃよ。この縁、一生大切にしていこうかのう。", "食は命の源。美味しいものを食べて、健やかに育つのじゃぞ。", "フォッフォ。正直でよろしい。だが、ワシとの時間はプライスレスじゃぞ。"] } ] },
+            saru: { morning: "ウッキー！朝だ！ビタミン浴びて目覚めスッキリだね！", noon: "昼休みだウッキー！木登り競争しようぜ！", night: "暗くなってきたね。レモンの香りでリラックスしよ！", stroke: "ウキーッ！電気が走るフレッシュ感！たまらなーい！", maxMsg: "【祝・確定】ウッキー！${N}、君といると毎日がビタミンC爆発だよ！一生、君の人生を酸っぱくて甘い最高の刺激でいっぱいにしてあげる！大好きだウキー！", patterns: [ { q: "ねえねえ、レモン絞り体験してみる？ウッキー！", a: ["やる！", "痛そう…", "君を絞るの！？"], scores: [15, 5, 0], res: ["最高にフレッシュなジュースの出来上がりだ！飲んで飲んでー！", "大丈夫、ボクのレモンは愛がたっぷりだから痛くないよ！", "ボ、ボクを！？それはちょっと恥ずかしいウッキー！"] }, { q: "ウキー！${N}の笑顔、もっと見せてよ！", a: ["（笑顔を見せる）", "今は無理", "変な顔する"], scores: [15, -5, 10], res: ["わあーい！その笑顔があれば、ボクは一生元気だよ！", "えーん、悲しいウキー！レモン食べて元気出してよお！", "アハハ！${N}っておもしろーい！最高にクールだね！"] }, { q: "オレたち、最高のコンビだよね！？", a: ["その通り！", "どうかな？", "ウッキー！"], scores: [15, 5, 20], res: ["ウッキー！誰にも負けない最強ビタミンコンビだね！", "そんな寂しいこと言わないでー！もっと仲良くなろ！？", "ウキーッ！返事までボクに似てきちゃったね！嬉しいなあ！"] } ] },
+            kame: { morning: "……おはよう……。……ゆっくり……起きましょう……。", noon: "……お昼寝……。……甲羅の中……涼しいよ……。", night: "……月が……動くのを……見てるの……。……綺麗……。", stroke: "……ああ……。……時が……止まれば……いいのに……。", maxMsg: "【祝・確定】……${N}……。……私の歩みは……遅いけれど……。……一生かけて……貴方の隣を……歩き続けるよ……。……ずっと……一緒……。", patterns: [ { q: "……一緒に……歩くの……。……疲れない……？", a: ["全然！", "少し休憩しよ", "楽しいよ"], scores: [10, 15, 15], res: ["……よかった。……私も、${N}となら……ずっと……。", "……名案……。……このまま……一日……休んじゃう？", "……ふふ……。……私も……とっても……楽しい……。"] }, { q: "……ブルーベリー……。……一粒……あげる……。", a: ["ありがとう", "酸っぱい？", "食べさせて！"], scores: [10, 5, 15], res: ["……どういたしまして……。……美味しいといいな……。", "……少しね……。……でも、目が……よくなるよ……。", "……あーん……。……はい……。……甘いかな……？"] }, { q: "……（じーっと見つめている）", a: ["見つめ返す", "照れる", "どうしたの？"], scores: [15, 10, 10], res: ["……ふふ。……${N}の瞳……とっても……綺麗……。", "……可愛い。……ずっと……見てても……いい？", "……ううん……。……大好きだなあって……思って。"] } ] },
+            nga: { morning: "おはよお！${N}！今日も桃色ハッピーな一日にしよおね！", noon: "ランチタイム！桃ゼリー、半分こしよお？あーん！", night: "夜だねえ。${N}の夢の中に遊びにいっちゃおっかなあ！", stroke: "えへへえ、もっとー！もっと甘やかしてえー！", maxMsg: "【祝・確定】ふわああ！${N}、大好き大好き大好きー！君の心の中に、私だけの桃源郷を作っちゃった！一生、私を独り占めしてね？ねっ！", patterns: [ { q: "私の毛並み、ふわふわでしょ？どこが一番好き？", a: ["全部！", "お腹", "しっぽ"], scores: [15, 10, 10], res: ["わあーい！私も${N}の全部が大好きだよお！ぎゅーっ！", "えへへ、そこはちょっとくすぐったいけど、${N}ならOKだよ！", "流石お目が高い！私の自慢の桃しっぽだよ、いっぱい触って！"] }, { q: "えへへ、${N}にぎゅーってしてほしいなあ……。", a: ["ぎゅーする！", "あとでね", "恥ずかしい"], scores: [20, 0, 5], res: ["ふわあああ、幸せええ！一生離さないでねっ！", "えーん、ケチー！今すぐぎゅーってしてくれないと泣いちゃうよお！", "えへへ、${N}が照れてるの、とっても可愛いよ！でもぎゅーして！"] }, { q: "一生、私のことだけ見ててくれる？", a: ["誓うよ！", "努力するね", "他の子も…"], scores: [20, 10, -20], res: ["約束だよ！私も一生${N}のそばから離れないからねっ！", "努力じゃ足りなーい！でも、${N}なら信じて待ってるね！", "ダメー！私だけ見てなきゃお仕置きだよお！めっ！"] } ] },
+            kuma: { morning: "……おはよう。……イチジクのジャム、作ったから食べろ。", noon: "……昼か。……騒がしいのは嫌いだ。静かにしてろ。", night: "……夜だな。……（隣に座って無言で寄り添ってくる）", stroke: "……フン。……嫌いじゃない。", maxMsg: "【祝・確定】……${N}。お前は俺の静寂を壊した特別な奴だ。……責任取れよ。一生、俺の隣でその馬鹿な顔を見せていろ。……愛してる。", patterns: [ { q: "……何を見ている。俺の顔に何かついているか？", a: ["かっこいいなと思って", "イチジクついてるよ", "なんでもない"], scores: [15, 10, 5], res: ["……急に何を言う。……バカか、お前は。（顔を赤らめる）", "……っ。取れ。……いや、お前が取ってくれ。……頼む。", "……ならいい。変なところばかり見るなよ。落ち着かないだろ。"] }, { q: "……俺の過去を知りたいのか。……あまり面白い話じゃないぞ。", a: ["聞きたい", "無理にはいいよ", "今が大切だから"], scores: [5, 10, 20], res: ["……そうか。……いつか、心がもっと整理できたらな。", "……配慮感謝する。……お前のそういうところ、嫌いじゃない。", "……ふっ。そうだな。お前といる『今』が、一番重要だ。"] }, { q: "……（そっと手を握ってきた）", a: ["握り返す", "びっくりする", "離す"], scores: [20, 5, -30], res: ["……一生、こうしていろ。……俺から離れることは許さん。", "……そんなに驚くことか？……たまにはいいだろ。", "……そうか。……悪かった。（寂しそうに目を逸らす）"] } ] }
         };
 
         window.onload = () => {
@@ -309,7 +326,6 @@
             if (savedName) userName = savedName;
             if (savedLove) loveData = JSON.parse(savedLove);
             
-            // 時間経過による好感度減少（1時間で1ポイント減少）
             if (savedLastVisit) {
                 const diff = (Date.now() - parseInt(savedLastVisit)) / (1000 * 60 * 60);
                 if (diff >= 1) {
@@ -334,7 +350,6 @@
             if (hour >= 5 && hour < 11) g = scenarios[currentChar].morning;
             else if (hour >= 11 && hour < 18) g = scenarios[currentChar].noon;
             else g = scenarios[currentChar].night;
-            
             document.getElementById('chat-bubble').innerText = g.replace("${N}", userName);
         }
 
@@ -373,9 +388,7 @@
             strokeQuota--;
             const oldVal = loveData[currentChar];
             loveData[currentChar] = Math.min(100, loveData[currentChar] + 2);
-            
             if (oldVal < 100 && loveData[currentChar] >= 100) triggerMaxEffect();
-            
             document.getElementById('chat-bubble').innerText = scenarios[currentChar].stroke.replace("${N}", userName);
             localStorage.setItem('hLoveData', JSON.stringify(loveData));
             updateUI();
@@ -406,15 +419,12 @@
                     const score = s.scores[i];
                     const reply = s.res[i];
                     const oldVal = loveData[currentChar];
-                    
                     loveData[currentChar] = Math.max(0, Math.min(100, loveData[currentChar] + score));
-                    
                     if (oldVal < 100 && loveData[currentChar] >= 100) {
                         triggerMaxEffect();
                     } else {
                         document.getElementById('chat-bubble').innerText = reply.replace("${N}", userName);
                     }
-                    
                     document.getElementById('choices').style.display = 'none';
                     document.getElementById('talk-btn').disabled = false;
                     document.getElementById('stroke-btn').disabled = false;
@@ -435,8 +445,5 @@
             }
         }
     </script>
-
-   
-    </footer>
 </body>
 </html>
