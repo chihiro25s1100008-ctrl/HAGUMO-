@@ -7,70 +7,104 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ショップページ専用スタイル */
+        /* 共通ナビゲーション（他ページと完全一致） */
+        .nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: white; border-bottom: 2px solid var(--soft-pink);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-logo img { height: 35px; cursor: pointer; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-link { text-decoration: none; color: #888; font-weight: bold; font-size: 13px; }
+        .nav-link.active { color: var(--pink2); border-bottom: 2px solid var(--pink2); }
+
+        /* ショップページ専用スタイル（豪華版） */
         .shop-hero { 
             text-align: center; 
-            padding: 50px 20px; 
-            background: linear-gradient(135deg, #fff 0%, var(--soft-pink) 100%); 
-            border-radius: 0 0 50px 50px; 
+            padding: 80px 20px 60px; 
+            background: linear-gradient(135deg, #fff0f6 0%, #ffffff 100%); 
+            border-radius: 0 0 60px 60px; 
+            margin-bottom: 40px;
         }
-        .shop-hero h1 { color: var(--pink2); font-size: 28px; margin-bottom: 10px; }
-        .shop-hero p { color: #888; font-size: 14px; }
+        .shop-hero h1 { color: var(--pink2); font-size: 32px; margin-bottom: 15px; letter-spacing: 2px; }
+        .shop-hero p { color: #888; font-size: 15px; line-height: 1.8; }
 
         .product-list { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 20px; 
-            padding: 30px 15px 80px; 
-            max-width: 1200px; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 30px; 
+            padding: 0 20px 100px; 
+            max-width: 1100px; 
             margin: 0 auto; 
         }
 
         .price-card { 
             background: white; 
-            border-radius: 40px; 
-            padding: 30px 20px; 
+            border-radius: 45px; 
+            padding: 40px 25px; 
             text-align: center; 
-            border: 2px solid var(--soft-pink); 
-            transition: 0.3s;
+            border: 3px solid var(--soft-pink); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            box-shadow: 0 10px 25px rgba(255,192,203,0.2);
+            box-shadow: 0 15px 35px rgba(255,182,193,0.2);
+            overflow: hidden; /* キラキラエフェクト用 */
         }
-        
-        /* PCでのホバー演出 */
-        @media screen and (min-width: 768px) {
-            .price-card:hover { transform: translateY(-10px); border-color: var(--pink2); }
+
+        /* ホバー時の豪華な演出 */
+        .price-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--pink2);
+            box-shadow: 0 25px 50px rgba(255,105,180,0.3);
         }
+
+        /* キラキラした光の反射エフェクト */
+        .price-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: 0.6s;
+            pointer-events: none;
+        }
+        .price-card:hover::after { left: 100%; }
 
         .level-badge { 
             display: inline-block; 
-            padding: 6px 15px; 
-            border-radius: 20px; 
-            font-size: 10px; 
+            padding: 8px 20px; 
+            border-radius: 30px; 
+            font-size: 12px; 
             font-weight: bold; 
-            margin-bottom: 20px; 
-            letter-spacing: 0.5px;
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 0 rgba(0,0,0,0.05);
         }
-        .easy { background: #e0f9e0; color: #2d5a2d; }
+        .easy { background: #e8f9e8; color: #2d5a2d; }
         .normal { background: #fff4e0; color: #855d10; }
-        .hard { background: #f9d5e5; color: #991b1b; }
+        .hard { background: #fde8ef; color: #b91c1c; }
 
         .product-img {
-            width: 140px;
-            height: 140px;
+            width: 160px;
+            height: 160px;
             object-fit: contain;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 5px 15px rgba(255,192,203,0.3));
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(255,182,193,0.5));
+            transition: 0.3s;
         }
+        .price-card:hover .product-img { transform: scale(1.1) rotate(5deg); }
 
-        .price-card h3 { color: var(--pink2); font-size: 1.3rem; margin-bottom: 8px; }
+        .price-card h3 { color: var(--pink2); font-size: 1.5rem; margin-bottom: 12px; font-weight: bold; }
         
+        .included-items { font-size: 12px; color: #999; margin-bottom: 15px; }
+
         .hashtags { 
-            font-size: 12px; 
-            color: var(--pink2); 
-            opacity: 0.7;
-            margin-bottom: 20px; 
+            font-size: 13px; 
+            color: var(--sub-pink); 
+            margin-bottom: 30px; 
             font-weight: bold;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
 
         .buy-link { 
@@ -78,18 +112,20 @@
             background: var(--pink2); 
             color: white; 
             text-decoration: none; 
-            padding: 18px; 
+            padding: 20px; 
             border-radius: 100px; 
             font-weight: bold; 
-            font-size: 16px;
+            font-size: 18px;
             transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(255,105,180,0.3);
+            box-shadow: 0 8px 0 #d1478e;
+            position: relative;
         }
-        .buy-link:active { transform: scale(0.95); opacity: 0.9; }
+        .buy-link:hover { background: #f06292; }
+        .buy-link:active { transform: translateY(6px); box-shadow: 0 2px 0 #d1478e; }
 
         footer {
-            background: var(--soft-pink);
-            padding: 40px 20px;
+            background: #fff5f7;
+            padding: 60px 20px;
             text-align: center;
             border-top: 2px dashed var(--pink2);
         }
@@ -98,53 +134,61 @@
 <body>
 
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+        <div class="nav-logo">
+            <a href="./index.html">
+                <img src="./images/rogo.PNG" alt="HAGUMO" onerror="this.src='./rogo.PNG'">
+            </a>
+        </div>
         <div class="nav-links">
-            <a href="index.html" class="nav-link">HOME</a>
-            <a href="hagumo.html" class="nav-link">HAGUMO</a>
-            <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-            <a href="product.html" class="nav-link active">PRODUCT</a>
-            <a href="my.html" class="nav-link">MY HAGUMO</a>
+            <a href="./index.html" class="nav-link">HOME</a>
+            <a href="./world.html" class="nav-link">WORLD</a>
+            <a href="./hagumo.html" class="nav-link">HAGUMO</a>
+            <a href="./diagnosis.html" class="nav-link">DIAGNOSIS</a>
+            <a href="./product.html" class="nav-link active">PRODUCT</a>
+            <a href="./my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
 
     <section class="shop-hero">
         <h1>HAGUMO SHOP</h1>
-        <p>「美容の自給自足」を、<br>お気に入りの子と一緒に。</p>
+        <p>「美容の自給自足」を、<br>お気に入りの子と一緒に始めませんか？</p>
     </section>
 
     <div class="product-list">
         <div class="price-card">
             <span class="level-badge easy">✨ かんたんセット</span>
-            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">カブ / サツマイモ / バタフライピー</p>
+            <div class="included-items">カブ / サツマイモ / バタフライピー</div>
             <img src="./images/buta.PNG" class="product-img">
-            <h3>はじめてのHAGUMOセット</h3>
-            <div class="hashtags">#準備0 #失敗0 #萌え100</div>
+            <h3>はじめてのHAGUMO</h3>
+            <div class="hashtags"><span>#準備0</span> <span>#失敗0</span> <span>#癒やし100</span></div>
             <a href="order-entry.html" class="buy-link">この子をお迎えする 🌱</a>
         </div>
 
         <div class="price-card">
             <span class="level-badge normal">🌿 ふつうセット</span>
-            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">キュウリ / ミニトマト / カボチャ</p>
+            <div class="included-items">キュウリ / ミニトマト / カボチャ</div>
             <img src="./images/risu.PNG" class="product-img">
-            <h3>こだわり美肌菜園セット</h3>
-            <div class="hashtags">#推しと自分磨き #美容レシピ付</div>
+            <h3>こだわり美肌菜園</h3>
+            <div class="hashtags"><span>#自分磨き</span> <span>#慣れてきたら</span></div>
             <a href="order-expert.html" class="buy-link">この子をお迎えする 🐿️</a>
         </div>
 
         <div class="price-card">
             <span class="level-badge hard">💎 むずかしめセット</span>
-            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">レモン / ピーチ / イチジク / ブルーベリー</p>
+            <div class="included-items">レモン / ピーチ / イチジク / ブルーベリー</div>
             <img src="./images/kuma.PNG" class="product-img">
-            <h3>匠のハグモ極みセット</h3>
-            <div class="hashtags">#プロ仕様 #コンプリート必須</div>
+            <h3>匠のハグモ極み</h3>
+            <div class="hashtags"><span>#プロ仕様</span> <span>#果実の恵み</span></div>
             <a href="order-master.html" class="buy-link">この子をお迎えする ✨</a>
         </div>
     </div>
 
     <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 14px; margin-bottom: 5px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
-        <p style="font-size: 10px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p>
+        <p style="color: var(--pink2); font-weight: bold; font-size: 15px; margin-bottom: 10px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 11px; color: #999; line-height: 1.6;">
+            ※これは授業課題のプロトタイプです。<br>
+            実際の商品の販売・発送は行っておりません。
+        </p>
     </footer>
 
 </body>
