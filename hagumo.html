@@ -7,6 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
+        /* 共通ナビゲーション */
+        .nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: white; border-bottom: 2px solid var(--soft-pink);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-logo img { height: 35px; cursor: pointer; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-link { text-decoration: none; color: #888; font-weight: bold; font-size: 13px; }
+        .nav-link.active { color: var(--pink2); border-bottom: 2px solid var(--pink2); }
+
         .about-header {
             text-align: center;
             padding: 60px 20px;
@@ -117,19 +128,25 @@
 <body>
 
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'" style="cursor:pointer;">
+        <div class="nav-logo">
+            <a href="./index.html">
+                <img src="./images/rogo.PNG" alt="HAGUMO" onerror="this.src='./rogo.PNG'">
+            </a>
+        </div>
         <div class="nav-links">
-            <a href="index.html" class="nav-link">HOME</a>
-            <a href="about.html" class="nav-link active">ABOUT</a>
-            <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-            <a href="my.html" class="nav-link">MY HAGUMO</a>
+            <a href="./index.html" class="nav-link">HOME</a>
+            <a href="./world.html" class="nav-link">WORLD</a>
+            <a href="./hagumo.html" class="nav-link active">HAGUMO</a>
+            <a href="./diagnosis.html" class="nav-link">DIAGNOSIS</a>
+            <a href="./product.html" class="nav-link">PRODUCT</a>
+            <a href="./my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
 
     <header class="about-header">
         <h1 class="about-title">HAGUMO Characters</h1>
         <p class="about-desc">
-            野菜・果物・、動物たちが融合した<br>
+            野菜・果物・動物たちが融合した<br>
             10の仲間たち
         </p>
     </header>
