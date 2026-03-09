@@ -7,12 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* WORLDページ専用スタイル */
+        /* 共通ナビゲーション */
+        .nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: white; border-bottom: 2px solid var(--soft-pink);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-logo img { height: 35px; cursor: pointer; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-link { text-decoration: none; color: #888; font-weight: bold; font-size: 13px; }
+        .nav-link.active { color: var(--pink2); border-bottom: 2px solid var(--pink2); }
+
         .world-hero {
-            padding: 100px 20px 60px;
-            background: linear-gradient(rgba(255,255,255,0.7), rgba(255,245,247,0.8)), url('./images/world_bg.PNG'); /* 背景画像があれば */
-            background-size: cover;
-            background-position: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(to bottom, #fff0f6, #ffffff);
             text-align: center;
             border-radius: 0 0 60px 60px;
         }
@@ -52,63 +60,95 @@
             text-align: left;
         }
 
-        .world-img-section {
-            padding: 40px 20px;
-            text-align: center;
+        /* 画像の代わりのビジュアルボード */
+        .visual-placeholder {
+            width: 90%;
+            max-width: 600px;
+            height: 300px;
+            margin: 40px auto;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe0eb 100%);
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 3px dashed var(--soft-pink);
+            color: var(--pink2);
+            padding: 20px;
         }
 
-        .main-visual {
-            width: 100%;
-            max-width: 600px;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
+        .visual-placeholder h2 { font-size: 24px; margin-bottom: 10px; }
+        .visual-placeholder p { font-size: 14px; opacity: 0.8; }
 
         .story-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 40px 20px;
+            gap: 20px;
+            padding: 20px;
             max-width: 1000px;
             margin: 0 auto;
         }
 
         .story-card {
             padding: 30px;
-            background: var(--soft-pink);
+            background: white;
             border-radius: 35px;
-            border: 2px dashed var(--pink1);
+            border: 2px solid var(--soft-pink);
+            transition: 0.3s;
         }
+
+        .story-card:hover { transform: scale(1.02); background: #fffafb; }
 
         .story-card h3 {
             color: var(--pink2);
             margin-bottom: 15px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
+        .big-button {
+            display: inline-block;
+            background: var(--pink2);
+            color: white;
+            padding: 20px 45px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 8px 0 #d1478e;
+            transition: 0.2s;
+            margin-top: 40px;
+        }
+
+        .big-button:active { transform: translateY(6px); box-shadow: 0 2px 0 #d1478e; }
+
         footer {
-            background: var(--soft-pink);
+            background: #fff5f7;
             padding: 50px 20px;
             text-align: center;
-            border-top: 2px dashed var(--pink2);
+            margin-top: 80px;
         }
     </style>
 </head>
 <body>
 
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+        <div class="nav-logo">
+            <a href="./index.html">
+                <img src="./images/rogo.PNG" alt="HAGUMO" onerror="this.src='./rogo.PNG'">
+            </a>
+        </div>
         <div class="nav-links">
-            <a href="index.html" class="nav-link">HOME</a>
-            <a href="world.html" class="nav-link active">WORLD</a>
-            <a href="hagumo.html" class="nav-link">HAGUMO</a>
-            <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-            <a href="product.html" class="nav-link">PRODUCT</a>
-            <a href="my.html" class="nav-link">MY HAGUMO</a>
+            <a href="./index.html" class="nav-link">HOME</a>
+            <a href="./world.html" class="nav-link active">WORLD</a>
+            <a href="./hagumo.html" class="nav-link">HAGUMO</a>
+            <a href="./diagnosis.html" class="nav-link">DIAGNOSIS</a>
+            <a href="./product.html" class="nav-link">PRODUCT</a>
+            <a href="./my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
 
@@ -121,7 +161,7 @@
         <div class="concept-box reveal active">
             <span class="concept-title">CONCEPT</span>
             <p class="concept-text">
-                「きれいは、土から作れる。」<br><br>
+                「かわいく始める、美容の自給自足」<br><br>
                 HAGUMO（ハグモ）は、都会に住むあなたのための<br>
                 <b>「美容×農業×推し活」</b>がひとつになった新しい体験です。<br><br>
                 ただ育てるだけじゃない。お気に入りの「ハグモ」と一緒に過ごし、<br>
@@ -130,34 +170,34 @@
             </p>
         </div>
 
-        <section class="world-img-section reveal">
-            <img src="./images/world.PNG" class="main-visual" alt="HAGUMOの世界観">
-            <h2 style="color: var(--pink2); margin-top: 20px;">育てて、包まれる幸せ。</h2>
-        </section>
+        <div class="visual-placeholder reveal">
+            <h2>育てて、包まれる幸せ。</h2>
+            <p>Your Beauty, Grown with Love</p>
+        </div>
 
         <div class="story-grid">
             <div class="story-card reveal">
-                <h3>01. パートナーとの出会い</h3>
+                <h3><span>🌱</span> 01. パートナーとの出会い</h3>
                 <p style="font-size: 14px; color: #777;">あなたの肌悩みや性格から、ぴったりのHAGUMOが選ばれます。彼らはあなたの美容を支える大切なパートナーです。</p>
             </div>
             <div class="story-card reveal">
-                <h3>02. 絆を深める成長報告</h3>
+                <h3><span>📱</span> 02. 絆を深める成長報告</h3>
                 <p style="font-size: 14px; color: #777;">毎日の水やり、小さな芽吹き。その感動をアプリで報告すると、HAGUMOたちが喜び、あなたに限定のプレゼントを届けます。</p>
             </div>
             <div class="story-card reveal">
-                <h3>03. 魔法のセルフケア</h3>
+                <h3><span>✨</span> 03. 魔法のセルフケア</h3>
                 <p style="font-size: 14px; color: #777;">収穫した野菜は、一番栄養が高い状態。それを贅沢に使った手作りパックやジュースで、本来の美しさを引き出します。</p>
             </div>
         </div>
 
-        <div style="text-align: center; padding: 60px 20px 100px;">
-            <a href="hagumo.html" class="big-button" style="background: var(--pink2); color:white; padding: 20px 40px; border-radius: 100px; text-decoration:none; font-weight:bold;">HAGUMOたちに会いに行く 🐿️</a>
+        <div style="text-align: center; padding: 0 20px 100px;">
+            <a href="hagumo.html" class="big-button">HAGUMOたちに会いに行く 🐿️</a>
         </div>
     </div>
 
     <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 14px; margin-bottom: 8px;">🎀 HAGUMO project by 千葉9人形班 🎀</p>
-        <p style="font-size: 10px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p>
+        <p style="color: var(--pink2); font-weight: bold; font-size: 14px; margin-bottom: 8px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 10px; color: #888;">これは授業課題であり、実際の体験は提供していません。</p>
     </footer>
 
     <script>
