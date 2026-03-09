@@ -173,3 +173,34 @@ body {
   0% { transform: translate(1px, 1px) scale(1.1); }
   100% { transform: translate(-1px, -2px) scale(1.1); }
 }
+/* SNSシェアボタンのスタイル */
+.share-area {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.share-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    transition: 0.2s;
+}
+
+.share-btn img {
+    height: 18px;
+    margin-right: 8px;
+}
+
+.btn-x { background-color: #000; } /* Xは黒 */
+.btn-line { background-color: #06C755; } /* LINEは緑 */
+
+.share-btn:active { transform: scale(0.95); opacity: 0.8; }
