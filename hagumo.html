@@ -3,38 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAGUMO FRIENDS</title>
+    <title>HAGUMO | Characters List</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        .char-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
-        .char-card { background: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid var(--soft-pink); }
-        .char-img { width: 100px; height: 100px; object-fit: contain; }
-        .char-name { color: var(--pink2); font-weight: bold; font-size: 16px; margin: 5px 0; }
-        .beauty-info { background: var(--soft-pink); font-size: 11px; padding: 8px; border-radius: 10px; text-align: left; }
+        .about-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to bottom, #fff0f6, #ffffff);
+        }
+
+        .about-title {
+            font-size: 32px;
+            color: var(--pink2);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .about-desc {
+            font-size: 15px;
+            color: #777;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* キャラクターグリッド */
+        .chara-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+        }
+
+        .chara-card {
+            background: white;
+            border-radius: 40px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 4px solid var(--soft-pink);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chara-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 126, 185, 0.2);
+            border-color: var(--sub-pink);
+        }
+
+        .chara-card img {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.05));
+        }
+
+        .chara-tag {
+            display: inline-block;
+            background: var(--sub-pink);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 0 var(--pink1);
+        }
+
+        .chara-name {
+            font-size: 22px;
+            color: var(--pink2);
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .chara-info {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+
+        /* フッター付近の誘導 */
+        .bottom-cta {
+            text-align: center;
+            padding: 60px 20px;
+            background: #fff0f6;
+            border-radius: 50px 50px 0 0;
+        }
+
+        .puffy-btn {
+            display: inline-block;
+            background: var(--pink2);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 6px 0 #d1478e;
+            transition: 0.2s;
+        }
+
+        .puffy-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #d1478e;
+        }
     </style>
 </head>
 <body>
+
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'" style="cursor:pointer;">
         <div class="nav-links">
             <a href="index.html" class="nav-link">HOME</a>
-            <a href="world.html" class="nav-link">WORLD</a>
-            <a href="hagumo.html" class="nav-link active">HAGUMO</a>
+            <a href="about.html" class="nav-link active">ABOUT</a>
             <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-            <a href="product.html" class="nav-link">PRODUCT</a>
             <a href="my.html" class="nav-link">MY HAGUMO</a>
         </div>
     </nav>
-    <div class="container">
-        <h2 style="text-align:center; color: var(--pink2);">HAGUMO FRIENDS</h2>
-        <div class="char-grid">
-            <div class="char-card">
-                <img src="./images/buta.PNG" class="char-img">
-                <div class="char-name">かぶた</div>
-                <div class="beauty-info"><b>✨ 透明感アップ</b><br>消化を助けるアミラーゼが豊富。</div>
-            </div>
-            </div>
+
+    <header class="about-header">
+        <h1 class="about-title">HAGUMO Characters</h1>
+        <p class="about-desc">
+            野菜・果物・お花の美しさと、動物たちの可愛さが融合した<br>
+            「美農（ビノウ）」な10の仲間たちをご紹介します。
+        </p>
+    </header>
+
+    <div class="chara-grid">
+        <div class="chara-card">
+            <span class="chara-tag">バランス・調和</span>
+            <img src="./images/risu.PNG" alt="きゅうりす">
+            <h3 class="chara-name">きゅうりす</h3>
+            <p class="chara-info">心と体のリズムを整える癒やし系。あなたの日常に穏やかな調和をもたらします。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">情熱・リーダー</span>
+            <img src="./images/tora.PNG" alt="とまとら">
+            <h3 class="chara-name">とまとら</h3>
+            <p class="chara-info">真っ赤な情熱で道を切り拓くリーダー。勇気が欲しいとき、隣で背中を押してくれるはず。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">ひらめき・自由</span>
+            <img src="./images/saru.PNG" alt="れもんきー">
+            <h3 class="chara-name">れもんきー</h3>
+            <p class="chara-info">常識にとらわれない自由な発想の持ち主。退屈な毎日に鮮やかなひらめきを与えます。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">知性・分析</span>
+            <img src="./images/kame.PNG" alt="ぶるーべりくがめ">
+            <h3 class="chara-name">ぶるーべりくがめ</h3>
+            <p class="chara-info">膨大な知識を蓄えた物知りさん。冷静な分析で、あなたの悩みを論理的に解決へ導きます。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">優しさ・包容</span>
+            <img src="./images/buta.PNG" alt="かぶた">
+            <h3 class="chara-name">かぶた</h3>
+            <p class="chara-info">すべてを優しく包み込む「美農」界の癒やし王。頑張りすぎるあなたを、ぽかぽか温めます。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">機転・賢さ</span>
+            <img src="./images/jaku.PNG" alt="ばたふらいぴーこっく">
+            <h3 class="chara-name">ばたふらいぴーこっく</h3>
+            <p class="chara-info">華やかな見た目と鋭い機転を併せ持つ。どんな困難も優雅に、賢く乗り越える力を貸してくれます。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">努力・継続</span>
+            <img src="./images/imo.PNG" alt="さつまいもぐら">
+            <h3 class="chara-name">さつまいもぐら</h3>
+            <p class="chara-info">一歩一歩、地道な努力を惜しまない努力家。目標に向かってコツコツ頑張るあなたの最高の理解者。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">愛嬌・甘え上手</span>
+            <img src="./images/nga.PNG" alt="もももんが">
+            <h3 class="chara-name">もももんが</h3>
+            <p class="chara-info">誰もが放っておけない愛嬌の持ち主。甘え上手な仕草で、周囲をパッと明るい笑顔にします。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">静か・ミステリアス</span>
+            <img src="./images/kuma.PNG" alt="くろいちじくま">
+            <h3 class="chara-name">くろいちじくま</h3>
+            <p class="chara-info">静寂を愛するミステリアスな存在。言葉少なげですが、誰よりも深い愛情であなたを見守ります。</p>
+        </div>
+
+        <div class="chara-card">
+            <span class="chara-tag">明るい・ポジティブ</span>
+            <img src="./images/chabo.PNG" alt="かぼちゃぼ">
+            <h3 class="chara-name">かぼちゃぼ</h3>
+            <p class="chara-info">底抜けに明るいポジティブモンスター。一緒にいればどんな悩みも笑い飛ばせるはず！</p>
+        </div>
     </div>
+
+    <div class="bottom-cta">
+        <h2 style="color: var(--pink2); margin-bottom: 20px;">あなたにぴったりのパートナーは？</h2>
+        <a href="diagnosis.html" class="puffy-btn">パートナー診断をはじめる 🌱</a>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; color: #bbb; font-size: 12px; background: #fff;">
+        &copy; 2026 HAGUMO Project.
+    </footer>
+
 </body>
 </html>
