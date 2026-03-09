@@ -9,79 +9,101 @@
     <style>
         body { overflow-x: hidden; touch-action: manipulation; transition: background 0.2s; }
 
-        /* ナビゲーション修正：Aboutページと統一 */
+        /* 共通ナビゲーション */
         .nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px; background: white; border-bottom: 2px solid var(--soft-pink);
             position: sticky; top: 0; z-index: 1000;
         }
-        .nav-logo-img { height: 40px; cursor: pointer; }
+        .nav-logo img { height: 35px; }
         .nav-links { display: flex; gap: 15px; }
-        .nav-link { text-decoration: none; color: #888; font-weight: bold; font-size: 14px; }
-        .nav-link.active { color: var(--pink2); }
+        .nav-link { text-decoration: none; color: #888; font-weight: bold; font-size: 13px; }
+        .nav-link.active { color: var(--pink2); border-bottom: 2px solid var(--pink2); }
 
         .container { padding: 10px; margin-top: 10px; }
 
-        /* 設定ボタンエリア */
+        /* 設定バー */
         .settings-bar {
-            display: flex; justify-content: flex-end; gap: 10px;
+            display: flex; justify-content: flex-end; gap: 8px;
             max-width: 450px; margin: 0 auto 10px;
         }
         .mini-btn {
             background: #fff; border: 2px solid var(--sub-pink); color: var(--pink2);
             padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;
-            cursor: pointer; box-shadow: 0 3px 0 var(--soft-pink); transition: 0.1s;
+            cursor: pointer; box-shadow: 0 3px 0 var(--soft-pink);
         }
-        .mini-btn:active { transform: translateY(3px); box-shadow: 0 0 0 var(--soft-pink); }
-        .reset-btn { border-color: #ffb6c1; color: #ff7eb9; }
 
-        /* メインステージ */
+        /* パチンコ・激熱演出用スタイル */
         .stage { 
             background: white; border-radius: 40px; padding: 25px 15px; 
             box-shadow: 0 15px 40px rgba(255, 126, 185, 0.2); 
             margin: 0 auto; max-width: 450px; position: relative; 
             border: 4px solid var(--sub-pink); z-index: 5; text-align: center;
+            overflow: hidden; /* 虹色背景をはみ出させない */
         }
 
-        .speech-bubble { 
-            background: #fffafa; border: 3px solid var(--sub-pink); border-radius: 20px; 
-            padding: 15px; margin-bottom: 20px; min-height: 50px; display: flex; 
-            align-items: center; justify-content: center; font-weight: bold; color: #555; 
-            font-size: 14px; position: relative; box-shadow: 0 5px 0 var(--soft-pink);
+        /* 虹色後光（回転） */
+        .rainbow-aura {
+            display: none; position: absolute; top: 50%; left: 50%;
+            width: 600px; height: 600px; 
+            background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+            transform: translate(-50%, -50%); z-index: -1;
+            animation: rotateAura 2s linear infinite; opacity: 0.6; filter: blur(20px);
+        }
+        @keyframes rotateAura { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        /* 激しい震え */
+        .pachinko-shake { animation: shake 0.1s infinite; }
+        @keyframes shake {
+            0% { transform: translate(2px, 2px) scale(1.1); }
+            50% { transform: translate(-2px, -1px) scale(1.1); }
+            100% { transform: translate(1px, -2px) scale(1.1); }
         }
 
-        .my-img { width: 180px; height: 180px; object-fit: contain; transition: 0.3s; }
+        /* キャラクター画像 */
+        .my-img { width: 180px; height: 180px; object-fit: contain; position: relative; z-index: 10; transition: 0.3s; }
+        .max-aura { filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 25px #ff00de); }
+
+        /* フラッシュ */
+        #flash-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; z-index: 9999; }
+        .flash-anim { animation: flashEffect 0.5s ease-out; }
+        @keyframes flashEffect { 0% { opacity: 1; } 100% { opacity: 0; } }
 
         /* ゲージ */
-        .gauge-wrap { width: 90%; height: 20px; background: #eee; border-radius: 10px; margin: 15px auto 5px; overflow: hidden; border: 2px solid #fff; }
+        .gauge-wrap { width: 90%; height: 24px; background: #eee; border-radius: 12px; margin: 15px auto 5px; overflow: hidden; border: 3px solid #fff; }
         #love-bar { height: 100%; background: linear-gradient(90deg, #ffb6c1, #ff00de); transition: 0.3s; width: 0%; }
+        .rainbow-bar { background: linear-gradient(90deg, red, orange, yellow, green, blue, purple, red) !important; background-size: 200% !important; animation: rainbowMove 0.5s linear infinite; }
+        @keyframes rainbowMove { from { background-position: 0%; } to { background-position: 200%; } }
 
-        /* アクションボタン */
         .main-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 450px; margin: 25px auto; padding: 0 10px; }
         .puffy-btn { 
             background: white; border: none; color: var(--pink2); 
             padding: 15px 10px; border-radius: 30px; font-weight: bold; cursor: pointer; 
-            font-size: 15px; box-shadow: 0 6px 0 var(--pink1); transition: 0.1s; position: relative;
+            box-shadow: 0 6px 0 var(--pink1); transition: 0.1s; position: relative;
         }
         .puffy-btn:active { transform: translateY(6px); box-shadow: 0 0 0 var(--pink1); }
         .puffy-btn.talk { background: var(--pink2); color: white; box-shadow: 0 6px 0 #d1478e; }
 
         #choices { display: none; flex-direction: column; gap: 8px; margin-top: 15px; }
-
-        /* レインボー演出用 */
-        .rainbow-bar { background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet) !important; background-size: 200% !important; animation: moveBg 1s linear infinite; }
-        @keyframes moveBg { from { background-position: 0%; } to { background-position: 200%; } }
     </style>
 </head>
 <body>
 
+    <div id="flash-overlay"></div>
+
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+        <div class="nav-logo">
+            <a href="./index.html">
+                <img src="./images/rogo.PNG" alt="HAGUMO" onerror="this.src='./rogo.PNG'">
+            </a>
+        </div>
         <div class="nav-links">
-            <a href="index.html" class="nav-link">HOME</a>
-            <a href="about.html" class="nav-link">ABOUT</a>
-            <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-            <a href="my.html" class="nav-link active">MY HAGUMO</a>
+            <a href="./index.html" class="nav-link">HOME</a>
+            <a href="./world.html" class="nav-link">WORLD</a>
+            <a href="./hagumo.html" class="nav-link">HAGUMO</a>
+            <a href="./diagnosis.html" class="nav-link">DIAGNOSIS</a>
+            <a href="./product.html" class="nav-link">PRODUCT</a>
+            <a href="./my.html" class="nav-link active">MY HAGUMO</a>
         </div>
     </nav>
 
@@ -89,27 +111,28 @@
         <div id="has-data">
             <div class="settings-bar">
                 <button class="mini-btn" onclick="changeName()">✏️ なまえ設定</button>
-                <button class="mini-btn reset-btn" onclick="resetGame()">♻️ リセット</button>
+                <button class="mini-btn" onclick="resetGame()" style="border-color:#ffb6c1; color:#ff7eb9;">♻️ リセット</button>
             </div>
 
-            <div class="stage">
-                <div id="status-label" style="font-size: 11px; color: var(--pink2); margin-bottom: 5px; font-weight: bold;">---</div>
+            <div class="stage" id="stage">
+                <div id="rainbow-bg" class="rainbow-aura"></div>
+                <div id="status-label" style="font-size: 11px; color: var(--pink2); font-weight: bold; margin-bottom: 8px;">---</div>
                 <div class="speech-bubble" id="msg-text">...</div>
                 <img id="partner-img" class="my-img" src="">
                 <div class="gauge-wrap"><div id="love-bar"></div></div>
-                <div style="font-size: 13px; color: var(--pink2); font-weight: bold;">LOVE: <span id="love-num">0</span>%</div>
+                <div style="font-size: 14px; color: var(--pink2); font-weight: bold;">LOVE: <span id="love-num">0</span>%</div>
                 <div id="choices"></div>
             </div>
 
-            <div id="main-actions" class="main-actions">
+            <div class="main-actions">
                 <button class="puffy-btn" onclick="playAction()">👋 なでなでする</button>
                 <button class="puffy-btn talk" onclick="startTalk()">💬 おしゃべり</button>
             </div>
         </div>
 
         <div id="no-data" style="display:none; text-align:center; padding-top:100px;">
-            <p style="color:#888;">まだパートナーがいないみたい...</p>
-            <a href="diagnosis.html" class="puffy-btn" style="display:inline-block; text-decoration:none; margin-top:20px; padding: 15px 30px;">診断をうける 🌱</a>
+            <p style="color:#888;">パートナーがまだいないよ</p>
+            <a href="diagnosis.html" class="puffy-btn" style="display:inline-block; text-decoration:none; margin-top:20px; padding:15px 30px;">診断をうける 🌱</a>
         </div>
     </div>
 
@@ -117,20 +140,120 @@
     let love = 50;
     let partnerImg = "";
     let userName = localStorage.getItem('hagumoUserName') || "あなた";
+    let isMax = false;
 
-    // 10キャラのデータ設定
+   // 🌟 全10キャラ・性格別会話データベース（特盛版） 🌟
     const charaData = {
-        "risu.PNG": { name: "きゅうりす", key: "バランス・調和", talks: [{q:"調子はどう？", a:[{t:"いい感じ！", l:10, r:"それは良かった！リズムが整ってるね。"}, {t:"お疲れかも", l:5, r:"無理しないで。僕と一緒に深呼吸しよ。"}]}]},
-        "tora.PNG": { name: "とまとら", key: "情熱・リーダー", talks: [{q:"何か熱いことしたいぜ！", a:[{t:"冒険に行こう！", l:15, r:"最高だ！{name}、俺についてこい！"}]}]},
-        "saru.PNG": { name: "れもんきー", key: "ひらめき・自由", talks: [{q:"新しい遊び、見つけちゃった！", a:[{t:"教えて！", l:10, r:"ヒミツだよ〜！うそ、あとで教えてあげる！"}]}]},
-        "kame.PNG": { name: "ぶるーべりくがめ", key: "知性・分析", talks: [{q:"読書の時間にしましょうか。", a:[{t:"おすすめは？", l:10, r:"ハグモの歴史書なんてどうですか、{name}。"}]}]},
-        "buta.PNG": { name: "かぶた", key: "優しさ・包容", talks: [{q:"おなかすきましたぁ〜", a:[{t:"おやつ食べる？", l:15, r:"いいんですかぁ？{name}、大好きですぅ。"}]}]},
-        "jaku.PNG": { name: "ばたふらいぴーこっく", key: "機転・賢さ", talks: [{q:"私の美しさ、見惚れちゃう？", a:[{t:"きれい！", l:10, r:"ふふっ、{name}もなかなか見る目があるわね。"}]}]},
-        "imo.PNG": { name: "さつまいもぐら", key: "努力・継続", talks: [{q:"今日もコツコツ頑張ろう！", a:[{t:"おー！", l:10, r:"その意気だよ！{name}なら絶対できる！"}]}]},
-        "nga.PNG": { name: "もももんが", key: "愛嬌・甘え上手", talks: [{q:"ねぇねぇ、抱っこして〜！", a:[{t:"いいよ！", l:15, r:"わーい！{name}の腕、あったか〜い！"}]}]},
-        "kuma.PNG": { name: "くろいちじくま", key: "静か・ミステリアス", talks: [{q:"……。静かだな。", a:[{t:"落ち着くね", l:10, r:"……ああ。{name}といると、心が安らぐ。"}]}]},
-        "chabo.PNG": { name: "かぼちゃぼ", key: "明るい・ポジティブ", talks: [{q:"笑えばハッピーだよ！！", a:[{t:"ワハハ！", l:15, r:"最高！その笑顔が一番のパワーだね！"}]}]}
+        "risu.PNG": { 
+            name: "きゅうりす", key: "バランス・調和",
+            maxMsg: "【祝・完走】{name}！僕たち、宇宙一のバランスだよ！この調和は誰にも壊せないね！",
+            talks: [
+                {q:"深呼吸、一緒にしてみる？", a:[{t:"ス～ハ～", l:10, r:"完璧！リズムが整ったね。"}, {t:"息苦しい…", l:5, r:"焦らなくていいんだよ。ゆっくり整えよう。"}]},
+                {q:"最近、ちゃんと眠れてるかな？", a:[{t:"ぐっすり！", l:12, r:"それは良かった！{name}の笑顔が輝いてるもん。"}, {t:"あんまり…", l:8, r:"僕の尻尾を枕にしていいよ。おやすみ。"}]},
+                {q:"今日の気分を色に例えると？", a:[{t:"明るい色！", l:15, r:"素敵だね！その光を僕にも分けてほしいな。"}]}
+            ]
+        },
+        "tora.PNG": { 
+            name: "とまとら", key: "情熱・リーダー",
+            maxMsg: "【激熱・勝利】{name}！お前がNo.1だ！燃えるぜ！この熱さ、止まらねぇ！",
+            talks: [
+                {q:"何かデカいこと、成し遂げたくねぇか！", a:[{t:"やりたい！", l:15, r:"その返事だ！俺が先陣を切ってやるぜ！"}, {t:"のんびりしたい", l:5, r:"たまには休息も作戦のうちか。よし、寝るぞ！"}]},
+                {q:"俺の真っ赤なボディ、強そうだろう？", a:[{t:"最強！", l:12, r:"ガハハ！見る目があるじゃねぇか、{name}！"}]},
+                {q:"お前の夢、俺に聞かせてくれよ！", a:[{t:"ヒミツ！", l:10, r:"隠すなよ～！でも、全力で応援してやるからな！"}]}
+            ]
+        },
+        "saru.PNG": { 
+            name: "れもんきー", key: "ひらめき・自由",
+            maxMsg: "【確定・幸福】ウキキー！{name}といるとひらめき爆発！自由の向こう側へGOだ！",
+            talks: [
+                {q:"ねぇ、空ってレモン味だと思う？", a:[{t:"そうかも！", l:15, r:"だよね！今度ハシゴかけて舐めに行こうよ！"}, {t:"無味でしょ", l:5, r:"え～っ！{name}、想像力が足りないぞ～！"}]},
+                {q:"あっちに面白いもの見つけた！行く？", a:[{t:"行く行く！", l:12, r:"ウキッ！冒険の始まりだ～！"}]},
+                {q:"ウキキ！酸っぱい顔してみて！", a:[{t:"(>_<)", l:10, r:"最高！ひらめきが降りてきそうな顔だね！"}]}
+            ]
+        },
+        "kame.PNG": { 
+            name: "ぶるーべりくがめ", key: "知性・分析",
+            maxMsg: "【解析・完了】{name}。計算外の愛を感じます。この絆は論理を超えました。",
+            talks: [
+                {q:"知識を蓄えるのは良いことですよ。", a:[{t:"本を読もうかな", l:12, r:"素晴らしい。私の甲羅にある図書館を貸しましょう。"}, {t:"勉強は苦手…", l:8, r:"焦る必要はありません。一歩ずつ、私のように進めばいいのです。"}]},
+                {q:"効率的な休憩方法を知っていますか？", a:[{t:"教えて！", l:10, r:"私を見習って、10分間だけ目をつぶるのです…。"}]}
+            ]
+        },
+        "buta.PNG": { 
+            name: "かぶた", key: "優しさ・包容",
+            maxMsg: "【無限・包容】あぁぁ〜{name}、一生ぎゅーですぅ！もうどこへも行かせませんぅ！",
+            talks: [
+                {q:"ぎゅーっとしていいですかぁ？", a:[{t:"いいよぉ", l:15, r:"わぁ～い！{name}はとってもあったかいですねぇ。"}]},
+                {q:"おやつ、半分こしませんかぁ？", a:[{t:"食べる！", l:12, r:"あむあむ…一緒に食べるともっとおいしいですぅ。"}]},
+                {q:"悩みがあったら、僕の背中で寝てくださいねぇ。", a:[{t:"ありがとう", l:10, r:"ふふふ。{name}の味方ですからねぇ。"}]}
+            ]
+        },
+        "jaku.PNG": { 
+            name: "ばたふらいぴーこっく", key: "機転・賢さ",
+            maxMsg: "【華麗・大当】私の美しさは、あなたの愛のおかげね。至高の輝き、見せてあげる！",
+            talks: [
+                {q:"美しさは、内面から滲み出るものよ。", a:[{t:"意識する！", l:12, r:"その意気よ。{name}、あなたならもっと輝けるわ。"}, {t:"難しそう…", l:5, r:"あら、私が磨いてあげるから心配しないで。"}]},
+                {q:"ピンチをチャンスに変える方法、知りたい？", a:[{t:"知りたい！", l:15, r:"まずは深く呼吸して、優雅に微笑むの。やってみて？"}]}
+            ]
+        },
+        "imo.PNG": { 
+            name: "さつまいもぐら", key: "努力・継続",
+            maxMsg: "【結実・感謝】{name}。コツコツ頑張ってよかった！最高の収穫（きずな）だね！",
+            talks: [
+                {q:"昨日の自分より、少し進めたかな？", a:[{t:"進めた！", l:12, r:"えらい！その「少し」が、いつか大きな力になるよ。"}, {t:"立ち止まった", l:10, r:"休むのも継続のうちだよ。また明日から掘り進めよう！"}]},
+                {q:"土の中って、実はポカポカなんだよ。", a:[{t:"入ってみたい", l:15, r:"今度{name}の分も穴を掘っておくから、一緒に寝よう！"}]}
+            ]
+        },
+        "nga.PNG": { 
+            name: "もももんが", key: "愛嬌・甘え上手",
+            maxMsg: "【溺愛・確定】もも、{name}のこと絶対に離さないもん！世界で一番愛してるぅ！",
+            talks: [
+                {q:"もっとももを見て！なでて！", a:[{t:"よしよし", l:15, r:"えへへ、{name}の手、だ～い好き！"}]},
+                {q:"ねぇねぇ、ももって世界一かわいい？", a:[{t:"一番かわいい！", l:20, r:"やったー！もも、もっと可愛くなっちゃうもんね！"}, {t:"二番目かな", l:5, r:"えぇ～っ！一番はだれ！？ももが一番がいいのぉ！"}]}
+            ]
+        },
+        "kuma.PNG": { 
+            name: "くろいちじくま", key: "静寂・到達",
+            maxMsg: "【深淵・真実】……お前こそが、私の光だ。この静寂を、永遠に共に……。",
+            talks: [
+                {q:"……月がきれいだな。", a:[{t:"そうだね", l:12, r:"……ああ。お前と見る月は、いつもより明るい。"}, {t:"見えないよ", l:8, r:"……心の目で見ればいい。私はお前を見ている。"}]},
+                {q:"……私の正体、気になるか？", a:[{t:"気になる", l:10, r:"……時が来れば話そう。それまでは、隣にいろ。"}]}
+            ]
+        },
+        "chabo.PNG": { 
+            name: "かぼちゃぼ", key: "爆裂・ポジティブ",
+            maxMsg: "【ハッピー・極】笑顔全開！{name}は最高だね！ハッピーすぎて爆発しそうだよ！",
+            talks: [
+                {q:"イェーイ！元気100%！？", a:[{t:"100%！", l:15, r:"最高！その調子で世界を明るくしちゃおう！"}, {t:"50%くらい", l:10, r:"じゃあ残りの50%はボクが埋めてあげる！ワッハッハ！"}]},
+                {q:"楽しいこと、探しに行こうよ！", a:[{t:"レッツゴー！", l:12, r:"オッケー！ボクの後ろについてきて！"}]}
+            ]
+        }
     };
+
+    // startTalk関数内の修正（ランダムに選ぶようにする）
+    function startTalk() {
+        if (love >= 100) return;
+        const info = charaData[partnerImg] || charaData["risu.PNG"];
+        // 🌟 ここでランダムに会話を選択するように変更 🌟
+        const talk = info.talks[Math.floor(Math.random() * info.talks.length)];
+        const choiceBox = document.getElementById('choices');
+        document.getElementById('msg-text').innerText = formatMsg(talk.q);
+        choiceBox.innerHTML = '';
+        choiceBox.style.display = 'flex';
+        talk.a.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'puffy-btn';
+            btn.style.marginBottom = "5px";
+            btn.innerText = c.t;
+            btn.onclick = () => {
+                love = Math.min(100, love + c.l);
+                document.getElementById('msg-text').innerText = formatMsg(c.r);
+                choiceBox.style.display = 'none';
+                updateGauge();
+            };
+            choiceBox.appendChild(btn);
+        });
+    }
 
     function formatMsg(text) { return text.replace(/{name}/g, userName); }
 
@@ -144,32 +267,55 @@
         const data = JSON.parse(saved);
         partnerImg = data.img;
         love = data.love || 50;
-        const info = charaData[partnerImg] || charaData["risu.PNG"];
-
-        document.getElementById('partner-img').src = `./images/${partnerImg}`;
-        document.getElementById('status-label').innerText = `${info.name} | ${info.key}`;
-        document.getElementById('msg-text').innerText = formatMsg(`{name}、会いたかったよ！`);
-        updateGauge();
+        updateGauge(true);
     };
 
-    function updateGauge() {
+    function updateGauge(isInit = false) {
         love = Math.max(0, Math.min(100, love));
         const bar = document.getElementById('love-bar');
+        const img = document.getElementById('partner-img');
+        const rainbow = document.getElementById('rainbow-bg');
+        const flash = document.getElementById('flash-overlay');
+        const info = charaData[partnerImg] || charaData["risu.PNG"];
+
         document.getElementById('love-num').innerText = Math.floor(love);
         bar.style.width = love + '%';
-        if(love >= 100) bar.classList.add('rainbow-bar');
-        else bar.classList.remove('rainbow-bar');
-        
+        document.getElementById('partner-img').src = `./images/${partnerImg}`;
+        document.getElementById('status-label').innerText = `${info.name} | ${info.key}`;
+
+        if (love >= 100) {
+            if (!isMax) {
+                // 100%達成時のパチンコ風フラッシュ演出
+                if (!isInit) {
+                    flash.classList.add('flash-anim');
+                    setTimeout(() => flash.classList.remove('flash-anim'), 500);
+                    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 300]);
+                }
+                isMax = true;
+            }
+            bar.classList.add('rainbow-bar');
+            img.classList.add('pachinko-shake', 'max-aura');
+            rainbow.style.display = 'block';
+            document.getElementById('msg-text').innerText = formatMsg(info.maxMsg);
+        } else {
+            isMax = false;
+            bar.classList.remove('rainbow-bar');
+            img.classList.remove('pachinko-shake', 'max-aura');
+            rainbow.style.display = 'none';
+        }
         localStorage.setItem('myHagumo', JSON.stringify({ img: partnerImg, love: love }));
     }
 
     function playAction() {
-        love = Math.min(100, love + 3);
-        document.getElementById('msg-text').innerText = formatMsg(`えへへ、{name}になでなでされた！`);
+        if (love >= 100) return;
+        love = Math.min(100, love + 5);
+        document.getElementById('msg-text').innerText = formatMsg(`えへへ、{name}になでられて嬉しいな！`);
+        if (navigator.vibrate) navigator.vibrate(20);
         updateGauge();
     }
 
     function startTalk() {
+        if (love >= 100) return;
         const info = charaData[partnerImg] || charaData["risu.PNG"];
         const talk = info.talks[0];
         const choiceBox = document.getElementById('choices');
@@ -179,6 +325,7 @@
         talk.a.forEach(c => {
             const btn = document.createElement('button');
             btn.className = 'puffy-btn';
+            btn.style.marginBottom = "5px";
             btn.innerText = c.t;
             btn.onclick = () => {
                 love = Math.min(100, love + c.l);
@@ -200,202 +347,7 @@
     }
 
     function resetGame() {
-        if (confirm("パートナーとの思い出をリセットして、診断からやり直しますか？")) {
-            localStorage.removeItem('myHagumo');
-            location.href = 'diagnosis.html';
-        }
-    }
-</script>
-    <script>
-    let love = 50;
-    let partnerImg = "";
-    let userName = localStorage.getItem('hagumoUserName') || "あなた";
-
-    // 🌟 全10キャラ・性格別会話データベース 🌟
-    const charaData = {
-        "risu.PNG": { 
-            name: "きゅうりす", key: "バランス・調和",
-            maxMsg: "【調和100%】{name}の隣は、世界で一番リズムが整う場所だよ。",
-            talks: [
-                {q:"深呼吸、一緒にしてみる？", a:[{t:"ス～ハ～", l:10, r:"いい感じ！心が澄み渡っていくね。"}, {t:"息苦しい…", l:5, r:"焦らなくていいんだよ。ゆっくり整えよう。"}]},
-                {q:"最近、ちゃんと眠れてるかな？", a:[{t:"ぐっすり！", l:10, r:"それは良かった！{name}の笑顔が輝いてるもん。"}, {t:"あんまり…", l:8, r:"僕の尻尾を枕にしていいよ。おやすみ。"}]},
-                {q:"今日の気分を色に例えると？", a:[{t:"明るい色！", l:12, r:"素敵だね！その光を僕にも分けてほしいな。"}]}
-            ]
-        },
-        "tora.PNG": { 
-            name: "とまとら", key: "情熱・リーダー",
-            maxMsg: "【情熱100%】{name}！お前こそが俺の最高の相棒だ！一生ついてこい！",
-            talks: [
-                {q:"何かデカいこと、成し遂げたくねぇか！", a:[{t:"やりたい！", l:15, r:"その返事だ！俺が先陣を切ってやるぜ！"}, {t:"のんびりしたい", l:5, r:"たまには休息も作戦のうちか。よし、寝るぞ！"}]},
-                {q:"俺の真っ赤なボディ、強そうだろう？", a:[{t:"最強！", l:12, r:"ガハハ！見る目があるじゃねぇか、{name}！"}]},
-                {q:"お前の夢、俺に聞かせてくれよ！", a:[{t:"ヒミツ！", l:8, r:"隠すなよ～！でも、全力で応援してやるからな！"}]}
-            ]
-        },
-        "saru.PNG": { 
-            name: "れもんきー", key: "ひらめき・自由",
-            maxMsg: "【自由100%】{name}！常識なんてレモンみたいに絞っちゃおう！最高に自由だ！",
-            talks: [
-                {q:"ねぇ、空ってレモン味だと思う？", a:[{t:"そうかも！", l:15, r:"だよね！今度ハシゴかけて舐めに行こうよ！"}, {t:"無味でしょ", l:5, r:"え～っ！{name}、想像力が足りないぞ～！"}]},
-                {q:"あっちに面白いもの見つけた！行く？", a:[{t:"行く行く！", l:12, r:"ウキッ！冒険の始まりだ～！"}]},
-                {q:"ウキキ！酸っぱい顔してみて！", a:[{t:"(>_<)", l:10, r:"最高！ひらめきが降りてきそうな顔だね！"}]}
-            ]
-        },
-        "kame.PNG": { 
-            name: "ぶるーべりくがめ", key: "知性・分析",
-            maxMsg: "【知性100%】解析不能なほどの絆を感じます。{name}、あなたは私の特別です。",
-            talks: [
-                {q:"知識を蓄えるのは良いことですよ。", a:[{t:"本を読もうかな", l:12, r:"素晴らしい。私の甲羅にある図書館を貸しましょう。"}, {t:"勉強は苦手…", l:8, r:"焦る必要はありません。一歩ずつ、私のように進めばいいのです。"}]},
-                {q:"効率的な休憩方法を知っていますか？", a:[{t:"教えて！", l:10, r:"私を見習って、10分間だけ目をつぶるのです…。"}]}
-            ]
-        },
-        "buta.PNG": { 
-            name: "かぶた", key: "優しさ・包容",
-            maxMsg: "【包容100%】もう離しませんよぉ…。{name}のことは僕が一生守りますぅ。",
-            talks: [
-                {q:"ぎゅーっとしていいですかぁ？", a:[{t:"いいよぉ", l:15, r:"わぁ～い！{name}はとってもあったかいですねぇ。"}]},
-                {q:"おやつ、半分こしませんかぁ？", a:[{t:"食べる！", l:12, r:"あむあむ…一緒に食べるともっとおいしいですぅ。"}]},
-                {q:"悩みがあったら、僕の背中で寝てくださいねぇ。", a:[{t:"ありがとう", l:10, r:"ふふふ。{name}の味方ですからねぇ。"}]}
-            ]
-        },
-        "jaku.PNG": { 
-            name: "ばたふらいぴーこっく", key: "機転・賢さ",
-            maxMsg: "【華麗100%】私の美しさに並び立つのは、世界であなた一人だけだわ。",
-            talks: [
-                {q:"美しさは、内面から滲み出るものよ。", a:[{t:"意識する！", l:12, r:"その意気よ。{name}、あなたならもっと輝けるわ。"}, {t:"難しそう…", l:5, r:"あら、私が磨いてあげるから心配しないで。"}]},
-                {q:"ピンチをチャンスに変える方法、知りたい？", a:[{t:"知りたい！", l:15, r:"まずは深く呼吸して、優雅に微笑むの。やってみて？"}]}
-            ]
-        },
-        "imo.PNG": { 
-            name: "さつまいもぐら", key: "努力・継続",
-            maxMsg: "【結実100%】一歩一歩の積み重ねが、この最高の絆を作ったんだね！",
-            talks: [
-                {q:"昨日の自分より、少し進めたかな？", a:[{t:"進めた！", l:12, r:"えらい！その「少し」が、いつか大きな力になるよ。"}, {t:"立ち止まった", l:10, r:"休むのも継続のうちだよ。また明日から掘り進めよう！"}]},
-                {q:"土の中って、実はポカポカなんだよ。", a:[{t:"入ってみたい", l:15, r:"今度{name}の分も穴を掘っておくから、一緒に寝よう！"}]}
-            ]
-        },
-        "nga.PNG": { 
-            name: "もももんが", key: "愛嬌・甘え上手",
-            maxMsg: "【溺愛100%】{name}～！もも、{name}がいないとダメになっちゃうよぉ！",
-            talks: [
-                {q:"もっとももを見て！なでて！", a:[{t:"よしよし", l:15, r:"えへへ、{name}の手、だ～い好き！"}]},
-                {q:"ねぇねぇ、ももって世界一かわいい？", a:[{t:"一番かわいい！", l:20, r:"やったー！もも、もっと可愛くなっちゃうもんね！"}, {t:"二番目かな", l:5, r:"えぇ～っ！一番はだれ！？ももが一番がいいのぉ！"}]}
-            ]
-        },
-        "kuma.PNG": { 
-            name: "くろいちじくま", key: "静か・ミステリアス",
-            maxMsg: "【深淵100%】……言葉は不要だ。お前の心は、痛いほど伝わっている。",
-            talks: [
-                {q:"……月がきれいだな。", a:[{t:"そうだね", l:12, r:"……ああ。お前と見る月は、いつもより明るい。"}, {t:"見えないよ", l:8, r:"……心の目で見ればいい。私はお前を見ている。"}]},
-                {q:"……私の正体、気になるか？", a:[{t:"気になる", l:10, r:"……時が来れば話そう。それまでは、隣にいろ。"}]}
-            ]
-        },
-        "chabo.PNG": { 
-            name: "かぼちゃぼ", key: "明るい・ポジティブ",
-            maxMsg: "【爆発100%】ハッピー全開！{name}と一緒なら、宇宙まで飛んでいけそうだよ！",
-            talks: [
-                {q:"イェーイ！元気100%！？", a:[{t:"100%！", l:15, r:"最高！その調子で世界を明るくしちゃおう！"}, {t:"50%くらい", l:10, r:"じゃあ残りの50%はボクが埋めてあげる！ワッハッハ！"}]},
-                {q:"楽しいこと、探しに行こうよ！", a:[{t:"レッツゴー！", l:12, r:"オッケー！ボクの後ろについてきて！"}]}
-            ]
-        }
-    };
-
-    function formatMsg(text) { return text.replace(/{name}/g, userName); }
-
-    window.onload = () => {
-        const saved = localStorage.getItem('myHagumo');
-        if (!saved) {
-            document.getElementById('has-data').style.display = 'none';
-            document.getElementById('no-data').style.display = 'block';
-            return;
-        }
-        const data = JSON.parse(saved);
-        partnerImg = data.img;
-        love = data.love || 50;
-        const info = charaData[partnerImg] || charaData["risu.PNG"];
-
-        document.getElementById('partner-img').src = `./images/${partnerImg}`;
-        document.getElementById('status-label').innerText = `${info.name} | ${info.key}`;
-        
-        // 好感度に応じて初期メッセージを変える
-        if (love >= 100) {
-            document.getElementById('msg-text').innerText = formatMsg(info.maxMsg);
-        } else {
-            document.getElementById('msg-text').innerText = formatMsg(`{name}、おかえり！待ってたよ。`);
-        }
-        updateGauge();
-    };
-
-    function updateGauge() {
-        love = Math.max(0, Math.min(100, love));
-        const bar = document.getElementById('love-bar');
-        const img = document.getElementById('partner-img');
-        document.getElementById('love-num').innerText = Math.floor(love);
-        bar.style.width = love + '%';
-        
-        if(love >= 100) {
-            bar.classList.add('rainbow-bar');
-            img.style.transform = "scale(1.1)";
-            img.style.filter = "drop-shadow(0 0 10px #ff00de)";
-        } else {
-            bar.classList.remove('rainbow-bar');
-            img.style.transform = "scale(1.0)";
-            img.style.filter = "none";
-        }
-        
-        localStorage.setItem('myHagumo', JSON.stringify({ img: partnerImg, love: love }));
-    }
-
-    function playAction() {
-        if (love >= 100) {
-            document.getElementById('msg-text').innerText = formatMsg(`{name}の手、あったかくて大好きだよ…！`);
-            return;
-        }
-        love = Math.min(100, love + 2);
-        const feels = ["えへへ、気持ちいいな！", "もっともっと～！", "なでなで最高！", "元気がでてきたよ！"];
-        document.getElementById('msg-text').innerText = formatMsg(feels[Math.floor(Math.random()*feels.length)]);
-        updateGauge();
-    }
-
-    function startTalk() {
-        const info = charaData[partnerImg] || charaData["risu.PNG"];
-        if (love >= 100) {
-            document.getElementById('msg-text').innerText = formatMsg(info.maxMsg);
-            return;
-        }
-        
-        // ランダムに会話を選択
-        const talk = info.talks[Math.floor(Math.random() * info.talks.length)];
-        const choiceBox = document.getElementById('choices');
-        document.getElementById('msg-text').innerText = formatMsg(talk.q);
-        choiceBox.innerHTML = '';
-        choiceBox.style.display = 'flex';
-        
-        talk.a.forEach(c => {
-            const btn = document.createElement('button');
-            btn.className = 'puffy-btn';
-            btn.style.marginBottom = "5px";
-            btn.innerText = c.t;
-            btn.onclick = () => {
-                love = Math.min(100, love + c.l);
-                document.getElementById('msg-text').innerText = formatMsg(c.r);
-                choiceBox.style.display = 'none';
-                updateGauge();
-            };
-            choiceBox.appendChild(btn);
-        });
-    }
-
-    function changeName() {
-        const n = prompt("なんて呼ばれたい？", userName);
-        if (n && n.trim() !== "") {
-            userName = n.trim();
-            localStorage.setItem('hagumoUserName', userName);
-            document.getElementById('msg-text').innerText = formatMsg(`これからは「{name}」って呼ぶね！`);
-        }
-    }
-
-    function resetGame() {
-        if (confirm("パートナーとの思い出をリセットして、診断からやり直しますか？")) {
+        if (confirm("思い出をリセットして診断に戻る？")) {
             localStorage.removeItem('myHagumo');
             location.href = 'diagnosis.html';
         }
