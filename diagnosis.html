@@ -66,7 +66,6 @@
             gap: 15px;
         }
 
-        /* ぷっくり3Dボタンを完全復活 */
         .puffy-ans-btn {
             display: block;
             width: 100%;
@@ -114,6 +113,29 @@
             margin-bottom: 30px; background: #fff5f7; padding: 20px; 
             border-radius: 20px; white-space: pre-wrap;
         }
+
+        /* 🌟 SNSシェアボタンのスタイル追加 */
+        .share-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .share-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: 0.2s;
+        }
+        .btn-x { background-color: #000; }
+        .btn-line { background-color: #06C755; }
+        .share-btn:active { transform: scale(0.95); opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -152,6 +174,11 @@
                 <div class="result-img-box"><img src="" class="result-img" id="res-img"></div>
                 <div class="result-name" id="res-name"></div>
                 <div class="result-desc" id="res-desc"></div>
+                
+                <div class="share-area">
+                    <a href="#" id="share-x" target="_blank" class="share-btn btn-x">Xでシェア</a>
+                    <a href="#" id="share-line" target="_blank" class="share-btn btn-line">LINEで送る</a>
+                </div>
                 
                 <a href="my.html" class="puffy-ans-btn" style="background:var(--pink2); color:white; border-color:var(--pink2); box-shadow: 0 6px 0 #d1478e, 0 10px 15px rgba(255,105,180,0.3); margin-bottom:15px;">この子をお迎えする 🌱</a>
                 <a href="diagnosis.html" style="color:#ccc; font-size:12px; text-decoration:none; display:inline-block; margin-top:10px;">もう一度診断する</a>
@@ -232,7 +259,7 @@
             }
             const bestChar = characters.find(c => c.id === bestId) || characters[0];
 
-            // 🌟 データの抜き出しと保存
+            // 🌟 データの保存
             const fileName = bestChar.img.split('/').pop();
             localStorage.setItem('myHagumo', JSON.stringify({ img: fileName, love: 50 }));
 
@@ -240,6 +267,13 @@
             document.getElementById('res-img').src = bestChar.img;
             document.getElementById('res-name').innerText = bestChar.name;
             document.getElementById('res-desc').innerText = bestChar.desc;
+
+            // 🌟 SNSシェアリンクの作成
+            const shareText = `私のパートナーは「${bestChar.name}」でした！\n農業×美容の不思議な生き物と出会える「HAGUMO」であなたも診断してみてね 🌱\n#HAGUMO #文化祭`;
+            const shareUrl = window.location.href;
+
+            document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+            document.getElementById('share-line').href = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}`;
         }
 
         init();
