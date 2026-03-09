@@ -5,137 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HAGUMO | Characters List</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
-        /* 共通ナビゲーション */
-        .nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; background: white; border-bottom: 2px solid var(--soft-pink);
-            position: sticky; top: 0; z-index: 1000;
-        }
-        .nav-logo img { height: 35px; cursor: pointer; }
+        :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: #fff; margin: 0; padding-top: 80px; color: #555; }
+
+        /* --- 共通ナビゲーション --- */
+        .nav { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: white; z-index: 5000; border-bottom: 2px solid #fff0f6; display: flex; align-items: center; }
+        .nav-content { width: 100%; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; }
+        .nav-logo-img { height: 35px; cursor: pointer; flex-shrink: 0; }
         .nav-links { display: flex; gap: 15px; }
-        .nav-link { text-decoration: none; color: #888; font-weight: bold; font-size: 13px; }
-        .nav-link.active { color: var(--pink2); border-bottom: 2px solid var(--pink2); }
+        .nav-link { color: #888; text-decoration: none; font-size: 13px; font-weight: bold; padding: 5px 2px; position: relative; transition: 0.3s; white-space: nowrap; }
+        .nav-link:hover, .nav-link.active { color: var(--main-pink); }
+        .nav-link.active::after { content: ""; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: var(--main-pink); }
 
-        .about-header {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(to bottom, #fff0f6, #ffffff);
-        }
-
-        .about-title {
-            font-size: 32px;
-            color: var(--pink2);
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-        }
-
-        .about-desc {
-            font-size: 15px;
-            color: #777;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
+        .about-header { text-align: center; padding: 60px 20px; background: linear-gradient(to bottom, #fff0f6, #ffffff); border-radius: 0 0 50px 50px; }
+        .about-title { font-size: 32px; color: var(--pink2); margin-bottom: 15px; letter-spacing: 2px; }
+        .about-desc { font-size: 15px; color: #888; max-width: 600px; margin: 0 auto; line-height: 1.8; }
 
         /* キャラクターグリッド */
         .chara-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto 80px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; padding: 40px 20px; max-width: 1100px; margin: 0 auto 80px;
         }
 
         .chara-card {
-            background: white;
-            border-radius: 40px;
-            padding: 30px 20px;
-            text-align: center;
-            border: 4px solid var(--soft-pink);
-            transition: all 0.3s ease;
-            position: relative;
+            background: white; border-radius: 40px; padding: 35px 20px; text-align: center;
+            border: 3px solid var(--soft-pink); transition: 0.3s ease; position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
         }
+        .chara-card:hover { transform: translateY(-10px); border-color: var(--pink1); box-shadow: 0 15px 30px rgba(255, 126, 185, 0.15); }
 
-        .chara-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(255, 126, 185, 0.2);
-            border-color: var(--sub-pink);
-        }
-
-        .chara-card img {
-            width: 160px;
-            height: 160px;
-            object-fit: contain;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.05));
-        }
+        .chara-card img { width: 160px; height: 160px; object-fit: contain; margin-bottom: 20px; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.05)); }
 
         .chara-tag {
-            display: inline-block;
-            background: var(--sub-pink);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 0 var(--pink1);
+            display: inline-block; background: var(--pink1); color: white;
+            padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;
+            margin-bottom: 15px; box-shadow: 0 3px 0 var(--main-pink);
         }
 
-        .chara-name {
-            font-size: 22px;
-            color: var(--pink2);
-            margin-bottom: 12px;
-            font-weight: bold;
-        }
+        .chara-name { font-size: 22px; color: var(--pink2); margin-bottom: 12px; font-weight: bold; }
+        .chara-info { font-size: 14px; color: #777; line-height: 1.6; padding: 0 10px; }
 
-        .chara-info {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-            padding: 0 10px;
-        }
-
-        /* フッター付近の誘導 */
-        .bottom-cta {
-            text-align: center;
-            padding: 60px 20px;
-            background: #fff0f6;
-            border-radius: 50px 50px 0 0;
-        }
-
+        /* フッターCTA */
+        .bottom-cta { text-align: center; padding: 80px 20px; background: var(--soft-pink); border-radius: 60px 60px 0 0; }
         .puffy-btn {
-            display: inline-block;
-            background: var(--pink2);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 6px 0 #d1478e;
-            transition: 0.2s;
+            display: inline-block; background: var(--main-pink); color: white;
+            padding: 18px 50px; border-radius: 40px; text-decoration: none;
+            font-weight: bold; box-shadow: 0 6px 0 #e667a3; transition: 0.2s;
         }
-
-        .puffy-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 0 0 #d1478e;
-        }
+        .puffy-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #e667a3; }
     </style>
 </head>
 <body>
 
     <nav class="nav">
-        <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
-        <div class="nav-links">
-            <a href="index.html" class="nav-link active">HOME</a>
-            <a href="world.html" class="nav-link">WORLD</a>
-            <a href="hagumo.html" class="nav-link">HAGUMO</a>
-            <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-            <a href="product.html" class="nav-link">PRODUCT</a>
-            <a href="my.html" class="nav-link">MY HAGUMO</a>
+        <div class="nav-content">
+            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">HOME</a>
+                <a href="world.html" class="nav-link">WORLD</a>
+                <a href="hagumo.html" class="nav-link active">HAGUMO</a>
+                <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
+                <a href="product.html" class="nav-link">PRODUCT</a>
+                <a href="my.html" class="nav-link">MY HAGUMO</a>
+            </div>
         </div>
     </nav>
 
@@ -143,7 +76,7 @@
         <h1 class="about-title">HAGUMO Characters</h1>
         <p class="about-desc">
             野菜・果物・動物たちが融合した<br>
-            10の仲間たち
+            「美農」の世界を彩る10の仲間たち
         </p>
     </header>
 
@@ -220,11 +153,11 @@
     </div>
 
     <div class="bottom-cta">
-        <h2 style="color: var(--pink2); margin-bottom: 20px;">あなたにぴったりのパートナーは？</h2>
+        <h2 style="color: var(--pink2); margin-bottom: 30px;">あなたにぴったりのパートナーは？</h2>
         <a href="diagnosis.html" class="puffy-btn">パートナー診断をはじめる 🌱</a>
     </div>
 
-    <footer style="text-align: center; padding: 40px; color: #bbb; font-size: 12px; background: #fff;">
+    <footer style="text-align: center; padding: 40px; color: #ccc; font-size: 11px; background: white; border-top: 1px solid #f0f0f0;">
         &copy; 2026 HAGUMO Project.
     </footer>
 
