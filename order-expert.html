@@ -8,21 +8,42 @@
     <style>
         :root { --main-pink: #ff7eb9; --expert-orange: #fff4e0; }
         body { font-family: 'Zen Maru Gothic', sans-serif; background: #fffafb; margin: 0; padding-top: 80px; }
-        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 10px 0; z-index: 1000; border-bottom: 1px solid #f0f0f0; }
-        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 30px; }
-        .nav-logo-img { height: 30px; }
-        .nav-links a { color: #555; text-decoration: none; font-size: 13px; font-weight: bold; margin: 0 10px; }
+        
+        /* ナビゲーション統一 */
+        .navbar { position: fixed; top: 0; width: 100%; background: white; padding: 15px 0; z-index: 1000; border-bottom: 2px solid #fff0f6; }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .nav-logo-img { height: 35px; cursor: pointer; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 13px; font-weight: bold; margin-left: 15px; }
+        .nav-links a.active { color: var(--main-pink); border-bottom: 2px solid var(--main-pink); }
+
         .order-hero { background: linear-gradient(135deg, #fff 0%, var(--expert-orange) 100%); padding: 50px 20px; text-align: center; }
         .container { max-width: 1000px; margin: 20px auto 100px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .char-tag { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 12px; background: #fff4e0; color:#855d10; margin-bottom: 10px; }
+        
+        /* サムネイルスタイル */
+        .thumb-img { width: 70px; height: 70px; object-fit: contain; cursor: pointer; transition: 0.3s; border: 2px solid transparent; border-radius: 15px; padding: 5px; background: #fdfdfd; opacity: 0.6; }
+        .thumb-img:hover { transform: scale(1.1); background: #fffaf0; }
+        .thumb-img.active { border-color: #855d10; opacity: 1 !important; background: #fffaf0; }
+
+        .char-tag { display: inline-block; padding: 4px 12px; border-radius: 10px; font-size: 12px; background: #fff4e0; color:#855d10; margin-bottom: 10px; font-weight: bold; }
         .reward-box { background: #fffaf0; padding: 25px; border-radius: 25px; border: 2px solid #ffdaeb; margin: 20px 0; }
-        .btn-order { background: linear-gradient(90deg, #ff7eb9, #ff9a9e); color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 10px 20px rgba(255,126,185,0.3); }
+        .btn-order { background: linear-gradient(90deg, #ff7eb9, #ff9a9e); color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 10px 20px rgba(255,126,185,0.3); transition: 0.3s; }
+        .btn-order:active { transform: translateY(5px); box-shadow: none; }
         .footer-notice { background: #fff0f5; padding: 40px; text-align: center; border-top: 2px dashed var(--main-pink); }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-content"><img src="./images/rogo.PNG" class="nav-logo-img"><div class="nav-links"><a href="index.html">HOME</a><a href="world.html">WORLD</a><a href="hagumo.html">HAGUMO</a><a href="diagnosis.html">DIAGNOSIS</a><a href="product.html" class="active">PRODUCT</a><a href="my.html">MY HAGUMO</a></div></div>
+        <div class="nav-content">
+            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+            <div class="nav-links">
+                <a href="index.html">HOME</a>
+                <a href="world.html">WORLD</a>
+                <a href="hagumo.html">HAGUMO</a>
+                <a href="diagnosis.html">DIAGNOSIS</a>
+                <a href="product.html" class="active">PRODUCT</a>
+                <a href="my.html">MY HAGUMO</a>
+            </div>
+        </div>
     </nav>
 
     <div class="order-hero">
@@ -33,15 +54,16 @@
 
     <div class="container">
         <div>
-            <img src="./images/risu.PNG" style="width:100%; border-radius:20px;">
-            <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
-                <img src="./images/risu.PNG" style="width:60px;">
-                <img src="./images/tora.PNG" style="width:60px; opacity:0.5;">
-                <img src="./images/chabo.PNG" style="width:60px; opacity:0.5;">
+            <img id="main-img" src="./images/risu.PNG" style="width:100%; height:350px; object-fit:contain; border-radius:20px; background:#fafafa;">
+            <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:15px; justify-content:center;">
+                <img src="./images/risu.PNG" class="thumb-img active" style="opacity:1;" onclick="changeImage(this, 'きゅうりす（バランス・調和）')">
+                <img src="./images/tora.PNG" class="thumb-img" onclick="changeImage(this, 'とまとら（情熱・活発）')">
+                <img src="./images/chabo.PNG" class="thumb-img" onclick="changeImage(this, 'かぼちゃぼ（安定・堅実）')">
             </div>
+            <p style="text-align:center; font-size:12px; color:#999; margin-top:10px;">※画像をクリックして選んでね！</p>
         </div>
         <div>
-            <div class="char-tag">代表キャラ：きゅうりす（バランス・調和）</div>
+            <div id="char-name-tag" class="char-tag">代表キャラ：きゅうりす（バランス・調和）</div>
             <h2 style="margin:0;">育成キット（普通）</h2>
             <p style="font-size:32px; font-weight:bold; color:#444;">¥2,980</p>
             
@@ -58,10 +80,27 @@
                 きゅうりす（キュウリ）、とまとら（トマト）、かぼちゃぼ（カボチャ）
             </p>
 
-            <button class="btn-order">この子をお迎え（契約）する 🐿️</button>
+            <button class="btn-order" onclick="alert('お迎えのお申し込みを承りました！🐿️')">この子をお迎え（契約）する 🐿️</button>
         </div>
     </div>
 
-    <footer class="footer-notice"><p style="color: var(--main-pink); font-weight: bold;">🎀 HAGUMO project by 千葉9人形班 🎀</p><p style="font-size: 11px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p></footer>
+    <footer class="footer-notice">
+        <p style="color: var(--main-pink); font-weight: bold;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 11px; color: #888;">これは授業課題であり、実際の購入・発送は行っていません。</p>
+    </footer>
+
+    <script>
+        function changeImage(element, name) {
+            document.getElementById('main-img').src = element.src;
+            document.getElementById('char-name-tag').innerText = "パートナー： " + name;
+            const thumbs = document.querySelectorAll('.thumb-img');
+            thumbs.forEach(t => {
+                t.classList.remove('active');
+                t.style.opacity = "0.6";
+            });
+            element.classList.add('active');
+            element.style.opacity = "1";
+        }
+    </script>
 </body>
 </html>
