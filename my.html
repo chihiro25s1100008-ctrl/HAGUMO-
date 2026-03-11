@@ -21,9 +21,10 @@
             margin: 0; 
             padding-top: 100px; 
             color: #555; 
+            overflow-x: hidden;
         }
 
-        /* --- 【決定版】スマホ対応ナビゲーション --- */
+        /* ナビゲーション */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
@@ -34,111 +35,106 @@
             display: flex; flex-direction: column; align-items: center; gap: 8px;
         }
         .nav-logo-img { height: 28px; cursor: pointer; }
-        .nav-links { 
-            display: flex; flex-wrap: wrap; justify-content: center; 
-            gap: 4px 8px;
-        }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; }
         .nav-link { 
             color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
             padding: 4px 8px; border-radius: 20px; transition: 0.3s;
             background: #fdfdfd; border: 1px solid #f0f0f0;
         }
-        .nav-link:hover, .nav-link.active { 
-            color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink);
-        }
+        .nav-link.active { color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink); }
 
         @media screen and (min-width: 769px) {
-            body { padding-top: 90px; }
+            body { padding-top: 110px; }
             .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
-            .nav-logo-img { height: 35px; }
             .nav-link { font-size: 13px; background: none; border: none; }
         }
 
-        /* --- メインレイアウト --- */
+        /* メインレイアウト */
         .main-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 10px 20px 40px;
+            display: flex; flex-direction: column; align-items: center;
+            max-width: 1000px; margin: 0 auto; padding: 10px 20px 40px;
         }
 
         @media screen and (min-width: 769px) {
-            .main-wrapper {
-                flex-direction: row; 
-                align-items: flex-start;
-                justify-content: center;
-                gap: 40px;
-                padding-top: 40px;
-            }
+            .main-wrapper { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; padding-top: 40px; }
             .left-panel { width: 400px; position: sticky; top: 120px; }
             .right-panel { width: 450px; }
         }
 
+        /* ステータスボード */
         .status-container { 
-            width: 100%;
-            padding: 20px; 
-            background: white; 
-            border-radius: 35px; 
-            box-shadow: 0 10px 25px rgba(255,126,185,0.1); 
-            text-align: center;
-            margin-bottom: 20px;
-            box-sizing: border-box;
+            width: 100%; padding: 25px; background: white; border-radius: 35px; 
+            box-shadow: 0 15px 35px rgba(255,126,185,0.15); text-align: center;
+            margin-bottom: 25px; box-sizing: border-box; border: 2px solid #fff;
         }
-        .user-name-display { font-size: 14px; color: var(--main-pink); font-weight: bold; margin-bottom: 10px; }
+        .user-name-display { font-size: 16px; color: var(--main-pink); font-weight: bold; margin-bottom: 15px; text-shadow: 1px 1px 0 white; }
 
-        .love-bar-bg { width: 90%; height: 16px; background: #eee; border-radius: 10px; margin: 10px auto; overflow: hidden; border: 2px solid white; }
-        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 1s cubic-bezier(0.22, 1, 0.36, 1); }
+        .love-bar-bg { width: 100%; height: 20px; background: #eee; border-radius: 15px; margin: 15px 0; overflow: hidden; border: 3px solid #fff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
+        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 1.5s cubic-bezier(0.22, 1, 0.36, 1); position: relative; }
+        
+        /* 虹色アニメーション */
         .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
         @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
-        .room-main { position: relative; text-align: center; margin: 20px 0; }
-        .hagumo-img { width: 220px; height: 220px; object-fit: contain; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 10px 15px rgba(255,126,185,0.2)); }
-        @media screen and (min-width: 769px) { .hagumo-img { width: 300px; height: 300px; } }
+        /* ハグモ表示エリア */
+        .room-main { position: relative; text-align: center; margin: 30px 0; perspective: 1000px; }
+        .hagumo-img { 
+            width: 250px; height: 250px; object-fit: contain; cursor: pointer; 
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); 
+        }
+        .hagumo-img:hover { transform: scale(1.05); }
+        .hagumo-img:active { transform: scale(0.9); }
         
-        .bounce { animation: bounce 3s infinite ease-in-out; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .bounce { animation: bounce 4s infinite ease-in-out; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        /* 吹き出しのレスポンシブ調整 */
+        /* 吹き出し */
         .bubble { 
             position: relative; background: white; padding: 25px; border-radius: 30px; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06); margin-bottom: 20px; 
-            font-weight: bold; font-size: 15px; min-height: 80px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; 
+            font-weight: bold; font-size: 16px; min-height: 90px;
             display: flex; align-items: center; justify-content: center;
-            line-height: 1.6;
+            line-height: 1.6; border: 2px solid #fff;
         }
         
         @media screen and (max-width: 768px) {
-            .bubble { order: -1; margin-top: 10px; } /* スマホでは画像の上にセリフ */
+            .bubble { order: -1; }
             .bubble::after {
-                content: ""; position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%);
-                border-width: 14px 14px 0; border-style: solid;
-                border-color: white transparent transparent;
+                content: ""; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+                border-width: 18px 18px 0; border-style: solid; border-color: white transparent transparent;
             }
         }
         @media screen and (min-width: 769px) {
             .bubble::after {
-                content: ""; position: absolute; left: -14px; top: 50%; transform: translateY(-50%);
-                border-width: 14px 14px 14px 0; border-style: solid;
-                border-color: transparent white transparent transparent;
+                content: ""; position: absolute; left: -18px; top: 50%; transform: translateY(-50%);
+                border-width: 18px 18px 18px 0; border-style: solid; border-color: transparent white transparent transparent;
             }
         }
 
-        .choice-container { display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; width: 100%; }
-        .choice-btn { background: white; border: 2px solid var(--main-pink); padding: 14px; border-radius: 50px; cursor: pointer; font-weight: bold; color: var(--main-pink); transition: 0.2s; font-size: 14px; }
-        .choice-btn:hover { background: var(--main-pink); color: white; }
+        /* メニューボタン */
+        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+        .action-btn { 
+            background: white; border: none; padding: 15px 25px; border-radius: 50px; 
+            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 15px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,126,185,0.2); color: var(--main-pink); }
+        .action-btn:active { transform: scale(0.95); }
+        .action-btn span { color: var(--main-pink); font-size: 12px; }
 
-        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .action-btn { background: white; border: 1px solid #eee; padding: 12px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; -webkit-tap-highlight-color: transparent; }
-        .action-btn:active { transform: scale(0.95); background: var(--soft-pink); }
+        /* パーティクル */
+        .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 20px; z-index: 9999; }
+        @keyframes heartUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
-        footer { text-align: center; padding: 40px 20px; background: white; margin-top: 40px; border-top: 1px solid #eee; }
-        
-        .max-flash { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9000; animation: flashEffect 0.5s ease-out; pointer-events: none; }
+        /* 虹色モード */
+        .max-flash { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 20000; animation: flashEffect 0.8s ease-out; pointer-events: none; }
         @keyframes flashEffect { 0% { opacity: 1; } 100% { opacity: 0; } }
         .rainbow-body { animation: rainbowAnim 1.5s linear infinite !important; filter: drop-shadow(0 0 30px gold) !important; }
         @keyframes rainbowAnim { 0% { filter: hue-rotate(0deg) scale(1.05); } 100% { filter: hue-rotate(360deg) scale(1.05); } }
+
+        footer { text-align: center; padding: 50px 20px; color: #ccc; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -162,49 +158,190 @@
     <div class="main-wrapper">
         <div class="left-panel">
             <div class="status-container">
-                <div id="user-display" class="user-name-display"></div>
-                <select id="char-selector" onchange="changeChar()" style="padding: 10px; border-radius: 15px; font-weight: bold; font-family: inherit; color: var(--pink2); border: 2px solid var(--soft-pink); margin-bottom: 15px; outline: none;">
-                    <option value="buta">かぶた</option>
-                    <option value="imo">さつまいもぐら</option>
-                    <option value="jaku">ばたふらいぴーこっく</option>
-                    <option value="risu">きゅうりす</option>
-                    <option value="tora">とまとら</option>
-                    <option value="chabo">かぼちゃぼ</option>
-                    <option value="saru">れもんきー</option>
-                    <option value="kame">ぶるーべりくがめ</option>
-                    <option value="nga">もももんが</option>
-                    <option value="kuma">くろいちじくま</option>
+                <div id="user-display" class="user-name-display">ようこそ！HAGUMOの部屋へ</div>
+                
+                <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">パートナーを選択</label>
+                <select id="char-selector" onchange="changeChar()" style="width: 80%; padding: 12px; border-radius: 15px; font-weight: bold; font-family: inherit; color: var(--pink2); border: 2px solid var(--soft-pink); margin-bottom: 10px; outline: none; cursor: pointer; background: #fffcfd;">
+                    <option value="buta">🐷 かぶた</option>
+                    <option value="imo">🐹 さつまいもぐら</option>
+                    <option value="jaku">🦚 ばたふらいぴーこっく</option>
+                    <option value="risu">🐿️ きゅうりす</option>
+                    <option value="tora">🐯 とまとら</option>
+                    <option value="chabo">🐔 かぼちゃぼ</option>
+                    <option value="saru">🐒 れもんきー</option>
+                    <option value="kame">🐢 ぶるーべりくがめ</option>
+                    <option value="nga">🐿️ もももんが</option>
+                    <option value="kuma">🐻 くろいちじくま</option>
                 </select>
+
                 <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
-                <div style="font-size: 12px; font-weight: bold; color: #888; letter-spacing: 1px;">KIZUNA LEVEL: <span id="love-val" style="color:var(--main-pink); font-size: 18px;">50</span> / 100</div>
+                <div style="font-size: 11px; font-weight: bold; color: #999; letter-spacing: 1px;">KIZUNA LEVEL: <span id="love-val" style="color:var(--main-pink); font-size: 20px;">50</span> / 100</div>
             </div>
-            <div class="room-main">
-                <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="撫でる()">
+
+            <div class="room-main" id="hagumo-area">
+                <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="撫でる(event)">
             </div>
         </div>
 
         <div class="right-panel">
-            <div id="chat-bubble" class="bubble">……</div>
-            <div id="choices" class="choice-container">
-                <button class="choice-btn"></button>
-                <button class="choice-btn"></button>
-                <button class="choice-btn"></button>
-            </div>
+            <div id="chat-bubble" class="bubble">主様、お帰りなさい！<br>今日は何して遊ぶ？</div>
+            
             <div class="action-menu">
-                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり (<span id="talk-count">5</span>)</button>
-                <button id="stroke-btn" class="action-btn" onclick="撫でる()">👋 なでなで (<span id="stroke-count">10</span>)</button>
-                <div style="width: 100%; display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-                    <button class="action-btn" onclick="renameUser()" style="color:#888; font-size: 11px; padding: 8px 15px; border: none;">名前変更</button>
-                    <button class="action-btn" onclick="resetGame()" style="color:#bbb; font-size: 11px; padding: 8px 15px; border: none;">リセット</button>
-                </div>
+                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり <span>(<span id="talk-count">5</span>)</span></button>
+                <button id="stroke-btn" class="action-btn" onclick="撫でる(event)">👋 なでなで <span>(<span id="stroke-count">10</span>)</span></button>
+                <button class="action-btn" onclick="renameUser()">✏️ 名前を教える</button>
+                <button class="action-btn" onclick="resetGame()" style="opacity: 0.5; font-size: 12px;">🔄 リセット</button>
             </div>
         </div>
     </div>
 
-    <footer><p style="font-size: 12px; color: #bbb;">&copy; 2026 MY HAGUMO Project</p></footer>
+    <footer>&copy; 2026 MY HAGUMO Project | 絆を育む農業×美肌</footer>
 
     <script>
-        // ... (元のスクリプトをここに挿入) ...
+        // --- 設定データ ---
+        const charData = {
+            buta: { name: "かぶた", color: "#ffb3d9", lines: ["お腹すいたぶー...", "一緒に畑いくぶ？", "主様、だいすきぶ！", "泥遊び、楽しいぶよ♪"] },
+            imo: { name: "さつまいもぐら", color: "#a55eb5", lines: ["土の中は落ち着くもにょ...", "お芋、食べるもにょ？", "主様の手、あったかいもにょ。", "もにょもにょ...お昼寝タイム？"] },
+            risu: { name: "きゅうりす", color: "#855d10", lines: ["水分補給は大事だよ！", "バランスの良い食生活、してる？", "主様の肌、ツヤツヤにしたいなっ！", "ポリポリ...このキュウリ、最高！"] },
+            tora: { name: "とまとら", color: "#ff4d4d", lines: ["情熱の赤！トマトパワーだよ！", "今日も元気にいこう！ガオー！", "主様、一緒に運動する？", "リコピン、足りてる？"] },
+            chabo: { name: "かぼちゃぼ", color: "#ffa500", lines: ["どっしり構えていこうぜ。", "カボチャの煮物、作ってくれる？", "主様、いつも頑張ってるね。", "コケッ...あ、つい出ちゃった。"] },
+            kuma: { name: "くろいちじくま", color: "#444", lines: ["……静かに、育つのを待とう。", "この果実、君にあげるよ。", "……そばにいてくれて、ありがとう。", "闇夜に紛れて、美しく……"] },
+            saru: { name: "れもんきー", color: "#ffee33", lines: ["酸っぱいけど、クセになるよ！", "ビタミンC、たっぷりだよ！", "ウキー！主様、遊ぼう！", "肌がシャキッとするね！"] },
+            kame: { name: "ぶるーべりくがめ", color: "#5555ff", lines: ["ゆっくり、美しくなればいい。", "目は大事にしなきゃダメだよ。", "のんびり畑を見守ってるね。", "アントシアニン、あげる。"] },
+            nga: { name: "もももんが", color: "#ffc0cb", lines: ["ふわふわ、桃の香りがする？", "主様のところに飛んでいくよ！", "甘い果汁が一番の美容液！", "ピー！撫でて撫でて！"] },
+            jaku: { name: "ばたふらいぴーこっく", color: "#00008b", lines: ["私の色、不思議だと思わない？", "ハーブの力で癒やしてあげる。", "主様、気品を忘れないで。", "……綺麗、と言ってくれるの？"] }
+        };
+
+        let love = parseInt(localStorage.getItem('hagumo_love')) || 50;
+        let userName = localStorage.getItem('hagumo_user') || "主様";
+        let talkCount = 5;
+        let strokeCount = 10;
+
+        // --- 初期化 ---
+        window.onload = () => {
+            updateStatus();
+            updateUserDisplay();
+            say("……（お耳をぴょこぴょこさせている）");
+        };
+
+        // --- コア機能 ---
+        function updateStatus() {
+            document.getElementById('love-val').innerText = love;
+            const fill = document.getElementById('love-fill');
+            fill.style.width = love + "%";
+            
+            if (love >= 100) {
+                fill.classList.add('max');
+                document.getElementById('hagumo-sprite').classList.add('rainbow-body');
+            } else {
+                fill.classList.remove('max');
+                document.getElementById('hagumo-sprite').classList.remove('rainbow-body');
+            }
+            localStorage.setItem('hagumo_love', love);
+        }
+
+        function updateUserDisplay() {
+            document.getElementById('user-display').innerText = `✨ ${userName} の絆ルーム ✨`;
+        }
+
+        function changeChar() {
+            const charKey = document.getElementById('char-selector').value;
+            const img = document.getElementById('hagumo-sprite');
+            img.classList.remove('bounce'); // 一旦リセットして再起動
+            void img.offsetWidth; 
+            img.classList.add('bounce');
+            img.src = `./images/${charKey}.PNG`;
+            
+            const name = charData[charKey]?.name || "ハグモ";
+            say(`新しい姿の、${name}だよ！<br>似合ってるかな？`);
+        }
+
+        function say(text) {
+            const bubble = document.getElementById('chat-bubble');
+            bubble.style.opacity = 0;
+            setTimeout(() => {
+                bubble.innerHTML = text;
+                bubble.style.opacity = 1;
+            }, 200);
+        }
+
+        function startTalk() {
+            if (talkCount <= 0) {
+                say("ちょっと疲れちゃった...<br>また後でお話ししよう？");
+                return;
+            }
+            talkCount--;
+            document.getElementById('talk-count').innerText = talkCount;
+            
+            const charKey = document.getElementById('char-selector').value;
+            const lines = charData[charKey]?.lines || ["なになにー？"];
+            
+            // 親密度が高いとセリフが変わる仕掛け
+            let message = lines[Math.floor(Math.random() * lines.length)];
+            if (love >= 90) message = `主様といると、本当に幸せだよ。`;
+            
+            love = Math.min(100, love + 2);
+            updateStatus();
+            say(message);
+        }
+
+        function 撫でる(event) {
+            if (strokeCount <= 0) {
+                say("（満足してすやすや眠っている...）");
+                return;
+            }
+            strokeCount--;
+            document.getElementById('stroke-count').innerText = strokeCount;
+
+            love = Math.min(100, love + 5);
+            updateStatus();
+            
+            // エフェクト生成
+            createHeart(event.clientX, event.clientY);
+
+            const img = document.getElementById('hagumo-sprite');
+            img.style.transform = "scale(1.1) rotate(10deg)";
+            setTimeout(() => img.style.transform = "", 300);
+
+            if (love >= 100) {
+                document.getElementById('max-flash').style.display = "block";
+                setTimeout(() => document.getElementById('max-flash').style.display = "none", 800);
+                say("！！ ありがとう！！<br>主様、一生離さないぶ！（...あ、つい！）");
+            } else {
+                say("わぁっ！なでなで、気持ちいい〜♪");
+            }
+        }
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.innerHTML = "❤";
+            heart.className = "heart";
+            heart.style.left = (x - 10) + "px";
+            heart.style.top = (y - 10) + "px";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1500);
+        }
+
+        function renameUser() {
+            const newName = prompt("私になんて呼んでほしい？", userName);
+            if (newName && newName.length < 10) {
+                userName = newName;
+                localStorage.setItem('hagumo_user', userName);
+                updateUserDisplay();
+                say(`${userName}って呼べばいいんだね！<br>覚えたよ！`);
+            } else if (newName) {
+                alert("もう少し短い名前にしてね！");
+            }
+        }
+
+        function resetGame() {
+            if (confirm("絆レベルをリセットして、最初からやり直す？")) {
+                love = 50;
+                localStorage.clear();
+                updateStatus();
+                location.reload();
+            }
+        }
     </script>
 </body>
 </html>
