@@ -277,12 +277,14 @@
     let userName = localStorage.getItem('hagu_user') || "主様";
     let cooldowns = { talk: null, stroke: null };
 
-    function getName(text) {
-        if (userName !== "主様") {
-            return text.replace(/主様/g, userName).replace(/主(?!様)/g, userName);
-        }
-        return text;
-    }
+    // 現在のコードを少し強化
+function getName(text) {
+    if (userName !== "主様") {
+        // 「主様」「主」の両方をユーザー名に置き換える
+        return text.replace(/主様/g, userName).replace(/主(?!様)/g, userName);
+    }
+    return text;
+}
 
     function loadCharStatus(charKey) {
         currentChar = charKey;
