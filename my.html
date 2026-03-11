@@ -11,36 +11,17 @@
             --soft-pink: #fff5f7; 
             --pink1: #ffb3d9; 
             --pink2: #d1478e; 
-            --gold: #ffd700; 
             --rainbow: linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd1de8, #ff2400); 
         }
 
-        body { 
-            font-family: 'Zen Maru Gothic', sans-serif; 
-            background: var(--soft-pink); 
-            margin: 0; 
-            padding-top: 100px; 
-            color: #555; 
-            overflow-x: hidden;
-        }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; }
 
         /* ナビゲーション */
-        .nav { 
-            position: fixed; top: 0; left: 0; width: 100%; 
-            background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
-            padding: 8px 0;
-        }
-        .nav-content { 
-            max-width: 1100px; margin: 0 auto; padding: 0 15px;
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
-        }
+        .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 8px 0; }
+        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .nav-logo-img { height: 28px; cursor: pointer; }
         .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; }
-        .nav-link { 
-            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
-            padding: 4px 8px; border-radius: 20px; transition: 0.3s;
-            background: #fdfdfd; border: 1px solid #f0f0f0;
-        }
+        .nav-link { color: #888; text-decoration: none; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 20px; background: #fdfdfd; border: 1px solid #f0f0f0; }
         .nav-link.active { color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink); }
 
         @media screen and (min-width: 769px) {
@@ -49,11 +30,7 @@
             .nav-link { font-size: 13px; background: none; border: none; }
         }
 
-        /* メインレイアウト */
-        .main-wrapper {
-            display: flex; flex-direction: column; align-items: center;
-            max-width: 1000px; margin: 0 auto; padding: 10px 20px 40px;
-        }
+        .main-wrapper { display: flex; flex-direction: column; align-items: center; max-width: 1000px; margin: 0 auto; padding: 10px 20px 40px; }
 
         @media screen and (min-width: 769px) {
             .main-wrapper { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; padding-top: 40px; }
@@ -62,85 +39,43 @@
         }
 
         /* ステータスボード */
-        .status-container { 
-            width: 100%; padding: 25px; background: white; border-radius: 35px; 
-            box-shadow: 0 15px 35px rgba(255,126,185,0.15); text-align: center;
-            margin-bottom: 25px; box-sizing: border-box; border: 2px solid #fff;
-        }
-        .user-name-display { font-size: 16px; color: var(--main-pink); font-weight: bold; margin-bottom: 15px; text-shadow: 1px 1px 0 white; }
+        .status-container { width: 100%; padding: 25px; background: white; border-radius: 35px; box-shadow: 0 15px 35px rgba(255,126,185,0.15); text-align: center; margin-bottom: 25px; box-sizing: border-box; }
+        .user-name-display { font-size: 16px; color: var(--main-pink); font-weight: bold; margin-bottom: 15px; }
 
-        .love-bar-bg { width: 100%; height: 20px; background: #eee; border-radius: 15px; margin: 15px 0; overflow: hidden; border: 3px solid #fff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
-        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 1.5s cubic-bezier(0.22, 1, 0.36, 1); position: relative; }
-        
+        .love-bar-bg { width: 100%; height: 20px; background: #eee; border-radius: 15px; margin: 15px 0; overflow: hidden; position: relative; }
+        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 0.5s; }
         .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
         @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
-        .room-main { position: relative; text-align: center; margin: 30px 0; perspective: 1000px; }
-        .hagumo-img { 
-            width: 250px; height: 250px; object-fit: contain; cursor: pointer; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); 
-        }
-        
+        /* ハグモ表示 */
+        .hagumo-img { width: 250px; height: 250px; object-fit: contain; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); }
         .bounce { animation: bounce 4s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .bubble { 
-            position: relative; background: white; padding: 25px; border-radius: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; 
-            font-weight: bold; font-size: 16px; min-height: 90px;
-            display: flex; align-items: center; justify-content: center;
-            line-height: 1.6; border: 2px solid #fff; transition: opacity 0.2s;
-        }
+        /* 吹き出しと選択肢 */
+        .bubble { position: relative; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; font-weight: bold; line-height: 1.6; min-height: 60px; display: flex; align-items: center; justify-content: center; text-align: center;}
         
-        @media screen and (max-width: 768px) {
-            .bubble { order: -1; }
-            .bubble::after {
-                content: ""; position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
-                border-width: 18px 18px 0; border-style: solid; border-color: white transparent transparent;
-            }
-        }
-        @media screen and (min-width: 769px) {
-            .bubble::after {
-                content: ""; position: absolute; left: -18px; top: 50%; transform: translateY(-50%);
-                border-width: 18px 18px 18px 0; border-style: solid; border-color: transparent white transparent transparent;
-            }
-        }
+        .choices-container { display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; width: 100%; }
+        .choice-btn { background: white; border: 2px solid var(--pink1); padding: 12px; border-radius: 15px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.2s; color: #666; }
+        .choice-btn:hover { background: var(--soft-pink); border-color: var(--main-pink); color: var(--main-pink); }
 
-        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-        .action-btn { 
-            background: white; border: none; padding: 15px 25px; border-radius: 50px; 
-            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 15px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,126,185,0.2); color: var(--main-pink); }
-        .action-btn span { color: var(--main-pink); font-size: 12px; }
+        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .action-btn span { color: var(--main-pink); font-size: 11px; }
 
-        .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 20px; z-index: 9999; }
+        .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
-
-        .max-flash { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 20000; animation: flashEffect 0.8s ease-out; pointer-events: none; }
-        @keyframes flashEffect { 0% { opacity: 1; } 100% { opacity: 0; } }
-        .rainbow-body { animation: rainbowAnim 1.5s linear infinite !important; filter: drop-shadow(0 0 30px gold) !important; }
-        @keyframes rainbowAnim { 0% { filter: hue-rotate(0deg) scale(1.05); } 100% { filter: hue-rotate(360deg) scale(1.05); } }
 
         footer { text-align: center; padding: 50px 20px; color: #ccc; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div id="max-flash" class="max-flash"></div>
-
     <nav class="nav">
         <div class="nav-content">
             <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
             <div class="nav-links">
-                <a href="index.html" class="nav-link">HOME</a>
-                <a href="world.html" class="nav-link">WORLD</a>
-                <a href="product.html" class="nav-link">PRODUCT</a>
-                <a href="hagumo.html" class="nav-link">HAGUMO</a>
-                <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
                 <a href="my.html" class="nav-link active">MY HAGUMO</a>
             </div>
         </div>
@@ -149,235 +84,262 @@
     <div class="main-wrapper">
         <div class="left-panel">
             <div class="status-container">
-                <div id="user-display" class="user-name-display">ようこそ！HAGUMOの部屋へ</div>
-                
-                <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">パートナーを選択</label>
-                <select id="char-selector" onchange="changeChar()" style="width: 80%; padding: 12px; border-radius: 15px; font-weight: bold; font-family: inherit; color: var(--pink2); border: 2px solid var(--soft-pink); margin-bottom: 10px; outline: none; cursor: pointer; background: #fffcfd;">
-                    <option value="buta">かぶた</option>
-                    <option value="imo">さつまいもぐら</option>
-                    <option value="jaku">ばたふらいぴーこっく</option>
-                    <option value="risu">きゅうりす</option>
-                    <option value="tora">とまとら</option>
-                    <option value="chabo">かぼちゃぼ</option>
-                    <option value="saru">れもんきー</option>
-                    <option value="kame">ぶるーべりくがめ</option>
-                    <option value="nga">もももんが</option>
-                    <option value="kuma">くろいちじくま</option>
+                <div id="user-display" class="user-name-display">絆ルーム</div>
+                <select id="char-selector" onchange="changeChar()" style="width: 80%; padding: 10px; border-radius: 15px; border: 2px solid var(--soft-pink); margin-bottom: 10px;">
+                    <option value="buta">🐷 かぶた</option>
+                    <option value="imo">🐹 さつまいもぐら</option>
+                    <option value="jaku">🦚 ぴーこっく</option>
+                    <option value="risu">🐿️ きゅうりす</option>
+                    <option value="tora">🐯 とまとら</option>
                 </select>
-
                 <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
-                <div style="font-size: 11px; font-weight: bold; color: #999; letter-spacing: 1px;">KIZUNA LEVEL: <span id="love-val" style="color:var(--main-pink); font-size: 20px;">50</span> / 100</div>
+                <div style="font-size: 11px; font-weight: bold;">KIZUNA: <span id="love-val">50</span> / 100</div>
             </div>
-
-            <div class="room-main" id="hagumo-area">
-                <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="撫でる(event)">
-            </div>
+            <div class="room-main"><img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="strokeHagumo(event)"></div>
         </div>
 
         <div class="right-panel">
-            <div id="chat-bubble" class="bubble">主様、お帰りなさい！<br>今日は何して遊ぶ？</div>
+            <div id="chat-bubble" class="bubble">主様、おかえりぶ！</div>
+            <div id="choices" class="choices-container"></div>
             
             <div class="action-menu">
-                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり <span>(<span id="talk-count">5</span>)</span></button>
-                <button id="stroke-btn" class="action-btn" onclick="撫でる(event)">👋 なでなで <span>(<span id="stroke-count">10</span>)</span></button>
-                <button class="action-btn" onclick="renameUser()">✏️ 名前を教える</button>
-                <button class="action-btn" onclick="resetGame()" style="opacity: 0.5; font-size: 12px;">🔄 リセット</button>
+                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり <span id="talk-timer"></span></button>
+                <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで <span id="stroke-timer"></span></button>
+                <button class="action-btn" onclick="renameUser()">✏️ 改名</button>
             </div>
         </div>
     </div>
 
-    <footer>&copy; 2026 MY HAGUMO Project | 絆を育む農業×美肌</footer>
-
-    <script>
-        const charData = {
-            buta: { 
-                name: "かぶた", 
-                lines: ["お腹すいたぶー...", "一緒に畑いくぶ？", "主様、だいすきぶ！", "泥遊び、楽しいぶよ♪"],
-                welcome: "主様、お帰りぶ！<br>おいしい野菜、育ってるぶ？",
-                rename: (n) => `${n}！おいしそうな名前ぶ！<br>お腹すいてきちゃったぶ〜。`
+   const charData = {
+            buta: {
+                welcome: "おかえりぶ！泥遊びするぶ？",
+                questions: [
+                    { q: "お腹すいたぶー！何か食べたいぶ！", a: ["高級なカブ", "その辺の草", "泥だんご"], scores: [10, 5, -5] },
+                    { q: "主様、ボクのこと好きぶ？", a: ["大好きだよ", "普通かな", "うるさいぶー"], scores: [10, 5, -5] },
+                    { q: "畑に新しい種をまくぶ！何がいいぶ？", a: ["ツヤツヤのナス", "適当な雑草", "石ころ"], scores: [10, 5, -5] },
+                    { q: "一緒に昼寝するぶ？", a: ["喜んで！", "あとでね", "一人で寝て"], scores: [10, 5, -5] },
+                    { q: "ボク、可愛くなったぶ？", a: ["世界一だよ", "変わらないね", "泥だらけだよ"], scores: [10, 5, -5] }
+                ],
+                farewell: "…主様、もうボクのこと忘れたぶね。さよならぶ。"
             },
-            imo: { 
-                name: "さつまいもぐら", 
-                lines: ["土の中は落ち着くもにょ...", "お芋、食べるもにょ？", "主様の手、あったかいもにょ。", "もにょもにょ...お昼寝タイム？"],
-                welcome: "あ、主様...おかえりもにょ。<br>今、土を耕してたもにょ。",
-                rename: (n) => `${n}、いい響きもにょ。<br>土の中にまで響くいい声もにょ。`
+            imo: {
+                welcome: "あ、おかえりもにょ。土の中は静かでもにょ…。",
+                questions: [
+                    { q: "一緒に穴を掘るもにょ？", a: ["いいよ、掘ろう！", "見てるだけでいい？", "服が汚れるから嫌"], scores: [10, 5, -5] },
+                    { q: "さつまいも、どっちの食べ方が好きもにょ？", a: ["焼き芋！", "大学芋！", "生で食べる"], scores: [10, 5, -5] },
+                    { q: "主様、ボクの顔……土っぽくてもにょ？", a: ["それが可愛いよ", "洗えば大丈夫", "ちょっと汚いね"], scores: [10, 5, -5] },
+                    { q: "暗いところ、怖くないもにょ？", a: ["君がいれば大丈夫", "少し怖いかな", "大嫌い！"], scores: [10, 5, -5] },
+                    { q: "主様の好きな色は、土の色もにょ？", a: ["落ち着くから好き", "明るい方がいいな", "茶色は嫌い"], scores: [10, 5, -5] }
+                ],
+                farewell: "…もう土の中から出てこないもにょ。バイバイもにょ。"
             },
-            risu: { 
-                name: "きゅうりす", 
-                lines: ["水分補給は大事だよ！", "バランスの良い食生活、してる？", "主様の肌、ツヤツヤにしたいなっ！", "ポリポリ...このキュウリ、最高！"],
-                welcome: "主様、おかえり！<br>ちゃんと野菜食べてる？チェックしちゃうよ！",
-                rename: (n) => `${n}って言うんだね！<br>ボクの次に素敵な名前だよ、えっへん！`
+            jaku: {
+                welcome: "お帰りなさい、主様。今日も美しい一日ですわね。",
+                questions: [
+                    { q: "私の羽の色、今日のご気分に合いますかしら？", a: ["とても綺麗だよ", "いつも通りだね", "派手すぎるかな"], scores: [10, 5, -5] },
+                    { q: "バタフライピーのハーブティー、いかが？", a: ["ぜひ頂きたいな", "喉が渇いたらね", "苦そうだからいい"], scores: [10, 5, -5] },
+                    { q: "真の美しさとは、どこにあると思いますの？", a: ["君の心の中だよ", "外見も大事だね", "そんなの知らない"], scores: [10, 5, -5] },
+                    { q: "主様、私と一緒に踊ってくださる？", a: ["喜んで、お嬢様", "ステップなら少し", "忙しいから無理"], scores: [10, 5, -5] },
+                    { q: "この庭園に、もっと青い花を植えたいですわ。", a: ["一緒に選ぼう", "任せるよ", "今のままで十分"], scores: [10, 5, -5] }
+                ],
+                farewell: "…美しい思い出と共に、私は飛び立ちますわ。さようなら。"
             },
-            tora: { 
-                name: "とまとら", 
-                lines: ["情熱の赤！トマトパワーだよ！", "今日も元気にいこう！ガオー！", "主様、一緒に運動する？", "リコピン、足りてる？"],
-                welcome: "主様、おかえりー！<br>今日も真っ赤に燃える情熱、持ってる！？",
-                rename: (n) => `${n}！強そうな名前だガオ！<br>気に入った！よろしくな！`
+            risu: {
+                welcome: "おかえり！水分補給しっかりね！",
+                questions: [
+                    { q: "ボクのキュウリ、一本あげる！食べる？", a: ["喜んで頂くよ！", "一本だけ？", "いらない"], scores: [10, 5, -5] },
+                    { q: "お肌の調子はどう？", a: ["ツヤツヤだよ！", "普通かな", "ボロボロだよ"], scores: [10, 5, -5] },
+                    { q: "もっと美容の勉強したほうがいいかな？", a: ["今のままでも素敵だよ", "そうだね", "無駄だよ"], scores: [10, 5, -5] },
+                    { q: "今日はどこに遊びに行く？", a: ["綺麗な水の川", "そこらへんの道", "行かない"], scores: [10, 5, -5] },
+                    { q: "ボクといると楽しい？", a: ["最高に楽しいよ！", "まあまあかな", "疲れる"], scores: [10, 5, -5] }
+                ],
+                farewell: "…ボク、もっと大切にされたかったな。バイバイ。"
             },
-            chabo: { 
-                name: "かぼちゃぼ", 
-                lines: ["どっしり構えていこうぜ。", "カボチャの煮物、作ってくれる？", "主様、いつも頑張ってるね。", "コケッ...あ、つい出ちゃった。"],
-                welcome: "よお、主様。<br>ゆっくり座って、お茶でも飲もうぜ。",
-                rename: (n) => `${n}か、いい名前じゃねぇか。<br>落ち着く響きだ。`
+            tora: {
+                welcome: "おかえりガオー！トマトパワー全開だ！",
+                questions: [
+                    { q: "オレ様と一緒に特訓するガオ！", a: ["やるぞ！燃えてきた！", "少しだけなら…", "疲れるからヤダ"], scores: [10, 5, -5] },
+                    { q: "トマトジュース、一気に飲めるか！？", a: ["余裕だガオ！", "頑張ってみる", "絶対無理"], scores: [10, 5, -5] },
+                    { q: "オレ様、トラらしくてかっこいいだろ？", a: ["世界一かっこいい！", "可愛いトラだね", "ただのトマトじゃん"], scores: [10, 5, -5] },
+                    { q: "主様！情熱が足りないんじゃないか！？", a: ["今すぐ燃え上がる！", "のんびりいこうよ", "放っておいて"], scores: [10, 5, -5] },
+                    { q: "ライバルに勝つには何が必要だと思う！？", a: ["折れない心だ！", "練習あるのみ", "運じゃない？"], scores: [10, 5, -5] }
+                ],
+                farewell: "…お前の情熱、消えちまったんだな。あばよガオ。"
             },
-            kuma: { 
-                name: "くろいちじくま", 
-                lines: ["……静かに、育つのを待とう。", "この果実、君にあげるよ。", "……そばにいてくれて、ありがとう。", "闇夜に紛れて、美しく……"],
-                welcome: "……お帰り。君が来ると、<br>この部屋が少し明るくなるね。",
-                rename: (n) => `${n}……。<br>……忘れないように、心に刻んでおくよ。`
+            chabo: {
+                welcome: "よお、主。待ってたぜ。座って休めよ。",
+                questions: [
+                    { q: "カボチャの煮物、食いたくねぇか？", a: ["君が作るのが一番！", "たまにはいいね", "あんまり好きじゃない"], scores: [10, 5, -5] },
+                    { q: "俺の体、結構硬いんだぜ。触ってみるか？", a: ["頼もしいね！", "カボチャみたいだ", "ゴツゴツしすぎ"], scores: [10, 5, -5] },
+                    { q: "あんまり無理すんなよ。分かってるか？", a: ["ありがとう、優しいね", "気をつけるよ", "うるさいなぁ"], scores: [10, 5, -5] },
+                    { q: "畑の様子、見てきてやろうか？", a: ["お願い、頼りにしてる", "気が向いたらね", "自分で行くよ"], scores: [10, 5, -5] },
+                    { q: "俺といると、落ち着くか？", a: ["すごく安心するよ", "まあね", "退屈かな"], scores: [10, 5, -5] }
+                ],
+                farewell: "…あんたとの時間は悪くなかった。じゃあな、主。"
             },
-            saru: { 
-                name: "れもんきー", 
-                lines: ["酸っぱいけど、クセになるよ！", "ビタミンC、たっぷりだよ！", "ウキー！主様、遊ぼう！", "肌がシャキッとするね！"],
-                welcome: "ウキキーッ！主様おかえり！<br>ビタミン、足りてる！？",
-                rename: (n) => `${n}！フレッシュな名前だね！<br>覚えるのもカンタン、ウキッ！`
+            saru: {
+                welcome: "ウキキーッ！主！フレッシュなレモンはいかが！？",
+                questions: [
+                    { q: "ビタミン不足じゃない！？ほら、酸っぱいの！", a: ["シャキッとするね！", "一個だけね", "酸っぱいから嫌！"], scores: [10, 5, -5] },
+                    { q: "木登り競争しようよ！負けないよ！", a: ["望むところだ！", "下から見てるね", "危ないからやめな"], scores: [10, 5, -5] },
+                    { q: "ボクの黄色い毛並み、オシャレでしょ？", a: ["最高に目立ってるよ！", "レモンみたいだね", "目がチカチカする"], scores: [10, 5, -5] },
+                    { q: "ねぇねぇ、面白い話して！ウキッ！", a: ["とっておきを話すよ", "あとでね", "今は忙しい"], scores: [10, 5, -5] },
+                    { q: "レモンティーに砂糖は入れる派！？", a: ["入れない！酸味派！", "少し入れるよ", "甘くないと飲めない"], scores: [10, 5, -5] }
+                ],
+                farewell: "…なんだか酸っぱい気持ちだよ。ウキィ…バイバイ。"
             },
-            kame: { 
-                name: "ぶるーべりくがめ", 
-                lines: ["ゆっくり、美しくなればいい。", "目は大事にしなきゃダメだよ。", "のんびり畑を見守ってるね。", "アントシアニン、あげる。"],
-                welcome: "おかえりなさい……。<br>慌てなくていいですよ、のんびりしましょう。",
-                rename: (n) => `${n}さん……。<br>ゆっくり、覚えさせていただきますね。`
+            kame: {
+                welcome: "おかえりなさい……。のんびり、いきましょうね。",
+                questions: [
+                    { q: "ブルーベリーを食べると、視界がクリアになりますよ。", a: ["君の目も綺麗だね", "健康にいいね", "味が飽きたよ"], scores: [10, 5, -5] },
+                    { q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] },
+                    { q: "静かな湖のほとりで、お昼寝しませんか……？", a: ["最高に贅沢だね", "少しだけなら", "時間がもったいない"], scores: [10, 5, -5] },
+                    { q: "この甲羅……ブルーベリーの模様なんです。", a: ["とても素敵だよ", "美味しそうだね", "ちょっと地味かな"], scores: [10, 5, -5] },
+                    { q: "主様……無理は、毒ですよ……？", a: ["君に癒やされるよ", "分かってるよ", "放っておいて"], scores: [10, 5, -5] }
+                ],
+                farewell: "……さようなら。ゆっくり、思い出に変わりますね……。"
             },
-            nga: { 
-                name: "もももんが", 
-                lines: ["ふわふわ、桃の香りがする？", "主様のところに飛んでいくよ！", "甘い果汁が一番の美容液！", "ピー！撫でて撫でて！"],
-                welcome: "ピピィー！主様！<br>待ってたよ、ふわふわさせて！",
-                rename: (n) => `${n}！甘くて美味しそうな名前だね！<br>大好きになっちゃいそう！`
+            nga: {
+                welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！",
+                questions: [
+                    { q: "ピーッ！主様の肩に乗ってもいいかなぁ！？", a: ["いつでもおいで！", "重くないならね", "今はダメだよ"], scores: [10, 5, -5] },
+                    { q: "桃のジュース、一緒に飲もうよぉ！", a: ["最高に甘いね！", "半分こしよう", "今は欲しくない"], scores: [10, 5, -5] },
+                    { q: "ボク、空を飛ぶの上手になったんだよぉ！", a: ["かっこよかったよ！", "頑張ったね", "低空飛行だったよ"], scores: [10, 5, -5] },
+                    { q: "なでなでしてぇ！桃の香りがするでしょ？", a: ["ふわふわでいい香り！", "いい匂いだね", "ちょっと甘すぎ"], scores: [10, 5, -5] },
+                    { q: "主様、ずっと一緒にいてくれるぅ…？", a: ["約束するよ！", "できるだけね", "そのうちね"], scores: [10, 5, -5] }
+                ],
+                farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ。バイバイ。"
             },
-            jaku: { 
-                name: "ばたふらいぴーこっく", 
-                lines: ["私の色、不思議だと思わない？", "ハーブの力で癒やしてあげる。", "主様、気品を忘れないで。", "……綺麗、と言ってくれるの？"],
-                welcome: "お帰りなさい、主様。<br>ハーブティーでもいかがかしら？",
-                rename: (n) => `${n}……。<br>優雅な響きですこと。大切にしますわ。`
+            kuma: {
+                welcome: "……お帰り。君の足音が聞こえたよ。",
+                questions: [
+                    { q: "この黒いイチジク……熟していて、甘いよ。食べる？", a: ["君と一緒に食べたいな", "一つ頂くよ", "見た目が怖いな"], scores: [10, 5, -5] },
+                    { q: "……私の隣は、少し寒いかもしれないけれど。", a: ["温めてあげるよ", "静かで落ち着くよ", "確かに冷たいね"], scores: [10, 5, -5] },
+                    { q: "夜の月、一緒に見ているだけで、満たされるよ。", a: ["君と見る月は特別だよ", "綺麗だね", "眠くなってきちゃった"], scores: [10, 5, -5] },
+                    { q: "……私の毛並み、黒すぎて怖くない？", a: ["艶があって綺麗だよ", "かっこいいと思う", "少し不気味かも"], scores: [10, 5, -5] },
+                    { q: "君の笑顔は……イチジクの蜜よりも、甘いね。", a: ["照れるけど嬉しいな", "ありがとう", "大げさだよ"], scores: [10, 5, -5] }
+                ],
+                farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
             }
         };
-
-        let love = parseInt(localStorage.getItem('hagumo_love')) || 50;
-        let userName = localStorage.getItem('hagumo_user') || "主様";
-        let talkCount = 5;
-        let strokeCount = 10;
-
-        window.onload = () => {
-            updateStatus();
-            updateUserDisplay();
-            const charKey = document.getElementById('char-selector').value;
-            say(charData[charKey]?.welcome || "主様、おかえりなさい！");
-        };
+        let love = parseInt(localStorage.getItem('hagu_love')) || 50;
+        let lastUpdate = parseInt(localStorage.getItem('hagu_time')) || Date.now();
+        let talkLog = JSON.parse(localStorage.getItem('hagu_talk_log')) || [];
+        let strokeLog = JSON.parse(localStorage.getItem('hagu_stroke_log')) || [];
+        let userName = localStorage.getItem('hagu_user') || "主様";
 
         function updateStatus() {
+            const now = Date.now();
+            const diff = now - lastUpdate;
+            let loss = 0;
+
+            if (love > 51) {
+                loss = Math.floor(diff / (60 * 1000)); // 1分に1
+            } else if (love > 0) {
+                loss = Math.floor(diff / (60 * 60 * 1000)); // 1時間に1
+            }
+
+            if (loss > 0) {
+                love = Math.max(0, love - loss);
+                lastUpdate = now;
+                save();
+            }
+
             document.getElementById('love-val').innerText = love;
             const fill = document.getElementById('love-fill');
             fill.style.width = love + "%";
-            
-            if (love >= 100) {
-                fill.classList.add('max');
-                document.getElementById('hagumo-sprite').classList.add('rainbow-body');
-            } else {
-                fill.classList.remove('max');
-                document.getElementById('hagumo-sprite').classList.remove('rainbow-body');
+            if (love >= 100) fill.classList.add('max'); else fill.classList.remove('max');
+
+            if (love <= 0) {
+                const char = document.getElementById('char-selector').value;
+                alert(charData[char]?.farewell || "ハグモはお別れを選びました。");
+                resetGame();
             }
-            localStorage.setItem('hagumo_love', love);
         }
 
-        function updateUserDisplay() {
-            document.getElementById('user-display').innerText = `✨ ${userName} の絆ルーム ✨`;
-        }
-
-        function changeChar() {
-            const charKey = document.getElementById('char-selector').value;
-            const img = document.getElementById('hagumo-sprite');
-            img.classList.remove('bounce');
-            void img.offsetWidth; 
-            img.classList.add('bounce');
-            img.src = `./images/${charKey}.PNG`;
-            
-            const welcomeMsg = charData[charKey]?.welcome || "よろしくね！";
-            say(welcomeMsg);
-        }
-
-        function say(text) {
-            const bubble = document.getElementById('chat-bubble');
-            bubble.style.opacity = 0;
-            setTimeout(() => {
-                bubble.innerHTML = text;
-                bubble.style.opacity = 1;
-            }, 200);
+        function save() {
+            localStorage.setItem('hagu_love', love);
+            localStorage.setItem('hagu_time', lastUpdate);
+            localStorage.setItem('hagu_talk_log', JSON.stringify(talkLog));
+            localStorage.setItem('hagu_stroke_log', JSON.stringify(strokeLog));
+            localStorage.setItem('hagu_user', userName);
         }
 
         function startTalk() {
-            if (talkCount <= 0) {
-                say("ちょっと疲れちゃった...<br>また後でお話ししよう？");
+            const now = Date.now();
+            talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000);
+            if (talkLog.length >= 5) {
+                alert("おしゃべりは30分に5回までだよ！");
                 return;
             }
-            talkCount--;
-            document.getElementById('talk-count').innerText = talkCount;
-            
+
             const charKey = document.getElementById('char-selector').value;
-            const lines = charData[charKey]?.lines || ["なになにー？"];
-            
-            let message = lines[Math.floor(Math.random() * lines.length)];
-            if (love >= 90) message = `${userName}といると、本当に幸せだよ。`;
-            
-            love = Math.min(100, love + 2);
-            updateStatus();
-            say(message);
+            const data = charData[charKey];
+            const quest = data.questions[Math.floor(Math.random() * data.questions.length)];
+
+            document.getElementById('chat-bubble').innerText = quest.q;
+            const container = document.getElementById('choices');
+            container.innerHTML = "";
+            container.style.display = "flex";
+
+            quest.a.forEach((text, i) => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn";
+                btn.innerText = text;
+                btn.onclick = () => {
+                    const score = quest.scores[i];
+                    love = Math.min(100, Math.max(0, love + score));
+                    talkLog.push(Date.now());
+                    container.style.display = "none";
+                    document.getElementById('chat-bubble').innerText = score > 5 ? "わーい！嬉しい！" : (score > 0 ? "ありがとう！" : "えーん、ひどいよ…");
+                    updateStatus();
+                    save();
+                };
+                container.appendChild(btn);
+            });
         }
 
-        function 撫でる(event) {
-            if (strokeCount <= 0) {
-                say("（満足してすやすや眠っている...）");
+        function strokeHagumo(e) {
+            const now = Date.now();
+            strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000);
+            if (strokeLog.length >= 10) {
+                alert("なでなでは5分間に10回までだよ！");
                 return;
             }
-            strokeCount--;
-            document.getElementById('stroke-count').innerText = strokeCount;
 
-            love = Math.min(100, love + 5);
+            love = Math.min(100, love + 1);
+            strokeLog.push(now);
+            createHeart(e.clientX, e.clientY);
             updateStatus();
+            save();
             
-            createHeart(event.clientX, event.clientY);
-
-            const img = document.getElementById('hagumo-sprite');
-            img.style.transform = "scale(1.1) rotate(5deg)";
-            setTimeout(() => img.style.transform = "", 200);
-
-            if (love >= 100) {
-                document.getElementById('max-flash').style.display = "block";
-                setTimeout(() => document.getElementById('max-flash').style.display = "none", 800);
-                say("！！ ありがとう！！<br>これこそが、本当の『絆』だね！");
-            } else {
-                say("わぁっ！なでなで、気持ちいい〜♪");
-            }
+            // 連続押し防止（0.5秒）
+            const btn = document.getElementById('stroke-btn');
+            btn.disabled = true;
+            setTimeout(() => btn.disabled = false, 500);
         }
 
         function createHeart(x, y) {
-            const heart = document.createElement('div');
-            heart.innerHTML = "❤";
-            heart.className = "heart";
-            heart.style.left = (x - 10) + "px";
-            heart.style.top = (y - 10) + "px";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 1500);
-        }
-
-        function renameUser() {
-            const newName = prompt("私になんて呼んでほしい？", userName);
-            if (newName && newName.length < 10) {
-                userName = newName;
-                localStorage.setItem('hagumo_user', userName);
-                updateUserDisplay();
-                
-                const charKey = document.getElementById('char-selector').value;
-                const response = charData[charKey]?.rename ? charData[charKey].rename(userName) : `${userName}、いい名前だね！`;
-                say(response);
-            }
+            const h = document.createElement('div');
+            h.className = 'heart'; h.innerHTML = '❤';
+            h.style.left = x + 'px'; h.style.top = y + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1500);
         }
 
         function resetGame() {
-            if (confirm("絆レベルをリセットして、最初からやり直す？")) {
-                localStorage.clear();
-                location.reload();
-            }
+            localStorage.clear();
+            location.reload();
         }
+
+        function changeChar() {
+            const key = document.getElementById('char-selector').value;
+            document.getElementById('hagumo-sprite').src = `./images/${key}.PNG`;
+            document.getElementById('chat-bubble').innerText = charData[key]?.welcome || "よろしくね！";
+        }
+
+        setInterval(updateStatus, 10000); // 10秒ごとに自動更新
+        window.onload = updateStatus;
     </script>
 </body>
 </html>
