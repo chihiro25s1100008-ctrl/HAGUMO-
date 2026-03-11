@@ -10,35 +10,24 @@
             --main-pink: #ff7eb9; 
             --easy-green: #e0f9e0; 
             --soft-pink: #fff5f7;
+            --pink1: #ffb3d9;
+            --pink2: #d1478e;
         }
         body { 
             font-family: 'Zen Maru Gothic', sans-serif; 
             background: #fffafb; 
             margin: 0; 
-            padding-top: 100px; /* ナビ分 */
+            padding-top: 100px; 
             color: #444;
         }
 
         /* --- ナビゲーション --- */
-        .nav { 
-            position: fixed; top: 0; left: 0; width: 100%; 
-            background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
-            padding: 8px 0;
-        }
-        .nav-content { 
-            max-width: 1100px; margin: 0 auto; padding: 0 15px;
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
-        }
+        .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 8px 0; }
+        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .nav-logo-img { height: 28px; cursor: pointer; }
         .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; }
-        .nav-link { 
-            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
-            padding: 4px 8px; border-radius: 20px; transition: 0.3s;
-            background: #fdfdfd; border: 1px solid #f0f0f0;
-        }
-        .nav-link:hover, .nav-link.active { 
-            color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink);
-        }
+        .nav-link { color: #888; text-decoration: none; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 20px; transition: 0.3s; background: #fdfdfd; border: 1px solid #f0f0f0; }
+        .nav-link:hover, .nav-link.active { color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink); }
 
         @media screen and (min-width: 769px) {
             body { padding-top: 90px; }
@@ -48,52 +37,39 @@
         }
 
         /* --- コンテンツレイアウト --- */
-        .order-hero { 
-            background: linear-gradient(135deg, #fff 0%, var(--easy-green) 100%); 
-            padding: 40px 20px; text-align: center; 
-        }
+        .order-hero { background: linear-gradient(135deg, #fff 0%, var(--easy-green) 100%); padding: 40px 20px; text-align: center; }
+        .container { max-width: 1000px; margin: -20px auto 60px; padding: 30px; display: grid; grid-template-columns: 1fr; gap: 30px; background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); box-sizing: border-box; }
 
-        .container { 
-            max-width: 1000px; margin: -20px auto 60px; padding: 30px; 
-            display: grid; grid-template-columns: 1fr; gap: 30px; 
-            background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-        }
+        @media screen and (min-width: 769px) { .container { grid-template-columns: 1fr 1fr; padding: 50px; margin-top: 20px; } }
 
-        @media screen and (min-width: 769px) {
-            .container { grid-template-columns: 1fr 1fr; padding: 50px; margin-top: 20px; }
-        }
+        /* --- 画像・選択セクション --- */
+        .image-section { position: -webkit-sticky; position: sticky; top: 90px; z-index: 100; background: white; padding: 10px; border-bottom: 2px solid var(--easy-green); margin-bottom: 10px; }
+        @media screen and (min-width: 769px) { .image-section { position: relative; top: 0; border: none; } }
 
-        /* --- 画像セクション（Sticky設定） --- */
-        .image-section {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 90px; 
-            z-index: 100;
-            background: white;
-            padding: 10px;
-            border-bottom: 2px solid var(--easy-green);
-            margin-bottom: 10px;
-        }
+        .main-img-box { background: #fafafa; border-radius: 30px; padding: 15px; display: flex; justify-content: center; overflow: hidden; }
+        .main-img { width: 100%; height: 200px; object-fit: contain; transition: 0.5s; }
+        @media screen and (min-width: 769px) { .main-img { height: 300px; } }
 
-        @media screen and (min-width: 769px) {
-            .image-section { position: relative; top: 0; border: none; }
-        }
-
-        .main-img-box { background: #fafafa; border-radius: 30px; padding: 15px; display: flex; justify-content: center; }
-        .main-img { width: 100%; height: 200px; object-fit: contain; }
+        /* キャラ選択カード */
+        .thumb-list { margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .thumb-item { cursor: pointer; text-align: center; transition: 0.3s; }
         
-        @media screen and (min-width: 769px) {
-            .main-img { height: 300px; }
-        }
-
-        .thumb-list { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
         .thumb-img { 
-            width: 55px; height: 55px; object-fit: contain; cursor: pointer; 
-            border: 2px solid #eee; border-radius: 12px; padding: 4px; background: white; opacity: 0.6;
-            transition: 0.3s;
+            width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; 
+            border: 3px solid #f0f0f0; border-radius: 20px; padding: 8px; background: #fff; 
+            transition: 0.3s; opacity: 0.6; box-sizing: border-box;
         }
-        .thumb-img.active { border-color: var(--main-pink); opacity: 1; background: #fff0f5; }
+        .thumb-name { font-size: 10px; color: #aaa; margin-top: 5px; font-weight: bold; }
+
+        /* 選択中のスタイル */
+        .thumb-item.active .thumb-img { 
+            border-color: var(--main-pink); 
+            opacity: 1; 
+            background: var(--soft-pink); 
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(255, 126, 185, 0.2);
+        }
+        .thumb-item.active .thumb-name { color: var(--main-pink); }
 
         /* --- テキストセクション --- */
         .char-tag { display: inline-block; padding: 6px 16px; border-radius: 50px; font-size: 12px; background: #f0f0f0; margin-bottom: 15px; color: #666; font-weight: bold; }
@@ -104,11 +80,11 @@
         .reward-box h4 { margin: 0 0 10px; font-size: 15px; color: var(--main-pink); }
 
         .btn-order { 
-            background: var(--main-pink); color: white; border: none; padding: 18px; 
-            width: 100%; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; 
-            box-shadow: 0 10px 20px rgba(255,126,185,0.3); transition: 0.3s;
+            background: linear-gradient(90deg, #ff7eb9, #ff9a9e); color: white; border: none; 
+            padding: 18px; width: 100%; border-radius: 50px; font-size: 18px; font-weight: bold; 
+            cursor: pointer; box-shadow: 0 10px 20px rgba(255,126,185,0.3); transition: 0.3s; 
         }
-        .btn-order:active { transform: translateY(2px); box-shadow: none; }
+        .btn-order:active { transform: translateY(3px); box-shadow: none; }
 
         .footer-notice { background: white; padding: 60px 20px; text-align: center; border-top: 1px solid #eee; }
     </style>
@@ -130,9 +106,9 @@
     </nav>
 
     <div class="order-hero">
-        <span style="font-weight:bold; color:#2d5a2d; font-size: 14px; letter-spacing: 1px;">RANK C : ENTRY</span>
-        <h1 style="color:var(--main-pink); margin:8px 0; font-size: 24px;">はじめてのHAGUMOセット</h1>
-        <p style="font-size: 14px; color: #666;">初心者さんでも安心。優しく育てる美容の自給自足。</p>
+        <span style="font-weight:bold; color:#2d5a2d; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Rank C : Entry Kit</span>
+        <h1 style="color:var(--pink2); margin:8px 0; font-size: 24px;">はじめてのHAGUMOセット</h1>
+        <p style="font-size: 13px; color: #888; font-weight: bold;">初心者さんでも安心。優しく育てる美容の自給自足。</p>
     </div>
 
     <div class="container">
@@ -141,15 +117,25 @@
                 <img id="main-img" src="./images/buta.PNG" class="main-img">
             </div>
             <div class="thumb-list">
-                <img src="./images/buta.PNG" class="thumb-img active" onclick="changeImage(this, 'かぶた', 'カブ')">
-                <img src="./images/imo.PNG" class="thumb-img" onclick="changeImage(this, 'さつまいもぐら', 'サツマイモ')">
-                <img src="./images/jaku.PNG" class="thumb-img" onclick="changeImage(this, 'ばたふらいぴーこっく', 'バタフライピー')">
+                <div class="thumb-item active" onclick="changeImage(this, 'かぶた', 'カブ')">
+                    <img src="./images/buta.PNG" class="thumb-img">
+                    <div class="thumb-name">かぶた</div>
+                </div>
+                <div class="thumb-item" onclick="changeImage(this, 'さつまいもぐら', 'サツマイモ')">
+                    <img src="./images/imo.PNG" class="thumb-img">
+                    <div class="thumb-name">いもぐら</div>
+                </div>
+                <div class="thumb-item" onclick="changeImage(this, 'ばたふらいぴーこっく', 'バタフライピー')">
+                    <img src="./images/jaku.PNG" class="thumb-img">
+                    <div class="thumb-name">ぴーこっく</div>
+                </div>
             </div>
+            <p style="text-align:center; font-size:10px; color:#ccc; margin-top:15px; font-weight: bold;">タップしてパートナーを選択 🌿</p>
         </div>
 
         <div class="info-section">
             <div id="char-name-tag" class="char-tag">パートナー： かぶた</div>
-            <h2 style="margin:0; font-size: 20px;">HAGUMO育成キット（ENTRY）</h2>
+            <h2 style="margin:0; font-size: 20px; color: #333;">HAGUMO育成キット（ENTRY）</h2>
             <div class="price">1,980<span>円（税込）</span></div>
             
             <div class="reward-box">
@@ -160,10 +146,10 @@
                 </p>
             </div>
 
-            <div style="font-size:13px; color:#666; margin-bottom:25px; line-height: 1.6;">
-                <b>現在の選択：</b><br>
-                <span id="selected-display" style="color: var(--main-pink); font-weight: bold;">かぶた（カブ）</span><br>
-                <span style="font-size: 11px; color: #999;">※キットには種、専用土、ミニポット、育成ガイドが含まれます。</span>
+            <div style="background: #fdfdfd; padding: 15px; border-radius: 20px; border: 1px solid #f0f0f0; margin-bottom: 25px;">
+                <span style="font-size: 11px; color: #999; font-weight: bold;">現在の選択：</span><br>
+                <span id="selected-display" style="color: var(--main-pink); font-weight: bold; font-size: 15px;">かぶた（カブ）</span><br>
+                <span style="font-size: 10px; color: #bbb; display: block; margin-top: 5px;">※種、専用土、ミニポット、育成ガイド付き</span>
             </div>
 
             <button class="btn-order" onclick="orderEffect()">この子をお迎えする 🌱</button>
@@ -180,11 +166,24 @@
 
     <script>
         function changeImage(element, name, type) {
-            document.getElementById('main-img').src = element.src;
+            // 画像のパスを取得
+            const newSrc = element.querySelector('.thumb-img').src;
+            const mainImg = document.getElementById('main-img');
+            
+            // ふわっと切り替え
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = newSrc;
+                mainImg.style.opacity = '1';
+            }, 200);
+
+            // テキスト更新
             document.getElementById('char-name-tag').innerText = "パートナー： " + name;
             document.getElementById('selected-display').innerText = name + "（" + type + "）";
-            const thumbs = document.querySelectorAll('.thumb-img');
-            thumbs.forEach(t => t.classList.remove('active'));
+            
+            // アクティブクラスの付け替え
+            const items = document.querySelectorAll('.thumb-item');
+            items.forEach(item => item.classList.remove('active'));
             element.classList.add('active');
         }
 
@@ -204,7 +203,7 @@
             }
 
             alert(message);
-            alert("【お申し込み完了のお知らせ】\n\n" + name + "のキットをお申し込みいただきありがとうございました！\n\n※このサイトは課題作品です。");
+            alert("【お申し込み完了】\n\n" + name + "のキットをお申し込みいただきありがとうございました！\n\n※このサイトは課題作品です。");
         }
     </script>
 </body>
