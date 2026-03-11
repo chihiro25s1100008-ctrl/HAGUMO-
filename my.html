@@ -437,7 +437,7 @@
                 talkLog.push(Date.now());
                 container.style.display = "none";
                 const bubble = document.getElementById('chat-bubble');
-                bubble.innerText = score >= 10 ? "嬉しい！ツヤツヤになるよ！" : (score < 0 ? "そんなの悲しいな…" : "ありがとう！");
+                bubble.innerText = score >= 10 ? "ツヤツヤになった" : (score < 0 ? "そんなの悲しい…" : "ありがとう！");
                 updateStatus();
                 save();
                 checkAndStartTimers();
