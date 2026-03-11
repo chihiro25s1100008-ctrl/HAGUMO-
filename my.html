@@ -72,30 +72,25 @@
         .love-bar-bg { width: 100%; height: 20px; background: #eee; border-radius: 15px; margin: 15px 0; overflow: hidden; border: 3px solid #fff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
         .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 1.5s cubic-bezier(0.22, 1, 0.36, 1); position: relative; }
         
-        /* 虹色アニメーション */
         .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
         @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
-        /* ハグモ表示エリア */
         .room-main { position: relative; text-align: center; margin: 30px 0; perspective: 1000px; }
         .hagumo-img { 
             width: 250px; height: 250px; object-fit: contain; cursor: pointer; 
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); 
         }
-        .hagumo-img:hover { transform: scale(1.05); }
-        .hagumo-img:active { transform: scale(0.9); }
         
         .bounce { animation: bounce 4s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        /* 吹き出し */
         .bubble { 
             position: relative; background: white; padding: 25px; border-radius: 30px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; 
             font-weight: bold; font-size: 16px; min-height: 90px;
             display: flex; align-items: center; justify-content: center;
-            line-height: 1.6; border: 2px solid #fff;
+            line-height: 1.6; border: 2px solid #fff; transition: opacity 0.2s;
         }
         
         @media screen and (max-width: 768px) {
@@ -112,7 +107,6 @@
             }
         }
 
-        /* メニューボタン */
         .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
         .action-btn { 
             background: white; border: none; padding: 15px 25px; border-radius: 50px; 
@@ -121,14 +115,11 @@
             display: flex; align-items: center; gap: 8px;
         }
         .action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,126,185,0.2); color: var(--main-pink); }
-        .action-btn:active { transform: scale(0.95); }
         .action-btn span { color: var(--main-pink); font-size: 12px; }
 
-        /* パーティクル */
         .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 20px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
-        /* 虹色モード */
         .max-flash { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 20000; animation: flashEffect 0.8s ease-out; pointer-events: none; }
         @keyframes flashEffect { 0% { opacity: 1; } 100% { opacity: 0; } }
         .rainbow-body { animation: rainbowAnim 1.5s linear infinite !important; filter: drop-shadow(0 0 30px gold) !important; }
@@ -162,16 +153,16 @@
                 
                 <label style="font-size: 11px; color: #aaa; display: block; margin-bottom: 5px;">パートナーを選択</label>
                 <select id="char-selector" onchange="changeChar()" style="width: 80%; padding: 12px; border-radius: 15px; font-weight: bold; font-family: inherit; color: var(--pink2); border: 2px solid var(--soft-pink); margin-bottom: 10px; outline: none; cursor: pointer; background: #fffcfd;">
-                    <option value="buta">🐷 かぶた</option>
-                    <option value="imo">🐹 さつまいもぐら</option>
-                    <option value="jaku">🦚 ばたふらいぴーこっく</option>
-                    <option value="risu">🐿️ きゅうりす</option>
-                    <option value="tora">🐯 とまとら</option>
-                    <option value="chabo">🐔 かぼちゃぼ</option>
-                    <option value="saru">🐒 れもんきー</option>
-                    <option value="kame">🐢 ぶるーべりくがめ</option>
-                    <option value="nga">🐿️ もももんが</option>
-                    <option value="kuma">🐻 くろいちじくま</option>
+                    <option value="buta">かぶた</option>
+                    <option value="imo">さつまいもぐら</option>
+                    <option value="jaku">ばたふらいぴーこっく</option>
+                    <option value="risu">きゅうりす</option>
+                    <option value="tora">とまとら</option>
+                    <option value="chabo">かぼちゃぼ</option>
+                    <option value="saru">れもんきー</option>
+                    <option value="kame">ぶるーべりくがめ</option>
+                    <option value="nga">もももんが</option>
+                    <option value="kuma">くろいちじくま</option>
                 </select>
 
                 <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
@@ -197,7 +188,7 @@
 
     <footer>&copy; 2026 MY HAGUMO Project | 絆を育む農業×美肌</footer>
 
-   // --- 設定データ（挨拶と名前変更の反応を追加！） ---
+    <script>
         const charData = {
             buta: { 
                 name: "かぶた", 
@@ -249,7 +240,7 @@
             },
             nga: { 
                 name: "もももんが", 
-                lines: ["ふわふわ、桃の香りがする？", "主様のところに飛んでいくよ！", "甘い果汁が一番の美容液！", "ピー！撫てて撫でて！"],
+                lines: ["ふわふわ、桃の香りがする？", "主様のところに飛んでいくよ！", "甘い果汁が一番の美容液！", "ピー！撫でて撫でて！"],
                 welcome: "ピピィー！主様！<br>待ってたよ、ふわふわさせて！",
                 rename: (n) => `${n}！甘くて美味しそうな名前だね！<br>大好きになっちゃいそう！`
             },
@@ -266,7 +257,6 @@
         let talkCount = 5;
         let strokeCount = 10;
 
-        // --- 初期化 ---
         window.onload = () => {
             updateStatus();
             updateUserDisplay();
@@ -274,7 +264,6 @@
             say(charData[charKey]?.welcome || "主様、おかえりなさい！");
         };
 
-        // --- コア機能 ---
         function updateStatus() {
             document.getElementById('love-val').innerText = love;
             const fill = document.getElementById('love-fill');
@@ -302,7 +291,6 @@
             img.classList.add('bounce');
             img.src = `./images/${charKey}.PNG`;
             
-            // キャラ変更時も個別の挨拶をしゃべる
             const welcomeMsg = charData[charKey]?.welcome || "よろしくね！";
             say(welcomeMsg);
         }
@@ -328,7 +316,7 @@
             const lines = charData[charKey]?.lines || ["なになにー？"];
             
             let message = lines[Math.floor(Math.random() * lines.length)];
-            if (love >= 90) message = `主様といると、本当に幸せだよ。`;
+            if (love >= 90) message = `${userName}といると、本当に幸せだよ。`;
             
             love = Math.min(100, love + 2);
             updateStatus();
@@ -349,13 +337,13 @@
             createHeart(event.clientX, event.clientY);
 
             const img = document.getElementById('hagumo-sprite');
-            img.style.transform = "scale(1.1) rotate(10deg)";
-            setTimeout(() => img.style.transform = "", 300);
+            img.style.transform = "scale(1.1) rotate(5deg)";
+            setTimeout(() => img.style.transform = "", 200);
 
             if (love >= 100) {
                 document.getElementById('max-flash').style.display = "block";
                 setTimeout(() => document.getElementById('max-flash').style.display = "none", 800);
-                say("！！ ありがとう！！<br>主様、一生離さないぶ！（...あ、つい！）");
+                say("！！ ありがとう！！<br>これこそが、本当の『絆』だね！");
             } else {
                 say("わぁっ！なでなで、気持ちいい〜♪");
             }
@@ -378,21 +366,15 @@
                 localStorage.setItem('hagumo_user', userName);
                 updateUserDisplay();
                 
-                // 【追加】名前を教えた時のキャラ別反応
                 const charKey = document.getElementById('char-selector').value;
                 const response = charData[charKey]?.rename ? charData[charKey].rename(userName) : `${userName}、いい名前だね！`;
                 say(response);
-                
-            } else if (newName) {
-                alert("もう少し短い名前にしてね！");
             }
         }
 
         function resetGame() {
             if (confirm("絆レベルをリセットして、最初からやり直す？")) {
-                love = 50;
                 localStorage.clear();
-                updateStatus();
                 location.reload();
             }
         }
