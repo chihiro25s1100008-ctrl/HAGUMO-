@@ -250,13 +250,12 @@ body {
             });
         }
 
-        function showResult() {
+       function showResult() {
             document.getElementById('question-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'flex';
 
             let maxScore = -1;
             let winners = [];
-
             for(let id in points) {
                 if(points[id] > maxScore) {
                     maxScore = points[id];
@@ -266,24 +265,30 @@ body {
                 }
             }
 
-            // 1. まず先に結果のキャラクターを決定する
             resultCharId = winners[Math.floor(Math.random() * winners.length)];
             const char = characters.find(c => c.id === resultCharId);
 
-            // 2. 画面に表示を反映させる
-            document.getElementById('res-img').src = char.img;
-            document.getElementById('res-name').innerText = char.name;
-            document.getElementById('res-desc').innerText = char.desc;
+            // 1. 【没入感】アニメーション用のクラスをつける
+            const resImg = document.getElementById('res-img');
+            resImg.src = char.img;
+            resImg.classList.remove('animate'); // 一度消してから
+            void resImg.offsetWidth;             // おまじない（再描画）
+            resImg.classList.add('animate');    // アニメーション開始！
 
-            // 3. シェア用の文章を作る
+            document.getElementById('res-name').innerText = char.name;
+
+            // 👑【サンリオ超え】キャラの「不完全な可愛さ」を1文足す
+            const extraDesc = "\n\n（実は今、あなたともっと仲良くなるために、一生懸命「可愛くなる練習」をしてるみたい…！）";
+            document.getElementById('res-desc').innerText = char.desc + extraDesc;
+
             const shareUrl = window.location.href;
             const shareText = `私の運命のパートナーは「${char.name}」でした！ 🌱\nあなたにぴったりのHAGUMOを診断しよう✨\n#HAGUMO`;
 
-            // 4. X(Twitter)のリンクを設定
             document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-
-            // 5. LINEのリンクを設定 (修正ポイント！)
             document.getElementById('share-line').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + "\n" + shareUrl)}`;
+            
+            // 3. 【遊び心】結果が出た瞬間に隠しキャラがチラッと顔を出す
+            document.getElementById('hidden-chara').style.bottom = '10px';
         }
         function goToMyHagumo() {
             localStorage.setItem('hagu_current_char', resultCharId);
