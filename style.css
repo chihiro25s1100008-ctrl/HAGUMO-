@@ -112,3 +112,34 @@ body {
 .btn-x { background-color: #000; }
 .btn-line { background-color: #06C755; }
 .share-btn:active { transform: scale(0.95); opacity: 0.8; }
+
+/* --- 全ページ共通：最強ナビゲーションCSS --- */
+.nav { 
+    position: fixed; top: 0; left: 0; width: 100%; 
+    background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
+    padding: 8px 0;
+}
+.nav-content { 
+    max-width: 1100px; margin: 0 auto; padding: 0 15px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.nav-logo-img { height: 28px; cursor: pointer; }
+.nav-links { 
+    display: flex; flex-wrap: wrap; justify-content: center; 
+    gap: 4px 8px; /* 横の隙間は8px、折り返した時の縦の隙間は4px */
+}
+.nav-link { 
+    color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
+    padding: 4px 8px; border-radius: 20px; transition: 0.3s;
+    background: #fdfdfd; border: 1px solid #f0f0f0;
+}
+.nav-link:hover, .nav-link.active { 
+    color: #ff7eb9; background: #fff5f7; border-color: #ff7eb9;
+}
+
+/* PCサイズになったら横並びにする */
+@media screen and (min-width: 769px) {
+    .nav-content { flex-direction: row; justify-content: space-between; padding: 0 20px; height: 60px; }
+    .nav-logo-img { height: 35px; }
+    .nav-link { font-size: 13px; background: none; border: none; }
+}
