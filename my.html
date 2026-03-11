@@ -62,75 +62,35 @@
         .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
         .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; }
         .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .action-btn span { color: var(--main-pink); font-size: 11px; }
 
         .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
-        footer { text-align: center; padding: 50px 20px; color: #ccc; font-size: 12px; }
-        /* 虹色に輝き、巨大化して震えるアニメーション */
-@keyframes rainbow-glow {
-    0% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(0deg); transform: scale(1.1) rotate(0deg); }
-    25% { transform: scale(1.2) rotate(5deg); }
-    50% { filter: drop-shadow(0 0 35px #00ff00) hue-rotate(180deg); transform: scale(1.15) rotate(0deg); }
-    75% { transform: scale(1.2) rotate(-5deg); }
-    100% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(360deg); transform: scale(1.1) rotate(0deg); }
-}
+        /* 特殊演出 */
+        @keyframes rainbow-glow {
+            0% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(0deg); transform: scale(1.1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(5deg); }
+            50% { filter: drop-shadow(0 0 35px #00ff00) hue-rotate(180deg); transform: scale(1.15) rotate(0deg); }
+            75% { transform: scale(1.2) rotate(-5deg); }
+            100% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(360deg); transform: scale(1.1) rotate(0deg); }
+        }
+        @keyframes screen-shake {
+            0% { transform: translate(0, 0); }
+            10% { transform: translate(-4px, -4px); }
+            20% { transform: translate(4px, 4px); }
+            30% { transform: translate(-4px, 4px); }
+            40% { transform: translate(4px, -4px); }
+            100% { transform: translate(0, 0); }
+        }
+        .max-evolution { animation: rainbow-glow 0.4s infinite linear !important; }
+        .pachinko-shake { animation: screen-shake 0.1s infinite; }
+        .forever-msg { font-size: 22px; font-weight: 900; color: #ff0000; text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 0 0 15px #ff7eb9; animation: pulse 0.5s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
 
-/* 画面全体がガタガタ揺れる（激熱演出） */
-@keyframes screen-shake {
-    0% { transform: translate(0, 0); }
-    10% { transform: translate(-4px, -4px); }
-    20% { transform: translate(4px, 4px); }
-    30% { transform: translate(-4px, 4px); }
-    40% { transform: translate(4px, -4px); }
-    100% { transform: translate(0, 0); }
-}
-
-.max-evolution {
-    animation: rainbow-glow 0.4s infinite linear !important;
-}
-
-.pachinko-shake {
-    animation: screen-shake 0.1s infinite;
-}
-
-/* 特別な「一生一緒」メッセージのデザイン */
-.forever-msg {
-    font-size: 22px;
-    font-weight: 900;
-    color: #ff0000;
-    text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 0 0 15px #ff7eb9;
-    background: linear-gradient(to right, #ff0000, #ff7eb9, #ff0000);
-    -webkit-background-clip: text;
-    background-clip: text;
-    display: inline-block;
-    animation: pulse 0.5s infinite alternate;
-}
-
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-}
-        /* --- 背景パターンの定義 --- */
-/* レベル1: 普通の畑（初期） */
-body.bg-level-1 {
-    background: #fff5f7; /* 今の色 */
-}
-
-/* レベル2: お花が咲いた美容ガーデン（51%〜） */
-body.bg-level-2 {
-    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
-                url('https://www.transparenttextures.com/patterns/cubes.png'), /* 代わりの模様 */
-                #ffe0f0;
-    background-blend-mode: overlay;
-}
-
-/* レベル3: 究極のエステガーデン（100% / 一生一緒モード） */
-body.bg-level-3 {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-    transition: background 1s ease-in-out;
-}
+        /* 背景 */
+        body.bg-level-1 { background: #fff5f7; }
+        body.bg-level-2 { background: #ffe0f0; background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); }
+        body.bg-level-3 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
     </style>
 </head>
 <body>
@@ -178,7 +138,7 @@ body.bg-level-3 {
         </div>
     </div>
 
- <script>
+    <script>
     const charData = {
         buta: {
             welcome: "おかえりぶ！泥遊びするぶ？",
@@ -264,7 +224,7 @@ body.bg-level-3 {
                 { q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] },
                 { q: "静かな湖のほとりで、お昼寝しませんか……？", a: ["最高に贅沢だね", "少しだけなら", "時間がもったいない"], scores: [10, 5, -5] },
                 { q: "この甲羅……ブルーベリーの模様なんです。", a: ["とても素敵だよ", "美味しそうだね", "ちょっと地味かな"], scores: [10, 5, -5] },
-                { q: "主様……無理は、毒ですよ……？", a: ["君に癒やされるよ", "分かってるよ", "放っておいて"], scores: [10, 5, -5] }
+                { q: "主様……無理は, 毒ですよ……？", a: ["君に癒やされるよ", "分かってるよ", "放っておいて"], scores: [10, 5, -5] }
             ],
             farewell: "……さようなら。ゆっくり、思い出に変わりますね……。"
         },
@@ -272,9 +232,9 @@ body.bg-level-3 {
             welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！",
             questions: [
                 { q: "ピーッ！主様の肩に乗ってもいいかなぁ！？", a: ["いつでもおいで！", "重くないならね", "今はダメだよ"], scores: [10, 5, -5] },
-                { q: "桃のジュース、一緒に飲もうよぉ！", a: ["最高に甘いね！", "半分こしよう", "今は欲しくない"], scores: [10, 5, -5] },
+                { q: "桃のジュース, 一緒に飲もうよぉ！", a: ["最高に甘いね！", "半分こしよう", "今は欲しくない"], scores: [10, 5, -5] },
                 { q: "ボク、空を飛ぶの上手になったんだよぉ！", a: ["かっこよかったよ！", "頑張ったね", "低空飛行だったよ"], scores: [10, 5, -5] },
-                { q: "なでなでしてぇ！桃の香りがするでしょ？", a: ["ふわふわでいい香り！", "いい匂いだね", "ちょっと甘すぎ"], scores: [10, 5, -5] },
+                { q: "なでなでしてぁ！桃の香りがするでしょ？", a: ["ふわふわでいい香り！", "いい匂いだね", "ちょっと甘すぎ"], scores: [10, 5, -5] },
                 { q: "主様、ずっと一緒にいてくれるぅ…？", a: ["約束するよ！", "できるだけね", "そのうちね"], scores: [10, 5, -5] }
             ],
             farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ。バイバイ。"
@@ -298,27 +258,23 @@ body.bg-level-3 {
     let talkLog = [];
     let strokeLog = [];
     let userName = localStorage.getItem('hagu_user') || "主様";
-
-    // タイマー管理用
     let cooldowns = { talk: null, stroke: null };
 
     function loadCharStatus(charKey) {
         currentChar = charKey;
         love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
         lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
-        
         talkLog = JSON.parse(localStorage.getItem(`hagu_talk_log_${charKey}`)) || [];
         strokeLog = JSON.parse(localStorage.getItem(`hagu_stroke_log_${charKey}`)) || [];
         
-        // タイマーのリセットと初期チェック
         resetButtonVisuals();
         checkAndStartTimers();
         updateStatus();
     }
 
     function resetButtonVisuals() {
-        clearInterval(cooldowns.talk);
-        clearInterval(cooldowns.stroke);
+        if(cooldowns.talk) clearInterval(cooldowns.talk);
+        if(cooldowns.stroke) clearInterval(cooldowns.stroke);
         document.getElementById('talk-btn').disabled = false;
         document.getElementById('talk-btn').innerText = "💬 おしゃべり";
         document.getElementById('stroke-btn').disabled = false;
@@ -327,29 +283,21 @@ body.bg-level-3 {
 
     function checkAndStartTimers() {
         const now = Date.now();
-        // おしゃべりチェック
         talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000);
-        if (talkLog.length >= 10) {
-            startTimer('talk', talkLog[0] + (30 * 60 * 1000), "💬 おしゃべり");
-        }
-        // なでなでチェック
+        if (talkLog.length >= 10) startTimer('talk', talkLog[0] + (30 * 60 * 1000), "💬 おしゃべり");
+        
         strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000);
-        if (strokeLog.length >= 10) {
-            startTimer('stroke', strokeLog[0] + (5 * 60 * 1000), "👋 なでなで");
-        }
+        if (strokeLog.length >= 10) startTimer('stroke', strokeLog[0] + (5 * 60 * 1000), "👋 なでなで");
     }
 
     function startTimer(type, targetTime, originalText) {
         const btnId = type === 'talk' ? 'talk-btn' : 'stroke-btn';
         const btn = document.getElementById(btnId);
         btn.disabled = true;
-
         if (cooldowns[type]) clearInterval(cooldowns[type]);
-
         cooldowns[type] = setInterval(() => {
             const now = Date.now();
             const diff = targetTime - now;
-
             if (diff <= 0) {
                 clearInterval(cooldowns[type]);
                 btn.innerText = originalText;
@@ -362,100 +310,62 @@ body.bg-level-3 {
         }, 1000);
     }
 
-   function updateStatus() {
-    const now = Date.now();
-    const diff = now - lastUpdate;
-    let loss = 0;
+    function updateStatus() {
+        const now = Date.now();
+        const diff = now - lastUpdate;
+        let loss = 0;
+        if (love > 51) loss = Math.floor(diff / (60 * 1000));
+        else if (love > 0) loss = Math.floor(diff / (60 * 60 * 1000));
 
-    // 絆レベルによる減少ロジック
-    if (love > 51) {
-        loss = Math.floor(diff / (60 * 1000));
-    } else if (love > 0) {
-        loss = Math.floor(diff / (60 * 60 * 1000));
-    }
-
-    if (loss > 0) {
-        love = Math.max(0, love - loss);
-        lastUpdate = now;
-        save();
-    }
-
-    // 表示の更新
-    document.getElementById('love-val').innerText = love;
-    document.getElementById('user-display').innerText = userName + "の絆ルーム";
-    
-    const fill = document.getElementById('love-fill');
-    const sprite = document.getElementById('hagumo-sprite');
-    const bubble = document.getElementById('chat-bubble');
-    const container = document.body;
-
-    fill.style.width = love + "%";
-
-    // --- 背景の着せ替え処理 ---
-    container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
-    if (love >= 100) {
-        container.classList.add('bg-level-3'); // 究極
-    } else if (love > 50) {
-        container.classList.add('bg-level-2'); // 美容ガーデン
-    } else {
-        container.classList.add('bg-level-1'); // 初期
-    }
-
-    // --- 親愛度MAX演出 ---
-    if (love >= 100) {
-        fill.classList.add('max'); 
-        sprite.classList.add('max-evolution');
-        container.classList.add('pachinko-shake');
-        
-        const foreverLines = {
-            buta: "一生一緒だぶ…！もうどこにも行かせないぶ！",
-            imo: "離さないもにょ。土の底まで、主様と一生一緒もにょ…",
-            jaku: "永遠の愛を誓いますわ。主様、私と一生、共に歩んでくださいまし",
-            risu: "ねぇ、ずっとボクだけを見てて？一生一緒だよ！絶対だよ！",
-            tora: "オレ様の情熱は一生お前だけのものだ！ガオーッ！一生一緒だ！",
-            chabo: "…おい、覚悟しろよ。俺はあんたを一生離さねぇからな。",
-            saru: "ウキッ！主が好きすぎて離れられないよ！一生一緒だウッキー！",
-            kame: "ゆっくり、永遠に……。私と一生、一緒にいてくれますね……？",
-            nga: "ピピィッ！主様はボクのもの！一生一緒だよぉ、約束だよぉ！",
-            kuma: "暗闇の中でも、君だけを離さない。……一生、一緒だよ。"
-        };
-        
-        if (document.getElementById('choices').style.display !== "flex") {
-            bubble.innerHTML = `<div class="forever-msg">${foreverLines[currentChar] || "一生一緒だよ…💕"}</div>`;
+        if (loss > 0) {
+            love = Math.max(0, love - loss);
+            lastUpdate = now;
+            save();
         }
-    } else {
-        fill.classList.remove('max');
-        sprite.classList.remove('max-evolution');
-        container.classList.remove('pachinko-shake');
+
+        document.getElementById('love-val').innerText = love;
+        document.getElementById('user-display').innerText = userName + "の絆ルーム";
+        const fill = document.getElementById('love-fill');
+        const sprite = document.getElementById('hagumo-sprite');
+        const bubble = document.getElementById('chat-bubble');
+        const container = document.body;
+        fill.style.width = love + "%";
+
+        container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
+        if (love >= 100) container.classList.add('bg-level-3');
+        else if (love > 50) container.classList.add('bg-level-2');
+        else container.classList.add('bg-level-1');
+
+        if (love >= 100) {
+            fill.classList.add('max'); 
+            sprite.classList.add('max-evolution');
+            container.classList.add('pachinko-shake');
+            const foreverLines = {
+                buta: "一生一緒だぶ…！もうどこにも行かせないぶ！",
+                imo: "離さないもにょ。土の底まで、主様と一生一緒もにょ…",
+                jaku: "永遠の愛を誓いますわ。主様、私と一生、共に歩んでくださいまし",
+                risu: "ねぇ、ずっとボクだけを見てて？一生一緒だよ！絶対だよ！",
+                tora: "オレ様の情熱は一生お前だけのものだ！ガオーッ！一生一緒だ！",
+                chabo: "…おい、覚悟しろよ。俺はあんたを一生離さねぇからな。",
+                saru: "ウキッ！主が好きすぎて離れられないよ！一生一緒だウッキー！",
+                kame: "ゆっくり、永遠に……。私と一生、一緒にいてくれますね……？",
+                nga: "ピピィッ！主様はボクのもの！一生一緒だよぉ、約束だよぉ！",
+                kuma: "暗闇の中でも、君だけを離さない。……一生、一緒だよ。"
+            };
+            if (document.getElementById('choices').style.display !== "flex") {
+                bubble.innerHTML = `<div class="forever-msg">${foreverLines[currentChar] || "一生一緒だよ…💕"}</div>`;
+            }
+        } else {
+            fill.classList.remove('max');
+            sprite.classList.remove('max-evolution');
+            container.classList.remove('pachinko-shake');
+        }
+
+        if (love <= 0) {
+            alert(charData[currentChar]?.farewell || "お別れの時間だぶ…。");
+            resetChar(currentChar);
+        }
     }
-
-    if (love <= 0) {
-        alert(charData[currentChar]?.farewell || "お別れの時間だぶ…。");
-        resetChar(currentChar);
-    }
-}
-     function updateStatus() {
-    // ...（既存の計算コードなどはそのまま）...
-
-    const container = document.body;
-
-    // --- 背景の着せ替え処理を追加 ---
-    container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
-    
-    if (love >= 100) {
-        container.classList.add('bg-level-3'); // 究極
-    } else if (love > 50) {
-        container.classList.add('bg-level-2'); // 美容ガーデン
-    } else {
-        container.classList.add('bg-level-1'); // 初期
-    }
-
-    // --- ここから下は既存のMAX演出コード ---
-    if (love >= 100) {
-        fill.classList.add('max'); 
-        sprite.classList.add('max-evolution');
-        container.classList.add('pachinko-shake');
-        // ...以下略
 
     function save() {
         localStorage.setItem(`hagu_love_${currentChar}`, love);
@@ -468,15 +378,10 @@ body.bg-level-3 {
     function startTalk() {
         const now = Date.now();
         talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000);
-        
-        if (talkLog.length >= 10) {
-            startTimer('talk', talkLog[0] + (30 * 60 * 1000), "💬 おしゃべり");
-            return;
-        }
+        if (talkLog.length >= 10) return;
 
         const data = charData[currentChar];
         const quest = data.questions[Math.floor(Math.random() * data.questions.length)];
-
         document.getElementById('chat-bubble').innerText = quest.q;
         const container = document.getElementById('choices');
         container.innerHTML = "";
@@ -493,10 +398,13 @@ body.bg-level-3 {
                 container.style.display = "none";
                 
                 let reaction = "ありがとう！";
-                if(score >= 10) reaction = "わーい！最高に嬉しい！";
-                if(score < 0) reaction = "えーん、ひどいよ…";
+                if(score >= 10) {
+                    const happyLines = ["お肌がツヤツヤになるぶ！", "この肥料、ビタミンたっぷりもにょ…", "最高に「可愛い」農業ですわ！", "新鮮な野菜パワーがみなぎるよ！", "美容液のような雨が降ってるみたい！"];
+                    reaction = happyLines[Math.floor(Math.random() * happyLines.length)];
+                } else if(score < 0) {
+                    reaction = "そんなの、全然かわいくないぶ…";
+                }
                 document.getElementById('chat-bubble').innerText = reaction;
-                
                 updateStatus();
                 save();
                 checkAndStartTimers();
@@ -508,29 +416,18 @@ body.bg-level-3 {
     function strokeHagumo(e) {
         const now = Date.now();
         strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000);
-        
-        if (strokeLog.length >= 10) {
-            startTimer('stroke', strokeLog[0] + (5 * 60 * 1000), "👋 なでなで");
-            return;
-        }
+        if (strokeLog.length >= 10) return;
 
         love = Math.min(100, love + 1);
         strokeLog.push(now);
-        
-        const x = e.clientX || window.innerWidth / 2;
-        const y = e.clientY || window.innerHeight / 2;
-        createHeart(x, y);
-        
+        createHeart(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
         updateStatus();
         save();
         
-        // 連打防止（0.5秒）
         const btn = document.getElementById('stroke-btn');
         if(btn && !btn.disabled) {
             btn.disabled = true;
-            setTimeout(() => {
-                if(strokeLog.length < 10) btn.disabled = false;
-            }, 500);
+            setTimeout(() => { if(strokeLog.length < 10) btn.disabled = false; }, 500);
         }
         checkAndStartTimers();
     }
@@ -573,4 +470,6 @@ body.bg-level-3 {
         const initialChar = document.getElementById('char-selector').value;
         loadCharStatus(initialChar);
     };
-</script>
+    </script>
+</body>
+</html>
