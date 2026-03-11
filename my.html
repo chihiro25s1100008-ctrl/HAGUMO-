@@ -115,7 +115,7 @@
         </div>
     </div>
 
-    <script>
+   <script>
         const charData = {
             buta: {
                 welcome: "おかえりぶ！泥遊びするぶ？",
@@ -209,7 +209,7 @@
                 welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！",
                 questions: [
                     { q: "ピーッ！主様の肩に乗ってもいいかなぁ！？", a: ["いつでもおいで！", "重くないならね", "今はダメだよ"], scores: [10, 5, -5] },
-                    { q: "桃のジュース、一緒に飲もうよぉ！", a: ["最高に甘いね！", "半分こしよう", "今は欲しくない"], scores: [10, 5, -5] },
+                    { q: "桃のジュース、一緒に飲おうよぉ！", a: ["最高に甘いね！", "半分こしよう", "今は欲しくない"], scores: [10, 5, -5] },
                     { q: "ボク、空を飛ぶの上手になったんだよぉ！", a: ["かっこよかったよ！", "頑張ったね", "低空飛行だったよ"], scores: [10, 5, -5] },
                     { q: "なでなでしてぇ！桃の香りがするでしょ？", a: ["ふわふわでいい香り！", "いい匂いだね", "ちょっと甘すぎ"], scores: [10, 5, -5] },
                     { q: "主様、ずっと一緒にいてくれるぅ…？", a: ["約束するよ！", "できるだけね", "そのうちね"], scores: [10, 5, -5] }
@@ -226,6 +226,170 @@
                     { q: "君の笑顔は……イチジクの蜜よりも、甘いね。", a: ["照れるけど嬉しいな", "ありがとう", "大げさだよ"], scores: [10, 5, -5] }
                 ],
                 farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
+            }
+        };
+
+        let currentChar = "buta";
+        let love = 50;
+        let lastUpdate = Date.now();
+        let talkLog = [];
+        let strokeLog = [];
+        let userName = localStorage.getItem('hagu_user') || "主様";
+
+        // キャラクターの状態を個別にロードする
+        function loadCharStatus(charKey) {
+            currentChar = charKey;
+            love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
+            lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
+            
+            // 制限ログは操作感を共通にするため共通キーを使用
+            talkLog = JSON.parse(localStorage.getItem('hagu_talk_log')) || [];
+            strokeLog = JSON.parse(localStorage.getItem('hagu_stroke_log')) || [];
+            
+            updateStatus();
+        }
+
+        function updateStatus() {
+            const now = Date.now();
+            const diff = now - lastUpdate;
+            let loss = 0;
+
+            if (love > 51) {
+                loss = Math.floor(diff / (60 * 1000)); // 1分に1
+            } else if (love > 0) {
+                loss = Math.floor(diff / (60 * 60 * 1000)); // 1時間に1
+            }
+
+            if (loss > 0) {
+                love = Math.max(0, love - loss);
+                lastUpdate = now;
+                save();
+            }
+
+            document.getElementById('love-val').innerText = love;
+            document.getElementById('user-display').innerText = userName + "の絆ルーム";
+            const fill = document.getElementById('love-fill');
+            fill.style.width = love + "%";
+            
+            if (love >= 100) fill.classList.add('max'); 
+            else fill.classList.remove('max');
+
+            if (love <= 0) {
+                alert(charData[currentChar]?.farewell || "お別れの時間だぶ…。");
+                resetChar(currentChar);
+            }
+        }
+
+        function save() {
+            localStorage.setItem(`hagu_love_${currentChar}`, love);
+            localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
+            localStorage.setItem('hagu_talk_log', JSON.stringify(talkLog));
+            localStorage.setItem('hagu_stroke_log', JSON.stringify(strokeLog));
+            localStorage.setItem('hagu_user', userName);
+        }
+
+        function startTalk() {
+            const now = Date.now();
+            talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000);
+            if (talkLog.length >= 5) {
+                alert("おしゃべりは30分に5回までだよ！");
+                return;
+            }
+
+            const data = charData[currentChar];
+            const quest = data.questions[Math.floor(Math.random() * data.questions.length)];
+
+            document.getElementById('chat-bubble').innerText = quest.q;
+            const container = document.getElementById('choices');
+            container.innerHTML = "";
+            container.style.display = "flex";
+
+            quest.a.forEach((text, i) => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn";
+                btn.innerText = text;
+                btn.onclick = () => {
+                    const score = quest.scores[i];
+                    love = Math.min(100, Math.max(0, love + score));
+                    talkLog.push(Date.now());
+                    container.style.display = "none";
+                    
+                    let reaction = "ありがとう！";
+                    if(score >= 10) reaction = "わーい！最高に嬉しい！";
+                    if(score < 0) reaction = "えーん、ひどいよ…";
+                    document.getElementById('chat-bubble').innerText = reaction;
+                    
+                    updateStatus();
+                    save();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function strokeHagumo(e) {
+            const now = Date.now();
+            strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000);
+            if (strokeLog.length >= 10) {
+                alert("なでなでは5分間に10回までだよ！");
+                return;
+            }
+
+            love = Math.min(100, love + 1);
+            strokeLog.push(now);
+            
+            const x = e.clientX || window.innerWidth / 2;
+            const y = e.clientY || window.innerHeight / 2;
+            createHeart(x, y);
+            
+            updateStatus();
+            save();
+            
+            const btn = document.getElementById('stroke-btn');
+            if(btn) {
+                btn.disabled = true;
+                setTimeout(() => btn.disabled = false, 500);
+            }
+        }
+
+        function createHeart(x, y) {
+            const h = document.createElement('div');
+            h.className = 'heart'; h.innerHTML = '❤';
+            h.style.left = x + 'px'; h.style.top = y + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1500);
+        }
+
+        function changeChar() {
+            const key = document.getElementById('char-selector').value;
+            document.getElementById('hagumo-sprite').src = `./images/${key}.PNG`;
+            document.getElementById('chat-bubble').innerText = charData[key]?.welcome || "よろしくね！";
+            document.getElementById('choices').style.display = "none";
+            
+            // 切り替え時にそのキャラのステータスをロード
+            loadCharStatus(key);
+        }
+
+        function resetChar(charKey) {
+            localStorage.removeItem(`hagu_love_${charKey}`);
+            localStorage.removeItem(`hagu_time_${charKey}`);
+            location.reload();
+        }
+
+        function renameUser() {
+            const newName = prompt("新しい名前を入力してね", userName);
+            if (newName) {
+                userName = newName;
+                save();
+                updateStatus();
+            }
+        }
+
+        setInterval(updateStatus, 10000); 
+        window.onload = () => {
+            const initialChar = document.getElementById('char-selector').value;
+            loadCharStatus(initialChar);
+        };
+    </script>
             }
         };
 
