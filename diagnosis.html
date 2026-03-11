@@ -146,11 +146,36 @@
 
     <script>
         const questions = [
-            { q: "休日の過ごし方は？", a: [{ t: "家でのんびり癒やされたい", p: ["buta", "nga", "kuma"] }, { t: "外に出てアクティブに遊ぶ！", p: ["tora", "chabo", "risu"] }, { t: "趣味や勉強に没頭する", p: ["kame", "imo", "jaku"] }, { t: "気まぐれにふらっと出かける", p: ["saru"] }] },
-            { q: "周りからどんな性格って言われる？", a: [{ t: "優しくて聞き上手", p: ["buta", "imo"] }, { t: "明るいムードメーカー", p: ["chabo", "tora", "nga"] }, { t: "落ち着いていてミステリアス", p: ["kuma", "kame", "jaku"] }, { t: "個性的で自由人", p: ["saru", "risu"] }] },
-            { q: "解決したい肌や体の悩みは？", a: [{ t: "乾燥してカサカサする", p: ["nga", "chabo"] }, { t: "透明感がなく、くすみがち", p: ["buta", "tora"] }, { t: "むくみや疲れを取りたい", p: ["risu", "saru"] }, { t: "スマホやPCで目が疲れている", p: ["kame", "jaku"] }] },
-            { q: "直感で選ぶなら、どの色が好き？", a: [{ t: "情熱的なレッド系", p: ["tora", "chabo"] }, { t: "可愛いピンク・ホワイト系", p: ["nga", "buta"] }, { t: "クールなブルー・パープル系", p: ["kame", "jaku", "kuma"] }, { t: "フレッシュなイエロー・グリーン系", p: ["saru", "risu", "imo"] }] },
-            { q: "パートナーに求めるものは？", a: [{ t: "癒やしと安心感", p: ["buta", "nga", "chabo"] }, { t: "刺激と元気", p: ["saru", "tora", "risu"] }, { t: "信頼感とサポート", p: ["kame", "jaku"] }, { t: "ブレない軸と努力", p: ["imo", "kuma"] }] }
+            { q: "休日の過ごし方は？", a: [
+                { t: "家でのんびり癒やされたい", p: ["buta", "nga", "kuma"] }, 
+                { t: "外に出てアクティブに遊ぶ！", p: ["tora", "chabo", "risu"] }, 
+                { t: "趣味や勉強に没頭する", p: ["kame", "imo", "jaku"] }, 
+                { t: "気まぐれにふらっと出かける", p: ["saru"] }
+            ]},
+            { q: "周りからどんな性格って言われる？", a: [
+                { t: "優しくて聞き上手", p: ["buta", "imo"] }, 
+                { t: "明るいムードメーカー", p: ["chabo", "tora", "nga"] }, 
+                { t: "落ち着いていてミステリアス", p: ["kuma", "kame"] }, 
+                { t: "個性的で自由人", p: ["saru", "risu", "jaku"] } // jakuをここへ移動
+            ]},
+            { q: "解決したい肌や体の悩みは？", a: [
+                { t: "乾燥してカサカサする", p: ["nga", "chabo"] }, 
+                { t: "透明感がなく、くすみがち", p: ["buta", "tora"] }, 
+                { t: "むくみや疲れを取りたい", p: ["risu", "saru"] }, 
+                { t: "スマホやPCで目が疲れている", p: ["kame", "jaku"] }
+            ]},
+            { q: "直感で選ぶなら、どの色が好き？", a: [
+                { t: "情熱的なレッド系", p: ["tora", "chabo"] }, 
+                { t: "可愛いピンク・ホワイト系", p: ["nga", "buta"] }, 
+                { t: "クールなブルー・パープル系", p: ["kame", "jaku", "kuma"] }, 
+                { t: "フレッシュなイエロー・グリーン系", p: ["saru", "risu", "imo"] }
+            ]},
+            { q: "パートナーに求めるものは？", a: [
+                { t: "癒やしと安心感", p: ["buta", "nga", "chabo"] }, 
+                { t: "刺激と元気", p: ["saru", "tora", "risu"] }, 
+                { t: "信頼感とサポート", p: ["kame"] }, // jakuをここから外しました
+                { t: "ブレない軸と努力", p: ["imo", "kuma", "jaku"] } // jakuをここへ移動
+            ]}
         ];
 
         const characters = [
@@ -169,6 +194,9 @@
         let currentIdx = 0;
         let points = {};
         let resultCharId = "";
+
+        // スコアの初期化
+        characters.forEach(c => { points[c.id] = 0; });
 
         function showNext() {
             const q = questions[currentIdx];
@@ -194,13 +222,22 @@
             document.getElementById('question-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'flex';
 
-            let bestId = "buta";
             let maxScore = -1;
+            let winners = [];
+
             for(let id in points) {
-                if(points[id] > maxScore) { maxScore = points[id]; bestId = id; }
+                if(points[id] > maxScore) {
+                    maxScore = points[id];
+                    winners = [id];
+                } else if(points[id] === maxScore) {
+                    winners.push(id);
+                }
             }
-            const char = characters.find(c => c.id === bestId);
-            resultCharId = bestId;
+
+            // 同点時のランダム選出（これで100%くがめになるのを防ぎます）
+            resultCharId = winners[Math.floor(Math.random() * winners.length)];
+
+            const char = characters.find(c => c.id === resultCharId);
 
             document.getElementById('res-img').src = char.img;
             document.getElementById('res-name').innerText = char.name;
@@ -212,9 +249,7 @@
         }
 
         function goToMyHagumo() {
-            // お部屋（my.html）が読み込む変数名に保存
             localStorage.setItem('hagu_current_char', resultCharId);
-            // URLに情報を載せて移動（これで確実に連動します）
             location.href = 'my.html?chara=' + resultCharId;
         }
 
