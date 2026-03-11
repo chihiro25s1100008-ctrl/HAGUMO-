@@ -10,7 +10,7 @@
         
         body { font-family: 'Zen Maru Gothic', sans-serif; background: white; margin: 0; padding-top: 100px; overflow-x: hidden; color: #555; }
 
-        /* --- ナビゲーション（共通） --- */
+        /* --- ナビゲーション --- */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
@@ -77,7 +77,7 @@
         .message-section h2 { color: var(--pink2); font-size: 22px; margin-bottom: 20px; }
         .message-section p { font-size: 14px; line-height: 1.8; color: #888; }
 
-        /* ストーリーグリッド（01〜04） */
+        /* ストーリーグリッド */
         .story-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px; padding: 40px 20px; max-width: 1100px; margin: 0 auto;
@@ -95,15 +95,20 @@
         /* 美容活用セクション */
         .beauty-tip-box {
             background: #fffafa; border: 3px dashed var(--pink1);
-            max-width: 900px; margin: 60px auto; padding: 40px 20px; border-radius: 40px; text-align: center;
+            max-width: 900px; width: 90%; margin: 60px auto; padding: 40px 20px; border-radius: 40px; text-align: center;
         }
-        .tip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-        .tip-item { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .tip-item b { color: var(--pink2); display: block; margin-bottom: 8px; }
+        .tip-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            margin-top: 30px; 
+        }
+        .tip-item { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; }
+        .tip-item b { color: var(--pink2); display: block; margin-bottom: 10px; font-size: 16px; text-align: center; }
 
         /* ポジティブ感情セクション */
         .emotion-grid {
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 40px 20px;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px 20px 40px;
         }
         .emotion-tag {
             background: white; border: 2px solid var(--pink1); color: var(--pink2);
@@ -174,17 +179,17 @@
             <div class="story-card reveal">
                 <span class="step-num">STEP 02</span>
                 <h3>絆を育てる</h3>
-                <p>毎日の成長を写真でアプリに報告。ハグモたちとコミュニケーションを取りながら楽しく栽培を続けます。育て方に困ったら課金でマンツーマン相談！</p>
+                <p>毎日の成長を写真でアプリに報告。ハグモたちとコミュニケーションを取りながら楽しく栽培を続けます。育て方に困ったら専門家に相談！</p>
             </div>
             <div class="story-card reveal">
                 <span class="step-num">STEP 03</span>
                 <h3>魔法の美容法</h3>
-                <p>収穫した野菜の写真を送ると、一番栄養が高い状態での「美容活用ガイド」への課金が可能。自分の野菜で自分を磨く魔法を体験。</p>
+                <p>収穫した野菜の写真を送ると、一番栄養が高い状態での「美容活用ガイド」が見られるように。自分の野菜で自分を磨く魔法を体験。</p>
             </div>
             <div class="story-card reveal">
                 <span class="step-num">STEP 04</span>
                 <h3>ご褒美グッズ</h3>
-                <p>育成達成度に合わせて、ここでしか手に入らないキャラクターグッズがランダムで届きます。目指せ全種コンプリート！</p>
+                <p>育成達成度に合わせて、ここでしか手に入らないキャラクターグッズが届きます。目指せ全種コンプリート！</p>
             </div>
         </div>
 
@@ -192,15 +197,13 @@
             <h2 style="color: var(--pink2); margin: 0;">✨ 自分で作る、世界に一つの美容ケア ✨</h2>
             <p style="font-size: 13px; color: #888; margin-top: 10px;">収穫したてだからできる、贅沢な活用方法の一例</p>
             <div class="tip-grid">
-                                <div class="tip-item">
+                <div class="tip-item">
                     <b>🍅 トマトパック</b>
-                    <p style="font-size: 12px; margin: 0;">完熟トマトをすり潰し、少量のハチミツを混ぜ、洗顔後の顔にのせて5〜10分置き、ぬるま湯で洗い流します。
-。</p>
+                    <p style="font-size: 12px; margin: 0;">完熟トマトをすり潰し、少量のハチミツを混ぜ、洗顔後の顔にのせて5〜10分置き、ぬるま湯で洗い流します。</p>
+                </div>
                 <div class="tip-item">
                     <b>🍋 ビタミンレモン風呂</b>
-                    <p style="font-size: 12px; margin: 0;">絞りかすのレモンに直接指先を詰めて、数分キープ。爪の黄ばみが取れて、清潔感のある明るい爪になります。</p>
-                </div>
-              
+                    <p style="font-size: 12px; margin: 0;">絞りかすのレモンを湯船に入れたり、直接指先を詰めて数分キープ。明るく清潔感のある肌や爪を目指せます。</p>
                 </div>
             </div>
         </div>
@@ -214,7 +217,7 @@
             </div>
         </div>
 
-        <div style="text-align: center; padding: 40px 20px 100px;">
+        <div style="text-align: center; padding: 40px 20px 100px;" class="reveal">
             <p style="color: #aaa; font-weight: bold; font-size: 14px;">さあ、あなたにぴったりのパートナーに会いに行こう</p>
             <a href="hagumo.html" class="big-button">HAGUMO図鑑をみる 🐿️</a>
         </div>
