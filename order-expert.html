@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EXPERT KIT | HAGUMO</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -16,8 +16,9 @@
             font-family: 'Zen Maru Gothic', sans-serif; 
             background: #fffafb; 
             margin: 0; 
-            padding-top: 100px; 
+            padding-top: 80px; 
             color: #444;
+            overflow-x: hidden;
         }
 
         /* --- ナビゲーション --- */
@@ -36,63 +37,69 @@
         }
 
         /* --- コンテンツレイアウト --- */
-        .order-hero { background: linear-gradient(135deg, #fff 0%, var(--expert-orange) 100%); padding: 40px 20px; text-align: center; }
-        .container { max-width: 1000px; margin: -20px auto 60px; padding: 30px; display: grid; grid-template-columns: 1fr; gap: 30px; background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); box-sizing: border-box; }
+        .order-hero { background: linear-gradient(135deg, #fff 0%, var(--expert-orange) 100%); padding: 30px 20px; text-align: center; }
+        .container { 
+            max-width: 1000px; margin: 0 auto 60px; padding: 20px; 
+            display: grid; grid-template-columns: 1fr; gap: 20px; 
+            background: white; border-radius: 30px; box-sizing: border-box; 
+        }
 
-        @media screen and (min-width: 769px) { .container { grid-template-columns: 1fr 1fr; padding: 50px; margin-top: 20px; } }
+        @media screen and (min-width: 769px) { 
+            .container { grid-template-columns: 1fr 1fr; padding: 50px; margin-top: 20px; border-radius: 40px; gap: 40px; } 
+        }
 
         /* --- 画像・選択セクション --- */
-        .image-section { position: -webkit-sticky; position: sticky; top: 90px; z-index: 100; background: white; padding: 10px; border-bottom: 2px solid var(--expert-orange); margin-bottom: 10px; }
-        @media screen and (min-width: 769px) { .image-section { position: relative; top: 0; border: none; } }
-
-        .main-img-box { background: #fafafa; border-radius: 30px; padding: 15px; display: flex; justify-content: center; overflow: hidden; }
-        .main-img { width: 100%; height: 200px; object-fit: contain; transition: 0.5s; }
-        @media screen and (min-width: 769px) { .main-img { height: 300px; } }
+        .image-section { position: relative; width: 100%; }
+        .main-img-box { background: #fafafa; border-radius: 25px; padding: 15px; display: flex; justify-content: center; align-items: center; }
+        .main-img { width: 100%; height: 220px; object-fit: contain; transition: 0.4s ease; }
+        @media screen and (min-width: 769px) { .main-img { height: 320px; } }
 
         /* キャラ選択カード */
-        .thumb-list { margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .thumb-item { cursor: pointer; text-align: center; transition: 0.3s; }
+        .thumb-list { margin-top: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .thumb-item { cursor: pointer; text-align: center; }
         .thumb-img { 
             width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; 
-            border: 3px solid #f0f0f0; border-radius: 20px; padding: 8px; background: #fff; 
-            transition: 0.3s; opacity: 0.6; box-sizing: border-box;
+            border: 3px solid #f8f8f8; border-radius: 15px; padding: 5px; background: #fff; 
+            transition: 0.3s; opacity: 0.5; box-sizing: border-box;
         }
         .thumb-name { font-size: 10px; color: #aaa; margin-top: 5px; font-weight: bold; }
 
-        /* 選択中のスタイル（EXPERT用ブラウン） */
+        /* 選択中のスタイル */
         .thumb-item.active .thumb-img { 
             border-color: var(--text-brown); opacity: 1; background: var(--expert-orange); 
-            transform: translateY(-5px); box-shadow: 0 8px 15px rgba(133, 93, 16, 0.15);
+            transform: scale(1.05); box-shadow: 0 5px 15px rgba(133, 93, 16, 0.1);
         }
         .thumb-item.active .thumb-name { color: var(--text-brown); }
 
         /* --- テキストセクション --- */
-        .char-tag { display: inline-block; padding: 6px 16px; border-radius: 10px; font-size: 12px; background: var(--expert-orange); color: var(--text-brown); margin-bottom: 15px; font-weight: bold; }
-        .price { font-size: 36px; font-weight: bold; color: #333; margin: 10px 0; }
-        .price span { font-size: 16px; margin-left: 4px; }
+        .info-section { padding: 10px 5px; }
+        .char-tag { display: inline-block; padding: 5px 12px; border-radius: 8px; font-size: 11px; background: var(--expert-orange); color: var(--text-brown); margin-bottom: 12px; font-weight: bold; }
+        .price { font-size: 32px; font-weight: bold; color: #333; margin: 10px 0; }
+        .price span { font-size: 14px; margin-left: 4px; }
 
-        .reward-box { background: #fffaf0; padding: 20px; border-radius: 25px; border: 2px solid #ffdaeb; margin: 20px 0; }
-        .reward-box h4 { margin: 0 0 10px; font-size: 15px; color: var(--main-pink); }
+        .reward-box { background: #fffdf9; padding: 18px; border-radius: 20px; border: 2px solid #ffdaeb; margin: 20px 0; }
+        .reward-box h4 { margin: 0 0 8px; font-size: 14px; color: var(--main-pink); }
+        .reward-box p { font-size: 12px; line-height: 1.6; color: #666; }
+
+        .selection-summary { background: #fdfdfd; padding: 15px; border-radius: 18px; border: 1px solid #eee; margin-bottom: 25px; }
+        .selection-summary b { color: var(--text-brown); font-size: 15px; }
 
         .btn-order { 
             background: linear-gradient(90deg, #ff7eb9, #ff9a9e); color: white; border: none; 
-            padding: 18px; width: 100%; border-radius: 50px; font-size: 18px; font-weight: bold; 
-            cursor: pointer; box-shadow: 0 10px 20px rgba(255,126,185,0.3); transition: 0.3s; 
+            padding: 18px; width: 100%; border-radius: 50px; font-size: 16px; font-weight: bold; 
+            cursor: pointer; box-shadow: 0 8px 15px rgba(255,126,185,0.25); transition: 0.3s; 
+            -webkit-tap-highlight-color: transparent;
         }
-        .btn-order:active { transform: translateY(3px); box-shadow: none; }
+        .btn-order:active { transform: scale(0.98); box-shadow: none; }
 
-        /* 戻るボタンのスタイル */
         .btn-back {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin-top: 15px; padding: 15px; color: #aaa; text-decoration: none;
-            font-size: 14px; font-weight: bold; border: 2px solid #eee;
-            border-radius: 50px; transition: 0.3s; background: transparent;
+            margin-top: 15px; padding: 12px; color: #bbb; text-decoration: none;
+            font-size: 13px; font-weight: bold; border-radius: 50px;
         }
-        .btn-back span { font-size: 18px; transition: 0.3s; }
-        .btn-back:hover { background: #fdfdfd; color: var(--main-pink); border-color: var(--pink1); }
-        .btn-back:hover span { transform: translateX(-5px); }
+        .btn-back:hover { color: var(--main-pink); }
 
-        .footer-notice { background: #fff0f5; padding: 60px 20px; text-align: center; border-top: 2px dashed var(--main-pink); }
+        .footer-notice { background: #fff0f5; padding: 50px 20px; text-align: center; border-top: 2px dashed var(--main-pink); }
     </style>
 </head>
 <body>
@@ -112,9 +119,9 @@
     </nav>
 
     <div class="order-hero">
-        <span style="font-weight:bold; color:var(--text-brown); font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Rank B : Expert Kit</span>
-        <h1 style="color:var(--main-pink); margin:8px 0; font-size: 24px;">こだわり美肌菜園セット</h1>
-        <p style="font-size: 13px; color: #666; font-weight: bold;">自分磨きも、推し活も。本格的な美容パックに挑戦。</p>
+        <span style="font-weight:bold; color:var(--text-brown); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; background: #fff; padding: 2px 10px; border-radius: 10px;">Rank B : Expert Kit</span>
+        <h1 style="color:var(--main-pink); margin:10px 0; font-size: 22px;">こだわり美肌菜園セット</h1>
+        <p style="font-size: 12px; color: #666; font-weight: bold; margin: 0;">自分磨きも、推し活も。本格的な美容パックに挑戦。</p>
     </div>
 
     <div class="container">
@@ -136,41 +143,41 @@
                     <div class="thumb-name">かぼちゃぼ</div>
                 </div>
             </div>
-            <p style="text-align:center; font-size:10px; color:#ccc; margin-top:15px; font-weight: bold;">タップしてパートナーを選択 🐿️</p>
+            <p style="text-align:center; font-size:10px; color:#ddd; margin-top:12px; font-weight: bold;">タップしてパートナーを選択 🐿️</p>
         </div>
 
         <div class="info-section">
             <div id="char-name-tag" class="char-tag">パートナー： きゅうりす（きゅうり）</div>
-            <h2 style="margin:0; font-size: 20px; color: #333;">HAGUMO育成キット（EXPERT）</h2>
+            <h2 style="margin:0; font-size: 18px; color: #333; line-height: 1.4;">HAGUMO育成キット（EXPERT）</h2>
             <div class="price">2,980<span>円（税込）</span></div>
             
             <div class="reward-box">
                 <h4>🎁 コンプリート報酬（郵送）</h4>
-                <p style="font-size:13px; line-height:1.7; margin:0;">
+                <p>
                     <b>・成長報告：</b>お揃いランダム洗顔ヘアバンド<br>
-                    <b>・収穫報告：</b>秘伝パックレシピBOOK　ランダムキーホルダー
+                    <b>・収穫報告：</b>秘伝レシピBOOK ＆ キーホルダー
                 </p>
             </div>
 
-            <div style="background: #fdfdfd; padding: 15px; border-radius: 20px; border: 1px solid #f0f0f0; margin-bottom: 25px;">
-                <span style="font-size: 11px; color: #999; font-weight: bold;">現在の選択：</span><br>
-                <span id="selected-display" style="color: var(--text-brown); font-weight: bold; font-size: 15px;">きゅうりす（きゅうり）</span><br>
-                <span style="font-size: 10px; color: #bbb; display: block; margin-top: 5px;">※上級者向けガイド・大容量培養土が含まれます。</span>
+            <div class="selection-summary">
+                <span style="font-size: 10px; color: #999; font-weight: bold;">現在の選択：</span><br>
+                <b id="selected-display">きゅうりす（きゅうり）</b><br>
+                <span style="font-size: 10px; color: #bbb; display: block; margin-top: 4px;">※上級者向けガイド・大容量培養土が含まれます。</span>
             </div>
 
             <button class="btn-order" onclick="orderEffect()">この子をお迎え（契約）する 🐿️</button>
             
             <a href="product.html" class="btn-back">
-                <span>←</span> 他のプランも見る
+                他のプランも見る
             </a>
         </div>
     </div>
 
     <footer class="footer-notice">
-        <p style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px;">🎀 HAGUMO project 🎀</p>
-        <p style="font-size: 11px; color: #888; line-height: 1.5;">
+        <p style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px; font-size: 14px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 10px; color: #888; line-height: 1.6; max-width: 300px; margin: 0 auto;">
             これは学校の授業用課題サイトです。<br>
-            実際の商品の販売・発送、および個人情報の収集は行っておりません。
+            実際の商品の販売・発送は行っておりません。
         </p>
     </footer>
 
@@ -179,10 +186,13 @@
             const newSrc = element.querySelector('.thumb-img').src;
             const mainImg = document.getElementById('main-img');
             
-            mainImg.style.opacity = '0';
+            mainImg.style.opacity = '0.3';
+            mainImg.style.transform = 'scale(0.95)';
+            
             setTimeout(() => {
                 mainImg.src = newSrc;
                 mainImg.style.opacity = '1';
+                mainImg.style.transform = 'scale(1)';
             }, 200);
 
             document.getElementById('char-name-tag').innerText = "パートナー： " + name + "（" + type + "）";
@@ -204,12 +214,10 @@
                 message = "「ガオーッ！キミの美肌への情熱、ボクが真っ赤に燃え上がらせてあげるよ！」";
             } else if (name.includes("かぼちゃぼ")) {
                 message = "「…ん、お迎えありがとう。ボクと一緒に、じっくり、一歩ずつ育てようね。」";
-            } else {
-                message = name + " との新しい生活が始まります！";
             }
 
             alert(message);
-            alert("【EXPERTキット お申し込み完了】\n\n" + name + "との契約を承りました！\n\n※授業用課題のため実際には発送されません。");
+            alert("【EXPERTキット お申し込み完了】\n\n" + name + "との契約を承りました！\n\n※デモ画面のため実際には発送されません。");
         }
     </script>
 </body>
