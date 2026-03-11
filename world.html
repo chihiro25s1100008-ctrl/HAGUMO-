@@ -7,28 +7,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; }
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: white; margin: 0; padding-top: 70px; overflow-x: hidden; color: #555; }
+        
+        /* スマホでナビに隠れないよう余白を多めに */
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: white; margin: 0; padding-top: 100px; overflow-x: hidden; color: #555; }
 
-        /* --- 共通ナビゲーション --- */
-        .nav { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: white; z-index: 5000; border-bottom: 2px solid #fff0f6; display: flex; align-items: center; }
-        .nav-content { width: 100%; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; }
-        .nav-logo-img { height: 35px; cursor: pointer; flex-shrink: 0; }
-        .nav-links { display: flex; gap: 15px; }
-        .nav-link { color: #888; text-decoration: none; font-size: 13px; font-weight: bold; padding: 5px 2px; position: relative; transition: 0.3s; white-space: nowrap; }
-        .nav-link:hover, .nav-link.active { color: var(--main-pink); }
-        .nav-link.active::after { content: ""; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: var(--main-pink); }
+        /* --- 【決定版】スマホ対応ナビゲーション --- */
+        .nav { 
+            position: fixed; top: 0; left: 0; width: 100%; 
+            background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
+            padding: 8px 0;
+        }
+        .nav-content { 
+            max-width: 1100px; margin: 0 auto; padding: 0 15px;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+        }
+        .nav-logo-img { height: 28px; cursor: pointer; }
+        .nav-links { 
+            display: flex; flex-wrap: wrap; justify-content: center; 
+            gap: 4px 8px;
+        }
+        .nav-link { 
+            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
+            padding: 4px 8px; border-radius: 20px; transition: 0.3s;
+            background: #fdfdfd; border: 1px solid #f0f0f0;
+        }
+        .nav-link:hover, .nav-link.active { 
+            color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink);
+        }
+
+        @media screen and (min-width: 769px) {
+            body { padding-top: 80px; }
+            .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
+            .nav-logo-img { height: 35px; }
+            .nav-link { font-size: 13px; background: none; border: none; }
+        }
 
         /* ワールドヒーロー */
         .world-hero {
-            padding: 100px 20px 80px;
+            padding: 60px 20px 80px;
             background: linear-gradient(to bottom, #fff0f6, #ffffff);
             text-align: center;
             border-radius: 0 0 60px 60px;
         }
         .world-hero h1 { 
-            font-size: 36px; 
+            font-size: clamp(32px, 8vw, 48px); 
             color: var(--pink2); 
-            margin: 0 0 15px; 
+            margin: 0 0 10px; 
             letter-spacing: 4px;
             font-weight: 700;
         }
@@ -36,20 +60,21 @@
         /* コンセプトボックス */
         .concept-box {
             max-width: 850px;
-            margin: -40px auto 80px;
+            width: 90%;
+            margin: -30px auto 60px;
             background: white;
-            padding: 50px 30px;
-            border-radius: 50px;
+            padding: 40px 20px;
+            border-radius: 40px;
             box-shadow: 0 20px 50px rgba(255,126,185,0.12);
             text-align: center;
             position: relative;
             z-index: 10;
         }
         .concept-title {
-            font-size: 20px;
+            font-size: 18px;
             color: var(--pink2);
             font-weight: bold;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             display: inline-block;
             position: relative;
         }
@@ -57,84 +82,89 @@
             content: ""; position: absolute; bottom: -5px; left: 10%; width: 80%; height: 3px; background: var(--pink1); border-radius: 3px;
         }
         .concept-text {
-            font-size: 16px;
-            line-height: 2.2;
+            font-size: 14px;
+            line-height: 2;
             color: #666;
-            text-align: center; /* 中央揃えでポエム風に */
+            text-align: center;
+        }
+        @media screen and (min-width: 769px) {
+            .concept-box { padding: 50px 30px; margin-top: -40px; }
+            .concept-text { font-size: 16px; line-height: 2.2; }
         }
 
         /* ビジュアルボード */
         .visual-placeholder {
             width: 90%;
             max-width: 700px;
-            height: 350px;
-            margin: 60px auto;
+            min-height: 250px;
+            margin: 40px auto;
             background: linear-gradient(135deg, #fff5f7 0%, #ffeef4 100%);
-            border-radius: 50px;
+            border-radius: 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             border: 3px dashed var(--pink1);
             color: var(--pink2);
-            position: relative;
+            padding: 20px;
+            text-align: center;
         }
-        .visual-placeholder h2 { font-size: 26px; margin-bottom: 12px; font-weight: 700; }
-        .visual-placeholder p { font-size: 15px; opacity: 0.7; font-weight: bold; }
+        .visual-placeholder h2 { font-size: clamp(20px, 5vw, 26px); margin-bottom: 8px; font-weight: 700; }
+        .visual-placeholder p { font-size: 13px; opacity: 0.7; font-weight: bold; }
 
         /* ストーリーグリッド */
         .story-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
             padding: 40px 20px;
             max-width: 1100px;
             margin: 0 auto;
         }
         .story-card {
-            padding: 40px 30px;
+            padding: 30px 25px;
             background: white;
-            border-radius: 40px;
+            border-radius: 35px;
             border: 2px solid var(--soft-pink);
             transition: 0.4s;
             box-shadow: 0 10px 20px rgba(0,0,0,0.02);
         }
-        .story-card:hover { transform: translateY(-10px); border-color: var(--pink1); box-shadow: 0 15px 30px rgba(255,126,185,0.1); }
+        .story-card:hover { transform: translateY(-5px); border-color: var(--pink1); }
         .story-card h3 {
             color: var(--pink2);
-            margin: 0 0 20px;
-            font-size: 1.2rem;
+            margin: 0 0 15px;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 700;
         }
-        .story-card p { font-size: 14px; color: #777; line-height: 1.8; margin: 0; }
+        .story-card p { font-size: 13px; color: #777; line-height: 1.7; margin: 0; }
 
         /* ボタン */
         .big-button {
             display: inline-block;
             background: var(--main-pink);
             color: white;
-            padding: 22px 60px;
+            padding: 18px 40px;
             border-radius: 100px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 8px 0 var(--pink2);
+            font-size: 16px;
+            box-shadow: 0 6px 0 var(--pink2);
             transition: 0.3s;
-            margin-top: 60px;
+            margin-top: 40px;
         }
-        .big-button:hover { background: #ff94c6; transform: translateY(-2px); box-shadow: 0 10px 0 var(--pink2); }
-        .big-button:active { transform: translateY(6px); box-shadow: 0 2px 0 var(--pink2); }
+        .big-button:hover { background: #ff94c6; transform: translateY(-2px); box-shadow: 0 8px 0 var(--pink2); }
+        .big-button:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--pink2); }
 
         /* アニメーション */
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1s all ease; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         footer {
             background: var(--soft-pink);
-            padding: 70px 20px;
+            padding: 60px 20px;
             text-align: center;
             border-top: 2px dashed var(--pink1);
         }
@@ -148,9 +178,9 @@
             <div class="nav-links">
                 <a href="index.html" class="nav-link">HOME</a>
                 <a href="world.html" class="nav-link active">WORLD</a>
+                <a href="product.html" class="nav-link">PRODUCT</a>
                 <a href="hagumo.html" class="nav-link">HAGUMO</a>
                 <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-                <a href="product.html" class="nav-link">PRODUCT</a>
                 <a href="my.html" class="nav-link">MY HAGUMO</a>
             </div>
         </div>
@@ -159,19 +189,19 @@
     <div class="container">
         <section class="world-hero">
             <h1 class="reveal active">WORLD</h1>
-            <p style="color: #aaa; font-weight: bold; letter-spacing: 1px;">HAGUMOが描く、新しい毎日のカタチ</p>
+            <p style="color: #aaa; font-weight: bold; letter-spacing: 1px; font-size: 12px;">HAGUMOが描く、新しい毎日のカタチ</p>
         </section>
 
         <div class="concept-box reveal">
             <span class="concept-title">CONCEPT</span>
-            <p class="concept-text">
+            <div class="concept-text">
                 「かわいく始める、美容の自給自足」<br><br>
                 HAGUMO（ハグモ）は、都会に住むあなたのための<br>
                 <b>「美容 × 農業 × 推し活」</b>がひとつになった新しい体験です。<br><br>
                 ただ育てるだけじゃない。お気に入りの「ハグモ」と一緒に過ごし、<br>
                 収穫したフレッシュな恵みを自分の肌に届ける。<br>
                 それは、世界で一番贅沢なセルフケアの始まりです。
-            </p>
+            </div>
         </div>
 
         <div class="visual-placeholder reveal">
@@ -181,15 +211,15 @@
 
         <div class="story-grid">
             <div class="story-card reveal">
-                <h3><span>🌱</span> 01. パートナーとの出会い</h3>
+                <h3><span>🌱</span> 01. 出会い</h3>
                 <p>あなたの肌悩みや性格から、ぴったりのHAGUMOが選ばれます。彼らはあなたの美容を支える大切なパートナーです。</p>
             </div>
             <div class="story-card reveal">
-                <h3><span>📱</span> 02. 絆を深める成長報告</h3>
-                <p>毎日の水やり、小さな芽吹き。その感動をアプリで報告すると、HAGUMOたちが喜び、あなたに限定のプレゼントを届けます。</p>
+                <h3><span>📱</span> 02. 絆</h3>
+                <p>毎日の水やり、小さな芽吹き。その感動をアプリで報告すると、HAGUMOたちが喜び、限定のプレゼントを届けます。</p>
             </div>
             <div class="story-card reveal">
-                <h3><span>✨</span> 03. 魔法のセルフケア</h3>
+                <h3><span>✨</span> 03. 魔法</h3>
                 <p>収穫した野菜は、一番栄養が高い状態。それを贅沢に使った手作りパックやジュースで、本来の美しさを引き出します。</p>
             </div>
         </div>
@@ -213,14 +243,13 @@
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100;
+                var elementVisible = 80;
                 if (elementTop < windowHeight - elementVisible) {
                     reveals[i].classList.add("active");
                 }
             }
         }
         window.addEventListener("scroll", reveal);
-        // 初回ロード時にもチェック
         window.addEventListener("load", reveal);
     </script>
 </body>
