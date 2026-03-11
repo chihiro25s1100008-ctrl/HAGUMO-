@@ -278,12 +278,14 @@
     let cooldowns = { talk: null, stroke: null };
 
     // 現在のコードを少し強化
+// 改良版: 「主」という独立した単語だけを置換するように調整
 function getName(text) {
     if (userName !== "主様") {
-        // 「主様」「主」の両方をユーザー名に置き換える
-        return text.replace(/主様/g, userName).replace(/主(?!様)/g, userName);
+        // 「主様」を優先して置換し、その後に「主（特定の後に続く文字がない場合）」を置換
+        return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
     }
     return text;
+}
 }
 
     function loadCharStatus(charKey) {
