@@ -8,10 +8,9 @@
     <style>
         :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; }
         
-        /* スマホでの余白確保 */
         body { font-family: 'Zen Maru Gothic', sans-serif; background: #fff; margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; }
 
-        /* --- 【決定版】スマホ対応ナビゲーション --- */
+        /* --- ナビゲーション（共通デザイン維持） --- */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
@@ -35,7 +34,6 @@
             color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink);
         }
 
-        /* PCサイズ(769px以上)での見え方 */
         @media screen and (min-width: 769px) {
             body { padding-top: 80px; }
             .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
@@ -44,49 +42,71 @@
         }
 
         /* ヘッダー */
-        .about-header { text-align: center; padding: 40px 20px 60px; background: linear-gradient(to bottom, #fff0f6, #ffffff); border-radius: 0 0 50px 50px; }
+        .about-header { text-align: center; padding: 60px 20px 80px; background: linear-gradient(to bottom, #fff0f6, #ffffff); border-radius: 0 0 50px 50px; }
         .about-title { font-size: clamp(24px, 7vw, 32px); color: var(--pink2); margin-bottom: 15px; letter-spacing: 2px; font-weight: 700; }
         .about-desc { font-size: 14px; color: #888; max-width: 600px; margin: 0 auto; line-height: 1.8; font-weight: bold; }
 
-        /* キャラクターグリッド */
+        /* キャラクターグリッド：高さを揃える設定 */
         .chara-grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px; padding: 40px 20px; max-width: 1100px; margin: 0 auto 60px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; padding: 40px 20px; max-width: 1200px; margin: 0 auto 60px;
         }
 
         .chara-card {
-            background: white; border-radius: 40px; padding: 30px 15px; text-align: center;
-            border: 3px solid var(--soft-pink); transition: 0.3s ease; position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+            background: white; border-radius: 40px; padding: 40px 20px; text-align: center;
+            border: 3px solid var(--soft-pink); transition: 0.4s ease; position: relative;
+            box-shadow: 0 10px 25px rgba(255, 126, 185, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%; /* 高さを統一 */
+            box-sizing: border-box;
         }
-        .chara-card:hover { transform: translateY(-8px); border-color: var(--pink1); box-shadow: 0 15px 30px rgba(255, 126, 185, 0.15); }
+        .chara-card:hover { transform: translateY(-10px); border-color: var(--pink1); box-shadow: 0 15px 35px rgba(255, 126, 185, 0.15); }
 
-        .chara-card img { width: 140px; height: 140px; object-fit: contain; margin-bottom: 15px; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.05)); }
-
+        /* バッジ（タグ）のデザイン統一 */
         .chara-tag {
             display: inline-block; background: var(--pink1); color: white;
-            padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold;
-            margin-bottom: 12px; box-shadow: 0 3px 0 var(--main-pink);
+            padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;
+            margin-bottom: 20px; box-shadow: 0 3px 0 var(--main-pink);
+            flex-shrink: 0;
         }
 
-        .chara-name { font-size: 20px; color: var(--pink2); margin-bottom: 10px; font-weight: bold; }
-        .chara-info { font-size: 13px; color: #777; line-height: 1.6; padding: 0 5px; text-align: left; }
+        /* 画像サイズと余白の固定 */
+        .chara-img-container {
+            width: 160px; height: 160px; margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .chara-card img { 
+            max-width: 100%; max-height: 100%; object-fit: contain; 
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.08)); 
+        }
+
+        .chara-name { font-size: 22px; color: var(--pink2); margin-bottom: 15px; font-weight: bold; flex-shrink: 0; }
+        
+        .chara-info { 
+            font-size: 14px; color: #666; line-height: 1.7; 
+            text-align: left; margin: 0;
+            background: var(--soft-pink); padding: 15px; border-radius: 20px;
+            flex-grow: 1; /* 余ったスペースを埋めて高さを揃える */
+        }
 
         /* フッターCTA */
-        .bottom-cta { text-align: center; padding: 60px 20px 80px; background: var(--soft-pink); border-radius: 60px 60px 0 0; }
-        .bottom-cta h2 { font-size: 20px; margin-bottom: 25px; }
+        .bottom-cta { text-align: center; padding: 80px 20px; background: var(--soft-pink); border-radius: 80px 80px 0 0; }
+        .bottom-cta h2 { font-size: 22px; margin-bottom: 30px; color: var(--pink2); font-weight: bold; }
         
         .puffy-btn {
             display: inline-block; background: var(--main-pink); color: white;
-            padding: 18px 40px; border-radius: 40px; text-decoration: none;
-            font-weight: bold; font-size: 16px; box-shadow: 0 6px 0 #e667a3; transition: 0.2s;
+            padding: 20px 50px; border-radius: 50px; text-decoration: none;
+            font-weight: bold; font-size: 18px; box-shadow: 0 6px 0 var(--pink2); transition: 0.3s;
+            border: 3px solid white;
         }
-        .puffy-btn:hover { background: #ff94c6; transform: translateY(-2px); box-shadow: 0 8px 0 #e667a3; }
-        .puffy-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #e667a3; }
+        .puffy-btn:hover { background: #ff94c6; transform: translateY(-3px); box-shadow: 0 9px 0 var(--pink2); }
+        .puffy-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--pink2); }
 
         footer {
-            background: var(--soft-pink); padding: 40px 20px; text-align: center; border-top: 2px dashed var(--pink1);
+            background: var(--soft-pink); padding: 50px 20px; text-align: center; border-top: 2px dashed var(--pink1);
         }
     </style>
 </head>
@@ -117,77 +137,77 @@
     <div class="chara-grid">
         <div class="chara-card">
             <span class="chara-tag">バランス・調和</span>
-            <img src="./images/risu.PNG" alt="きゅうりす">
+            <div class="chara-img-container"><img src="./images/risu.PNG" alt="きゅうりす"></div>
             <h3 class="chara-name">きゅうりす</h3>
             <p class="chara-info">心と体のリズムを整える癒やし系。あなたの日常に穏やかな調和をもたらします。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">情熱・リーダー</span>
-            <img src="./images/tora.PNG" alt="とまとら">
+            <div class="chara-img-container"><img src="./images/tora.PNG" alt="とまとら"></div>
             <h3 class="chara-name">とまとら</h3>
             <p class="chara-info">真っ赤な情熱で道を切り拓くリーダー。勇気が欲しいとき、隣で背中を押してくれるはず。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">ひらめき・自由</span>
-            <img src="./images/saru.PNG" alt="れもんきー">
+            <div class="chara-img-container"><img src="./images/saru.PNG" alt="れもんきー"></div>
             <h3 class="chara-name">れもんきー</h3>
             <p class="chara-info">常識にとらわれない自由な発想の持ち主。退屈な毎日に鮮やかなひらめきを与えます。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">知性・分析</span>
-            <img src="./images/kame.PNG" alt="ぶるーべりくがめ">
+            <div class="chara-img-container"><img src="./images/kame.PNG" alt="ぶるーべりくがめ"></div>
             <h3 class="chara-name">ぶるーべりくがめ</h3>
             <p class="chara-info">膨大な知識を蓄えた物知りさん。冷静な分析で、あなたの悩みを論理的に解決へ導きます。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">優しさ・包容</span>
-            <img src="./images/buta.PNG" alt="かぶた">
+            <div class="chara-img-container"><img src="./images/buta.PNG" alt="かぶた"></div>
             <h3 class="chara-name">かぶた</h3>
             <p class="chara-info">すべてを優しく包み込む「美農」界の癒やし王。頑張りすぎるあなたを、ぽかぽか温めます。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">機転・賢さ</span>
-            <img src="./images/jaku.PNG" alt="ばたふらいぴーこっく">
+            <div class="chara-img-container"><img src="./images/jaku.PNG" alt="ばたふらいぴーこっく"></div>
             <h3 class="chara-name">ばたふらいぴーこっく</h3>
             <p class="chara-info">華やかな見た目と鋭い機転を併せ持つ。どんな困難も優雅に、賢く乗り越える力を貸してくれます。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">努力・継続</span>
-            <img src="./images/imo.PNG" alt="さつまいもぐら">
+            <div class="chara-img-container"><img src="./images/imo.PNG" alt="さつまいもぐら"></div>
             <h3 class="chara-name">さつまいもぐら</h3>
-            <p class="chara-info">一歩一歩、地道な努力を惜しまない努力家。目標に向かってコツコツ頑張るあなたの最高の理解者。</p>
+            <p class="chara-info">地道な努力を惜しまない努力家。目標に向かってコツコツ頑張るあなたの最高の理解者。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">愛嬌・甘え上手</span>
-            <img src="./images/nga.PNG" alt="もももんが">
+            <div class="chara-img-container"><img src="./images/nga.PNG" alt="もももんが"></div>
             <h3 class="chara-name">もももんが</h3>
             <p class="chara-info">誰もが放っておけない愛嬌の持ち主。甘え上手な仕草で、周囲をパッと明るい笑顔にします。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">静か・ミステリアス</span>
-            <img src="./images/kuma.PNG" alt="くろいちじくま">
+            <div class="chara-img-container"><img src="./images/kuma.PNG" alt="くろいちじくま"></div>
             <h3 class="chara-name">くろいちじくま</h3>
-            <p class="chara-info">静寂を愛するミステリアスな存在。言葉少なげですが、誰よりも深い愛情であなたを見守ります。</p>
+            <p class="chara-info">静寂を愛する存在。言葉少なげですが、誰よりも深い愛情であなたを見守ります。</p>
         </div>
 
         <div class="chara-card">
             <span class="chara-tag">明るい・ポジティブ</span>
-            <img src="./images/chabo.PNG" alt="かぼちゃぼ">
+            <div class="chara-img-container"><img src="./images/chabo.PNG" alt="かぼちゃぼ"></div>
             <h3 class="chara-name">かぼちゃぼ</h3>
             <p class="chara-info">底抜けに明るいポジティブモンスター。一緒にいればどんな悩みも笑い飛ばせるはず！</p>
         </div>
     </div>
 
     <div class="bottom-cta">
-        <h2 style="color: var(--pink2); font-weight: bold;">あなたにぴったりのパートナーは？</h2>
+        <h2>あなたにぴったりのパートナーは？</h2>
         <a href="diagnosis.html" class="puffy-btn">パートナー診断をはじめる 🌱</a>
     </div>
 
