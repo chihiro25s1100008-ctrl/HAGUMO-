@@ -8,10 +8,9 @@
     <style>
         :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; }
         
-        /* スマホでの表示を考慮し、背景を少し明るく、パディングを調整 */
         body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; }
 
-        /* --- 【決定版】スマホ対応ナビゲーション --- */
+        /* ナビゲーション */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
@@ -48,7 +47,6 @@
 
         .diag-container { max-width: 600px; margin: 0 auto 60px; padding: 0 15px; }
 
-        /* 質問カードの高さと余白をスマホ最適化 */
         .q-card {
             background: white; border-radius: 35px; padding: 35px 20px;
             box-shadow: 0 15px 35px rgba(255,105,180,0.12); text-align: center;
@@ -70,8 +68,7 @@
         }
         .puffy-ans-btn:active { top: 3px; box-shadow: 0 1px 0 var(--pink1); }
 
-        /* 結果表示 */
-        #result-area { display: none; animation: fadeIn 0.8s ease forwards; }
+        #result-area { display: none; animation: fadeIn 0.8s ease forwards; flex-direction: column; align-items: center; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .result-img-box {
@@ -84,7 +81,7 @@
         .result-name { font-size: 24px; color: var(--pink2); font-weight: bold; margin-bottom: 8px; }
         .result-desc { font-size: 13px; color: #666; text-align: left; line-height: 1.7; background: #fffafb; padding: 15px; border-radius: 20px; white-space: pre-wrap; margin-bottom: 20px; }
 
-        .share-area { display: flex; gap: 8px; margin-bottom: 15px; }
+        .share-area { display: flex; gap: 8px; margin-bottom: 15px; width: 100%; }
         .share-btn { flex: 1; padding: 12px; border-radius: 12px; text-decoration: none; font-size: 11px; font-weight: bold; color: white; text-align: center; }
         .btn-x { background: #333; }
         .btn-line { background: #06C755; }
@@ -92,7 +89,7 @@
         .cta-btn {
             background: var(--main-pink); color: white; border: none; 
             padding: 18px; border-radius: 30px; font-weight: bold; font-size: 15px;
-            box-shadow: 0 5px 0 #e667a3; cursor: pointer; margin-bottom: 10px;
+            box-shadow: 0 5px 0 #e667a3; cursor: pointer; margin-bottom: 10px; width: 100%;
         }
         .cta-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #e667a3; }
 
@@ -215,8 +212,10 @@
         }
 
         function goToMyHagumo() {
-            localStorage.setItem('hChar', resultCharId);
-            location.href = 'my.html';
+            // お部屋（my.html）が読み込む変数名に保存
+            localStorage.setItem('hagu_current_char', resultCharId);
+            // URLに情報を載せて移動（これで確実に連動します）
+            location.href = 'my.html?chara=' + resultCharId;
         }
 
         showNext();
