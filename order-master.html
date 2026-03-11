@@ -10,6 +10,7 @@
             --main-pink: #ff7eb9; 
             --master-gold: #d4af37; 
             --soft-gold: #fff9eb;
+            --pink1: #ffb3d9;
         }
         body { 
             font-family: 'Zen Maru Gothic', sans-serif; 
@@ -20,22 +21,12 @@
         }
 
         /* --- ナビゲーション --- */
-        .nav { 
-            position: fixed; top: 0; left: 0; width: 100%; 
-            background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
-            padding: 8px 0;
-        }
-        .nav-content { 
-            max-width: 1100px; margin: 0 auto; padding: 0 15px;
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
-        }
+        .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 8px 0; }
+        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .nav-logo-img { height: 28px; cursor: pointer; }
         .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; }
-        .nav-link { 
-            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
-            padding: 4px 8px; border-radius: 20px; background: #fdfdfd; border: 1px solid #f0f0f0;
-        }
-        .nav-link.active { color: var(--main-pink); background: #fff5f7; border-color: var(--main-pink); }
+        .nav-link { color: #888; text-decoration: none; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 20px; background: #fdfdfd; border: 1px solid #f0f0f0; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { color: var(--main-pink); background: #fff5f7; border-color: var(--main-pink); }
 
         @media screen and (min-width: 769px) {
             body { padding-top: 90px; }
@@ -45,54 +36,38 @@
         }
 
         /* --- コンテンツレイアウト --- */
-        .order-hero { 
-            background: linear-gradient(135deg, #fff 0%, #f9d5e5 100%); 
-            padding: 40px 20px; text-align: center; 
-        }
+        .order-hero { background: linear-gradient(135deg, #fff 0%, #f9d5e5 100%); padding: 40px 20px; text-align: center; }
+        .container { max-width: 1000px; margin: -20px auto 60px; padding: 30px; display: grid; grid-template-columns: 1fr; gap: 30px; background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); box-sizing: border-box; }
 
-        .container { 
-            max-width: 1000px; margin: -20px auto 60px; padding: 30px; 
-            display: grid; grid-template-columns: 1fr; gap: 30px; 
-            background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            box-sizing: border-box;
-        }
+        @media screen and (min-width: 769px) { .container { grid-template-columns: 1fr 1fr; padding: 50px; margin-top: 20px; } }
 
-        @media screen and (min-width: 769px) {
-            .container { grid-template-columns: 1fr 1fr; padding: 50px; margin-top: 20px; }
-        }
+        /* --- 画像・選択セクション --- */
+        .image-section { position: -webkit-sticky; position: sticky; top: 90px; z-index: 100; background: white; padding: 10px; border-bottom: 2px solid var(--soft-gold); margin-bottom: 10px; }
+        @media screen and (min-width: 769px) { .image-section { position: relative; top: 0; border: none; } }
 
-        /* --- 画像セクション（Sticky設定） --- */
-        .image-section {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 90px; /* ナビの下に固定 */
-            z-index: 100;
-            background: white;
-            padding: 10px;
-            border-bottom: 2px solid var(--soft-gold);
-            margin-bottom: 10px;
-        }
+        .main-img-box { background: #fafafa; border-radius: 30px; padding: 15px; display: flex; justify-content: center; overflow: hidden; }
+        .main-img { width: 100%; height: 200px; object-fit: contain; transition: 0.5s; }
+        @media screen and (min-width: 769px) { .main-img { height: 300px; } }
 
-        @media screen and (min-width: 769px) {
-            .image-section { position: relative; top: 0; border: none; }
-        }
-
-        .main-img-box { background: #fafafa; border-radius: 30px; padding: 15px; display: flex; justify-content: center; }
-        .main-img { width: 100%; height: 200px; object-fit: contain; }
-        
-        @media screen and (min-width: 769px) {
-            .main-img { height: 300px; }
-        }
-
-        .thumb-list { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        /* キャラ選択カード（MASTER用 4カラム） */
+        .thumb-list { margin-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .thumb-item { cursor: pointer; text-align: center; transition: 0.3s; }
         .thumb-img { 
-            width: 50px; height: 50px; object-fit: contain; cursor: pointer; 
-            border: 2px solid #eee; border-radius: 12px; padding: 4px; background: white; opacity: 0.6;
+            width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; 
+            border: 2px solid #eee; border-radius: 15px; padding: 5px; background: white; 
+            transition: 0.3s; opacity: 0.6; box-sizing: border-box;
         }
-        .thumb-img.active { border-color: var(--master-gold); opacity: 1; background: var(--soft-gold); }
+        .thumb-name { font-size: 9px; color: #aaa; margin-top: 5px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 選択中のスタイル（MASTERゴールド） */
+        .thumb-item.active .thumb-img { 
+            border-color: var(--master-gold); opacity: 1; background: var(--soft-gold); 
+            transform: translateY(-5px); box-shadow: 0 8px 15px rgba(212, 175, 55, 0.2);
+        }
+        .thumb-item.active .thumb-name { color: var(--master-gold); }
 
         /* --- テキストセクション --- */
-        .char-tag { display: inline-block; padding: 6px 16px; border-radius: 10px; font-size: 12px; background: #fdf2f7; border: 1px solid var(--master-gold); color: var(--master-gold); margin-bottom: 15px; font-weight: bold; }
+        .char-tag { display: inline-block; padding: 6px 16px; border-radius: 10px; font-size: 12px; background: #fffcf0; border: 1px solid var(--master-gold); color: var(--master-gold); margin-bottom: 15px; font-weight: bold; }
         .price { font-size: 36px; font-weight: bold; color: #333; margin: 10px 0; }
         .price span { font-size: 16px; margin-left: 4px; }
 
@@ -102,9 +77,20 @@
         .btn-order { 
             background: var(--master-gold); color: white; border: none; padding: 18px; 
             width: 100%; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; 
-            box-shadow: 0 10px 20px rgba(212,175,55,0.3); transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(212,175,55,0.3); transition: 0.3s; 
         }
-        .btn-order:active { transform: translateY(2px); box-shadow: none; }
+        .btn-order:active { transform: translateY(3px); box-shadow: none; }
+
+        /* 戻るボタンのスタイル */
+        .btn-back {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 15px; padding: 15px; color: #aaa; text-decoration: none;
+            font-size: 14px; font-weight: bold; border: 2px solid #eee;
+            border-radius: 50px; transition: 0.3s; background: transparent;
+        }
+        .btn-back span { font-size: 18px; transition: 0.3s; }
+        .btn-back:hover { background: #fdfdfd; color: var(--main-pink); border-color: var(--pink1); }
+        .btn-back:hover span { transform: translateX(-5px); }
 
         .footer-notice { background: #fff0f5; padding: 60px 20px; text-align: center; border-top: 2px dashed var(--main-pink); }
     </style>
@@ -126,9 +112,9 @@
     </nav>
 
     <div class="order-hero">
-        <span style="font-weight:bold; color:var(--master-gold); font-size: 14px; letter-spacing: 1px;">RANK A : MASTER</span>
+        <span style="font-weight:bold; color:var(--master-gold); font-size: 12px; letter-spacing: 2px; text-transform: uppercase;">Rank A : Master Kit</span>
         <h1 style="color:var(--main-pink); margin:8px 0; font-size: 24px;">匠のハグモ極みセット</h1>
-        <p style="font-size: 14px; color: #666;">上級者限定。希少な品種と、最高の道具を揃えて。</p>
+        <p style="font-size: 13px; color: #666; font-weight: bold;">上級者限定。希少な品種と、最高の道具を揃えて。</p>
     </div>
 
     <div class="container">
@@ -137,16 +123,29 @@
                 <img id="main-img" src="./images/kuma.PNG" class="main-img">
             </div>
             <div class="thumb-list">
-                <img src="./images/saru.PNG" class="thumb-img" onclick="changeImage(this, 'れもんきー（レモン）')">
-                <img src="./images/kame.PNG" class="thumb-img" onclick="changeImage(this, 'ぶるーべりくがめ（ブルーベリー）')">
-                <img src="./images/nga.PNG" class="thumb-img" onclick="changeImage(this, 'もももんが（モモ）')">
-                <img src="./images/kuma.PNG" class="thumb-img active" onclick="changeImage(this, 'くろいちじくま（静か・ミステリアス）')">
+                <div class="thumb-item" onclick="changeImage(this, 'れもんきー', 'レモン')">
+                    <img src="./images/saru.PNG" class="thumb-img">
+                    <div class="thumb-name">れもんきー</div>
+                </div>
+                <div class="thumb-item" onclick="changeImage(this, 'ぶるーべりくがめ', 'ブルーベリー')">
+                    <img src="./images/kame.PNG" class="thumb-img">
+                    <div class="thumb-name">ぶるーべりくがめ</div>
+                </div>
+                <div class="thumb-item" onclick="changeImage(this, 'もももんが', 'モモ')">
+                    <img src="./images/nga.PNG" class="thumb-img">
+                    <div class="thumb-name">もももんが</div>
+                </div>
+                <div class="thumb-item active" onclick="changeImage(this, 'くろいちじくま', 'イチジク')">
+                    <img src="./images/kuma.PNG" class="thumb-img">
+                    <div class="thumb-name">いちじくま</div>
+                </div>
             </div>
+            <p style="text-align:center; font-size:10px; color:#ccc; margin-top:15px; font-weight: bold;">究極のパートナーを選択 ✨</p>
         </div>
 
         <div class="info-section">
             <div id="char-name-tag" class="char-tag">代表キャラ：くろいちじくま</div>
-            <h2 style="margin:0; font-size: 20px;">HAGUMO育成キット（MASTER）</h2>
+            <h2 style="margin:0; font-size: 20px; color: #333;">HAGUMO育成キット（MASTER）</h2>
             <div class="price">4,500<span>円（税込）</span></div>
             
             <div class="reward-box">
@@ -157,12 +156,17 @@
                 </p>
             </div>
 
-            <div style="font-size:13px; color:#666; margin-bottom:25px; line-height: 1.6;">
-                <b>現在の選択：</b><br>
-                <span id="selected-display" style="color: var(--master-gold); font-weight: bold;">くろいちじくま（イチジク）</span>
+            <div style="background: #fdfdfd; padding: 15px; border-radius: 20px; border: 1px solid #f0f0f0; margin-bottom: 25px;">
+                <span style="font-size: 11px; color: #999; font-weight: bold;">現在の選択：</span><br>
+                <span id="selected-display" style="color: var(--master-gold); font-weight: bold; font-size: 15px;">くろいちじくま（イチジク）</span><br>
+                <span style="font-size: 10px; color: #bbb; display: block; margin-top: 5px;">※最高級肥料・プロ仕様ポット・限定ガイド付き</span>
             </div>
 
             <button class="btn-order" onclick="orderEffect()">この子をお迎え（契約）する ✨</button>
+            
+            <a href="product.html" class="btn-back">
+                <span>←</span> 他のプランも見る
+            </a>
         </div>
     </div>
 
@@ -175,18 +179,27 @@
     </footer>
 
     <script>
-        function changeImage(element, name) {
-            document.getElementById('main-img').src = element.src;
-            document.getElementById('char-name-tag').innerText = "パートナー： " + name;
-            document.getElementById('selected-display').innerText = name;
-            const thumbs = document.querySelectorAll('.thumb-img');
-            thumbs.forEach(t => t.classList.remove('active'));
+        function changeImage(element, name, type) {
+            const newSrc = element.querySelector('.thumb-img').src;
+            const mainImg = document.getElementById('main-img');
+            
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = newSrc;
+                mainImg.style.opacity = '1';
+            }, 200);
+
+            document.getElementById('char-name-tag').innerText = "代表キャラ： " + name;
+            document.getElementById('selected-display').innerText = name + "（" + type + "）";
+            
+            const items = document.querySelectorAll('.thumb-item');
+            items.forEach(item => item.classList.remove('active'));
             element.classList.add('active');
         }
 
         function orderEffect() {
             const nameTag = document.getElementById('char-name-tag').innerText;
-            const name = nameTag.replace('パートナー： ', '').replace('代表キャラ：', '');
+            const name = nameTag.replace('代表キャラ： ', '');
             
             let message = "";
             if (name.includes("れもんきー")) {
