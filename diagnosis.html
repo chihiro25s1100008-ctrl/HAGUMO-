@@ -242,20 +242,25 @@
                 }
             }
 
-            // 同点時のランダム選出（これで100%くがめになるのを防ぎます）
+            // 1. まず先に結果のキャラクターを決定する
             resultCharId = winners[Math.floor(Math.random() * winners.length)];
-
             const char = characters.find(c => c.id === resultCharId);
 
+            // 2. 画面に表示を反映させる
             document.getElementById('res-img').src = char.img;
             document.getElementById('res-name').innerText = char.name;
             document.getElementById('res-desc').innerText = char.desc;
 
-            const txt = `私の運命のHAGUMOは「${char.name}」でした！ 🌱\n#HAGUMO `;
-            document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(window.location.href)}`;
-            document.getElementById('share-line').href = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(window.location.href)}`;
-        }
+            // 3. シェア用の文章を作る
+            const shareUrl = window.location.href;
+            const shareText = `私の運命のパートナーは「${char.name}」でした！ 🌱\nあなたにぴったりのHAGUMOを診断しよう✨\n#HAGUMO`;
 
+            // 4. X(Twitter)のリンクを設定
+            document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+
+            // 5. LINEのリンクを設定 (修正ポイント！)
+            document.getElementById('share-line').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + "\n" + shareUrl)}`;
+        }
         function goToMyHagumo() {
             localStorage.setItem('hagu_current_char', resultCharId);
             location.href = 'my.html?chara=' + resultCharId;
