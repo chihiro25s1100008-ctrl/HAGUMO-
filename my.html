@@ -14,7 +14,7 @@
             --rainbow: linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd1de8, #ff2400); 
         }
 
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; transition: background 0.5s; }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; transition: background 0.5s; touch-action: manipulation; }
 
         /* ナビゲーション */
         .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 8px 0; }
@@ -34,7 +34,7 @@
 
         @media screen and (min-width: 769px) {
             .main-wrapper { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; padding-top: 40px; }
-            .left-panel { width: 400px; position: sticky; top: 120px; }
+            .left-panel { width: 350px; position: sticky; top: 120px; }
             .right-panel { width: 450px; }
         }
 
@@ -47,18 +47,18 @@
         
         @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
-        .hagumo-img { width: 250px; height: 250px; object-fit: contain; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); }
+        .hagumo-img { width: 250px; height: 250px; object-fit: contain; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); -webkit-tap-highlight-color: transparent; }
         .bounce { animation: bounce 4s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .bubble { position: relative; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; font-weight: bold; line-height: 1.6; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center;}
+        .bubble { position: relative; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; font-weight: bold; line-height: 1.6; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; }
         
         .choices-container { display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; width: 100%; }
         .choice-btn { background: white; border: 2px solid var(--pink1); padding: 12px; border-radius: 15px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.2s; color: #666; }
         .choice-btn:hover { background: var(--soft-pink); border-color: var(--main-pink); color: var(--main-pink); }
 
         .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; }
+        .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; -webkit-tap-highlight-color: transparent; }
         .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
@@ -90,7 +90,7 @@
 
     <nav class="nav">
         <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+            <img src="./images/rogo.PNG" class="nav-logo-img" alt="HAGUMO Logo" onclick="location.href='index.html'">
             <div class="nav-links">
                 <a href="index.html" class="nav-link">HOME</a>
                 <a href="world.html" class="nav-link">WORLD</a>
@@ -292,13 +292,17 @@
     let userName = localStorage.getItem('hagu_user') || "主様";
     let cooldowns = { talk: null, stroke: null };
 
+    // --- 名前変換ロジック ---
     function getName(text) {
+        if (!text) return "";
         if (userName !== "主様") {
+            // 「主様」をユーザー名に置換。ひらがなの「ぁ〜ん」が直後に来ない「主」も置換。
             return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
         }
         return text;
     }
 
+    // --- キャラクター切り替え＆読み込み ---
     function loadCharStatus(charKey) {
         currentChar = charKey;
         love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
@@ -311,27 +315,33 @@
         checkAndStartTimers();
         updateStatus();
         
+        const bubble = document.getElementById('chat-bubble');
         if (love >= 100) {
-            document.getElementById('chat-bubble').innerHTML = `<div class="forever-msg">${getName(charData[charKey].forever)}</div>`;
+            bubble.innerHTML = `<div class="forever-msg">${getName(charData[charKey].forever)}</div>`;
         } else {
-            document.getElementById('chat-bubble').innerText = getName(charData[charKey].welcome);
+            bubble.innerText = getName(charData[charKey].welcome);
         }
     }
 
+    // --- タイマーリセット ---
     function resetButtonVisuals() {
         if(cooldowns.talk) clearInterval(cooldowns.talk);
         if(cooldowns.stroke) clearInterval(cooldowns.stroke);
-        document.getElementById('talk-btn').disabled = false;
-        document.getElementById('talk-btn').innerText = "💬 おしゃべり";
-        document.getElementById('stroke-btn').disabled = false;
-        document.getElementById('stroke-btn').innerText = "👋 なでなで";
+        const talkBtn = document.getElementById('talk-btn');
+        const strokeBtn = document.getElementById('stroke-btn');
+        talkBtn.disabled = false;
+        talkBtn.innerText = "💬 おしゃべり";
+        strokeBtn.disabled = false;
+        strokeBtn.innerText = "👋 なでなで";
     }
 
+    // --- 回数制限チェック ---
     function checkAndStartTimers() {
         const now = Date.now();
-        talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000);
+        talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000); // 30分
         if (talkLog.length >= 10) startTimer('talk', talkLog[0] + (30 * 60 * 1000), "💬 おしゃべり");
-        strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000);
+        
+        strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000); // 5分
         if (strokeLog.length >= 10) startTimer('stroke', strokeLog[0] + (5 * 60 * 1000), "👋 なでなで");
     }
 
@@ -355,15 +365,18 @@
         }, 1000);
     }
 
+    // --- 状態更新 (絆の減少処理含む) ---
     function updateStatus() {
         const now = Date.now();
         const diff = now - lastUpdate;
+        // 絆100%かつ、達成から1時間は「免疫」状態
         let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
         
         if (!isImmune) {
             let loss = 0;
-            if (love > 51) loss = Math.floor(diff / (60 * 1000));
-            else if (love > 0) loss = Math.floor(diff / (3600 * 1000));
+            if (love > 51) loss = Math.floor(diff / (60 * 1000)); // 51以上なら1分で1減
+            else if (love > 0) loss = Math.floor(diff / (3600 * 1000)); // 50以下なら1時間で1減
+            
             if (loss > 0) {
                 love = Math.max(0, love - loss);
                 lastUpdate = now;
@@ -373,6 +386,7 @@
 
         document.getElementById('love-val').innerText = love;
         document.getElementById('user-display').innerText = userName + "の絆ルーム";
+        
         const fill = document.getElementById('love-fill');
         const sprite = document.getElementById('hagumo-sprite');
         const bubble = document.getElementById('chat-bubble');
@@ -381,18 +395,17 @@
         
         fill.style.width = love + "%";
 
+        // --- 演出切り替え ---
         if (love >= 100) {
-            container.classList.add('bg-level-3');
+            container.classList.add('bg-level-3', 'pachinko-shake');
             fill.classList.add('max'); 
             sprite.classList.add('max-evolution');
-            container.classList.add('pachinko-shake');
             talkBtn.disabled = true;
             if (document.getElementById('choices').style.display !== "flex" && !bubble.dataset.isStrokeReaction) {
                 bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
             }
         } else {
-            container.classList.remove('bg-level-3', 'pachinko-shake');
-            container.classList.remove('bg-level-1', 'bg-level-2');
+            container.classList.remove('bg-level-3', 'pachinko-shake', 'bg-level-1', 'bg-level-2');
             container.classList.add(love > 50 ? 'bg-level-2' : 'bg-level-1');
             fill.classList.remove('max');
             sprite.classList.remove('max-evolution');
@@ -405,6 +418,7 @@
         }
     }
 
+    // --- 保存処理 ---
     function save() {
         localStorage.setItem(`hagu_love_${currentChar}`, love);
         localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
@@ -414,11 +428,14 @@
         localStorage.setItem('hagu_user', userName);
     }
 
+    // --- アクション：おしゃべり ---
     function startTalk() {
         if (document.getElementById('talk-btn').disabled || love >= 100) return;
+        
         const data = charData[currentChar];
         const quest = data.questions[Math.floor(Math.random() * data.questions.length)];
         document.getElementById('chat-bubble').innerText = getName(quest.q);
+        
         const container = document.getElementById('choices');
         container.innerHTML = "";
         container.style.display = "flex";
@@ -432,9 +449,13 @@
                 const oldLove = love;
                 love = Math.min(100, Math.max(0, love + score));
                 if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
+                
                 talkLog.push(Date.now());
                 container.style.display = "none";
-                document.getElementById('chat-bubble').innerText = score >= 10 ? "嬉しい！ツヤツヤになるよ！" : (score < 0 ? "そんなの悲しいな…" : "ありがとう！");
+                
+                const bubble = document.getElementById('chat-bubble');
+                bubble.innerText = score >= 10 ? "嬉しい！ツヤツヤになるよ！" : (score < 0 ? "そんなの悲しいな…" : "ありがとう！");
+                
                 updateStatus();
                 save();
                 checkAndStartTimers();
@@ -443,14 +464,20 @@
         });
     }
 
+    // --- アクション：なでなで ---
     function strokeHagumo(e) {
         if (document.getElementById('stroke-btn').disabled) return;
+        
         const oldLove = love;
         love = Math.min(100, love + 1);
         if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
         
         strokeLog.push(Date.now());
-        createHeart(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+        
+        // ハート演出の座標取得（クリック/タップ対応）
+        const x = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
+        const y = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
+        createHeart(x, y);
         
         const bubble = document.getElementById('chat-bubble');
         bubble.dataset.isStrokeReaction = "true";
@@ -464,6 +491,7 @@
             bubble.innerText = getName(res);
         }
         
+        // 3秒後に通常メッセージに戻るフラグを解除
         setTimeout(() => {
             delete bubble.dataset.isStrokeReaction;
             updateStatus();
@@ -482,6 +510,7 @@
         setTimeout(() => h.remove(), 1500);
     }
 
+    // --- キャラクター変更 ---
     function changeChar() {
         const key = document.getElementById('char-selector').value;
         document.getElementById('hagumo-sprite').src = `./images/${key}.PNG`;
@@ -489,6 +518,7 @@
         loadCharStatus(key);
     }
 
+    // --- データリセット ---
     function resetCharData(charKey) {
         const keys = ['love', 'time', 'max_time', 'talk_log', 'stroke_log'];
         keys.forEach(k => localStorage.removeItem(`hagu_${k}_${charKey}`));
@@ -505,17 +535,27 @@
         }
     }
 
+    // --- 名前変更 ---
     function renameUser() {
         const newName = prompt("新しい名前を入力してね", userName);
         if (newName && newName.trim() !== "") {
             userName = newName;
             save();
             updateStatus();
+            // バブル内の表示も即時更新
+            const bubble = document.getElementById('chat-bubble');
+            if (love >= 100) {
+                bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
+            } else {
+                bubble.innerText = getName(charData[currentChar].welcome);
+            }
         }
     }
 
     window.onload = () => {
-        loadCharStatus(document.getElementById('char-selector').value);
+        const selector = document.getElementById('char-selector');
+        // 保存されていたキャラがあれば選択状態にする（未実装の場合はデフォルト）
+        loadCharStatus(selector.value);
     };
     </script>
 </body>
