@@ -56,9 +56,15 @@
         .choice-btn { background: white; border: 2px solid var(--pink1); padding: 12px; border-radius: 15px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.2s; color: #666; }
         .choice-btn:hover { background: var(--soft-pink); border-color: var(--main-pink); color: var(--main-pink); }
 
-        .action-menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; -webkit-tap-highlight-color: transparent; }
+        .action-menu { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+        .main-actions { display: flex; justify-content: center; gap: 10px; width: 100%; }
+        .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; -webkit-tap-highlight-color: transparent; flex: 1; max-width: 180px; }
         .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .sub-actions { display: flex; justify-content: center; width: 100%; margin-top: 10px; }
+        .reset-area { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; width: 100%; text-align: center; }
+        .reset-btn { background: none; border: 1px solid #eee; color: #ccc; padding: 8px 15px; border-radius: 20px; font-size: 11px; cursor: pointer; transition: 0.2s; }
+        .reset-btn:hover { border-color: #ffb3d9; color: #ffb3d9; }
 
         .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
@@ -80,10 +86,6 @@
         }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-        .flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; z-index: 20000; pointer-events: none; }
-        .flash.active { animation: flashAnim 0.7s forwards; }
-        @keyframes flashAnim { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
-
         body.bg-level-1 { background: #fff5f7; }
         body.bg-level-2 { background: #ffe0f0; background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); }
         body.bg-level-3 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
@@ -92,8 +94,6 @@
     </style>
 </head>
 <body class="bg-level-1">
-
-    <div id="flash-overlay" class="flash"></div>
 
     <nav class="nav">
         <div class="nav-content">
@@ -138,11 +138,16 @@
             <div id="choices" class="choices-container"></div>
             
             <div class="action-menu">
-                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり</button>
-                <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで</button>
-                <button id="ss-btn" class="action-btn" onclick="takeScreenshot()" style="background: #eef2ff; color: #6366f1;">📸 スクショ</button>
-                <button class="action-btn" onclick="renameUser()">✏️ おなまえ</button>
-                <button class="action-btn" onclick="manualReset()" style="color: #ccc; font-size: 10px; background: none; box-shadow: none; border: 1px solid #eee;">♻️ リセット</button>
+                <div class="main-actions">
+                    <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり</button>
+                    <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで</button>
+                </div>
+                <div class="sub-actions">
+                    <button class="action-btn" onclick="renameUser()" style="max-width: 120px; padding: 10px; font-size: 13px;">✏️ おなまえ</button>
+                </div>
+                <div class="reset-area">
+                    <button class="reset-btn" onclick="manualReset()">♻️ 絆をリセットする</button>
+                </div>
             </div>
         </div>
     </div>
@@ -278,7 +283,7 @@
         kame: {
             welcome: "おかえりなさい……。のんびり、いきましょうね。",
             strokeRes: "あぁ……甲羅まで、主様のぬくもりが届きます……。",
-            ansRes: { high: "あぁ…深い海の底にいるような, 安らかな気持ちです…。", mid: "ありがとうございます…。ゆっくり、大切にしますね。", low: "……少し、甲羅の中に隠れますね……。悲しいです。" },
+            ansRes: { high: "あぁ…深い海の底にいるような、安らかな気持ちです…。", mid: "ありがとうございます…。ゆっくり、大切にしますね。", low: "……少し、甲羅の中に隠れますね……。悲しいです。" },
             questions: [
                 { q: "ブルーベリーの果汁が甲羅に染みちゃって…汚いですか？", a: ["綺麗なグラデーションだよ", "一生懸命な証拠だね", "洗ったほうがいいかも"], scores: [10, 5, -5] },
                 { q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] }
@@ -485,7 +490,6 @@
         if (document.getElementById('talk-btn').disabled || love >= 100) return;
         const data = charData[currentChar];
         
-        // 時間帯レア質問を30%の確率で出す。それ以外は通常。
         let quest;
         const timeLabel = getTimeLabel();
         if (Math.random() < 0.3) {
@@ -522,32 +526,6 @@
             };
             container.appendChild(btn);
         });
-    }
-
-    function takeScreenshot() {
-        const flash = document.getElementById('flash-overlay');
-        const menu = document.querySelector('.action-menu');
-        const nav = document.querySelector('.nav');
-        const selector = document.getElementById('char-selector');
-
-        // スクショ時に不要なものを一瞬隠す
-        menu.style.opacity = '0';
-        nav.style.opacity = '0';
-        selector.style.opacity = '0';
-
-        // フラッシュ開始
-        flash.classList.add('active');
-
-        setTimeout(() => {
-            // アラートの代わりに「スクショ完了」風の演出が終わるまで待つ
-            // 実際はユーザーに撮ってもらう
-            alert("📸 今だ！スクショしてね！\n(OKを押すとメニューが戻るよ)");
-            
-            menu.style.opacity = '1';
-            nav.style.opacity = '1';
-            selector.style.opacity = '1';
-            flash.classList.remove('active');
-        }, 350);
     }
 
     function createHeart(x, y) {
