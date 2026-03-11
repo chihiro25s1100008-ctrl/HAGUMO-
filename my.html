@@ -86,11 +86,16 @@
             <div class="status-container">
                 <div id="user-display" class="user-name-display">絆ルーム</div>
                 <select id="char-selector" onchange="changeChar()" style="width: 80%; padding: 10px; border-radius: 15px; border: 2px solid var(--soft-pink); margin-bottom: 10px;">
-                    <option value="buta">🐷 かぶた</option>
-                    <option value="imo">🐹 さつまいもぐら</option>
-                    <option value="jaku">🦚 ぴーこっく</option>
-                    <option value="risu">🐿️ きゅうりす</option>
-                    <option value="tora">🐯 とまとら</option>
+                    <option value="buta">かぶた</option>
+                    <option value="imo">さつまいもぐら</option>
+                    <option value="jaku">ぴーこっく</option>
+                    <option value="risu">きゅうりす</option>
+                    <option value="tora">とまとら</option>
+                    <option value="chabo">かぼちゃぼ</option>
+                    <option value="saru">れもんざる</option>
+                    <option value="kame">ぶるーべりがめ</option>
+                    <option value="nga">ももんが</option>
+                    <option value="kuma">くろいちじくま</option>
                 </select>
                 <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
                 <div style="font-size: 11px; font-weight: bold;">KIZUNA: <span id="love-val">50</span> / 100</div>
@@ -103,14 +108,15 @@
             <div id="choices" class="choices-container"></div>
             
             <div class="action-menu">
-                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり <span id="talk-timer"></span></button>
-                <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで <span id="stroke-timer"></span></button>
+                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり</button>
+                <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで</button>
                 <button class="action-btn" onclick="renameUser()">✏️ 改名</button>
             </div>
         </div>
     </div>
 
-   const charData = {
+    <script>
+        const charData = {
             buta: {
                 welcome: "おかえりぶ！泥遊びするぶ？",
                 questions: [
@@ -222,6 +228,7 @@
                 farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
             }
         };
+
         let love = parseInt(localStorage.getItem('hagu_love')) || 50;
         let lastUpdate = parseInt(localStorage.getItem('hagu_time')) || Date.now();
         let talkLog = JSON.parse(localStorage.getItem('hagu_talk_log')) || [];
@@ -234,9 +241,11 @@
             let loss = 0;
 
             if (love > 51) {
-                loss = Math.floor(diff / (60 * 1000)); // 1分に1
+                // 1分(60,000ms)に1減る
+                loss = Math.floor(diff / (60 * 1000));
             } else if (love > 0) {
-                loss = Math.floor(diff / (60 * 60 * 1000)); // 1時間に1
+                // 1時間(3,600,000ms)に1減る
+                loss = Math.floor(diff / (60 * 60 * 1000));
             }
 
             if (loss > 0) {
@@ -246,6 +255,7 @@
             }
 
             document.getElementById('love-val').innerText = love;
+            document.getElementById('user-display').innerText = userName + "の絆ルーム";
             const fill = document.getElementById('love-fill');
             fill.style.width = love + "%";
             if (love >= 100) fill.classList.add('max'); else fill.classList.remove('max');
@@ -291,7 +301,12 @@
                     love = Math.min(100, Math.max(0, love + score));
                     talkLog.push(Date.now());
                     container.style.display = "none";
-                    document.getElementById('chat-bubble').innerText = score > 5 ? "わーい！嬉しい！" : (score > 0 ? "ありがとう！" : "えーん、ひどいよ…");
+                    
+                    let reaction = "ありがとう！";
+                    if(score >= 10) reaction = "わーい！最高に嬉しい！";
+                    if(score < 0) reaction = "えーん、ひどいよ…";
+                    document.getElementById('chat-bubble').innerText = reaction;
+                    
                     updateStatus();
                     save();
                 };
@@ -309,11 +324,15 @@
 
             love = Math.min(100, love + 1);
             strokeLog.push(now);
-            createHeart(e.clientX, e.clientY);
+            
+            // クリック位置または要素の中央にハートを出す
+            const x = e.clientX || window.innerWidth / 2;
+            const y = e.clientY || window.innerHeight / 2;
+            createHeart(x, y);
+            
             updateStatus();
             save();
             
-            // 連続押し防止（0.5秒）
             const btn = document.getElementById('stroke-btn');
             btn.disabled = true;
             setTimeout(() => btn.disabled = false, 500);
@@ -327,6 +346,15 @@
             setTimeout(() => h.remove(), 1500);
         }
 
+        function renameUser() {
+            const newName = prompt("新しい名前を入力してね", userName);
+            if (newName) {
+                userName = newName;
+                save();
+                updateStatus();
+            }
+        }
+
         function resetGame() {
             localStorage.clear();
             location.reload();
@@ -336,10 +364,14 @@
             const key = document.getElementById('char-selector').value;
             document.getElementById('hagumo-sprite').src = `./images/${key}.PNG`;
             document.getElementById('chat-bubble').innerText = charData[key]?.welcome || "よろしくね！";
+            document.getElementById('choices').style.display = "none";
         }
 
-        setInterval(updateStatus, 10000); // 10秒ごとに自動更新
-        window.onload = updateStatus;
+        setInterval(updateStatus, 10000); 
+        window.onload = () => {
+            changeChar();
+            updateStatus();
+        };
     </script>
 </body>
 </html>
