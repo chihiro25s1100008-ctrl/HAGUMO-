@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MY HAGUMO | ハグモの部屋</title>
+    <title>MY HAGUMO | 絆の部屋</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -50,7 +50,7 @@
         .bounce { animation: bounce 4s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .bubble { position: relative; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; font-weight: bold; line-height: 1.6; min-height: 60px; display: flex; align-items: center; justify-content: center; text-align: center;}
+        .bubble { position: relative; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; font-weight: bold; line-height: 1.6; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center;}
         
         .choices-container { display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; width: 100%; }
         .choice-btn { background: white; border: 2px solid var(--pink1); padding: 12px; border-radius: 15px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.2s; color: #666; }
@@ -65,7 +65,7 @@
 
         .max-evolution { animation: rainbow-glow 0.4s infinite linear !important; }
         .pachinko-shake { animation: screen-shake 0.1s infinite; }
-        .forever-msg { font-size: 22px; font-weight: 900; color: #ff0000; text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 0 0 15px #ff7eb9; animation: pulse 0.5s infinite alternate; }
+        .forever-msg { font-size: 20px; font-weight: 900; color: #ff0000; text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 0 0 15px #ff7eb9; animation: pulse 0.5s infinite alternate; }
         @keyframes rainbow-glow {
             0% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(0deg); transform: scale(1.1) rotate(0deg); }
             50% { filter: drop-shadow(0 0 35px #00ff00) hue-rotate(180deg); transform: scale(1.15) rotate(0deg); }
@@ -77,7 +77,7 @@
             40% { transform: translate(4px, -4px); }
             100% { transform: translate(0, 0); }
         }
-        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
         body.bg-level-1 { background: #fff5f7; }
         body.bg-level-2 { background: #ffe0f0; background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); }
@@ -86,7 +86,7 @@
 </head>
 <body>
 
-   <nav class="nav">
+    <nav class="nav">
         <div class="nav-content">
             <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
             <div class="nav-links">
@@ -135,7 +135,6 @@
     </div>
 
     <script>
-    // 提供された詳細なデータセット
     const charData = {
         buta: {
             welcome: "おかえりぶ！泥遊びするぶ？",
@@ -146,6 +145,8 @@
                 { q: "一緒に昼寝するぶ？", a: ["喜んで！", "あとでね", "一人で寝て"], scores: [10, 5, -5] },
                 { q: "ボク、可愛くなったぶ？", a: ["世界一だよ", "変わらないね", "泥だらけだよ"], scores: [10, 5, -5] }
             ],
+            forever: "一生一緒だぶ…！もうどこにも行かせないぶ！",
+            maxStrokes: ["もっと撫でてぶ！主様の手、あったかいぶ〜", "主様はボクだけのものだぶ！大好きだぶ！"],
             farewell: "…主様、もうボクのこと忘れたぶね。さよならぶ。"
         },
         imo: {
@@ -157,6 +158,8 @@
                 { q: "暗いところ、怖くないもにょ？", a: ["君がいれば大丈夫", "少し怖いかな", "大嫌い！"], scores: [10, 5, -5] },
                 { q: "主様の好きな色は、土の色もにょ？", a: ["落ち着くから好き", "明るい方がいいな", "茶色は嫌い"], scores: [10, 5, -5] }
             ],
+            forever: "離さないもにょ。土の底まで、一生一緒もにょ…",
+            maxStrokes: ["主様の手、落ち着くもにょ…ずっとこうしててもにょ", "地上は眩しいけど、主様がいれば怖くないもにょ"],
             farewell: "…もう土の中から出てこないもにょ。バイバイもにょ。"
         },
         jaku: {
@@ -168,6 +171,8 @@
                 { q: "主様、私と一緒に踊ってくださる？", a: ["喜んで、お嬢様", "ステップなら少し", "忙しいから無理"], scores: [10, 5, -5] },
                 { q: "この庭園に、もっと青い花を植えたいですわ。", a: ["一緒に選ぼう", "任せるよ", "今のままで十分"], scores: [10, 5, -5] }
             ],
+            forever: "永遠の愛を誓いますわ。一生、共に歩んでくださいまし",
+            maxStrokes: ["あら、主様。そんなに熱心に…嬉しいですわ", "世界で一番、あなたの手が心地よいですわね"],
             farewell: "…美しい思い出と共に、私は飛び立ちますわ。さようなら。"
         },
         risu: {
@@ -179,17 +184,21 @@
                 { q: "今日はどこに遊びに行く？", a: ["綺麗な水の川", "そこらへんの道", "行かない"], scores: [10, 5, -5] },
                 { q: "ボクといると楽しい？", a: ["最高に楽しいよ！", "まあまあかな", "疲れる"], scores: [10, 5, -5] }
             ],
+            forever: "ねぇ、ずっとボクだけを見てて？一生一緒だよ！",
+            maxStrokes: ["ふふっ、主様になでられるの、一番の美容液だよ！", "離さないからね！主様、だーいすき！"],
             farewell: "…ボク、もっと大切にされたかったな。バイバイ。"
         },
         tora: {
             welcome: "おかえりガオー！トマトパワー全開だ！",
             questions: [
                 { q: "オレ様と一緒に特訓するガオ！", a: ["やるぞ！燃えてきた！", "少しだけなら…", "疲れるからヤダ"], scores: [10, 5, -5] },
-                { q: "トマトジュース、一気に飲めるか！？", a: ["余裕だガオ！", "頑張ってみる", "絶対無理"], scores: [10, 5, -5] },
+                { q: "トマトジュース, 一気に飲めるか！？", a: ["余裕だガオ！", "頑張ってみる", "絶対無理"], scores: [10, 5, -5] },
                 { q: "オレ様、トラらしくてかっこいいだろ？", a: ["世界一かっこいい！", "可愛いトラだね", "ただのトマトじゃん"], scores: [10, 5, -5] },
                 { q: "主様！情熱が足りないんじゃないか！？", a: ["今すぐ燃え上がる！", "のんびりいこうよ", "放っておいて"], scores: [10, 5, -5] },
                 { q: "ライバルに勝つには何が必要だと思う！？", a: ["折れない心だ！", "練習あるのみ", "運じゃない？"], scores: [10, 5, -5] }
             ],
+            forever: "オレ様の情熱は一生お前だけのものだ！ガオーッ！",
+            maxStrokes: ["おいおい、照れるガオ！でも…もっとやってくれ！", "お前となら、どこまででも強くなれる気がするガオ！"],
             farewell: "…お前の情熱、消えちまったんだな。あばよガオ。"
         },
         chabo: {
@@ -199,8 +208,10 @@
                 { q: "俺の体、結構硬いんだぜ。触ってみるか？", a: ["頼もしいね！", "カボチャみたいだ", "ゴツゴツしすぎ"], scores: [10, 5, -5] },
                 { q: "あんまり無理すんなよ。分かってるか？", a: ["ありがとう、優しいね", "気をつけるよ", "うるさいなぁ"], scores: [10, 5, -5] },
                 { q: "畑の様子、見てきてやろうか？", a: ["お願い、頼りにしてる", "気が向いたらね", "自分で行くよ"], scores: [10, 5, -5] },
-                { q: "俺といると、落ち着くか？", a: ["すごく安心するよ", "まあね", "退屈かな"], scores: [10, 5, -5] }
+                { q: "俺といると、落ち着かか？", a: ["すごく安心するよ", "まあね", "退屈かな"], scores: [10, 5, -5] }
             ],
+            forever: "…おい、覚悟しろよ。俺はあんたを一生離さねぇ。",
+            maxStrokes: ["あんたの手は…反則だな。…もっとやっていいぞ。", "こうしてると、畑仕事の疲れも吹っ飛ぶぜ。"],
             farewell: "…あんたとの時間は悪くなかった。じゃあな、主。"
         },
         saru: {
@@ -212,6 +223,8 @@
                 { q: "ねぇねぇ、面白い話して！ウキッ！", a: ["とっておきを話すよ", "あとでね", "今は忙しい"], scores: [10, 5, -5] },
                 { q: "レモンティーに砂糖は入れる派！？", a: ["入れない！酸味派！", "少し入れるよ", "甘くないと飲めない"], scores: [10, 5, -5] }
             ],
+            forever: "ウキッ！主が好きすぎて離れられないよ！一生一緒だ！",
+            maxStrokes: ["ウキキッ！気持ちいい〜！主、最高だよぉ！", "レモンより甘い気分になっちゃうウキーッ！"],
             farewell: "…なんだか酸っぱい気持ちだよ。ウキィ…バイバイ。"
         },
         kame: {
@@ -223,6 +236,8 @@
                 { q: "この甲羅……ブルーベリーの模様なんです。", a: ["とても素敵だよ", "美味しそうだね", "ちょっと地味かな"], scores: [10, 5, -5] },
                 { q: "主様……無理は, 毒ですよ……？", a: ["君に癒やされるよ", "分かってるよ", "放っておいて"], scores: [10, 5, -5] }
             ],
+            forever: "ゆっくり、永遠に……。一生、一緒にいてくれますね？",
+            maxStrokes: ["あぁ…時が止まればいいのに……幸せです……", "主様のなでなで、とっても優しい魔法ですね…"],
             farewell: "……さようなら。ゆっくり、思い出に変わりますね……。"
         },
         nga: {
@@ -234,17 +249,21 @@
                 { q: "なでなでしてぁ！桃の香りがするでしょ？", a: ["ふわふわでいい香り！", "いい匂いだね", "ちょっと甘すぎ"], scores: [10, 5, -5] },
                 { q: "主様、ずっと一緒にいてくれるぅ…？", a: ["約束するよ！", "できるだけね", "そのうちね"], scores: [10, 5, -5] }
             ],
+            forever: "ピピィッ！主様はボクのもの！一生一緒だよぉ！",
+            maxStrokes: ["もっとぉ！もっとぉ！主様ぁ、だぁいすきだよぉ！", "ピピィ！これ、ボクへのプロポーズかなぁ！？"],
             farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ。バイバイ。"
         },
         kuma: {
             welcome: "……お帰り。君の足音が聞こえたよ。",
             questions: [
-                { q: "この黒いイチジク……熟していて、甘いよ。食べる？", a: ["君と一緒に食べたいな", "一つ頂くよ", "見た目が怖いな"], scores: [10, 5, -5] },
+                { q: "この黒いイチジク……熟していて、甘いよ. 食べる？", a: ["君と一緒に食べたいな", "一つ頂くよ", "見た目が怖いな"], scores: [10, 5, -5] },
                 { q: "……私の隣は、少し寒いかもしれないけれど。", a: ["温めてあげるよ", "静かで落ち着くよ", "確かに冷たいね"], scores: [10, 5, -5] },
                 { q: "夜の月、一緒に見ているだけで、満たされるよ。", a: ["君と見る月は特別だよ", "綺麗だね", "眠くなってきちゃった"], scores: [10, 5, -5] },
                 { q: "……私の毛並み、黒すぎて怖くない？", a: ["艶があって綺麗だよ", "かっこいいと思う", "少し不気味かも"], scores: [10, 5, -5] },
                 { q: "君の笑顔は……イチジクの蜜よりも、甘いね。", a: ["照れるけど嬉しいな", "ありがとう", "大げさだよ"], scores: [10, 5, -5] }
             ],
+            forever: "暗闇の中でも、君だけを離さない。……一生、一緒だよ。",
+            maxStrokes: ["君のぬくもり……これが「愛」なんだね。", "もっと触れていて……君がいれば、冬も怖くないよ。"],
             farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
         }
     };
@@ -252,14 +271,13 @@
     let currentChar = "buta";
     let love = 50;
     let lastUpdate = Date.now();
+    let lastMaxTime = 0; // 好感度が最後にMAXになった時間を記録
     let talkLog = [];
     let strokeLog = [];
     let userName = localStorage.getItem('hagu_user') || "主様";
     let cooldowns = { talk: null, stroke: null };
 
-    // セリフ内の「主様」または「主」を現在のユーザー名に置換する関数
     function getName(text) {
-        // もしユーザー名が「主様」以外なら、「主様」「主」を置換する
         if (userName !== "主様") {
             return text.replace(/主様/g, userName).replace(/主(?!様)/g, userName);
         }
@@ -270,13 +288,20 @@
         currentChar = charKey;
         love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
         lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
+        lastMaxTime = parseInt(localStorage.getItem(`hagu_max_time_${charKey}`)) || 0;
         talkLog = JSON.parse(localStorage.getItem(`hagu_talk_log_${charKey}`)) || [];
         strokeLog = JSON.parse(localStorage.getItem(`hagu_stroke_log_${charKey}`)) || [];
         
         resetButtonVisuals();
         checkAndStartTimers();
         updateStatus();
-        document.getElementById('chat-bubble').innerText = getName(charData[charKey].welcome);
+        
+        // MAX時はwelcomeではなくforeverセリフを表示
+        if (love >= 100) {
+            document.getElementById('chat-bubble').innerHTML = `<div class="forever-msg">${getName(charData[charKey].forever)}</div>`;
+        } else {
+            document.getElementById('chat-bubble').innerText = getName(charData[charKey].welcome);
+        }
     }
 
     function resetButtonVisuals() {
@@ -307,6 +332,7 @@
                 clearInterval(cooldowns[type]);
                 btn.innerText = originalText;
                 btn.disabled = false;
+                if (love >= 100 && type === 'talk') btn.disabled = true; // MAX時はおしゃべり封印継続
             } else {
                 const min = Math.floor(diff / 60000);
                 const sec = Math.floor((diff % 60000) / 1000);
@@ -318,14 +344,20 @@
     function updateStatus() {
         const now = Date.now();
         const diff = now - lastUpdate;
-        let loss = 0;
-        if (love > 51) loss = Math.floor(diff / (60 * 1000));
-        else if (love > 0) loss = Math.floor(diff / (3600 * 1000));
+        
+        // 好感度減少ロジック
+        let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000)); // 1時間以内なら減少しない
+        
+        if (!isImmune) {
+            let loss = 0;
+            if (love > 51) loss = Math.floor(diff / (60 * 1000));
+            else if (love > 0) loss = Math.floor(diff / (3600 * 1000));
 
-        if (loss > 0) {
-            love = Math.max(0, love - loss);
-            lastUpdate = now;
-            save();
+            if (loss > 0) {
+                love = Math.max(0, love - loss);
+                lastUpdate = now;
+                save();
+            }
         }
 
         document.getElementById('love-val').innerText = love;
@@ -333,37 +365,29 @@
         const fill = document.getElementById('love-fill');
         const sprite = document.getElementById('hagumo-sprite');
         const bubble = document.getElementById('chat-bubble');
+        const talkBtn = document.getElementById('talk-btn');
         const container = document.body;
+        
         fill.style.width = love + "%";
 
         container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
-        if (love >= 100) container.classList.add('bg-level-3');
-        else if (love > 50) container.classList.add('bg-level-2');
-        else container.classList.add('bg-level-1');
-
         if (love >= 100) {
+            container.classList.add('bg-level-3');
             fill.classList.add('max'); 
             sprite.classList.add('max-evolution');
             container.classList.add('pachinko-shake');
-            const foreverLines = {
-                buta: "一生一緒だぶ…！もうどこにも行かせないぶ！",
-                imo: "離さないもにょ。土の底まで、一生一緒もにょ…",
-                jaku: "永遠の愛を誓いますわ。一生、共に歩んでくださいまし",
-                risu: "ねぇ、ずっとボクだけを見てて？一生一緒だよ！",
-                tora: "オレ様の情熱は一生お前だけのものだ！ガオーッ！",
-                chabo: "…おい、覚悟しろよ。俺はあんたを一生離さねぇ。",
-                saru: "ウキッ！主が好きすぎて離れられないよ！一生一緒だ！",
-                kame: "ゆっくり、永遠に……。一生、一緒にいてくれますね？",
-                nga: "ピピィッ！主様はボクのもの！一生一緒だよぉ！",
-                kuma: "暗闇の中でも、君だけを離さない。……一生、一緒だよ。"
-            };
-            if (document.getElementById('choices').style.display !== "flex") {
-                bubble.innerHTML = `<div class="forever-msg">${getName(foreverLines[currentChar])}</div>`;
+            talkBtn.disabled = true; // おしゃべり封印
+            
+            // おしゃべり中やなでなで中じゃない場合、常に一生一緒セリフ
+            if (document.getElementById('choices').style.display !== "flex" && !bubble.dataset.isStrokeReaction) {
+                bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
             }
         } else {
+            container.classList.add(love > 50 ? 'bg-level-2' : 'bg-level-1');
             fill.classList.remove('max');
             sprite.classList.remove('max-evolution');
             container.classList.remove('pachinko-shake');
+            if (!cooldowns.talk) talkBtn.disabled = false;
         }
 
         if (love <= 0) {
@@ -375,13 +399,14 @@
     function save() {
         localStorage.setItem(`hagu_love_${currentChar}`, love);
         localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
+        localStorage.setItem(`hagu_max_time_${currentChar}`, lastMaxTime);
         localStorage.setItem(`hagu_talk_log_${currentChar}`, JSON.stringify(talkLog));
         localStorage.setItem(`hagu_stroke_log_${currentChar}`, JSON.stringify(strokeLog));
         localStorage.setItem('hagu_user', userName);
     }
 
     function startTalk() {
-        if (document.getElementById('talk-btn').disabled) return;
+        if (document.getElementById('talk-btn').disabled || love >= 100) return;
         const data = charData[currentChar];
         const quest = data.questions[Math.floor(Math.random() * data.questions.length)];
         document.getElementById('chat-bubble').innerText = getName(quest.q);
@@ -395,11 +420,13 @@
             btn.innerText = text;
             btn.onclick = () => {
                 const score = quest.scores[i];
+                const oldLove = love;
                 love = Math.min(100, Math.max(0, love + score));
+                if (love >= 100 && oldLove < 100) lastMaxTime = Date.now(); // MAX到達時間を記録
+                
                 talkLog.push(Date.now());
                 container.style.display = "none";
-                let reaction = score >= 10 ? "嬉しい！ツヤツヤになるよ！" : (score < 0 ? "そんなの悲しいな…" : "ありがとう！");
-                document.getElementById('chat-bubble').innerText = reaction;
+                document.getElementById('chat-bubble').innerText = score >= 10 ? "嬉しい！ツヤツヤになるよ！" : (score < 0 ? "そんなの悲しいな…" : "ありがとう！");
                 updateStatus();
                 save();
                 checkAndStartTimers();
@@ -410,9 +437,29 @@
 
     function strokeHagumo(e) {
         if (document.getElementById('stroke-btn').disabled) return;
+        const oldLove = love;
         love = Math.min(100, love + 1);
+        if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
+        
         strokeLog.push(Date.now());
         createHeart(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+        
+        // なでなでセリフ表示
+        const bubble = document.getElementById('chat-bubble');
+        bubble.dataset.isStrokeReaction = "true";
+        if (love >= 100) {
+            const maxStrokes = charData[currentChar].maxStrokes;
+            bubble.innerText = getName(maxStrokes[Math.floor(Math.random() * maxStrokes.length)]);
+        } else {
+            bubble.innerText = "なでなで、気持ちいいぶ〜";
+        }
+        
+        // 2秒後に一生一緒セリフまたは通常状態に戻す
+        setTimeout(() => {
+            delete bubble.dataset.isStrokeReaction;
+            updateStatus();
+        }, 2000);
+
         updateStatus();
         save();
         checkAndStartTimers();
@@ -435,6 +482,7 @@
 
     function resetChar(charKey) {
         localStorage.removeItem(`hagu_love_${charKey}`);
+        localStorage.removeItem(`hagu_max_time_${charKey}`);
         location.reload();
     }
 
@@ -444,7 +492,6 @@
             userName = newName;
             save();
             updateStatus();
-            document.getElementById('chat-bubble').innerText = getName(charData[currentChar].welcome);
         }
     }
 
