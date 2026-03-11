@@ -53,7 +53,6 @@
         /* キャラ選択カード */
         .thumb-list { margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .thumb-item { cursor: pointer; text-align: center; transition: 0.3s; }
-        
         .thumb-img { 
             width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; 
             border: 3px solid #f0f0f0; border-radius: 20px; padding: 8px; background: #fff; 
@@ -63,11 +62,8 @@
 
         /* 選択中のスタイル */
         .thumb-item.active .thumb-img { 
-            border-color: var(--main-pink); 
-            opacity: 1; 
-            background: var(--soft-pink); 
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(255, 126, 185, 0.2);
+            border-color: var(--main-pink); opacity: 1; background: var(--soft-pink); 
+            transform: translateY(-5px); box-shadow: 0 8px 15px rgba(255, 126, 185, 0.2);
         }
         .thumb-item.active .thumb-name { color: var(--main-pink); }
 
@@ -85,6 +81,17 @@
             cursor: pointer; box-shadow: 0 10px 20px rgba(255,126,185,0.3); transition: 0.3s; 
         }
         .btn-order:active { transform: translateY(3px); box-shadow: none; }
+
+        /* 追加した戻るボタンのスタイル */
+        .btn-back {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 15px; padding: 15px; color: #aaa; text-decoration: none;
+            font-size: 14px; font-weight: bold; border: 2px solid #eee;
+            border-radius: 50px; transition: 0.3s; background: transparent;
+        }
+        .btn-back span { font-size: 18px; transition: 0.3s; }
+        .btn-back:hover { background: #fdfdfd; color: var(--main-pink); border-color: var(--pink1); }
+        .btn-back:hover span { transform: translateX(-5px); }
 
         .footer-notice { background: white; padding: 60px 20px; text-align: center; border-top: 1px solid #eee; }
     </style>
@@ -153,6 +160,10 @@
             </div>
 
             <button class="btn-order" onclick="orderEffect()">この子をお迎えする 🌱</button>
+            
+            <a href="product.html" class="btn-back">
+                <span>←</span> 他のプランも見る
+            </a>
         </div>
     </div>
 
@@ -166,22 +177,18 @@
 
     <script>
         function changeImage(element, name, type) {
-            // 画像のパスを取得
             const newSrc = element.querySelector('.thumb-img').src;
             const mainImg = document.getElementById('main-img');
             
-            // ふわっと切り替え
             mainImg.style.opacity = '0';
             setTimeout(() => {
                 mainImg.src = newSrc;
                 mainImg.style.opacity = '1';
             }, 200);
 
-            // テキスト更新
             document.getElementById('char-name-tag').innerText = "パートナー： " + name;
             document.getElementById('selected-display').innerText = name + "（" + type + "）";
             
-            // アクティブクラスの付け替え
             const items = document.querySelectorAll('.thumb-item');
             items.forEach(item => item.classList.remove('active'));
             element.classList.add('active');
