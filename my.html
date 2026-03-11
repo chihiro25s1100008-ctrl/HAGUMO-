@@ -197,19 +197,68 @@
 
     <footer>&copy; 2026 MY HAGUMO Project | 絆を育む農業×美肌</footer>
 
-    <script>
-        // --- 設定データ ---
+   // --- 設定データ（挨拶と名前変更の反応を追加！） ---
         const charData = {
-            buta: { name: "かぶた", color: "#ffb3d9", lines: ["お腹すいたぶー...", "一緒に畑いくぶ？", "主様、だいすきぶ！", "泥遊び、楽しいぶよ♪"] },
-            imo: { name: "さつまいもぐら", color: "#a55eb5", lines: ["土の中は落ち着くもにょ...", "お芋、食べるもにょ？", "主様の手、あったかいもにょ。", "もにょもにょ...お昼寝タイム？"] },
-            risu: { name: "きゅうりす", color: "#855d10", lines: ["水分補給は大事だよ！", "バランスの良い食生活、してる？", "主様の肌、ツヤツヤにしたいなっ！", "ポリポリ...このキュウリ、最高！"] },
-            tora: { name: "とまとら", color: "#ff4d4d", lines: ["情熱の赤！トマトパワーだよ！", "今日も元気にいこう！ガオー！", "主様、一緒に運動する？", "リコピン、足りてる？"] },
-            chabo: { name: "かぼちゃぼ", color: "#ffa500", lines: ["どっしり構えていこうぜ。", "カボチャの煮物、作ってくれる？", "主様、いつも頑張ってるね。", "コケッ...あ、つい出ちゃった。"] },
-            kuma: { name: "くろいちじくま", color: "#444", lines: ["……静かに、育つのを待とう。", "この果実、君にあげるよ。", "……そばにいてくれて、ありがとう。", "闇夜に紛れて、美しく……"] },
-            saru: { name: "れもんきー", color: "#ffee33", lines: ["酸っぱいけど、クセになるよ！", "ビタミンC、たっぷりだよ！", "ウキー！主様、遊ぼう！", "肌がシャキッとするね！"] },
-            kame: { name: "ぶるーべりくがめ", color: "#5555ff", lines: ["ゆっくり、美しくなればいい。", "目は大事にしなきゃダメだよ。", "のんびり畑を見守ってるね。", "アントシアニン、あげる。"] },
-            nga: { name: "もももんが", color: "#ffc0cb", lines: ["ふわふわ、桃の香りがする？", "主様のところに飛んでいくよ！", "甘い果汁が一番の美容液！", "ピー！撫でて撫でて！"] },
-            jaku: { name: "ばたふらいぴーこっく", color: "#00008b", lines: ["私の色、不思議だと思わない？", "ハーブの力で癒やしてあげる。", "主様、気品を忘れないで。", "……綺麗、と言ってくれるの？"] }
+            buta: { 
+                name: "かぶた", 
+                lines: ["お腹すいたぶー...", "一緒に畑いくぶ？", "主様、だいすきぶ！", "泥遊び、楽しいぶよ♪"],
+                welcome: "主様、お帰りぶ！<br>おいしい野菜、育ってるぶ？",
+                rename: (n) => `${n}！おいしそうな名前ぶ！<br>お腹すいてきちゃったぶ〜。`
+            },
+            imo: { 
+                name: "さつまいもぐら", 
+                lines: ["土の中は落ち着くもにょ...", "お芋、食べるもにょ？", "主様の手、あったかいもにょ。", "もにょもにょ...お昼寝タイム？"],
+                welcome: "あ、主様...おかえりもにょ。<br>今、土を耕してたもにょ。",
+                rename: (n) => `${n}、いい響きもにょ。<br>土の中にまで響くいい声もにょ。`
+            },
+            risu: { 
+                name: "きゅうりす", 
+                lines: ["水分補給は大事だよ！", "バランスの良い食生活、してる？", "主様の肌、ツヤツヤにしたいなっ！", "ポリポリ...このキュウリ、最高！"],
+                welcome: "主様、おかえり！<br>ちゃんと野菜食べてる？チェックしちゃうよ！",
+                rename: (n) => `${n}って言うんだね！<br>ボクの次に素敵な名前だよ、えっへん！`
+            },
+            tora: { 
+                name: "とまとら", 
+                lines: ["情熱の赤！トマトパワーだよ！", "今日も元気にいこう！ガオー！", "主様、一緒に運動する？", "リコピン、足りてる？"],
+                welcome: "主様、おかえりー！<br>今日も真っ赤に燃える情熱、持ってる！？",
+                rename: (n) => `${n}！強そうな名前だガオ！<br>気に入った！よろしくな！`
+            },
+            chabo: { 
+                name: "かぼちゃぼ", 
+                lines: ["どっしり構えていこうぜ。", "カボチャの煮物、作ってくれる？", "主様、いつも頑張ってるね。", "コケッ...あ、つい出ちゃった。"],
+                welcome: "よお、主様。<br>ゆっくり座って、お茶でも飲もうぜ。",
+                rename: (n) => `${n}か、いい名前じゃねぇか。<br>落ち着く響きだ。`
+            },
+            kuma: { 
+                name: "くろいちじくま", 
+                lines: ["……静かに、育つのを待とう。", "この果実、君にあげるよ。", "……そばにいてくれて、ありがとう。", "闇夜に紛れて、美しく……"],
+                welcome: "……お帰り。君が来ると、<br>この部屋が少し明るくなるね。",
+                rename: (n) => `${n}……。<br>……忘れないように、心に刻んでおくよ。`
+            },
+            saru: { 
+                name: "れもんきー", 
+                lines: ["酸っぱいけど、クセになるよ！", "ビタミンC、たっぷりだよ！", "ウキー！主様、遊ぼう！", "肌がシャキッとするね！"],
+                welcome: "ウキキーッ！主様おかえり！<br>ビタミン、足りてる！？",
+                rename: (n) => `${n}！フレッシュな名前だね！<br>覚えるのもカンタン、ウキッ！`
+            },
+            kame: { 
+                name: "ぶるーべりくがめ", 
+                lines: ["ゆっくり、美しくなればいい。", "目は大事にしなきゃダメだよ。", "のんびり畑を見守ってるね。", "アントシアニン、あげる。"],
+                welcome: "おかえりなさい……。<br>慌てなくていいですよ、のんびりしましょう。",
+                rename: (n) => `${n}さん……。<br>ゆっくり、覚えさせていただきますね。`
+            },
+            nga: { 
+                name: "もももんが", 
+                lines: ["ふわふわ、桃の香りがする？", "主様のところに飛んでいくよ！", "甘い果汁が一番の美容液！", "ピー！撫てて撫でて！"],
+                welcome: "ピピィー！主様！<br>待ってたよ、ふわふわさせて！",
+                rename: (n) => `${n}！甘くて美味しそうな名前だね！<br>大好きになっちゃいそう！`
+            },
+            jaku: { 
+                name: "ばたふらいぴーこっく", 
+                lines: ["私の色、不思議だと思わない？", "ハーブの力で癒やしてあげる。", "主様、気品を忘れないで。", "……綺麗、と言ってくれるの？"],
+                welcome: "お帰りなさい、主様。<br>ハーブティーでもいかがかしら？",
+                rename: (n) => `${n}……。<br>優雅な響きですこと。大切にしますわ。`
+            }
         };
 
         let love = parseInt(localStorage.getItem('hagumo_love')) || 50;
@@ -221,7 +270,8 @@
         window.onload = () => {
             updateStatus();
             updateUserDisplay();
-            say("……（お耳をぴょこぴょこさせている）");
+            const charKey = document.getElementById('char-selector').value;
+            say(charData[charKey]?.welcome || "主様、おかえりなさい！");
         };
 
         // --- コア機能 ---
@@ -247,13 +297,14 @@
         function changeChar() {
             const charKey = document.getElementById('char-selector').value;
             const img = document.getElementById('hagumo-sprite');
-            img.classList.remove('bounce'); // 一旦リセットして再起動
+            img.classList.remove('bounce');
             void img.offsetWidth; 
             img.classList.add('bounce');
             img.src = `./images/${charKey}.PNG`;
             
-            const name = charData[charKey]?.name || "ハグモ";
-            say(`新しい姿の、${name}だよ！<br>似合ってるかな？`);
+            // キャラ変更時も個別の挨拶をしゃべる
+            const welcomeMsg = charData[charKey]?.welcome || "よろしくね！";
+            say(welcomeMsg);
         }
 
         function say(text) {
@@ -276,7 +327,6 @@
             const charKey = document.getElementById('char-selector').value;
             const lines = charData[charKey]?.lines || ["なになにー？"];
             
-            // 親密度が高いとセリフが変わる仕掛け
             let message = lines[Math.floor(Math.random() * lines.length)];
             if (love >= 90) message = `主様といると、本当に幸せだよ。`;
             
@@ -296,7 +346,6 @@
             love = Math.min(100, love + 5);
             updateStatus();
             
-            // エフェクト生成
             createHeart(event.clientX, event.clientY);
 
             const img = document.getElementById('hagumo-sprite');
@@ -328,7 +377,12 @@
                 userName = newName;
                 localStorage.setItem('hagumo_user', userName);
                 updateUserDisplay();
-                say(`${userName}って呼べばいいんだね！<br>覚えたよ！`);
+                
+                // 【追加】名前を教えた時のキャラ別反応
+                const charKey = document.getElementById('char-selector').value;
+                const response = charData[charKey]?.rename ? charData[charKey].rename(userName) : `${userName}、いい名前だね！`;
+                say(response);
+                
             } else if (newName) {
                 alert("もう少し短い名前にしてね！");
             }
