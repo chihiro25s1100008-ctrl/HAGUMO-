@@ -226,8 +226,31 @@
         }
 
         function orderEffect() {
-            const name = document.getElementById('char-name-tag').innerText.replace('パートナー： ', '');
-            alert(name + ' との新しい生活が始まります！\nお迎え（契約）のお申し込みを承りました。');
+            const nameTag = document.getElementById('char-name-tag').innerText;
+            const name = nameTag.replace('パートナー： ', '').replace('代表キャラ：', '');
+            
+            // キャラクター別のセリフ設定
+            let message = "";
+            if (name.includes("かぶた")) {
+                message = "「わぁーい！主様と泥遊び……じゃなくて、美容のお勉強がんばるぶ！」";
+            } else if (name.includes("さつまいもぐら")) {
+                message = "「あ、お迎えしてくれたもにょ？土の中から、主様の毎日を見守ってるもにょ……♪」";
+            } else if (name.includes("ばたふらいぴーこっく")) {
+                message = "「あら、光栄ですわ。主様の日常を、わたくしがより優雅に彩って差し上げますわね。」";
+            } else {
+                message = name + " との新しい生活が始まります！";
+            }
+
+            // 1段階目：キャラのセリフ
+            alert(message);
+
+            // 2段階目：システムの通知
+            alert(
+                "【お申し込み完了のお知らせ】\n\n" + 
+                name + "のキットをお申し込みいただきありがとうございました！\n\n" +
+                "※このサイトは学校の課題作品です。\n" +
+                "実際の商品発送やご請求、個人情報の収集は一切行われませんのでご安心ください。"
+            );
         }
     </script>
 </body>
