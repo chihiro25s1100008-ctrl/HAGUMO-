@@ -16,7 +16,6 @@
 
         body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; transition: background 0.5s; touch-action: manipulation; }
 
-        /* ナビゲーション */
         .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 8px 0; }
         .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .nav-logo-img { height: 28px; cursor: pointer; }
@@ -265,13 +264,13 @@
             ],
             forever: "ピピィッ！主様はボクのもの！一生一緒だよぉ！",
             maxStrokes: ["もっとぉ！もっとぉ！主様ぁ、だぁいすきだよぉ！", "ピピィ！これ、ボクへのプロポーズかなぁ！？"],
-            farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ。バイバイ。"
+            farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ. バイバイ。"
         },
         kuma: {
             welcome: "……お帰り。君の足音が聞こえたよ。",
             strokeRes: "……君の手、とても温かい。心が解けていくようだね。",
             questions: [
-                { q: "この黒いイチジク……熟していて、甘いよ. 食べる？", a: ["君と一緒に食べたいな", "一つ頂くよ", "見た目が怖いな"], scores: [10, 5, -5] },
+                { q: "この黒いイチジク……食べてみる？", a: ["君と一緒に食べたいな", "一つ頂くよ", "見た目が怖いな"], scores: [10, 5, -5] },
                 { q: "……私の隣は、少し寒いかもしれないけれど。", a: ["温めてあげるよ", "静かで落ち着くよ", "確かに冷たいね"], scores: [10, 5, -5] },
                 { q: "夜の月、一緒に見ているだけで、満たされるよ。", a: ["君と見る月は特別だよ", "綺麗だね", "眠くなってきちゃった"], scores: [10, 5, -5] },
                 { q: "……私の毛並み、黒すぎて怖くない？", a: ["艶があって綺麗だよ", "かっこいいと思う", "少し不気味かも"], scores: [10, 5, -5] },
@@ -292,17 +291,11 @@
     let userName = localStorage.getItem('hagu_user') || "主様";
     let cooldowns = { talk: null, stroke: null };
 
-    // --- 名前変換ロジック ---
     function getName(text) {
         if (!text) return "";
-        if (userName !== "主様") {
-            // 「主様」をユーザー名に置換。ひらがなの「ぁ〜ん」が直後に来ない「主」も置換。
-            return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
-        }
-        return text;
+        return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
     }
 
-    // --- キャラクター切り替え＆読み込み ---
     function loadCharStatus(charKey) {
         currentChar = charKey;
         love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
@@ -323,7 +316,6 @@
         }
     }
 
-    // --- タイマーリセット ---
     function resetButtonVisuals() {
         if(cooldowns.talk) clearInterval(cooldowns.talk);
         if(cooldowns.stroke) clearInterval(cooldowns.stroke);
@@ -335,13 +327,12 @@
         strokeBtn.innerText = "👋 なでなで";
     }
 
-    // --- 回数制限チェック ---
     function checkAndStartTimers() {
         const now = Date.now();
-        talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000); // 30分
+        talkLog = talkLog.filter(t => now - t < 30 * 60 * 1000);
         if (talkLog.length >= 10) startTimer('talk', talkLog[0] + (30 * 60 * 1000), "💬 おしゃべり");
         
-        strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000); // 5分
+        strokeLog = strokeLog.filter(t => now - t < 5 * 60 * 1000);
         if (strokeLog.length >= 10) startTimer('stroke', strokeLog[0] + (5 * 60 * 1000), "👋 なでなで");
     }
 
@@ -365,17 +356,15 @@
         }, 1000);
     }
 
-    // --- 状態更新 (絆の減少処理含む) ---
     function updateStatus() {
         const now = Date.now();
         const diff = now - lastUpdate;
-        // 絆100%かつ、達成から1時間は「免疫」状態
         let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
         
         if (!isImmune) {
             let loss = 0;
-            if (love > 51) loss = Math.floor(diff / (60 * 1000)); // 51以上なら1分で1減
-            else if (love > 0) loss = Math.floor(diff / (3600 * 1000)); // 50以下なら1時間で1減
+            if (love > 51) loss = Math.floor(diff / (60 * 1000));
+            else if (love > 0) loss = Math.floor(diff / (3600 * 1000));
             
             if (loss > 0) {
                 love = Math.max(0, love - loss);
@@ -395,12 +384,12 @@
         
         fill.style.width = love + "%";
 
-        // --- 演出切り替え ---
         if (love >= 100) {
             container.classList.add('bg-level-3', 'pachinko-shake');
             fill.classList.add('max'); 
             sprite.classList.add('max-evolution');
             talkBtn.disabled = true;
+            talkBtn.innerText = "❤️ 永遠の絆";
             if (document.getElementById('choices').style.display !== "flex" && !bubble.dataset.isStrokeReaction) {
                 bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
             }
@@ -409,6 +398,7 @@
             container.classList.add(love > 50 ? 'bg-level-2' : 'bg-level-1');
             fill.classList.remove('max');
             sprite.classList.remove('max-evolution');
+            talkBtn.innerText = "💬 おしゃべり";
             if (!cooldowns.talk) talkBtn.disabled = false;
         }
 
@@ -418,7 +408,6 @@
         }
     }
 
-    // --- 保存処理 ---
     function save() {
         localStorage.setItem(`hagu_love_${currentChar}`, love);
         localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
@@ -428,18 +417,14 @@
         localStorage.setItem('hagu_user', userName);
     }
 
-    // --- アクション：おしゃべり ---
     function startTalk() {
         if (document.getElementById('talk-btn').disabled || love >= 100) return;
-        
         const data = charData[currentChar];
         const quest = data.questions[Math.floor(Math.random() * data.questions.length)];
         document.getElementById('chat-bubble').innerText = getName(quest.q);
-        
         const container = document.getElementById('choices');
         container.innerHTML = "";
         container.style.display = "flex";
-
         quest.a.forEach((text, i) => {
             const btn = document.createElement('button');
             btn.className = "choice-btn";
@@ -449,13 +434,10 @@
                 const oldLove = love;
                 love = Math.min(100, Math.max(0, love + score));
                 if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
-                
                 talkLog.push(Date.now());
                 container.style.display = "none";
-                
                 const bubble = document.getElementById('chat-bubble');
                 bubble.innerText = score >= 10 ? "嬉しい！ツヤツヤになるよ！" : (score < 0 ? "そんなの悲しいな…" : "ありがとう！");
-                
                 updateStatus();
                 save();
                 checkAndStartTimers();
@@ -464,39 +446,28 @@
         });
     }
 
-    // --- アクション：なでなで ---
     function strokeHagumo(e) {
         if (document.getElementById('stroke-btn').disabled) return;
-        
         const oldLove = love;
         love = Math.min(100, love + 1);
         if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
-        
         strokeLog.push(Date.now());
-        
-        // ハート演出の座標取得（クリック/タップ対応）
         const x = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
         const y = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
         createHeart(x, y);
-        
         const bubble = document.getElementById('chat-bubble');
         bubble.dataset.isStrokeReaction = "true";
-
         if (love >= 100) {
             const maxStrokes = charData[currentChar].maxStrokes;
             const line = getName(maxStrokes[Math.floor(Math.random() * maxStrokes.length)]);
             bubble.innerHTML = `<div class="forever-msg">${line}</div>`;
         } else {
-            const res = charData[currentChar].strokeRes || "なでなで、気持ちいい……♪";
-            bubble.innerText = getName(res);
+            bubble.innerText = getName(charData[currentChar].strokeRes);
         }
-        
-        // 3秒後に通常メッセージに戻るフラグを解除
         setTimeout(() => {
             delete bubble.dataset.isStrokeReaction;
             updateStatus();
         }, 3000);
-
         updateStatus();
         save();
         checkAndStartTimers();
@@ -510,51 +481,50 @@
         setTimeout(() => h.remove(), 1500);
     }
 
-    // --- キャラクター変更 ---
     function changeChar() {
         const key = document.getElementById('char-selector').value;
+        localStorage.setItem('hagu_current_char', key); 
         document.getElementById('hagumo-sprite').src = `./images/${key}.PNG`;
         document.getElementById('choices').style.display = "none";
         loadCharStatus(key);
     }
 
-    // --- データリセット ---
     function resetCharData(charKey) {
         const keys = ['love', 'time', 'max_time', 'talk_log', 'stroke_log'];
         keys.forEach(k => localStorage.removeItem(`hagu_${k}_${charKey}`));
+        localStorage.removeItem('hagu_current_char');
         location.reload();
     }
 
-    function manualReset() {
-        const charName = document.querySelector(`#char-selector option[value="${currentChar}"]`).text;
-        if (confirm(`${charName}との絆をリセットして最初からやり直しますか？`)) {
-            if (confirm("本当の本当にいいの…？もう一度会っても、あなたのことを忘れているかもしれません。")) {
-                alert(getName(charData[currentChar].farewell));
-                resetCharData(currentChar);
-            }
-        }
-    }
-
-    // --- 名前変更 ---
     function renameUser() {
-        const newName = prompt("新しい名前を入力してね", userName);
-        if (newName && newName.trim() !== "") {
+        const newName = prompt("新しいお名前を教えてね！", userName);
+        if (newName) {
             userName = newName;
             save();
             updateStatus();
-            // バブル内の表示も即時更新
-            const bubble = document.getElementById('chat-bubble');
-            if (love >= 100) {
-                bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
-            } else {
-                bubble.innerText = getName(charData[currentChar].welcome);
-            }
+        }
+    }
+
+    function manualReset() {
+        if (confirm("今の絆や設定をすべてリセットして最初からやり直す？")) {
+            const keys = Object.keys(localStorage);
+            keys.forEach(k => { if (k.startsWith('hagu_')) localStorage.removeItem(k); });
+            location.reload();
         }
     }
 
     window.onload = () => {
         const selector = document.getElementById('char-selector');
-        // 保存されていたキャラがあれば選択状態にする（未実装の場合はデフォルト）
+        const urlParams = new URLSearchParams(window.location.search);
+        const charParam = urlParams.get('chara');
+        if (charParam && charData[charParam]) {
+            selector.value = charParam;
+            localStorage.setItem('hagu_current_char', charParam);
+        } else {
+            const savedChar = localStorage.getItem('hagu_current_char');
+            if (savedChar && charData[savedChar]) selector.value = savedChar;
+        }
+        document.getElementById('hagumo-sprite').src = `./images/${selector.value}.PNG`;
         loadCharStatus(selector.value);
     };
     </script>
