@@ -176,7 +176,7 @@
                 <img src="./images/saru.PNG" class="thumb-img" onclick="changeImage(this, 'れもんきー（レモン）')">
                 <img src="./images/kame.PNG" class="thumb-img" onclick="changeImage(this, 'ぶるーべりくがめ（ブルーベリー）')">
                 <img src="./images/nga.PNG" class="thumb-img" onclick="changeImage(this, 'もももんが（モモ）')">
-                <img src="./images/kuma.PNG" class="thumb-img active" onclick="changeImage(this, 'くろいちじくま（静か・ミステリアス）')">
+                <img src="./images/kuma.PNG" class="thumb-img active" onclick="changeImage(this, 'くろいちじくま（黒いちじく）')">
             </div>
             <p style="text-align:center; font-size:11px; color:#bbb; margin-top:15px;">画像をタップして匠のパートナーを選択</p>
         </div>
@@ -229,13 +229,13 @@
             let message = "";
             // MASTERキャラ別のセリフ
             if (name.includes("れもんきー")) {
-                message = "「ウキッ！最高級のビタミン、ボクと一緒に絞り出そうよ！準備はバッチリだね！🐒」";
+                message = "「ウキッ！最高級のビタミン、ボクと一緒に絞り出そうよ！準備はバッチリだね！」";
             } else if (name.includes("ぶるーべりくがめ")) {
-                message = "「……一歩一歩、本物の輝きを目指しましょう。僕がじっくり、お供しますよ。🐢」";
+                message = "「……一歩一歩、本物の輝きを目指しましょう。僕がじっくり、お供しますよ。」";
             } else if (name.includes("もももんが")) {
-                message = "「ふわぁ〜、ボクを呼んだ？キミを桃源郷へ連れて行ってあげる。覚悟してね♪🐿️」";
+                message = "「ふわぁ〜、ボクを呼んだ？キミを桃源郷へ連れて行ってあげる。覚悟してね♪」";
             } else if (name.includes("くろいちじくま")) {
-                message = "「……光栄だ。この静かな夜のように、深い美しさを君に贈ろう。大切にするよ。🐻」";
+                message = "「……光栄だ。この静かな夜のように、深い美しさを君に贈ろう。大切にするよ。」";
             } else {
                 message = name + " との究極の生活が始まります。";
             }
