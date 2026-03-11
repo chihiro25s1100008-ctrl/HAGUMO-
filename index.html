@@ -6,141 +6,181 @@
     <title>HAGUMO | かわいくはじめる、美容の自給自足</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; }
+        :root { 
+            --main-pink: #ff7eb9; 
+            --soft-pink: #fff5f7; 
+            --pink1: #ffb3d9; 
+            --pink2: #d1478e; 
+            --white-border: 4px solid white;
+        }
         
-        /* 全体の余白調整 */
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: white; margin: 0; padding-top: 100px; overflow-x: hidden; color: #555; }
+        /* 全体の装飾：ドット背景 */
+        body { 
+            font-family: 'Zen Maru Gothic', sans-serif; 
+            background-color: #fff;
+            background-image: radial-gradient(var(--soft-pink) 2px, transparent 2px);
+            background-size: 30px 30px;
+            margin: 0; 
+            padding-top: 100px; 
+            overflow-x: hidden; 
+            color: #555; 
+        }
 
-        /* --- 【修正版】スマホでも崩れない最強ナビ --- */
+        /* --- ナビゲーション --- */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
-            background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
+            background: rgba(255, 255, 255, 0.95); z-index: 10000; 
+            border-bottom: 3px dotted var(--pink1); 
             padding: 8px 0;
+            backdrop-filter: blur(5px);
         }
         .nav-content { 
             max-width: 1100px; margin: 0 auto; padding: 0 15px;
             display: flex; flex-direction: column; align-items: center; gap: 8px;
         }
-        .nav-logo-img { height: 28px; cursor: pointer; }
-        .nav-links { 
-            display: flex; flex-wrap: wrap; justify-content: center; 
-            gap: 4px 8px;
-        }
+        .nav-logo-img { height: 32px; cursor: pointer; transition: 0.3s; }
+        .nav-logo-img:hover { transform: scale(1.1) rotate(-3deg); }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; }
         .nav-link { 
             color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
-            padding: 4px 8px; border-radius: 20px; transition: 0.3s;
-            background: #fdfdfd; border: 1px solid #f0f0f0;
+            padding: 5px 12px; border-radius: 20px; transition: 0.3s;
+            background: white; border: 2px solid #f0f0f0;
         }
         .nav-link:hover, .nav-link.active { 
-            color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink);
+            color: white; background: var(--main-pink); border-color: var(--main-pink);
         }
 
-        /* PCサイズ(769px以上)での見え方 */
         @media screen and (min-width: 769px) {
             body { padding-top: 80px; }
-            .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
-            .nav-logo-img { height: 35px; }
-            .nav-link { font-size: 13px; background: none; border: none; }
+            .nav-content { flex-direction: row; justify-content: space-between; height: 65px; }
+            .nav-link { font-size: 13px; }
         }
 
-        /* ヒーローセクション */
+        /* --- ヒーローセクション --- */
         .hero-section {
-            padding: 60px 20px 80px;
-            background: linear-gradient(135deg, #fff 0%, #fff0f6 100%);
+            padding: 40px 20px 60px;
             text-align: center;
-            border-radius: 0 0 80px 80px;
             position: relative;
+            z-index: 1;
         }
+
+        /* 背景のふわふわパーツ */
+        .deco-part {
+            position: absolute; z-index: -1; opacity: 0.5;
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-20px) rotate(10deg); } }
 
         .hero-logo { 
-            width: 140px; 
-            margin-bottom: 25px; 
-            animation: floatLogo 3s ease-in-out infinite; 
-            filter: drop-shadow(0 8px 20px rgba(255,126,185,0.25));
+            width: 180px; 
+            margin-bottom: 20px; 
+            filter: drop-shadow(0 8px 15px rgba(255,126,185,0.3));
+            animation: purupuru 3s infinite;
         }
-        @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes purupuru { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05) rotate(2deg); } }
 
         .big-catch { 
-            font-size: clamp(28px, 8vw, 56px); 
-            font-weight: 700; 
-            color: var(--pink2); 
-            line-height: 1.25; 
-            margin-bottom: 15px;
-            letter-spacing: 1px;
+            font-size: clamp(32px, 10vw, 64px); 
+            font-weight: 900; 
+            background: linear-gradient(to bottom, var(--pink2), var(--main-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2; 
+            margin-bottom: 10px;
+            filter: drop-shadow(2px 2px 0px white);
         }
 
         .sub-copy { 
-            font-size: clamp(16px, 4vw, 20px); 
-            color: #888; 
-            margin-bottom: 45px; 
-            font-weight: bold;
-            letter-spacing: 0.5px;
+            font-size: 18px; color: #ff94c6; margin-bottom: 30px; font-weight: bold;
+            display: inline-block; background: white; padding: 5px 20px; border-radius: 50px;
         }
 
-        .hero-poster { 
-            width: 90%; 
-            max-width: 300px; 
-            border-radius: 30px; 
-            box-shadow: 0 20px 45px rgba(255,105,180,0.2); 
-            margin-top: 50px;
-            border: 6px solid white;
-            transform: rotate(-2deg);
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* --- 【新設】タイル型メニューボタン --- */
+        .tile-nav {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
-        .hero-poster:hover { transform: rotate(0deg) scale(1.05); }
+        .tile-item {
+            background: white;
+            border-radius: 25px;
+            padding: 20px 10px;
+            text-decoration: none;
+            box-shadow: 0 10px 0 var(--soft-pink);
+            border: 3px solid var(--pink1);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .tile-item:hover { transform: translateY(-5px); box-shadow: 0 15px 0 var(--soft-pink); background: var(--soft-pink); }
+        .tile-icon { font-size: 30px; }
+        .tile-label { color: var(--pink2); font-weight: bold; font-size: 14px; }
+        .tile-sub { color: #aaa; font-size: 10px; }
 
-        /* 特徴グリッド */
+        @media screen and (min-width: 769px) {
+            .tile-nav { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* --- 特徴カード --- */
         .feature-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 20px; 
-            padding: 80px 20px; 
+            gap: 25px; 
+            padding: 60px 20px; 
             max-width: 1100px; 
             margin: 0 auto; 
         }
-
         .feature-card { 
             background: white; 
             padding: 40px 25px; 
             border-radius: 40px; 
-            box-shadow: 0 15px 35px rgba(255,126,185,0.08); 
+            box-shadow: 0 15px 35px rgba(255,126,185,0.1); 
             text-align: center; 
-            border: 2px solid var(--soft-pink); 
+            border: var(--white-border);
+            outline: 2px solid var(--soft-pink);
             transition: 0.4s;
         }
-        .feature-card:hover { transform: translateY(-10px); border-color: var(--pink1); }
-        .feature-card h3 { color: var(--pink2); margin-bottom: 15px; font-size: 1.3rem; font-weight: 700; }
-        .feature-card p { font-size: 14px; color: #777; line-height: 1.8; margin: 0; }
+        .feature-card:hover { transform: scale(1.03); outline-color: var(--pink1); }
+        .feature-card h3 { color: var(--pink2); margin-bottom: 15px; font-size: 1.4rem; }
 
         /* ボタン */
         .big-button { 
             display: inline-block; 
             background: var(--main-pink); 
             color: white; 
-            padding: 18px 40px; 
+            padding: 20px 50px; 
             border-radius: 100px; 
             text-decoration: none; 
             font-weight: bold; 
-            font-size: 16px; 
-            box-shadow: 0 6px 0 var(--pink2);
+            font-size: 18px; 
+            box-shadow: 0 8px 0 var(--pink2);
+            border: var(--white-border);
             transition: 0.3s;
         }
-        .big-button:hover { background: #ff94c6; transform: translateY(-2px); box-shadow: 0 8px 0 var(--pink2); }
-        .big-button:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--pink2); }
+        .big-button:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 11px 0 var(--pink2); }
 
         /* スクロール演出 */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         footer {
-            background: var(--soft-pink);
+            background: white;
             padding: 60px 20px;
             text-align: center;
-            border-top: 2px dashed var(--pink1);
+            border-top: 5px dotted var(--soft-pink);
         }
     </style>
 </head>
 <body>
+
+    <div class="deco-part" style="top:150px; left:5%; font-size: 40px;">🍓</div>
+    <div class="deco-part" style="top:400px; right:8%; font-size: 30px;">✨</div>
+    <div class="deco-part" style="bottom:200px; left:10%; font-size: 35px;">🎀</div>
 
     <nav class="nav">
         <div class="nav-content">
@@ -162,10 +202,34 @@
             <div class="big-catch">かわいくはじめる、<br>美容の自給自足</div>
             <p class="sub-copy">育てる、私が、きれいになる。</p>
             
+            <br>
             <a href="diagnosis.html" class="big-button">パートナーを診断する 🌱</a>
+
+            <div class="tile-nav reveal">
+                <a href="world.html" class="tile-item">
+                    <span class="tile-icon">🌍</span>
+                    <span class="tile-label">世界観をみる</span>
+                    <span class="tile-sub">WORLD</span>
+                </a>
+                <a href="product.html" class="tile-item">
+                    <span class="tile-icon">🧴</span>
+                    <span class="tile-label">商品カタログ</span>
+                    <span class="tile-sub">PRODUCT</span>
+                </a>
+                <a href="hagumo.html" class="tile-item">
+                    <span class="tile-icon">🐿️</span>
+                    <span class="tile-label">ハグモ図鑑</span>
+                    <span class="tile-sub">HAGUMO</span>
+                </a>
+                <a href="my.html" class="tile-item">
+                    <span class="tile-icon">🎀</span>
+                    <span class="tile-label">マイページ</span>
+                    <span class="tile-sub">MY HAGUMO</span>
+                </a>
+            </div>
             
-            <div class="reveal">
-                <img src="./images/pos.PNG" class="hero-poster" alt="HAGUMOポスター">
+            <div class="reveal" style="margin-top: 40px;">
+                <img src="./images/pos.PNG" style="width: 85%; max-width: 350px; border-radius: 40px; border: 8px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); transform: rotate(-2deg);" alt="HAGUMOポスター">
             </div>
         </section>
 
@@ -185,13 +249,13 @@
         </div>
 
         <div class="reveal" style="text-align:center; padding: 0 20px 100px;">
-            <h2 style="color: var(--pink2); margin-bottom: 30px; font-weight: 700; font-size: 24px;">さあ、あなたも。</h2>
+            <h2 style="color: var(--pink2); margin-bottom: 30px; font-weight: 900; font-size: 28px;">さあ、あなたも。</h2>
             <a href="diagnosis.html" class="big-button">今すぐ診断をはじめる 🌱</a>
         </div>
     </div>
 
     <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 16px; margin-bottom: 12px; letter-spacing: 1px;">🎀 HAGUMO project 🎀</p>
+        <p style="color: var(--pink2); font-weight: bold; font-size: 18px; margin-bottom: 12px; letter-spacing: 2px;">🎀 HAGUMO project 🎀</p>
         <p style="font-size: 11px; color: #aaa; line-height: 1.8; max-width: 400px; margin: 0 auto;">
             ※これは授業課題のプロトタイプです。<br>
             実際の商品の販売・発送は行っておりません。
