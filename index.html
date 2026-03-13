@@ -12,6 +12,7 @@
             --pink1: #ffb3d9; 
             --pink2: #d1478e; 
             --white-glass: rgba(255, 255, 255, 0.8);
+            scroll-behavior: smooth;
         }
         
         body { 
@@ -25,11 +26,11 @@
             background-size: 40px 40px;
         }
 
-        /* --- 豪華なナビゲーション --- */
+        /* --- ナビゲーション --- */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: var(--white-glass);
-            backdrop-filter: blur(10px); /* 磨りガラス効果 */
+            backdrop-filter: blur(10px);
             z-index: 10000; 
             border-bottom: 2px solid rgba(255, 179, 217, 0.3); 
             padding: 12px 0;
@@ -43,17 +44,25 @@
         
         .nav-links { display: flex; gap: 12px; }
         .nav-link { 
-            color: #888; text-decoration: none; font-size: 12px; font-weight: bold; 
-            padding: 6px 12px; border-radius: 50px; transition: 0.3s;
-            border: 1px solid transparent;
+            color: #888; 
+            text-decoration: none; 
+            font-size: 12px; 
+            font-weight: bold; 
+            padding: 6px 12px; 
+            border-radius: 50px; 
+            transition: 0.3s;
+            border: 1px solid transparent; 
             font-family: 'Quicksand', sans-serif;
+            white-space: nowrap;
         }
         .nav-link:hover, .nav-link.active { 
-            color: var(--pink2); background: white; border-color: var(--pink1);
+            color: var(--pink2); 
+            background: white; 
+            border-color: var(--pink1);
             box-shadow: 0 4px 10px rgba(255, 126, 185, 0.2);
         }
 
-        /* --- 背景装飾：ふわふわ --- */
+        /* --- 背景装飾 --- */
         .floating-deco {
             position: absolute; z-index: -1; pointer-events: none;
             animation: floatAnim 6s ease-in-out infinite;
@@ -64,7 +73,7 @@
             50% { transform: translateY(-30px) rotate(20deg) scale(1.2); }
         }
 
-        /* --- ヒーローセクション：奥行きと輝き --- */
+        /* --- ヒーローセクション --- */
         .hero-section {
             padding: 80px 20px 100px;
             background: radial-gradient(circle at 50% 50%, #fff 0%, #fff0f6 100%);
@@ -105,7 +114,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        /* 豪華なタイル型メニュー：ホバーエフェクト強化 */
+        /* --- タイルメニュー --- */
         .tile-menu {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -135,14 +144,9 @@
             border-color: var(--pink1);
         }
         .tile-btn:hover::after { transform: scaleX(1); }
-
         .tile-btn span:first-child { font-size: 38px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
         .tile-btn b { color: var(--pink2); font-size: 15px; }
         .tile-btn i { color: #bbb; font-size: 10px; font-style: normal; font-family: 'Quicksand'; }
-
-        @media screen and (min-width: 769px) {
-            .tile-menu { grid-template-columns: repeat(4, 1fr); }
-        }
 
         .hero-poster { 
             width: 90%; 
@@ -156,7 +160,7 @@
         }
         .hero-poster:hover { transform: rotate(0deg) scale(1.05) translateY(-10px); }
 
-        /* 特徴カード：ネオン＆グラデーション */
+        /* --- 特徴カード --- */
         .feature-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
@@ -210,7 +214,7 @@
         .big-button:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 35px rgba(255,126,185,0.5); }
         .big-button:hover::before { transform: rotate(45deg) translateY(100%); }
 
-        /* スクロールアニメーション */
+        /* スクロールアニメーション用 */
         .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
@@ -221,8 +225,19 @@
             border-top: 2px solid var(--soft-pink);
         }
 
-        /* モバイル調整：タイルメニューを押しやすく */
+        /* --- レスポンシブ対応 --- */
+        @media screen and (min-width: 769px) {
+            .tile-menu { grid-template-columns: repeat(4, 1fr); }
+        }
         @media screen and (max-width: 480px) {
+            .nav-links {
+                gap: 5px;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 5px;
+            }
+            .nav-link { padding: 5px 10px; font-size: 11px; }
             .tile-btn { padding: 15px 5px; }
             .tile-btn span:first-child { font-size: 28px; }
             .tile-btn b { font-size: 12px; }
@@ -236,11 +251,11 @@
     <div class="floating-deco" style="bottom:15%; left:5%; font-size: 35px; animation-delay: 2s;">✨</div>
     <div class="floating-deco" style="top:60%; left:12%; font-size: 30px; animation-delay: 1.5s;">🍃</div>
 
-   <nav class="nav">
+    <nav class="nav">
         <div class="nav-content">
             <img src="./images/rogo.PNG" class="nav-logo-img" alt="HAGUMO Logo" onclick="location.href='index.html'">
             <div class="nav-links">
-                <a href="index.html" class="nav-link active">HOME</a>
+                <a href="index.html" class="nav-link">HOME</a>
                 <a href="world.html" class="nav-link">WORLD</a>
                 <a href="product.html" class="nav-link">PRODUCT</a>
                 <a href="hagumo.html" class="nav-link">HAGUMO</a>
@@ -250,7 +265,7 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main>
         <section class="hero-section">
             <div class="reveal active">
                 <img src="./images/rogo.PNG" class="hero-logo" alt="HAGUMO">
@@ -315,6 +330,7 @@
     </footer>
 
     <script>
+        // スクロール時に要素を表示させる
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -326,8 +342,32 @@
                 }
             }
         }
+
+        // ナビゲーションのactiveクラス管理
+        function handleNavigation() {
+            let currentPath = window.location.pathname.split("/").pop() || 'index.html';
+            
+            // GitHubリポジトリ名で終わる場合などの対策
+            if (currentPath === "HAGUMO" || currentPath === "") { 
+                currentPath = 'index.html';
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
         window.addEventListener("scroll", reveal);
-        window.addEventListener("load", reveal);
+        window.addEventListener("load", () => {
+            reveal();
+            handleNavigation();
+        });
     </script>
 
 </body>
