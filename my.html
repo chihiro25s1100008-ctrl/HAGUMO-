@@ -91,6 +91,24 @@
         body.bg-level-3 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
         
         .punitto { transform: scale(0.95) translateY(5px) !important; transition: 0.1s; }
+
+        /* 夜モード専用の背景（ドットを星空に見立てる） */
+body.night-room {
+    background: linear-gradient(135deg, #2c3e50 0%, #4b0082 100%) !important;
+    background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px) !important;
+    background-size: 100px 100px !important;
+}
+
+/* 夜モードの時は文字を読みやすく白っぽくする */
+body.night-room .bubble {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #a29bfe;
+}
+
+body.night-room .status-container {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
     </style>
 </head>
 <body class="bg-level-1">
@@ -358,15 +376,21 @@
         return "midnight";
     }
 
-    function checkTimeAndEffect() {
-        const hour = new Date().getHours();
-        const container = document.body;
-        if (hour >= 20 || hour < 5) {
-            container.style.filter = "brightness(0.8) sepia(0.2)";
-        } else {
-            container.style.filter = "none";
-        }
+   function checkTimeAndEffect() {
+    const hour = new Date().getHours();
+    const container = document.body;
+    
+    // 夜（20時〜5時）の演出
+    if (hour >= 20 || hour < 5) {
+        // フィルターを解除して、夜専用クラスを追加
+        container.style.filter = "none"; 
+        container.classList.add('night-room');
+    } else {
+        // 昼はクラスを外す
+        container.style.filter = "none";
+        container.classList.remove('night-room');
     }
+}
 
     function loadCharStatus(charKey) {
         currentChar = charKey;
@@ -389,21 +413,78 @@
     }
 
     function updateStatus() {
-        const now = Date.now();
-        const diff = now - lastUpdate;
-        let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
+    const now = Date.now();
+    let diff = now - lastUpdate;
+    let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
+
+    if (!isImmune && diff > 0) {
+        let loss = 0;
         
-        if (!isImmune) {
-            let loss = 0;
-            if (love > 51) loss = Math.floor(diff / (60 * 1000));
-            else if (love > 0) loss = Math.floor(diff / (3600 * 1000));
-            
+        // --- 絆が51以上の時（1分に1減少） ---
+        if (love > 51) {
+            loss = Math.floor(diff / (60 * 1000));
             if (loss > 0) {
-                love = Math.max(0, love - loss);
-                lastUpdate = now;
-                save();
+                love = Math.max(51, love - loss);
+                lastUpdate += loss * (60 * 1000); // 減らした分だけ時間を進める
             }
+        } 
+        // --- 絆が2〜51の時（1時間に1減少） ---
+        else if (love > 1) {
+            loss = Math.floor(diff / (3600 * 1000));
+            if (loss > 0) {
+                love = Math.max(1, love - loss); // 1で一旦止める
+                lastUpdate += loss * (3600 * 1000);
+            }
+        } 
+        // --- 絆が1の時（ここから24時間耐える！） ---
+        else if (love === 1) {
+            // 24時間（86400秒）経っていたら0にする
+            if (diff >= 24 * 3600 * 1000) {
+                love = 0;
+                lastUpdate = now;
+            }
+            // 24時間以内なら何もしない（1をキープ）
         }
+        
+        save();
+    }
+
+    // --- 以下、表示更新処理（既存のものをそのまま使用） ---
+    document.getElementById('love-val').innerText = love;
+    document.getElementById('user-display').innerText = userName + "の絆ルーム";
+    
+    const fill = document.getElementById('love-fill');
+    const sprite = document.getElementById('hagumo-sprite');
+    const bubble = document.getElementById('chat-bubble');
+    const talkBtn = document.getElementById('talk-btn');
+    const container = document.body;
+    
+    fill.style.width = love + "%";
+
+    if (love >= 100) {
+        container.classList.add('bg-level-3', 'pachinko-shake');
+        fill.classList.add('max'); 
+        sprite.classList.add('max-evolution');
+        talkBtn.disabled = true;
+        talkBtn.innerText = "❤️ 永遠の絆";
+        if (document.getElementById('choices').style.display !== "flex" && !bubble.dataset.isStrokeReaction) {
+            bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
+        }
+    } else {
+        container.classList.remove('bg-level-3', 'pachinko-shake', 'bg-level-1', 'bg-level-2');
+        container.classList.add(love > 50 ? 'bg-level-2' : 'bg-level-1');
+        fill.classList.remove('max');
+        sprite.classList.remove('max-evolution');
+        talkBtn.innerText = "💬 おしゃべり";
+        if (!cooldowns.talk) talkBtn.disabled = false;
+    }
+
+    if (love <= 0) {
+        alert(getName(charData[currentChar].farewell));
+        resetCharData(currentChar);
+    }
+    checkTimeAndEffect();
+}
 
         document.getElementById('love-val').innerText = love;
         document.getElementById('user-display').innerText = userName + "の絆ルーム";
