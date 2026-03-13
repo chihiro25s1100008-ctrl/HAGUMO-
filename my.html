@@ -60,7 +60,7 @@
         .action-menu { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
         .main-actions { display: flex; justify-content: center; gap: 10px; width: 100%; }
         .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; -webkit-tap-highlight-color: transparent; flex: 1; max-width: 180px; }
-        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; background: #f9f9f9; }
         
         .reset-area { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; width: 100%; text-align: center; }
         .reset-btn { background: none; border: 1px solid #eee; color: #ccc; padding: 8px 15px; border-radius: 20px; font-size: 11px; cursor: pointer; transition: 0.2s; }
@@ -68,7 +68,6 @@
         .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
-        /* 特殊演出クラス */
         .max-evolution { animation: rainbow-glow 0.4s infinite linear !important; }
         .pachinko-shake { animation: screen-shake 0.1s infinite; }
         .forever-msg { font-size: 20px; font-weight: 900; color: #ff0000; text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 0 0 15px #ff7eb9; animation: pulse 0.5s infinite alternate; }
@@ -171,13 +170,13 @@
             strokeRes: "なでなで、落ち着くもにょ……♪",
             ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ. 土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ。さよならもにょ…。" },
             questions: [{ q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] }, { q: "オシャレな宝石にはなれないもにょ…。。", a: ["土のぬくもりが一番だよ", "磨けば光るよ", "地味だもんね"], scores: [10, 5, -5] }],
-            timeQuests: { morning: { q: "おはようもにょ。土が朝露で湿ってるもにょ…。", a: ["しっとりして良いね", "冷たくない？", "土は嫌い"], scores: [10, 5, -5] }, lunch: { q: "お昼もにょ。地上は今、明るいもにょ？", a: ["すごく綺麗だよ", "普通かな", "眩しすぎるよ"], scores: [10, 5, -5] }, night: { q: "夜もにょ。土の中はいつも夜みたいもにょ…。", a: ["静かでいいね", "寂しくない？", "暗いのは怖い"], scores: [10, 5, -5] }, midnight: { q: "夜中もにょ。主様も土の中で一緒に丸まるもにょ？", a: ["丸まるもにょ", "布団で寝なよ", "遠慮しとく"], scores: [10, 5, -5] } },
+            timeQuests: { morning: { q: "おはようもにょ. 土が朝露で湿ってるもにょ…。", a: ["しっとりして良いね", "冷たくない？", "土は嫌い"], scores: [10, 5, -5] }, lunch: { q: "お昼もにょ。地上は今、明るいもにょ？", a: ["すごく綺麗だよ", "普通かな", "眩しすぎるよ"], scores: [10, 5, -5] }, night: { q: "夜もにょ。土の中はいつも夜みたいもにょ…。", a: ["静かでいいね", "寂しくない？", "暗いのは怖い"], scores: [10, 5, -5] }, midnight: { q: "夜中もにょ。主様も土の中で一緒に丸まるもにょ？", a: ["丸まるもにょ", "布団で寝なよ", "遠慮しとく"], scores: [10, 5, -5] } },
             forever: "離さないもにょ。土の底まで、一生一緒もにょ…",
             maxStrokes: ["主様の手、落ち着くもにょ…ずっとこうしててもにょ", "地上は眩しいけど、主様がいれば怖くないもにょ"],
             farewell: "…もう土の中から出てこないもにょ。バイバイもにょ。"
         },
         jaku: {
-            welcome: "お帰りなさい、主様. 今日も美しい一日ですわね。",
+            welcome: "お帰りなさい、主様。今日も美しい一日ですわね。",
             maxWelcome: "お帰りなさいませ、私の主様。あなたが戻られるのを、羽を震わせて待っておりましたわ。",
             strokeRes: "あら…主様の指先、とても優雅ですわね。",
             ansRes: { high: "まぁ…胸が高鳴りますわ。嬉しいですわね。", mid: "お言葉、痛み入りますわ。精進いたしますわ。", low: "…少し、羽の色が曇ってしまいましたわ。" },
@@ -210,12 +209,12 @@
             farewell: "…お前の情熱、消えちまったんだな。あばよガオ。"
         },
         chabo: {
-            welcome: "よお、主. 待ってたぜ。座って休めよ。",
-            maxWelcome: "おかえり、あんた。…いや、なんでもねぇ。とにかく、無事でよかったぜ。",
+            welcome: "よお、主。待ってたぜ。座って休めよ。",
+            maxWelcome: "おかえり、あんた。…いや, なんでもねぇ。とにかく、無事でよかったぜ。",
             strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。",
             ansRes: { high: "…あんた、たまに心にくること言うよな. 悪くねぇ。", mid: "ふん、分かってるじゃねぇか。感謝するぜ。", low: "…なんだそりゃ。カボチャの皮より硬い言葉だな。" },
-            questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }, { q: "愛想がなくて悪かったな。…こんな俺、嫌か？", a: ["そこが信頼できるよ", "慣れてきたよ", "少し怖いかな"], scores: [10, 5, -5] }],
-            timeQuests: { morning: { q: "朝か。収穫の時間だぜ。あんたも手伝うか？", a: ["喜んで！", "無理はしないで", "眠いから嫌"], scores: [10, 5, -5] }, lunch: { q: "昼飯にカボチャの煮物作ったぜ。食うか？", a: ["食べる！", "料理上手だね", "またカボチャ？"], scores: [10, 5, -5] }, night: { q: "夜道は危ねぇ。俺が送ってってやるよ。", a: ["ありがとう", "頼もしいね", "一人で大丈夫"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで起きてると、煮物にするぞ…冗談だ。", a: ["面白い冗談だね", "怖かったよ", "早く寝なよ"], scores: [10, 5, -5] } },
+            questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }, { q: "愛愛想がなくて悪かったな。…こんな俺、嫌か？", a: ["そこが信頼できるよ", "慣れてきたよ", "少し怖いかな"], scores: [10, 5, -5] }],
+            timeQuests: { morning: { q: "朝か。収穫の時間だぜ. あんたも手伝うか？", a: ["喜んで！", "無理はしないで", "眠いから嫌"], scores: [10, 5, -5] }, lunch: { q: "昼飯にカボチャの煮物作ったぜ。食うか？", a: ["食べる！", "料理上手だね", "またカボチャ？"], scores: [10, 5, -5] }, night: { q: "夜道は危ねぇ。俺が送ってってやるよ。", a: ["ありがとう", "頼もしいね", "一人で大丈夫"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで起きてると、煮物にするぞ…冗談だ。", a: ["面白い冗談だね", "怖かったよ", "早く寝なよ"], scores: [10, 5, -5] } },
             forever: "…おい、覚悟しろよ。俺はあんたを一生離さねぇ。",
             maxStrokes: ["あんたの手は…反則だな。…もっとやっていいぞ。", "こうしてると、畑仕事の疲れも吹っ飛ぶぜ。"],
             farewell: "…あんたとの時間は悪くなかった。じゃあな、主。"
@@ -233,7 +232,7 @@
         },
         kame: {
             welcome: "おかえりなさい……。のんびり、いきましょうね。",
-            maxWelcome: "おかえりなさい……主様. あなたと過ごす、この一秒一秒が、私の永遠です……。",
+            maxWelcome: "おかえりなさい……主様。あなたと過ごす、この一秒一秒が、私の永遠です……。",
             strokeRes: "あぁ……甲羅まで、主様のぬくもりが届きます……。",
             ansRes: { high: "あぁ…深い海の底にいるような、安らかな気持ちです…。", mid: "ありがとうございます…。ゆっくり, 大切にしますね。", low: "……少し、甲羅の中に隠れますね……。悲しいです。" },
             questions: [{ q: "ブルーベリーの果汁が甲羅に染みちゃって…汚いですか？", a: ["綺麗なグラデーションだよ", "一生懸命な証拠だね", "洗ったほうがいいかも"], scores: [10, 5, -5] }, { q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] }],
@@ -250,18 +249,18 @@
             questions: [{ q: "ボク、飛ぶときにいつもフラフラしちゃうのぉ…。", a: ["危なっかしくて可愛いね", "着地はボクの腕に！", "もっと特訓だね"], scores: [10, 5, -5] }, { q: "甘えん坊すぎて、迷惑かなぁ…？ピピッ。", a: ["もっと甘えていいよ", "頼われて嬉しいよ", "時々ね"], scores: [10, 5, -5] }],
             timeQuests: { morning: { q: "ピピィッ！朝だよぉ！空散歩いくぅ！？", a: ["連れてって！", "高いの怖いよ", "まだ寝るぅ"], scores: [10, 5, -5] }, lunch: { q: "ランチピピッ！美味しい実を見つけたよぉ！", a: ["食べたい！", "どこにあったの？", "お腹いっぱい"], scores: [10, 5, -5] }, night: { q: "暗くなっちゃったぁ…寂しいよぉ, ピピッ。", a: ["ギュッとしてあげる", "隣にいるよ", "もう寝なさい"], scores: [10, 5, -5] }, midnight: { q: "夜中の大冒険だピピィッ！主様も飛べるかなぁ！？", a: ["飛べる気がする！", "危ないよぉ", "無理だよぉ"], scores: [10, 5, -5] } },
             forever: "ピピィッ！主様はボクのもの！一生一緒だよぉ！",
-            maxStrokes: ["もっとぉ！もっとぉ！主様ぁ、だぁいすきだよぉ！", "ピピィ！これ、ボクへのプロポーズかなぁ！？"],
+            maxStrokes: ["もっとぉ！もっとぉ！主様ぁ, だぁいすきだよぉ！", "ピピィ！これ、ボクへのプロポーズかなぁ！？"],
             farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ。バイバイ。"
         },
         kuma: {
             welcome: "……お帰り。君の足音が聞こえたよ。",
-            maxWelcome: "……お帰り。君がいない間、世界がモノクロだった。戻ってきてくれて、ありがとう。",
+            maxWelcome: "……お帰り。君がいない間、世界がモノクロだった。戻ってきてくれて, ありがとう。",
             strokeRes: "……君の手、とても温かい。心が解けていくようだね。",
             ansRes: { high: "……君という光に、救われた気がするよ。ありがとう。", mid: "……温かい言葉だね。冷えた体が少し、溶けたよ。", low: "……暗闇が、もっと深くなったみたいだ. 寂しいね。" },
             questions: [{ q: "私の体、真っ暗で何も見えないね。……寂しい姿だろう？", a: ["深い優しさを感じるよ", "影みたいで落ち着くよ", "確かに暗いね"], scores: [10, 5, -5] }, { q: "……イチジクの蜜で手がベタベタだ。触らないほうがいい。", a: ["気にせずなでさせて", "甘い香りがして好きだよ", "汚れるのは嫌だな"], scores: [10, 5, -5] }],
             timeQuests: { morning: { q: "……朝の光は、少し眩しすぎるね。君は平気かい？", a: ["一緒に浴びよう", "影を作ってあげる", "太陽は最高だよ"], scores: [10, 5, -5] }, lunch: { q: "……お昼だね。イチジクの木の下で休おうか。", a: ["隣に座るよ", "涼しそうだね", "別の場所がいい"], scores: [10, 5, -5] }, night: { q: "……夜だ。やっと私の時間だね。少し落ち着くよ。", a: ["静かな君も好き", "落ち着くね", "暗くて不安だよ"], scores: [10, 5, -5] }, midnight: { q: "……まだ起きていたのか。深夜の蜜は、とても甘いんだよ。", a: ["舐めてもいい？", "不思議だね", "歯に悪そう"], scores: [10, 5, -5] } },
             forever: "暗闇の中でも、君だけを離さない。……一生、一緒だよ。",
-            maxStrokes: ["君のぬくもり……これが「愛」なんだね。", "もっと触れていて……君がいれば、冬も怖くないよ。", "もう、君以外にはなびかないよ。"],
+            maxStrokes: ["君のぬくもり……これが「愛」なんだね。", "もっと触れていて……君がいれば、冬も怖くないよ。", "もう, 君以外にはなびかないよ。"],
             farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
         }
     };
@@ -271,7 +270,9 @@
     let lastUpdate = Date.now();
     let lastMaxTime = 0;
     let userName = localStorage.getItem('hagu_user') || "主様";
-    let welcomeTimer = null; // 挨拶切り替え用タイマー
+    let welcomeTimer = null; 
+    let strokeReturnTimer = null; 
+    let strokeHistory = []; // なでなで履歴（1分間10回制限用）
 
     function getName(text) {
         if (!text) return "";
@@ -326,15 +327,17 @@
         const fill = document.getElementById('love-fill');
         const sprite = document.getElementById('hagumo-sprite');
         const talkBtn = document.getElementById('talk-btn');
+        const strokeBtn = document.getElementById('stroke-btn');
         
         fill.style.width = love + "%";
 
         if (love >= 100) {
-            document.body.classList.add('pachinko-shake'); // 画面の揺れ
+            document.body.classList.add('pachinko-shake');
             fill.classList.add('max'); 
-            sprite.classList.add('max-evolution'); // 虹色の輝き
+            sprite.classList.add('max-evolution');
             talkBtn.disabled = true;
             talkBtn.innerText = "❤️ 永遠の絆";
+            strokeBtn.disabled = false;
         } else {
             document.body.classList.remove('pachinko-shake');
             fill.classList.remove('max');
@@ -351,7 +354,38 @@
     }
 
     function strokeHagumo(e) {
-        if (welcomeTimer) clearTimeout(welcomeTimer); // なでられたら挨拶タイマー解除
+        const now = Date.now();
+        const strokeBtn = document.getElementById('stroke-btn');
+
+        // 好感度100未満のときのみ制限
+        if (love < 100) {
+            // 1分前の履歴を削除
+            strokeHistory = strokeHistory.filter(time => now - time < 60000);
+
+            // 1分間に10回制限チェック
+            if (strokeHistory.length >= 10) {
+                const nextAvailable = 60000 - (now - strokeHistory[0]);
+                strokeBtn.disabled = true;
+                strokeBtn.innerText = "休憩中...";
+                setTimeout(() => {
+                    strokeBtn.disabled = false;
+                    strokeBtn.innerText = "👋 なでなで";
+                }, nextAvailable);
+                return;
+            }
+
+            // 3秒クールタイム
+            strokeBtn.disabled = true;
+            setTimeout(() => { 
+                if (strokeHistory.length < 10) strokeBtn.disabled = false; 
+            }, 3000);
+
+            // 履歴に追加
+            strokeHistory.push(now);
+        }
+
+        if (welcomeTimer) clearTimeout(welcomeTimer);
+        if (strokeReturnTimer) clearTimeout(strokeReturnTimer); 
         
         const sprite = document.getElementById('hagumo-sprite');
         sprite.classList.add('punitto');
@@ -375,9 +409,9 @@
             bubble.innerText = getName(charData[currentChar].strokeRes);
         }
 
-        setTimeout(() => {
+        strokeReturnTimer = setTimeout(() => {
             delete bubble.dataset.isStrokeReaction;
-            updateStatus();
+            loadCharStatus(currentChar, true); 
         }, 3000);
 
         updateStatus();
@@ -386,6 +420,8 @@
 
     function startTalk() {
         if (love >= 100) return;
+        if (strokeReturnTimer) clearTimeout(strokeReturnTimer); 
+        
         const data = charData[currentChar];
         let quest;
         const timeLabel = getTimeLabel();
@@ -409,6 +445,11 @@
                 const bubble = document.getElementById('chat-bubble');
                 let resType = score >= 10 ? "high" : (score < 0 ? "low" : "mid");
                 bubble.innerText = getName(data.ansRes[resType]);
+                
+                strokeReturnTimer = setTimeout(() => {
+                    loadCharStatus(currentChar, true);
+                }, 3000);
+                
                 updateStatus();
                 save();
             };
@@ -437,11 +478,12 @@
         const selector = document.getElementById('char-selector');
         currentChar = selector.value;
         document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+        strokeHistory = []; // キャラ変更時に履歴リセット（任意）
         loadCharStatus(currentChar);
     }
 
-    function loadCharStatus(charKey) {
-        if (welcomeTimer) clearTimeout(welcomeTimer); // タイマー重複防止
+    function loadCharStatus(charKey, skipWelcome = false) {
+        if (welcomeTimer) clearTimeout(welcomeTimer);
         
         love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
         lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
@@ -451,16 +493,18 @@
         const bubble = document.getElementById('chat-bubble');
         
         if (love >= 100) {
-            // 最初にお迎えボイスを表示
-            bubble.innerHTML = `<div class="forever-msg">${getName(charData[charKey].maxWelcome)}</div>`;
-            
-            // 7秒後に通常の好感度マックスセリフに切り替え
-            welcomeTimer = setTimeout(() => {
+            if (skipWelcome) {
                 const maxStrokes = charData[charKey].maxStrokes;
                 const line = getName(maxStrokes[Math.floor(Math.random() * maxStrokes.length)]);
                 bubble.innerHTML = `<div class="forever-msg">${line}</div>`;
-                welcomeTimer = null;
-            }, 7000);
+            } else {
+                bubble.innerHTML = `<div class="forever-msg">${getName(charData[charKey].maxWelcome)}</div>`;
+                welcomeTimer = setTimeout(() => {
+                    const maxStrokes = charData[charKey].maxStrokes;
+                    const line = getName(maxStrokes[Math.floor(Math.random() * maxStrokes.length)]);
+                    bubble.innerHTML = `<div class="forever-msg">${line}</div>`;
+                }, 7000);
+            }
         } else {
             bubble.innerText = getName(charData[charKey].welcome);
         }
