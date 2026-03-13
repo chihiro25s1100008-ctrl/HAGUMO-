@@ -132,6 +132,39 @@
             body { padding-top: 110px; }
             .hagumo-img { width: 220px; height: 220px; }
         }
+        /* おしゃべり選択肢：もっと押しやすく！ */
+#choices { 
+    display: none; 
+    flex-direction: column; /* 縦に並べて押しやすく */
+    gap: 12px; 
+    width: 100%;
+    margin-top: 20px; 
+    animation: fadeIn 0.3s;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.choice-btn {
+    background: white; 
+    border: 2px solid var(--pink1); 
+    padding: 15px; 
+    border-radius: 30px;
+    cursor: pointer; 
+    font-size: 15px; 
+    color: var(--pink2); 
+    font-weight: bold;
+    transition: 0.2s;
+    box-shadow: 0 4px 0 var(--soft-pink);
+    text-align: center;
+}
+.choice-btn:hover { background: var(--soft-pink); transform: translateY(-2px); }
+.choice-btn:active { transform: translateY(2px); box-shadow: none; }
+
+/* 数字が動く時のアニメーション */
+#love-val {
+    display: inline-block;
+    transition: transform 0.1s;
+}
+.val-up { color: var(--main-pink); transform: scale(1.3); }
     </style>
 </head>
 <body class="bg-level-1">
@@ -335,12 +368,36 @@
             else container.classList.add('bg-level-1');
         }
 
-        function updateStatus() {
+        // 絆の数値をアニメーションさせる関数
+        function animateValue(start, end, duration) {
+            const obj = document.getElementById("love-val");
+            if (start === end) return;
+            
+            obj.classList.add('val-up');
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = current;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    obj.classList.remove('val-up');
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function updateStatus(isAnimate = false) {
             const now = Date.now();
             let diff = now - lastUpdate;
             let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
+            
+            const oldLove = parseInt(document.getElementById('love-val').innerText);
 
             if (!isImmune && diff > 0) {
+                // ... (減少ロジックはそのまま) ...
                 let loss = 0;
                 if (love > 51) {
                     loss = Math.floor(diff / (60 * 1000));
@@ -358,9 +415,14 @@
                 save();
             }
 
-            document.getElementById('love-val').innerText = love;
+            // 数値の更新（アニメーションさせるかどうか）
+            if (isAnimate) {
+                animateValue(oldLove, love, 300);
+            } else {
+                document.getElementById('love-val').innerText = love;
+            }
+
             document.getElementById('user-display').innerText = userName + "の絆ルーム";
-            
             const fill = document.getElementById('love-fill');
             fill.style.width = love + "%";
 
@@ -373,46 +435,30 @@
                 document.getElementById('talk-btn').disabled = false;
                 document.getElementById('talk-btn').innerText = "💬 おしゃべり";
             }
-
-            if (love <= 0) {
-                alert(getName(charData[currentChar].farewell));
-                manualReset();
-            }
             checkTimeAndEffect();
         }
 
+        // なでなで時の呼び出しを変更
         function strokeHagumo(e) {
+            // ... (制限ロジックはそのまま) ...
             const now = Date.now();
             if (love < 100) {
                 strokeHistory = strokeHistory.filter(time => now - time < 60000);
-                if (strokeHistory.length >= 15) return; // 制限
+                if (strokeHistory.length >= 15) return;
                 strokeHistory.push(now);
             }
 
-            if (welcomeTimer) clearTimeout(welcomeTimer);
-            if (strokeReturnTimer) clearTimeout(strokeReturnTimer); 
-            
             const oldLove = love;
             love = Math.min(100, love + 1);
             if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
 
-            const x = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
-            const y = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
-            createHeart(x, y);
+            // 演出用
+            createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
+            document.getElementById('chat-bubble').innerText = (love >= 100) ? 
+                getName(charData[currentChar].maxStrokes[Math.floor(Math.random()*2)]) : 
+                getName(charData[currentChar].strokeRes);
 
-            const bubble = document.getElementById('chat-bubble');
-            if (love >= 100) {
-                const maxStrokes = charData[currentChar].maxStrokes;
-                bubble.innerText = getName(maxStrokes[Math.floor(Math.random() * maxStrokes.length)]);
-            } else {
-                bubble.innerText = getName(charData[currentChar].strokeRes);
-            }
-
-            strokeReturnTimer = setTimeout(() => {
-                loadCharStatus(currentChar, true); 
-            }, 3000);
-
-            updateStatus();
+            updateStatus(true); // 引数にtrueを入れてアニメーション起動
             save();
         }
 
