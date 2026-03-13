@@ -4,109 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HAGUMO | Characters List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; }
+        :root { 
+            --main-pink: #ff7eb9; 
+            --soft-pink: #fff5f7; 
+            --pink1: #ffb3d9; 
+            --pink2: #d1478e;
+            --gold-sub: #fdf6e3;
+        }
         
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: #fff; margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; }
+        body { 
+            font-family: 'Zen Maru Gothic', sans-serif; 
+            background: #fffafc; 
+            margin: 0; 
+            padding-top: 100px; 
+            color: #555; 
+            overflow-x: hidden; 
+        }
 
-        /* --- ナビゲーション（共通デザイン維持） --- */
-        .nav { 
-            position: fixed; top: 0; left: 0; width: 100%; 
-            background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
-            padding: 8px 0;
-        }
-        .nav-content { 
-            max-width: 1100px; margin: 0 auto; padding: 0 15px;
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
-        }
-        .nav-logo-img { height: 28px; cursor: pointer; }
-        .nav-links { 
-            display: flex; flex-wrap: wrap; justify-content: center; 
-            gap: 4px 8px;
-        }
-        .nav-link { 
-            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
-            padding: 4px 8px; border-radius: 20px; transition: 0.3s;
-            background: #fdfdfd; border: 1px solid #f0f0f0;
-        }
-        .nav-link:hover, .nav-link.active { 
-            color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink);
-        }
+        /* --- ナビゲーション（デザイン維持・微調整） --- */
+        .nav { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 10px 0; }
+        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .nav-logo-img { height: 32px; cursor: pointer; }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px 12px; }
+        .nav-link { color: #888; text-decoration: none; font-size: 12px; font-weight: bold; padding: 5px 12px; border-radius: 20px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { color: var(--main-pink); background: var(--soft-pink); }
 
         @media screen and (min-width: 769px) {
             body { padding-top: 80px; }
             .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
-            .nav-logo-img { height: 35px; }
-            .nav-link { font-size: 13px; background: none; border: none; }
+            .nav-link { font-size: 14px; }
         }
 
-        /* ヘッダー */
-        .about-header { text-align: center; padding: 60px 20px 80px; background: linear-gradient(to bottom, #fff0f6, #ffffff); border-radius: 0 0 50px 50px; }
-        .about-title { font-size: clamp(24px, 7vw, 32px); color: var(--pink2); margin-bottom: 15px; letter-spacing: 2px; font-weight: 700; }
-        .about-desc { font-size: 14px; color: #888; max-width: 600px; margin: 0 auto; line-height: 1.8; font-weight: bold; }
+        /* ヘッダー：奥行きのあるデザイン */
+        .about-header { 
+            text-align: center; padding: 80px 20px; 
+            background: radial-gradient(circle at top, #fff0f6 0%, #ffffff 70%);
+            position: relative;
+        }
+        .about-header::after {
+            content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23fff" fill-opacity="1" d="M0,224L80,213.3C160,203,320,181,480,181.3C640,181,800,203,960,192C1120,181,1280,139,1360,117.3L1440,96L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>');
+            background-size: cover;
+        }
+        .about-title { font-size: clamp(28px, 8vw, 42px); color: var(--pink2); margin-bottom: 15px; letter-spacing: 3px; font-weight: 700; font-family: 'Quicksand', sans-serif; }
+        .about-desc { font-size: 16px; color: #8a7a7e; max-width: 600px; margin: 0 auto; line-height: 1.8; font-weight: bold; }
 
-        /* キャラクターグリッド：高さを揃える設定 */
+        /* キャラクターグリッド */
         .chara-grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px; padding: 40px 20px; max-width: 1200px; margin: 0 auto 60px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px; padding: 60px 20px; max-width: 1250px; margin: 0 auto 80px;
         }
 
+        /* キャラカード：プレミアム仕様 */
         .chara-card {
-            background: white; border-radius: 40px; padding: 40px 20px; text-align: center;
-            border: 3px solid var(--soft-pink); transition: 0.4s ease; position: relative;
-            box-shadow: 0 10px 25px rgba(255, 126, 185, 0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100%; /* 高さを統一 */
-            box-sizing: border-box;
+            background: white; border-radius: 45px; padding: 45px 25px; text-align: center;
+            border: 1px solid #eee; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative;
+            display: flex; flex-direction: column; align-items: center;
+            height: 100%; box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(255, 126, 185, 0.08);
+            overflow: hidden;
         }
-        .chara-card:hover { transform: translateY(-10px); border-color: var(--pink1); box-shadow: 0 15px 35px rgba(255, 126, 185, 0.15); }
+        
+        /* カード内部の装飾 */
+        .chara-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 8px;
+            background: linear-gradient(90deg, var(--pink1), var(--main-pink));
+        }
 
-        /* バッジ（タグ）のデザイン統一 */
+        .chara-card:hover { 
+            transform: translateY(-15px) scale(1.02); 
+            border-color: var(--pink1); 
+            box-shadow: 0 30px 60px rgba(255, 126, 185, 0.2); 
+        }
+
+        /* バッジ */
         .chara-tag {
-            display: inline-block; background: var(--pink1); color: white;
-            padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold;
-            margin-bottom: 20px; box-shadow: 0 3px 0 var(--main-pink);
-            flex-shrink: 0;
+            display: inline-block; background: white; color: var(--main-pink);
+            padding: 6px 18px; border-radius: 50px; font-size: 11px; font-weight: 800;
+            margin-bottom: 25px; border: 2px solid var(--soft-pink);
+            letter-spacing: 1px;
         }
 
-        /* 画像サイズと余白の固定 */
+        /* 画像：浮遊感のある影 */
         .chara-img-container {
-            width: 160px; height: 160px; margin-bottom: 20px;
+            width: 180px; height: 180px; margin-bottom: 25px;
             display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .chara-img-container::after {
+            content: ""; position: absolute; bottom: 5px; width: 60%; height: 15px;
+            background: rgba(0,0,0,0.05); filter: blur(8px); border-radius: 50%;
         }
         .chara-card img { 
             max-width: 100%; max-height: 100%; object-fit: contain; 
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.08)); 
+            position: relative; z-index: 1; transition: 0.4s;
         }
+        .chara-card:hover img { transform: scale(1.1) rotate(3deg); }
 
-        .chara-name { font-size: 22px; color: var(--pink2); margin-bottom: 15px; font-weight: bold; flex-shrink: 0; }
+        .chara-name { font-size: 24px; color: #333; margin-bottom: 18px; font-weight: 800; letter-spacing: 1px; }
         
         .chara-info { 
-            font-size: 14px; color: #666; line-height: 1.7; 
+            font-size: 14px; color: #6e6e6e; line-height: 1.8; 
             text-align: left; margin: 0;
-            background: var(--soft-pink); padding: 15px; border-radius: 20px;
-            flex-grow: 1; /* 余ったスペースを埋めて高さを揃える */
+            background: #fafafa; padding: 20px; border-radius: 25px;
+            flex-grow: 1; border: 1px solid #f0f0f0;
+            position: relative;
+        }
+        .chara-info::before {
+            content: "POINT"; position: absolute; top: -10px; left: 20px;
+            background: var(--pink2); color: white; font-size: 9px; padding: 2px 8px; border-radius: 4px;
         }
 
-        /* フッターCTA */
-        .bottom-cta { text-align: center; padding: 80px 20px; background: var(--soft-pink); border-radius: 80px 80px 0 0; }
-        .bottom-cta h2 { font-size: 22px; margin-bottom: 30px; color: var(--pink2); font-weight: bold; }
+        /* フッターCTA：さらに可愛く */
+        .bottom-cta { 
+            text-align: center; padding: 120px 20px; 
+            background: linear-gradient(to bottom, #fffafc, #fff0f6);
+            border-radius: 100px 100px 0 0;
+            box-shadow: 0 -20px 50px rgba(255, 126, 185, 0.05);
+        }
+        .bottom-cta h2 { font-size: 26px; margin-bottom: 40px; color: var(--pink2); font-weight: 800; }
         
         .puffy-btn {
-            display: inline-block; background: var(--main-pink); color: white;
-            padding: 20px 50px; border-radius: 50px; text-decoration: none;
-            font-weight: bold; font-size: 18px; box-shadow: 0 6px 0 var(--pink2); transition: 0.3s;
-            border: 3px solid white;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, var(--main-pink), #ff5eab); color: white;
+            padding: 22px 60px; border-radius: 100px; text-decoration: none;
+            font-weight: 800; font-size: 20px; box-shadow: 0 10px 25px rgba(255, 126, 185, 0.4); 
+            transition: 0.3s; border: 4px solid white;
         }
-        .puffy-btn:hover { background: #ff94c6; transform: translateY(-3px); box-shadow: 0 9px 0 var(--pink2); }
-        .puffy-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--pink2); }
+        .puffy-btn:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 35px rgba(255, 126, 185, 0.5); }
+        .puffy-btn:active { transform: scale(0.95); }
 
         footer {
-            background: var(--soft-pink); padding: 50px 20px; text-align: center; border-top: 2px dashed var(--pink1);
+            background: #fff0f6; padding: 60px 20px; text-align: center; 
+            border-top: 2px dashed var(--pink1);
         }
     </style>
 </head>
@@ -114,7 +148,7 @@
 
     <nav class="nav">
         <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'" alt="HAGUMO">
             <div class="nav-links">
                 <a href="index.html" class="nav-link">HOME</a>
                 <a href="world.html" class="nav-link">WORLD</a>
@@ -129,100 +163,95 @@
     <header class="about-header">
         <h1 class="about-title">HAGUMO Characters</h1>
         <p class="about-desc">
-            野菜・果物・動物たちが融合した<br>
-            農業の世界を彩る10の仲間たち
+            野菜・果物・動物たちが魔法で融合した<br>
+            「美農」の世界を彩る10の仲間たちをご紹介します。
         </p>
     </header>
 
     <div class="chara-grid">
         <div class="chara-card">
-            <span class="chara-tag">バランス・調和</span>
+            <span class="chara-tag">BALANCE & HARMONY</span>
             <div class="chara-img-container"><img src="./images/risu.PNG" alt="きゅうりす"></div>
             <h3 class="chara-name">きゅうりす</h3>
-            <p class="chara-info">心と体のリズムを整える癒やし系。あなたの日常に穏やかな調和をもたらします。</p>
+            <p class="chara-info">心と体のリズムを整える癒やし系。みずみずしい感性で、あなたの日常に穏やかな調和をもたらします。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">情熱・リーダー</span>
+            <span class="chara-tag">PASSION LEADER</span>
             <div class="chara-img-container"><img src="./images/tora.PNG" alt="とまとら"></div>
             <h3 class="chara-name">とまとら</h3>
-            <p class="chara-info">真っ赤な情熱で道を切り拓くリーダー。勇気が欲しいとき、隣で背中を押してくれるはず。</p>
+            <p class="chara-info">真っ赤な情熱で道を切り拓く勇猛なリーダー。一歩踏み出す勇気が欲しいとき、全力で背中を押してくれます。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">ひらめき・自由</span>
+            <span class="chara-tag">FRESH IDEA</span>
             <div class="chara-img-container"><img src="./images/saru.PNG" alt="れもんきー"></div>
             <h3 class="chara-name">れもんきー</h3>
-            <p class="chara-info">常識にとらわれない自由な発想の持ち主。退屈な毎日に鮮やかなひらめきを与えます。</p>
+            <p class="chara-info">常識にとらわれない、酸味の効いた自由な発想の持ち主。退屈な毎日に鮮やかなひらめきを与えます。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">知性・分析</span>
+            <span class="chara-tag">INTELLIGENCE</span>
             <div class="chara-img-container"><img src="./images/kame.PNG" alt="ぶるーべりくがめ"></div>
             <h3 class="chara-name">ぶるーべりくがめ</h3>
-            <p class="chara-info">膨大な知識を蓄えた物知りさん。冷静な分析で、あなたの悩みを論理的に解決へ導きます。</p>
+            <p class="chara-info">瞳に膨大な知識を蓄えた物知りさん。冷静な分析で、あなたの悩みを論理的な解決へと優しく導きます。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">優しさ・包容</span>
+            <span class="chara-tag">PURE KINDNESS</span>
             <div class="chara-img-container"><img src="./images/buta.PNG" alt="かぶた"></div>
             <h3 class="chara-name">かぶた</h3>
-            <p class="chara-info">すべてを優しく包み込む「美農」界の癒やし王。頑張りすぎるあなたを、ぽかぽか温めます。</p>
+            <p class="chara-info">すべてを包み込む、世界一白い心を持つ癒やし王。頑張りすぎるあなたを、ぽかぽかと温めてくれます。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">機転・賢さ</span>
+            <span class="chara-tag">ELEGANT WIT</span>
             <div class="chara-img-container"><img src="./images/jaku.PNG" alt="ばたふらいぴーこっく"></div>
             <h3 class="chara-name">ばたふらいぴーこっく</h3>
-            <p class="chara-info">華やかな見た目と鋭い機転を併せ持つ。どんな困難も優雅に、賢く乗り越える力を貸してくれます。</p>
+            <p class="chara-info">華やかな見た目と鋭い機転を併せ持つ。どんな困難も優雅に、そして賢く乗り越える力を貸してくれます。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">努力・継続</span>
+            <span class="chara-tag">STEADY EFFORT</span>
             <div class="chara-img-container"><img src="./images/imo.PNG" alt="さつまいもぐら"></div>
             <h3 class="chara-name">さつまいもぐら</h3>
-            <p class="chara-info">地道な努力を惜しまない努力家。目標に向かってコツコツ頑張るあなたの最高の理解者。</p>
+            <p class="chara-info">地下でコツコツと実を育てる地道な努力家。目標に向かって頑張るあなたの、最高の理解者であり伴走者です。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">愛嬌・甘え上手</span>
+            <span class="chara-tag">SWEET CHARM</span>
             <div class="chara-img-container"><img src="./images/nga.PNG" alt="もももんが"></div>
             <h3 class="chara-name">もももんが</h3>
-            <p class="chara-info">誰もが放っておけない愛嬌の持ち主。甘え上手な仕草で、周囲をパッと明るい笑顔にします。</p>
+            <p class="chara-info">誰もが放っておけない、桃のように甘い愛嬌の持ち主。甘え上手な仕草で、周囲をパッと明るい笑顔にします。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">静か・ミステリアス</span>
+            <span class="chara-tag">MYSTERIOUS LOVE</span>
             <div class="chara-img-container"><img src="./images/kuma.PNG" alt="くろいちじくま"></div>
             <h3 class="chara-name">くろいちじくま</h3>
-            <p class="chara-info">静寂を愛する存在。言葉少なげですが、誰よりも深い愛情であなたを見守ります。</p>
+            <p class="chara-info">静寂と深い夜を愛する存在。言葉は少ないですが、誰よりも深い慈しみの心であなたを静かに見守ります。</p>
         </div>
 
         <div class="chara-card">
-            <span class="chara-tag">明るい・ポジティブ</span>
+            <span class="chara-tag">HAPPY VIBES</span>
             <div class="chara-img-container"><img src="./images/chabo.PNG" alt="かぼちゃぼ"></div>
             <h3 class="chara-name">かぼちゃぼ</h3>
-            <p class="chara-info">底抜けに明るいポジティブモンスター。一緒にいればどんな悩みも笑い飛ばせるはず！</p>
+            <p class="chara-info">底抜けに明るいポジティブスター。彼と一緒にいれば、どんな悩みも笑い飛ばせるほどの元気が湧いてきます。</p>
         </div>
     </div>
 
     <div class="bottom-cta">
         <h2>あなたにぴったりのパートナーは？</h2>
-        <a href="diagnosis.html" class="puffy-btn">パートナー診断をはじめる 🌱</a>
+        <a href="diagnosis.html" class="puffy-btn">運命の診断をはじめる 🌱</a>
     </div>
 
-   
-
     <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 16px; margin-bottom: 12px; letter-spacing: 1px;">🎀 HAGUMO project 🎀</p>
-        <p style="font-size: 11px; color: #aaa; line-height: 1.8; max-width: 400px; margin: 0 auto;">
-            ※これは授業課題のプロトタイプです。<br>
+        <p style="color: var(--pink2); font-weight: 800; font-size: 18px; margin-bottom: 15px; letter-spacing: 2px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 11px; color: #8a7a7e; line-height: 2; max-width: 500px; margin: 0 auto; font-weight: bold;">
+            これは学校の授業課題として作成されたプロトタイプです。<br>
             実際のサービス提供やグッズ販売は行っておりません。
         </p>
     </footer>
-
-</body>
-</html>
 
 </body>
 </html>
