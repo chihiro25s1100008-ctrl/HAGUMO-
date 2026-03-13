@@ -16,28 +16,32 @@
 
         body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 100px; color: #555; overflow-x: hidden; transition: background 0.5s; touch-action: manipulation; }
 
-        /* ナビゲーション */
-        .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 8px 0; }
-        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .nav-logo-img { height: 28px; cursor: pointer; }
-        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; }
-        .nav-link { color: #888; text-decoration: none; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 20px; background: #fdfdfd; border: 1px solid #f0f0f0; }
-        .nav-link.active { color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink); }
+        /* ナビゲーション（ホームと統一） */
+        .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 12px 0; box-shadow: 0 2px 10px rgba(255,126,185,0.05); }
+        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .nav-logo-img { height: 32px; cursor: pointer; transition: transform 0.3s; }
+        .nav-logo-img:hover { transform: scale(1.05); }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px 12px; }
+        .nav-link { color: #888; text-decoration: none; font-size: 12px; font-weight: bold; padding: 5px 12px; border-radius: 20px; transition: 0.3s; }
+        .nav-link:hover { color: var(--main-pink); background: var(--soft-pink); }
+        .nav-link.active { color: white; background: var(--main-pink); }
 
         @media screen and (min-width: 769px) {
-            body { padding-top: 110px; }
-            .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
-            .nav-link { font-size: 13px; background: none; border: none; }
+            body { padding-top: 120px; }
+            .nav-content { flex-direction: row; justify-content: space-between; height: 60px; padding: 0 40px; }
+            .nav-link { font-size: 14px; }
         }
 
+        /* メインレイアウト */
         .main-wrapper { display: flex; flex-direction: column; align-items: center; max-width: 1000px; margin: 0 auto; padding: 10px 20px 40px; }
 
         @media screen and (min-width: 769px) {
-            .main-wrapper { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; padding-top: 40px; }
+            .main-wrapper { flex-direction: row; align-items: flex-start; justify-content: center; gap: 50px; padding-top: 40px; }
             .left-panel { width: 350px; position: sticky; top: 120px; }
             .right-panel { width: 450px; }
         }
 
+        /* 絆ステータス */
         .status-container { width: 100%; padding: 25px; background: white; border-radius: 35px; box-shadow: 0 15px 35px rgba(255,126,185,0.15); text-align: center; margin-bottom: 25px; box-sizing: border-box; }
         .user-name-display { font-size: 16px; color: var(--main-pink); font-weight: bold; margin-bottom: 15px; }
 
@@ -51,6 +55,7 @@
         .bounce { animation: bounce 4s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
+        /* おしゃべりエリア */
         .bubble { position: relative; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px; font-weight: bold; line-height: 1.6; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; }
         
         .choices-container { display: none; flex-direction: column; gap: 10px; margin-bottom: 20px; width: 100%; }
@@ -62,12 +67,14 @@
         .action-btn { background: white; border: none; padding: 15px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #666; transition: 0.3s; -webkit-tap-highlight-color: transparent; flex: 1; max-width: 180px; }
         .action-btn:disabled { opacity: 0.5; cursor: not-allowed; background: #f9f9f9; }
         
+        /* 画面下のエリア */
         .reset-area { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; width: 100%; text-align: center; }
         .reset-btn { background: none; border: 1px solid #eee; color: #ccc; padding: 8px 15px; border-radius: 20px; font-size: 11px; cursor: pointer; transition: 0.2s; }
 
         .heart { position: absolute; pointer-events: none; color: #ff7eb9; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
 
+        /* 特殊エフェクト */
         .max-evolution { animation: rainbow-glow 0.4s infinite linear !important; }
         .pachinko-shake { animation: screen-shake 0.1s infinite; }
         .forever-msg { font-size: 20px; font-weight: 900; color: #ff0000; text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 0 0 15px #ff7eb9; animation: pulse 0.5s infinite alternate; }
@@ -91,7 +98,6 @@
         
         .punitto { transform: scale(0.95) translateY(5px) !important; transition: 0.1s; }
 
-        /* フッターの追加スタイル */
         footer { background: white; padding: 40px 20px; text-align: center; border-top: 2px solid #fff0f6; margin-top: 50px; width: 100%; box-sizing: border-box; }
     </style>
 </head>
@@ -115,7 +121,7 @@
         <div class="left-panel">
             <div class="status-container">
                 <div id="user-display" class="user-name-display">ハグモルーム</div>
-                <select id="char-selector" onchange="changeChar()" style="width: 80%; padding: 10px; border-radius: 15px; border: 2px solid var(--soft-pink); margin-bottom: 10px; font-family: inherit;">
+                <select id="char-selector" onchange="changeChar()" style="width: 80%; padding: 10px; border-radius: 15px; border: 2px solid var(--soft-pink); margin-bottom: 10px; font-family: inherit; cursor: pointer;">
                     <option value="buta">かぶた</option>
                     <option value="imo">さつまいもぐら</option>
                     <option value="jaku">ばたふらいぴーこっく</option>
@@ -128,7 +134,7 @@
                     <option value="kuma">くろいちじくま</option>
                 </select>
                 <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
-                <div style="font-size: 11px; font-weight: bold;">KIZUNA: <span id="love-val">50</span> / 100</div>
+                <div style="font-size: 11px; font-weight: bold; color: #999;">KIZUNA: <span id="love-val">50</span> / 100</div>
             </div>
             <div class="room-main" style="text-align: center;">
                 <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="strokeHagumo(event)">
@@ -145,7 +151,7 @@
                     <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで</button>
                 </div>
                 <div class="sub-actions" style="display:flex; justify-content:center; width:100%; margin-top:10px;">
-                    <button class="action-btn" onclick="renameUser()" style="max-width: 120px; padding: 10px; font-size: 13px;">✏️ おなまえ</button>
+                    <button class="action-btn" onclick="renameUser()" style="max-width: 140px; padding: 10px; font-size: 13px; background: #fffcfd; border: 1px solid var(--soft-pink);">✏️ おなまえ変更</button>
                 </div>
                 <div class="reset-area">
                     <button class="reset-btn" onclick="manualReset()">♻️ 絆をリセットする</button>
@@ -164,6 +170,7 @@
     </footer>
 
     <script>
+    // (JavaScript部分は元のまま動作するため省略せず含めます)
     const charData = {
         buta: {
             welcome: "おかえりぶ！泥遊びするぶ？",
@@ -180,7 +187,7 @@
             welcome: "あ、おかえりもにょ。土の中は静かでもにょ…。",
             maxWelcome: "おかえりもにょ。主様が来ると、土の中まで明るくなるもにょ…♪",
             strokeRes: "なでなで、落ち着くもにょ……♪",
-            ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ. 土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ。さよならもにょ…。" },
+            ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ. 土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ. さよならもにょ…。" },
             questions: [{ q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] }, { q: "オシャレな宝石にはなれないもにょ…。。", a: ["土のぬくもりが一番だよ", "磨けば光るよ", "地味だもんね"], scores: [10, 5, -5] }],
             timeQuests: { morning: { q: "おはようもにょ. 土が朝露で湿ってるもにょ…。", a: ["しっとりして良いね", "冷たくない？", "土は嫌い"], scores: [10, 5, -5] }, lunch: { q: "お昼もにょ。地上は今、明るいもにょ？", a: ["すごく綺麗だよ", "普通かな", "眩しすぎるよ"], scores: [10, 5, -5] }, night: { q: "夜もにょ。土の中はいつも夜みたいもにょ…。", a: ["静かでいいね", "寂しくない？", "暗いのは怖い"], scores: [10, 5, -5] }, midnight: { q: "夜中もにょ。主様も土の中で一緒に丸まるもにょ？", a: ["丸まるもにょ", "布団で寝なよ", "遠慮しとく"], scores: [10, 5, -5] } },
             forever: "離さないもにょ。土の底まで、一生一緒もにょ…",
@@ -226,7 +233,7 @@
             strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。",
             ansRes: { high: "…あんた、たまに心にくること言うよな. 悪くねぇ。", mid: "ふん、分かってるじゃねぇか。感謝するぜ。", low: "…なんだそりゃ。カボチャの皮より硬い言葉だな。" },
             questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }, { q: "愛愛想がなくて悪かったな。…こんな俺、嫌か？", a: ["そこが信頼できるよ", "慣れてきたよ", "少し怖いかな"], scores: [10, 5, -5] }],
-            timeQuests: { morning: { q: "朝か。収穫の時間だぜ. あんたも手伝うか？", a: ["喜んで！", "無理はしないで", "眠いから嫌"], scores: [10, 5, -5] }, lunch: { q: "昼飯にカボチャの煮物作ったぜ。食うか？", a: ["食べる！", "料理上手だね", "またカボチャ？"], scores: [10, 5, -5] }, night: { q: "夜道は危ねぇ。俺が送ってってやるよ。", a: ["ありがとう", "頼もしいね", "一人で大丈夫"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで起きてると、煮物にするぞ…冗談だ。", a: ["面白い冗談だね", "怖かったよ", "早く寝なよ"], scores: [10, 5, -5] } },
+            timeQuests: { morning: { q: "朝か。収穫の時間だぜ. あんたも手伝うか？", a: ["喜んで！", "無理はしないで", "眠いから嫌"], scores: [10, 5, -5] }, lunch: { q: "昼飯にカボチャの煮物作ったぜ. 食うか？", a: ["食べる！", "料理上手だね", "またカボチャ？"], scores: [10, 5, -5] }, night: { q: "夜道は危ねぇ。俺が送ってってやるよ。", a: ["ありがとう", "頼もしいね", "一人で大丈夫"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで起きてると、煮物にするぞ…冗談だ。", a: ["面白い冗談だね", "怖かったよ", "早く寝なよ"], scores: [10, 5, -5] } },
             forever: "…おい、覚悟しろよ。俺はあんたを一生離さねぇ。",
             maxStrokes: ["あんたの手は…反則だな。…もっとやっていいぞ。", "こうしてると、畑仕事の疲れも吹っ飛ぶぜ。"],
             farewell: "…あんたとの時間は悪くなかった。じゃあな、主。"
@@ -284,7 +291,7 @@
     let userName = localStorage.getItem('hagu_user') || "主様";
     let welcomeTimer = null; 
     let strokeReturnTimer = null; 
-    let strokeHistory = []; // なでなで履歴
+    let strokeHistory = []; 
 
     function getName(text) {
         if (!text) return "";
