@@ -268,6 +268,9 @@
             });
         }
 
+        // --- 診断結果を一時的に保持する変数 ---
+        let finalResultId = "";
+
         function showResult() {
             document.getElementById('question-area').style.display = 'none';
             document.getElementById('result-area').style.display = 'flex';
@@ -283,8 +286,9 @@
                 }
             }
 
-            const resultCharId = winners[Math.floor(Math.random() * winners.length)];
-            const char = characters.find(c => c.id === resultCharId);
+            // 診断で選ばれたキャラID
+            finalResultId = winners[Math.floor(Math.random() * winners.length)];
+            const char = characters.find(c => c.id === finalResultId);
 
             document.getElementById('res-img').src = char.img;
             document.getElementById('res-name').innerText = char.name;
@@ -296,8 +300,19 @@
             document.getElementById('share-line').href = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + "\n" + shareUrl)}`;
         }
 
+        // --- ここが重要！MY HAGUMOへ情報を引き継ぐ処理 ---
         function goToMyHagumo() {
-            // ここで選択されたキャラIDを渡すなどの処理
+            if (!finalResultId) return;
+
+            // 1. LocalStorageに「現在選択中のキャラ」を保存
+            localStorage.setItem('hagu_current_char', finalResultId);
+
+            // 2. もし初めてお迎えするキャラなら、絆データなども初期化しておく（オプション）
+            if (!localStorage.getItem(`hagu_love_${finalResultId}`)) {
+                localStorage.setItem(`hagu_love_${finalResultId}`, 50); // 初期絆レベル
+            }
+
+            // 3. マイルームへ移動
             location.href = 'my.html';
         }
 
