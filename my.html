@@ -92,44 +92,51 @@
         
         .punitto { transform: scale(0.95) translateY(5px) !important; transition: 0.1s; }
 
-    /* ナイトクラブ感を消して、ふわふわしたパステル夜に */
+ /* 夜モード：落ち着いたパステルパープルとピンクのグラデーション */
 body.night-room {
-    background: #f0e6ff !important; /* ベースは優しいラベンダー */
+    /* ナイトクラブ感を消すため、彩度を少し抑えた魔法のような夜空色に */
+    background: #5a4b81 !important; 
     background-image: 
-        radial-gradient(#fff, rgba(255,255,255,.8) 2px, transparent 40px), /* 白いキラキラ */
-        linear-gradient(135deg, #e0c3fc 0%, #fbc2eb 100%) !important; /* 薄紫から薄ピンクへのグラデーション */
-    background-size: 80px 80px, 100% 100% !important;
-    color: #888 !important;
+        radial-gradient(#fff, rgba(255,255,255,.4) 1px, transparent 35px), /* 瞬く白い星 */
+        linear-gradient(135deg, #7b68ee 0%, #ffb3d9 100%) !important; /* ラベンダーからピンクへの深いグラデ */
+    background-size: 150px 150px, 100% 100% !important;
+    color: #fff !important;
 }
 
-/* 夜モードの吹き出し：白をベースにして透明感を出す */
+/* 吹き出し：夜の透明感（すりガラス）を出しつつ、ピンクの縁取りで可愛く */
 body.night-room .bubble {
-    background: rgba(255, 255, 255, 0.7) !important;
-    color: #ff7eb9 !important;
-    border: 3px dotted #ffb3d9 !important; /* ドットの枠線でゆめかわ感アップ */
-    box-shadow: 0 10px 20px rgba(255,179,217,0.2) !important;
-    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.2) !important; 
+    color: #fff !important;
+    border: 2px solid #ffb3d9 !important; /* ピンクの枠線でキャラ立ちさせる */
+    box-shadow: 0 0 15px rgba(255, 179, 217, 0.4) !important; /* ほんのりピンクの後光 */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
 }
 
-/* ステータス枠もふんわり白っぽく */
+/* ステータス枠：夜の静けさに馴染む透明な白 */
 body.night-room .status-container {
-    background: rgba(255, 255, 255, 0.6) !important;
-    border: 2px solid #fff;
-    box-shadow: 0 10px 25px rgba(224,195,252,0.4) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    color: #fff !important;
 }
 
-/* ボタンをマカロンみたいなパステルカラーに */
+/* 夜のお名前：ピンク感を感じる明るい色に */
+body.night-room .user-name-display {
+    color: #ffdaeb !important;
+    text-shadow: 0 0 10px rgba(255, 126, 185, 0.8);
+}
+
+/* ボタン：夜でも見やすく、ふんわり光るパステルボタン */
 body.night-room .action-btn {
-    background: #fff !important;
-    color: #ff7eb9 !important;
-    border: 2px solid #ffb3d9 !important;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #fff !important;
+    border: 1px solid #ffb3d9 !important;
+    backdrop-filter: blur(5px);
 }
 
-/* 絆MAXの文字は夜でも可愛く */
-body.night-room .forever-msg {
-    color: #ff7eb9 !important;
-    text-shadow: 2px 2px 0 #fff, 0 0 10px #ffb3d9 !important;
+body.night-room .action-btn:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
 }
     </style>
 </head>
@@ -399,25 +406,21 @@ body.night-room .forever-msg {
     }
 
   function checkTimeAndEffect() {
-    // 動作確認用：夜にしたい時は20、昼にしたい時は12などに書き換えてね
-    const hour = 20; 
+    const hour = 20; // テスト用
     const container = document.body;
+    const sprite = document.getElementById('hagumo-sprite');
     
     if (hour >= 20 || hour < 5) {
-        // 夜モード
         container.classList.add('night-room');
-        container.classList.remove('bg-level-1', 'bg-level-2');
+        container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
+        // キャラにほんのり夜の影（青紫）を落とす
+        sprite.style.filter = "drop-shadow(0 15px 25px rgba(255,126,185,0.3)) brightness(0.9) sepia(0.2) hue-rotate(240deg)";
     } else {
-        // 通常（昼）モード
         container.classList.remove('night-room');
-        // 絆レベルに応じてピンクの濃さを変える
-        if (love > 50) {
-            container.classList.add('bg-level-2');
-            container.classList.remove('bg-level-1');
-        } else {
-            container.classList.add('bg-level-1');
-            container.classList.remove('bg-level-2');
-        }
+        sprite.style.filter = "drop-shadow(0 15px 25px rgba(255,126,185,0.3))"; // 元に戻す
+        if (love >= 100) container.classList.add('bg-level-3');
+        else if (love > 50) container.classList.add('bg-level-2');
+        else container.classList.add('bg-level-1');
     }
 }
 
