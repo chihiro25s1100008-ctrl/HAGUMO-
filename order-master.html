@@ -4,133 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MASTER KIT | HAGUMO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@500;700&family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --main-pink: #ff7eb9; 
             --master-gold: #d4af37; 
-            --soft-gold: #fff9eb;
-            --pink1: #ffb3d9;
+            --deep-gold: #aa8c2c;
+            --bg-cream: #fffdf5;
+            --text-black: #2d2d2d;
+            --white-glass: rgba(255, 255, 255, 0.95);
         }
+        
         body { 
             font-family: 'Zen Maru Gothic', sans-serif; 
-            background: #fffafb; 
+            background: var(--bg-cream); 
             margin: 0; 
             padding-top: 80px; 
-            color: #444;
+            color: var(--text-black);
             overflow-x: hidden;
+            /* 高級感のある地紋 */
+            background-image: radial-gradient(var(--master-gold) 0.5px, transparent 0.5px);
+            background-size: 40px 40px;
         }
 
         /* --- ナビゲーション --- */
-        .nav { position: fixed; top: 0; left: 0; width: 100%; background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; padding: 8px 0; }
-        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .nav-logo-img { height: 28px; cursor: pointer; }
-        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 8px; }
-        .nav-link { color: #888; text-decoration: none; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 20px; background: #fdfdfd; border: 1px solid #f0f0f0; transition: 0.3s; }
-        .nav-link:hover, .nav-link.active { color: var(--main-pink); background: #fff5f7; border-color: var(--main-pink); }
+        .nav { position: fixed; top: 0; left: 0; width: 100%; background: var(--white-glass); backdrop-filter: blur(15px); z-index: 10000; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding: 12px 0; }
+        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo-img { height: 32px; cursor: pointer; }
+        .nav-links { display: flex; gap: 10px; }
+        .nav-link { color: #888; text-decoration: none; font-size: 11px; font-weight: bold; padding: 6px 15px; border-radius: 50px; transition: 0.3s; font-family: 'Quicksand', sans-serif; }
+        .nav-link:hover { color: var(--master-gold); }
 
-        @media screen and (min-width: 769px) {
-            body { padding-top: 90px; }
-            .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
-            .nav-logo-img { height: 35px; }
-            .nav-link { font-size: 13px; background: none; border: none; }
+        /* --- ヒーローセクション --- */
+        .order-hero { 
+            background: linear-gradient(135deg, #fff 0%, #fff3d0 100%); 
+            padding: 70px 20px; 
+            text-align: center; 
+            border-radius: 0 0 100px 100px;
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.1);
+            position: relative;
+        }
+        .rank-badge {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700; color: white; font-size: 12px; letter-spacing: 3px;
+            background: linear-gradient(90deg, var(--master-gold), var(--deep-gold)); 
+            padding: 8px 25px; border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
         }
 
-        /* --- コンテンツレイアウト --- */
-        .order-hero { background: linear-gradient(135deg, #fff 0%, #f9d5e5 100%); padding: 30px 20px; text-align: center; }
+        /* --- メインコンテナ --- */
         .container { 
-            max-width: 1000px; margin: 0 auto 60px; padding: 20px; 
-            display: grid; grid-template-columns: 1fr; gap: 20px; 
-            background: white; border-radius: 30px; box-sizing: border-box; 
+            max-width: 1100px; margin: -50px auto 100px; padding: 40px; 
+            display: grid; grid-template-columns: 1fr; gap: 50px; 
+            background: white; border-radius: 60px;
+            box-shadow: 0 30px 80px rgba(133, 93, 16, 0.12);
+            position: relative;
+            border: 1px solid #fef5e0;
         }
 
-        @media screen and (min-width: 769px) { 
-            .container { grid-template-columns: 1fr 1fr; padding: 50px; margin-top: 20px; border-radius: 40px; gap: 40px; } 
+        @media screen and (min-width: 900px) { 
+            .container { grid-template-columns: 1.2fr 1.1fr; padding: 70px; } 
         }
 
-        /* --- 画像・選択セクション --- */
+        /* --- 画像セクション --- */
         .image-section { position: relative; width: 100%; }
-        .main-img-box { background: #fafafa; border-radius: 25px; padding: 15px; display: flex; justify-content: center; align-items: center; }
-        .main-img { width: 100%; height: 220px; object-fit: contain; transition: 0.4s ease; }
-        @media screen and (min-width: 769px) { .main-img { height: 320px; } }
+        .main-img-box { 
+            background: radial-gradient(circle, #fff 0%, #fffbe6 100%); 
+            border-radius: 50px; padding: 50px; 
+            display: flex; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
+            border: 2px solid #f9f0d5;
+        }
+        /* キラキラアニメーション */
+        .sparkle {
+            position: absolute; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.4; pointer-events: none;
+        }
+        .main-img { 
+            width: 100%; height: 300px; object-fit: contain; position: relative; z-index: 1; 
+            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
+            filter: drop-shadow(0 20px 40px rgba(133, 93, 16, 0.2)); 
+        }
+        
+        @media screen and (min-width: 769px) { .main-img { height: 420px; } }
 
-        /* キャラ選択カード（4カラム） */
-        .thumb-list { margin-top: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .thumb-item { cursor: pointer; text-align: center; }
+        /* キャラ選択：4カラム */
+        .thumb-list { margin-top: 30px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .thumb-item { cursor: pointer; text-align: center; transition: 0.3s; }
         .thumb-img { 
             width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; 
-            border: 2px solid #f0f0f0; border-radius: 12px; padding: 4px; background: #fff; 
-            transition: 0.3s; opacity: 0.5; box-sizing: border-box;
+            border: 2px solid #fcfcfc; border-radius: 18px; padding: 8px; background: #fff; 
+            transition: 0.4s; opacity: 0.5; box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
-        /* 名前が長くても収まるように調整 */
-        .thumb-name { 
-            font-size: 8px; color: #aaa; margin-top: 4px; font-weight: bold; 
-            word-break: break-all; line-height: 1.2; height: 2.4em; overflow: hidden;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-        }
+        .thumb-name { font-size: 9px; color: #bbb; margin-top: 8px; font-weight: bold; line-height: 1.4; height: 2.8em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 
         .thumb-item.active .thumb-img { 
-            border-color: var(--master-gold); opacity: 1; background: var(--soft-gold); 
-            transform: scale(1.05); box-shadow: 0 5px 12px rgba(212, 175, 55, 0.2);
+            border-color: var(--master-gold); opacity: 1; background: #fffdf2; 
+            transform: translateY(-8px) scale(1.05); box-shadow: 0 12px 24px rgba(212, 175, 55, 0.2);
         }
         .thumb-item.active .thumb-name { color: var(--master-gold); }
 
-        /* --- テキストセクション --- */
-        .info-section { padding: 10px 5px; }
-        .char-tag { display: inline-block; padding: 5px 12px; border-radius: 8px; font-size: 11px; background: #fffcf0; border: 1px solid var(--master-gold); color: var(--master-gold); margin-bottom: 12px; font-weight: bold; }
-        .price { font-size: 32px; font-weight: bold; color: #333; margin: 10px 0; }
-        .price span { font-size: 14px; margin-left: 4px; }
+        /* --- 情報セクション --- */
+        .info-section { display: flex; flex-direction: column; }
+        .char-tag { display: inline-block; width: fit-content; padding: 6px 18px; border-radius: 50px; font-size: 12px; background: linear-gradient(45deg, #fff9e6, #fff); margin-bottom: 20px; color: var(--deep-gold); font-weight: bold; border: 1px solid var(--master-gold); }
+        
+        .product-title { margin: 0; font-size: clamp(24px, 4vw, 30px); color: #3e2723; line-height: 1.3; font-family: 'Noto Serif JP', serif; }
+        .price { font-size: 44px; font-weight: 700; color: #1a1a1a; margin: 20px 0; font-family: 'Quicksand', sans-serif; display: flex; align-items: baseline; }
+        .price span { font-size: 18px; margin-left: 6px; font-family: 'Zen Maru Gothic'; }
 
-        .reward-box { background: #fffdf9; padding: 18px; border-radius: 20px; border: 2px solid var(--master-gold); margin: 20px 0; }
-        .reward-box h4 { margin: 0 0 8px; font-size: 14px; color: var(--master-gold); }
-        .reward-box p { font-size: 12px; line-height: 1.6; color: #666; }
-
-        .selection-summary { background: #fdfdfd; padding: 15px; border-radius: 18px; border: 1px solid #eee; margin-bottom: 25px; }
-        .selection-summary b { color: var(--master-gold); font-size: 15px; }
-
-        .btn-order { 
-            background: linear-gradient(135deg, var(--master-gold), #e6c257); color: white; border: none; 
-            padding: 18px; width: 100%; border-radius: 50px; font-size: 16px; font-weight: bold; 
-            cursor: pointer; box-shadow: 0 8px 15px rgba(212,175,55,0.25); transition: 0.3s; 
-            -webkit-tap-highlight-color: transparent;
+        /* 報酬ボックス：MASTER仕様 */
+        .reward-box { 
+            background: linear-gradient(135deg, #fffcf5 0%, #fff 100%); 
+            padding: 30px; border-radius: 30px; 
+            border: 2px solid var(--master-gold); margin: 30px 0;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.05);
         }
-        .btn-order:active { transform: scale(0.98); box-shadow: none; }
+        .reward-box::after { content: "SPECIAL REWARD"; position: absolute; top: -10px; right: 20px; background: var(--master-gold); color: white; font-size: 9px; padding: 2px 10px; border-radius: 4px; font-family: 'Quicksand'; font-weight: bold; }
+        .reward-box h4 { margin: 0 0 15px; font-size: 16px; color: var(--deep-gold); display: flex; align-items: center; gap: 10px; }
+        .reward-box p { font-size: 13px; line-height: 2; color: #5d4037; margin: 0; font-weight: 500; }
+
+        .selection-summary { 
+            background: #fcfcfc; padding: 25px; border-radius: 30px; border: 1px solid #eee; margin-bottom: 35px;
+            position: relative; overflow: hidden;
+        }
+        .selection-summary b { color: var(--deep-gold); font-size: 18px; }
+
+        /* ボタン：MASTERゴールドの重厚なグラデ */
+        .btn-order { 
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); color: white; border: none; 
+            padding: 24px; width: 100%; border-radius: 100px; font-size: 19px; font-weight: bold; 
+            cursor: pointer; box-shadow: 0 10px 0 #8b6b08; transition: 0.2s; 
+            -webkit-tap-highlight-color: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            letter-spacing: 1px;
+        }
+        .btn-order:hover { filter: brightness(1.1); }
+        .btn-order:active { transform: translateY(6px); box-shadow: 0 4px 0 #8b6b08; }
 
         .btn-back {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin-top: 15px; padding: 12px; color: #bbb; text-decoration: none;
-            font-size: 13px; font-weight: bold; border-radius: 50px;
+            display: inline-flex; align-items: center; justify-content: center; width: 100%;
+            margin-top: 25px; padding: 12px; color: #aaa; text-decoration: none;
+            font-size: 14px; font-weight: bold; transition: 0.3s; font-family: 'Quicksand', sans-serif;
         }
-        .btn-back:hover { color: var(--main-pink); }
+        .btn-back:hover { color: var(--master-gold); }
 
-        .footer-notice { background: #fff0f5; padding: 50px 20px; text-align: center; border-top: 2px dashed var(--main-pink); }
+        footer { background: #1a1a1a; padding: 100px 20px; text-align: center; color: #fff; }
     </style>
 </head>
 <body>
 
     <nav class="nav">
         <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'" alt="HAGUMO">
             <div class="nav-links">
                 <a href="index.html" class="nav-link">HOME</a>
                 <a href="world.html" class="nav-link">WORLD</a>
-                <a href="product.html" class="nav-link active">PRODUCT</a>
+                <a href="product.html" class="nav-link active">ITEM</a>
                 <a href="hagumo.html" class="nav-link">HAGUMO</a>
                 <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-                <a href="my.html" class="nav-link">MY HAGUMO</a>
             </div>
         </div>
     </nav>
 
     <div class="order-hero">
-        <span style="font-weight:bold; color:var(--master-gold); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; background: #fff; padding: 2px 10px; border-radius: 10px;">Rank A : Master Kit</span>
-        <h1 style="color:var(--main-pink); margin:10px 0; font-size: 22px;">匠のハグモ極みセット</h1>
-        <p style="font-size: 12px; color: #666; font-weight: bold; margin: 0;">上級者限定。希少な品種と、最高の道具を揃えて。</p>
+        <span class="rank-badge">RANK A : MASTER KIT</span>
+        <h1 style="color:#3e2723; margin:20px 0; font-family: 'Noto Serif JP', serif;">匠のハグモ極みセット</h1>
+        <p style="font-size: 15px; color: var(--deep-gold); font-weight: bold; margin: 0; letter-spacing: 2px;">選ばれし者のための、究極の育成体験。</p>
     </div>
 
     <div class="container">
         <div class="image-section">
             <div class="main-img-box">
+                <div class="sparkle"></div>
                 <img id="main-img" src="./images/kuma.PNG" class="main-img">
             </div>
             <div class="thumb-list">
@@ -151,41 +199,44 @@
                     <div class="thumb-name">くろいちじくま</div>
                 </div>
             </div>
-            <p style="text-align:center; font-size:10px; color:#ddd; margin-top:12px; font-weight: bold;">究極のパートナーを選択 ✨</p>
+            <p style="text-align:center; font-size:12px; color:#d4af37; margin-top:25px; font-weight: bold; letter-spacing: 1.5px; font-family: 'Quicksand';">SELECT YOUR DESTINY PARTNER</p>
         </div>
 
         <div class="info-section">
-            <div id="char-name-tag" class="char-tag">代表キャラ：くろいちじくま</div>
-            <h2 style="margin:0; font-size: 18px; color: #333; line-height: 1.4;">HAGUMO育成キット（MASTER）</h2>
+            <div id="char-name-tag" class="char-tag">Master: くろいちじくま</div>
+            <h2 class="product-title">HAGUMO 究極育成キット<br><small style="font-size: 0.6em; color: var(--deep-gold); font-family: 'Zen Maru Gothic';">（マスターコンプリートプラン）</small></h2>
             <div class="price">4,500<span>円（税込）</span></div>
             
             <div class="reward-box">
-                <h4>🎁 匠のコンプリート報酬（郵送）</h4>
+                <h4>✨ 匠のコンプリート報酬（郵送）</h4>
                 <p>
                     <b>・成長報告：</b>選べるぬいぐるみ ＆ ミニアクスタ<br>
-                    <b>・収穫報告：</b>選べるビッグアクスタ ＆ タンブラー
+                    <b>・収穫報告：</b>選べるビッグアクスタ ＆ 真空断熱タンブラー
                 </p>
             </div>
 
             <div class="selection-summary">
-                <span style="font-size: 10px; color: #999; font-weight: bold;">現在の選択：</span><br>
+                <span style="font-size: 11px; color: #bbb; font-weight: bold; letter-spacing: 1px;">SUPREME CONTENTS</span><br>
                 <b id="selected-display">くろいちじくま（イチジク）</b><br>
-                <span style="font-size: 10px; color: #bbb; display: block; margin-top: 4px;">※最高級肥料・プロ仕様ポット・限定ガイド付き</span>
+                <span style="font-size: 12px; color: #795548; display: block; margin-top: 12px; line-height: 1.8;">
+                    届いたその日に匠の庭園：<br>
+                    稀少品種の原種苗、最高級オーガニック肥料、匠の特注ハンドメイド陶器鉢、プロ仕様・特注剪定バサミ、金箔押しシリアル入り育成証明書
+                </span>
             </div>
 
-            <button class="btn-order" onclick="orderEffect()">この子をお迎え（契約）する ✨</button>
+            <button class="btn-order" onclick="orderEffect()">この子とマスター契約を結ぶ ✨</button>
             
             <a href="product.html" class="btn-back">
-                他のプランも見る
+                ← BACK TO LIST
             </a>
         </div>
     </div>
 
-    <footer class="footer-notice">
-        <p style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px; font-size: 14px;">🎀 HAGUMO project 🎀</p>
-        <p style="font-size: 10px; color: #888; line-height: 1.6; max-width: 300px; margin: 0 auto;">
+    <footer>
+        <p style="color: var(--master-gold); font-weight: bold; margin-bottom: 20px; font-size: 18px; letter-spacing: 3px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 12px; color: #666; line-height: 2; max-width: 500px; margin: 0 auto; letter-spacing: 1px;">
             これは学校の授業用課題サイトです。<br>
-            実際の商品の販売・発送は行っておりません。
+            実際の商品の販売・発送は一切行っておりません。
         </p>
     </footer>
 
@@ -194,16 +245,16 @@
             const newSrc = element.querySelector('.thumb-img').src;
             const mainImg = document.getElementById('main-img');
             
-            mainImg.style.opacity = '0.3';
-            mainImg.style.transform = 'scale(0.95)';
+            mainImg.style.opacity = '0';
+            mainImg.style.transform = 'scale(1.1) rotate(3deg) blur(5px)';
             
             setTimeout(() => {
                 mainImg.src = newSrc;
                 mainImg.style.opacity = '1';
-                mainImg.style.transform = 'scale(1)';
-            }, 200);
+                mainImg.style.transform = 'scale(1) rotate(0deg) blur(0px)';
+            }, 350);
 
-            document.getElementById('char-name-tag').innerText = "代表キャラ： " + name;
+            document.getElementById('char-name-tag').innerText = "Master: " + name;
             document.getElementById('selected-display').innerText = name + "（" + type + "）";
             
             const items = document.querySelectorAll('.thumb-item');
@@ -213,7 +264,7 @@
 
         function orderEffect() {
             const nameTag = document.getElementById('char-name-tag').innerText;
-            const name = nameTag.replace('代表キャラ： ', '');
+            const name = nameTag.replace('Master: ', '');
             
             let message = "";
             if (name.includes("れもんきー")) {
@@ -227,7 +278,7 @@
             }
 
             alert(message);
-            alert("【MASTERキット お申し込み完了】\n\n" + name + "とのマスター契約を承りました。\n\n※デモ画面のため実際には発送されません。");
+            alert("【MASTER契約 完了】\n\n" + name + "との究極の契約を承りました。\n\n※デモ画面のため実際には発送されません。");
         }
     </script>
 </body>
