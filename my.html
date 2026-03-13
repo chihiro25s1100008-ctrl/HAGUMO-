@@ -86,48 +86,12 @@
         }
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
+        /* 背景レベル別の設定（ナイトモードは削除） */
         body.bg-level-1 { background: #fff5f7; }
         body.bg-level-2 { background: #ffe0f0; background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); }
         body.bg-level-3 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
         
         .punitto { transform: scale(0.95) translateY(5px) !important; transition: 0.1s; }
-
-        body.night-room {
-            background: #5a4b81 !important; 
-            background-image: 
-                radial-gradient(#fff, rgba(255,255,255,.4) 1px, transparent 35px),
-                linear-gradient(135deg, #7b68ee 0%, #ffb3d9 100%) !important;
-            background-size: 150px 150px, 100% 100% !important;
-            color: #fff !important;
-        }
-
-        body.night-room .bubble {
-            background: rgba(255, 255, 255, 0.2) !important; 
-            color: #fff !important;
-            border: 2px solid #ffb3d9 !important;
-            box-shadow: 0 0 15px rgba(255, 179, 217, 0.4) !important;
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        body.night-room .status-container {
-            background: rgba(255, 255, 255, 0.15) !important;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
-            color: #fff !important;
-        }
-
-        body.night-room .user-name-display {
-            color: #ffdaeb !important;
-            text-shadow: 0 0 10px rgba(255, 126, 185, 0.8);
-        }
-
-        body.night-room .action-btn {
-            background: rgba(255, 255, 255, 0.25) !important;
-            color: #fff !important;
-            border: 1px solid #ffb3d9 !important;
-            backdrop-filter: blur(5px);
-        }
     </style>
 </head>
 <body class="bg-level-1">
@@ -190,7 +154,6 @@
     </div>
 
     <script>
-    // キャラクターデータ（省略せずに管理）
     const charData = {
         buta: {
             welcome: "おかえりぶ！泥遊びするぶ？",
@@ -213,10 +176,10 @@
         imo: {
             welcome: "あ、おかえりもにょ。土の中は静かでもにょ…。",
             strokeRes: "なでなで、落ち着くもにょ……♪",
-            ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ。土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ。さよならもにょ…。" },
+            ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ. 土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ。さよならもにょ…。" },
             questions: [
                 { q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] },
-                { q: "オシャレな宝石にはなれないもにょ…。", a: ["土のぬくもりが一番だよ", "磨けば光るよ", "地味だもんね"], scores: [10, 5, -5] }
+                { q: "オシャレな宝石にはなれないもにょ…。。", a: ["土のぬくもりが一番だよ", "磨けば光るよ", "地味だもんね"], scores: [10, 5, -5] }
             ],
             timeQuests: {
                 morning: { q: "おはようもにょ。土が朝露で湿ってるもにょ…。", a: ["しっとりして良いね", "冷たくない？", "土は嫌い"], scores: [10, 5, -5] },
@@ -285,7 +248,7 @@
         chabo: {
             welcome: "よお、主。待ってたぜ。座って休めよ。",
             strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。",
-            ansRes: { high: "…あんた、たまに心にくること言うよな。悪くねぇ。", mid: "ふん、分かってるじゃねぇか。感謝するぜ。", low: "…なんだそりゃ。カボチャの皮より硬い言葉だな。" },
+            ansRes: { high: "…あんた、たまに心にくること言うよな. 悪くねぇ。", mid: "ふん、分かってるじゃねぇか。感謝するぜ。", low: "…なんだそりゃ。カボチャの皮より硬い言葉だな。" },
             questions: [
                 { q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] },
                 { q: "愛想がなくて悪かったな。…こんな俺、嫌か？", a: ["そこが信頼できるよ", "慣れてきたよ", "少し怖いかな"], scores: [10, 5, -5] }
@@ -347,7 +310,7 @@
             timeQuests: {
                 morning: { q: "ピピィッ！朝だよぉ！空散歩いくぅ！？", a: ["連れてって！", "高いの怖いよ", "まだ寝るぅ"], scores: [10, 5, -5] },
                 lunch: { q: "ランチピピッ！美味しい実を見つけたよぉ！", a: ["食べたい！", "どこにあったの？", "お腹いっぱい"], scores: [10, 5, -5] },
-                night: { q: "暗くなっちゃったぁ…寂しいよぉ、ピピッ。", a: ["ギュッとしてあげる", "隣にいるよ", "もう寝なさい"], scores: [10, 5, -5] },
+                night: { q: "暗くなっちゃったぁ…寂しいよぉ, ピピッ。", a: ["ギュッとしてあげる", "隣にいるよ", "もう寝なさい"], scores: [10, 5, -5] },
                 midnight: { q: "夜中の大冒険だピピィッ！主様も飛べるかなぁ！？", a: ["飛べる気がする！", "危ないよぉ", "無理だよぉ"], scores: [10, 5, -5] }
             },
             forever: "ピピィッ！主様はボクのもの！一生一緒だよぉ！",
@@ -357,14 +320,14 @@
         kuma: {
             welcome: "……お帰り。君の足音が聞こえたよ。",
             strokeRes: "……君の手、とても温かい。心が解けていくようだね。",
-            ansRes: { high: "……君という光に、救われた気がするよ。ありがとう。", mid: "……温かい言葉だね。冷えた体が少し、溶けたよ。", low: "……暗闇が、もっと深くなったみたいだ。寂しいね。" },
+            ansRes: { high: "……君という光に、救われた気がするよ。ありがとう。", mid: "……温かい言葉だね。冷えた体が少し、溶けたよ。", low: "……暗闇が、もっと深くなったみたいだ. 寂しいね。" },
             questions: [
                 { q: "私の体、真っ暗で何も見えないね。……寂しい姿だろう？", a: ["深い優しさを感じるよ", "影みたいで落ち着くよ", "確かに暗いね"], scores: [10, 5, -5] },
                 { q: "……イチジクの蜜で手がベタベタだ。触らないほうがいい。", a: ["気にせずなでさせて", "甘い香りがして好きだよ", "汚れるのは嫌だな"], scores: [10, 5, -5] }
             ],
             timeQuests: {
                 morning: { q: "……朝の光は、少し眩しすぎるね。君は平気かい？", a: ["一緒に浴びよう", "影を作ってあげる", "太陽は最高だよ"], scores: [10, 5, -5] },
-                lunch: { q: "……お昼だね。イチジクの木の下で休もうか。", a: ["隣に座るよ", "涼しそうだね", "別の場所がいい"], scores: [10, 5, -5] },
+                lunch: { q: "……お昼だね。イチジクの木の下で休おうか。", a: ["隣に座るよ", "涼しそうだね", "別の場所がいい"], scores: [10, 5, -5] },
                 night: { q: "……夜だ。やっと私の時間だね。少し落ち着くよ。", a: ["静かな君も好き", "落ち着くね", "暗くて不安だよ"], scores: [10, 5, -5] },
                 midnight: { q: "……まだ起きていたのか。深夜の蜜は、とても甘いんだよ。", a: ["舐めてもいい？", "不思議だね", "歯に悪そう"], scores: [10, 5, -5] }
             },
@@ -380,13 +343,11 @@
     let lastMaxTime = 0;
     let userName = localStorage.getItem('hagu_user') || "主様";
 
-    // お名前の置換処理
     function getName(text) {
         if (!text) return "";
         return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
     }
 
-    // 時間帯の判定
     function getTimeLabel() {
         const hour = new Date().getHours();
         if (hour >= 5 && hour < 10) return "morning";
@@ -395,26 +356,21 @@
         return "midnight";
     }
 
-    // 夜モードと背景の切り替え
+    /* 背景エフェクト（ナイトモード判定を完全に削除） */
     function checkTimeAndEffect() {
-        const hour = new Date().getHours();
         const container = document.body;
-        const sprite = document.getElementById('hagumo-sprite');
+        container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
         
-        if (hour >= 20 || hour < 5) {
-            container.classList.add('night-room');
-            container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
-            sprite.style.filter = "drop-shadow(0 15px 25px rgba(255,126,185,0.3)) brightness(0.9) sepia(0.2) hue-rotate(240deg)";
+        // 絆レベルによる背景色の変化のみ
+        if (love >= 100) {
+            container.classList.add('bg-level-3');
+        } else if (love > 50) {
+            container.classList.add('bg-level-2');
         } else {
-            container.classList.remove('night-room');
-            sprite.style.filter = "drop-shadow(0 15px 25px rgba(255,126,185,0.3))";
-            if (love >= 100) container.classList.add('bg-level-3');
-            else if (love > 50) container.classList.add('bg-level-2');
-            else container.classList.add('bg-level-1');
+            container.classList.add('bg-level-1');
         }
     }
 
-    // ステータス更新と時間経過による絆減少
     function updateStatus() {
         const now = Date.now();
         let diff = now - lastUpdate;
@@ -448,12 +404,11 @@
         const sprite = document.getElementById('hagumo-sprite');
         const bubble = document.getElementById('chat-bubble');
         const talkBtn = document.getElementById('talk-btn');
-        const container = document.body;
         
         fill.style.width = love + "%";
 
         if (love >= 100) {
-            container.classList.add('pachinko-shake');
+            document.body.classList.add('pachinko-shake');
             fill.classList.add('max'); 
             sprite.classList.add('max-evolution');
             talkBtn.disabled = true;
@@ -462,7 +417,7 @@
                 bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
             }
         } else {
-            container.classList.remove('pachinko-shake');
+            document.body.classList.remove('pachinko-shake');
             fill.classList.remove('max');
             sprite.classList.remove('max-evolution');
             talkBtn.disabled = false;
@@ -476,7 +431,6 @@
         checkTimeAndEffect();
     }
 
-    // なでなでアクション
     function strokeHagumo(e) {
         const sprite = document.getElementById('hagumo-sprite');
         sprite.classList.add('punitto');
@@ -509,7 +463,6 @@
         save();
     }
 
-    // おしゃべり開始
     function startTalk() {
         if (love >= 100) return;
         const data = charData[currentChar];
@@ -548,7 +501,6 @@
         });
     }
 
-    // ハートエフェクト
     function createHeart(x, y) {
         const h = document.createElement('div');
         h.className = 'heart'; h.innerHTML = '❤';
@@ -557,17 +509,15 @@
         setTimeout(() => h.remove(), 1500);
     }
 
-    // お名前変更
     function renameUser() {
         const newName = prompt("新しいおなまえを教えてね", userName);
-        if (newName) {
-            userName = newName;
+        if (newName && newName.trim()) {
+            userName = newName.trim();
             save();
             updateStatus();
         }
     }
 
-    // キャラクター切り替え
     function changeChar() {
         const selector = document.getElementById('char-selector');
         currentChar = selector.value;
@@ -575,7 +525,6 @@
         loadCharStatus(currentChar);
     }
 
-    // データ読み込み
     function loadCharStatus(charKey) {
         love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
         lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
@@ -586,29 +535,30 @@
         bubble.innerText = getName(charData[charKey].welcome);
     }
 
-    // 保存
     function save() {
         localStorage.setItem(`hagu_love_${currentChar}`, love);
         localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
         localStorage.setItem(`hagu_max_time_${currentChar}`, lastMaxTime);
         localStorage.setItem('hagu_user', userName);
+        localStorage.setItem('hagu_current_char', currentChar);
     }
 
-    // リセット
     function manualReset() {
-        if (confirm("絆をリセットしますか？")) {
-            love = 50;
-            lastUpdate = Date.now();
-            lastMaxTime = 0;
-            save();
-            updateStatus();
+        if (confirm("絆をリセットして最初からやり直しますか？")) {
+            localStorage.removeItem(`hagu_love_${currentChar}`);
+            localStorage.removeItem(`hagu_time_${currentChar}`);
+            localStorage.removeItem(`hagu_max_time_${currentChar}`);
+            location.reload();
         }
     }
 
-    // 初期化
     window.onload = () => {
-        loadCharStatus(currentChar);
-        setInterval(updateStatus, 60000); // 1分ごとに更新
+        const savedChar = localStorage.getItem('hagu_current_char') || "buta";
+        document.getElementById('char-selector').value = savedChar;
+        currentChar = savedChar;
+        document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+        loadCharStatus(savedChar);
+        setInterval(updateStatus, 60000);
     };
     </script>
 </body>
