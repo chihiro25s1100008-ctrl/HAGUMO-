@@ -376,18 +376,15 @@ body.night-room .status-container {
         return "midnight";
     }
 
-   function checkTimeAndEffect() {
-    const hour = new Date().getHours();
+  function checkTimeAndEffect() {
+    // 常に夜（20時）として扱う
+    const hour = 20; 
     const container = document.body;
     
-    // 夜（20時〜5時）の演出
     if (hour >= 20 || hour < 5) {
-        // フィルターを解除して、夜専用クラスを追加
         container.style.filter = "none"; 
         container.classList.add('night-room');
     } else {
-        // 昼はクラスを外す
-        container.style.filter = "none";
         container.classList.remove('night-room');
     }
 }
