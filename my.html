@@ -92,35 +92,39 @@
         
         .punitto { transform: scale(0.95) translateY(5px) !important; transition: 0.1s; }
 
-        /* 夜モード専用の背景（ドットを星空に見立てる） */
+     /* 夜モード：背景を深く、文字を白系にして夜感を出す */
 body.night-room {
-    background: linear-gradient(135deg, #2c3e50 0%, #4b0082 100%) !important;
-    background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px) !important;
-    background-size: 100px 100px !important;
+    background: #1a1c2c !important; /* 深い紺色 */
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 1.5px, transparent 20px),
+        linear-gradient(135deg, #1a1c2c 0%, #4a1942 100%) !important; /* 星空とグラデーション */
+    background-size: 150px 150px, 100% 100% !important;
+    color: #eee !important;
 }
 
-/* 夜モードの時は文字を読みやすく白っぽくする */
+/* 夜モード時の吹き出しとステータス枠 */
 body.night-room .bubble {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid #a29bfe;
+    background: rgba(30, 30, 50, 0.9) !important;
+    color: #fff !important;
+    border: 2px solid #6c5ce7 !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
 }
 
 body.night-room .status-container {
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-}
-        /* 通常時のピンク背景（!importantで優先順位を上げます） */
-body.bg-level-1 { background-color: #fff5f7 !important; }
-body.bg-level-2 { 
-    background-color: #ffe0f0 !important; 
-    background-image: url('https://www.transparenttextures.com/patterns/cubes.png') !important; 
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(5px); /* 背景を少し透かすとおしゃれ */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff !important;
 }
 
-/* 夜モード（既存のクラスをより強く適用） */
-body.night-room {
-    background: linear-gradient(135deg, #2c3e50 0%, #4b0082 100%) !important;
-    background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px) !important;
-    background-size: 100px 100px !important;
+body.night-room .user-name-display {
+    color: #ffb3d9 !important; /* 夜でも名前が見えやすい色に */
+}
+
+body.night-room .action-btn {
+    background: #2d3436 !important;
+    color: #dfe6e9 !important;
+    border: 1px solid #636e72 !important;
 }
     </style>
 </head>
