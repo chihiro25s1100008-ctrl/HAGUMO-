@@ -92,46 +92,44 @@
         
         .punitto { transform: scale(0.95) translateY(5px) !important; transition: 0.1s; }
 
-    /* 夜モード：深いピンクと紫のグラデーションで「ゆめかわ」な夜に */
+    /* ナイトクラブ感を消して、ふわふわしたパステル夜に */
 body.night-room {
-    background: #4a1942 !important; /* ベースを濃い葡萄色に */
+    background: #f0e6ff !important; /* ベースは優しいラベンダー */
     background-image: 
-        radial-gradient(#ffb3d9, rgba(255,179,217,.3) 1.5px, transparent 30px), /* ピンクの星 */
-        linear-gradient(135deg, #6c3261 0%, #2d102e 100%) !important; /* アメジストピンクのグラデーション */
-    background-size: 100px 100px, 100% 100% !important;
-    color: #fff !important;
-    text-shadow: 0 0 5px rgba(255,179,217,0.5); /* 文字をほんのりピンクに光らせる */
+        radial-gradient(#fff, rgba(255,255,255,.8) 2px, transparent 40px), /* 白いキラキラ */
+        linear-gradient(135deg, #e0c3fc 0%, #fbc2eb 100%) !important; /* 薄紫から薄ピンクへのグラデーション */
+    background-size: 80px 80px, 100% 100% !important;
+    color: #888 !important;
 }
 
-/* 夜モード時の吹き出しとステータス枠（少しピンクを混ぜる） */
+/* 夜モードの吹き出し：白をベースにして透明感を出す */
 body.night-room .bubble {
-    background: rgba(45, 20, 40, 0.85) !important; /* 濃い紫ピンク */
-    color: #fff !important;
-    border: 2px solid #ff7eb9 !important; /* ピンクの枠線 */
-    box-shadow: 0 10px 30px rgba(255,126,185,0.3) !important; /* ピンクの影 */
+    background: rgba(255, 255, 255, 0.7) !important;
+    color: #ff7eb9 !important;
+    border: 3px dotted #ffb3d9 !important; /* ドットの枠線でゆめかわ感アップ */
+    box-shadow: 0 10px 20px rgba(255,179,217,0.2) !important;
+    backdrop-filter: blur(8px);
 }
 
+/* ステータス枠もふんわり白っぽく */
 body.night-room .status-container {
-    background: rgba(255, 245, 247, 0.15) !important; /* ほんのりピンクの透明枠 */
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 179, 217, 0.3);
-    color: #fff !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 2px solid #fff;
+    box-shadow: 0 10px 25px rgba(224,195,252,0.4) !important;
 }
 
-body.night-room .user-name-display {
-    color: #ffdaeb !important; /* より明るいピンクに */
-}
-
+/* ボタンをマカロンみたいなパステルカラーに */
 body.night-room .action-btn {
-    background: #3d1a35 !important;
-    color: #ffdaeb !important;
-    border: 1px solid #ff7eb9 !important;
+    background: #fff !important;
+    color: #ff7eb9 !important;
+    border: 2px solid #ffb3d9 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
 }
 
-/* 絆MAX時の文字色も夜に合わせて調整 */
+/* 絆MAXの文字は夜でも可愛く */
 body.night-room .forever-msg {
-    color: #ffb3d9 !important;
-    text-shadow: 0 0 15px #ff7eb9 !important;
+    color: #ff7eb9 !important;
+    text-shadow: 2px 2px 0 #fff, 0 0 10px #ffb3d9 !important;
 }
     </style>
 </head>
