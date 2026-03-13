@@ -19,139 +19,147 @@
             font-family: 'Zen Maru Gothic', sans-serif; 
             background: var(--bg-cream); 
             margin: 0; 
-            padding-top: 80px; 
+            padding-top: 70px; /* ナビ高さに合わせる */
             color: var(--text-black);
             overflow-x: hidden;
-            /* 高級感のある地紋 */
             background-image: radial-gradient(var(--master-gold) 0.5px, transparent 0.5px);
             background-size: 40px 40px;
         }
 
-        /* --- ナビゲーション --- */
-        .nav { position: fixed; top: 0; left: 0; width: 100%; background: var(--white-glass); backdrop-filter: blur(15px); z-index: 10000; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding: 12px 0; }
-        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo-img { height: 32px; cursor: pointer; }
-        .nav-links { display: flex; gap: 10px; }
-        .nav-link { color: #888; text-decoration: none; font-size: 11px; font-weight: bold; padding: 6px 15px; border-radius: 50px; transition: 0.3s; font-family: 'Quicksand', sans-serif; }
-        .nav-link:hover { color: var(--master-gold); }
+        /* --- ナビゲーション（共通スタイル） --- */
+        .nav { 
+            position: fixed; top: 0; left: 0; width: 100%; 
+            background: var(--white-glass); 
+            backdrop-filter: blur(15px); 
+            z-index: 10000; 
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2); 
+            padding: 10px 0; 
+        }
+        .nav-content { 
+            max-width: 1100px; margin: 0 auto; padding: 0 20px; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .nav-logo-img { height: 35px; cursor: pointer; transition: 0.3s; }
+        .nav-logo-img:hover { opacity: 0.7; }
+        .nav-links { display: flex; gap: 5px; }
+        .nav-link { 
+            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
+            padding: 8px 12px; border-radius: 50px; transition: 0.3s; 
+            font-family: 'Quicksand', sans-serif; 
+        }
+        .nav-link:hover, .nav-link.active { 
+            color: var(--master-gold); background: white; 
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.1); 
+        }
 
         /* --- ヒーローセクション --- */
         .order-hero { 
             background: linear-gradient(135deg, #fff 0%, #fff3d0 100%); 
-            padding: 70px 20px; 
+            padding: 50px 20px; 
             text-align: center; 
-            border-radius: 0 0 100px 100px;
+            border-radius: 0 0 80px 80px;
             box-shadow: 0 15px 40px rgba(212, 175, 55, 0.1);
-            position: relative;
         }
         .rank-badge {
             font-family: 'Quicksand', sans-serif;
-            font-weight: 700; color: white; font-size: 12px; letter-spacing: 3px;
+            font-weight: 700; color: white; font-size: 11px; letter-spacing: 2px;
             background: linear-gradient(90deg, var(--master-gold), var(--deep-gold)); 
-            padding: 8px 25px; border-radius: 50px;
+            padding: 6px 20px; border-radius: 50px;
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
         }
 
         /* --- メインコンテナ --- */
         .container { 
-            max-width: 1100px; margin: -50px auto 100px; padding: 40px; 
-            display: grid; grid-template-columns: 1fr; gap: 50px; 
-            background: white; border-radius: 60px;
+            max-width: 1000px; margin: -30px auto 80px; padding: 30px; 
+            display: grid; grid-template-columns: 1fr; gap: 40px; 
+            background: white; border-radius: 40px;
             box-shadow: 0 30px 80px rgba(133, 93, 16, 0.12);
-            position: relative;
             border: 1px solid #fef5e0;
         }
 
         @media screen and (min-width: 900px) { 
-            .container { grid-template-columns: 1.2fr 1.1fr; padding: 70px; } 
+            .container { grid-template-columns: 1.1fr 1fr; padding: 50px; margin-top: -40px; } 
         }
 
         /* --- 画像セクション --- */
         .image-section { position: relative; width: 100%; }
         .main-img-box { 
             background: radial-gradient(circle, #fff 0%, #fffbe6 100%); 
-            border-radius: 50px; padding: 50px; 
+            border-radius: 30px; padding: 30px; 
             display: flex; justify-content: center; align-items: center;
             position: relative; overflow: hidden;
             border: 2px solid #f9f0d5;
         }
-        /* キラキラアニメーション */
         .sparkle {
             position: absolute; width: 100%; height: 100%;
             background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.4; pointer-events: none;
+            opacity: 0.3; pointer-events: none;
         }
         .main-img { 
-            width: 100%; height: 300px; object-fit: contain; position: relative; z-index: 1; 
-            transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
-            filter: drop-shadow(0 20px 40px rgba(133, 93, 16, 0.2)); 
+            width: 100%; height: auto; max-height: 380px; object-fit: contain; 
+            position: relative; z-index: 1; transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); 
+            filter: drop-shadow(0 20px 40px rgba(133, 93, 16, 0.18)); 
         }
         
-        @media screen and (min-width: 769px) { .main-img { height: 420px; } }
-
-        /* キャラ選択：4カラム */
-        .thumb-list { margin-top: 30px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-        .thumb-item { cursor: pointer; text-align: center; transition: 0.3s; }
+        .thumb-list { margin-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .thumb-item { cursor: pointer; text-align: center; }
         .thumb-img { 
             width: 100%; height: auto; aspect-ratio: 1/1; object-fit: contain; 
-            border: 2px solid #fcfcfc; border-radius: 18px; padding: 8px; background: #fff; 
-            transition: 0.4s; opacity: 0.5; box-sizing: border-box;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: 2px solid #fcfcfc; border-radius: 12px; padding: 6px; background: #fff; 
+            transition: 0.3s; opacity: 0.5; box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
-        .thumb-name { font-size: 9px; color: #bbb; margin-top: 8px; font-weight: bold; line-height: 1.4; height: 2.8em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .thumb-name { font-size: 9px; color: #ccc; margin-top: 6px; font-weight: bold; line-height: 1.3; height: 2.6em; overflow: hidden; }
 
         .thumb-item.active .thumb-img { 
             border-color: var(--master-gold); opacity: 1; background: #fffdf2; 
-            transform: translateY(-8px) scale(1.05); box-shadow: 0 12px 24px rgba(212, 175, 55, 0.2);
+            transform: translateY(-5px); box-shadow: 0 8px 15px rgba(212, 175, 55, 0.2);
         }
         .thumb-item.active .thumb-name { color: var(--master-gold); }
 
         /* --- 情報セクション --- */
-        .info-section { display: flex; flex-direction: column; }
-        .char-tag { display: inline-block; width: fit-content; padding: 6px 18px; border-radius: 50px; font-size: 12px; background: linear-gradient(45deg, #fff9e6, #fff); margin-bottom: 20px; color: var(--deep-gold); font-weight: bold; border: 1px solid var(--master-gold); }
+        .info-section { display: flex; flex-direction: column; justify-content: center; }
+        .char-tag { 
+            display: inline-block; width: fit-content; padding: 5px 15px; border-radius: 50px; 
+            font-size: 11px; background: linear-gradient(45deg, #fff9e6, #fff); 
+            margin-bottom: 15px; color: var(--deep-gold); font-weight: bold; border: 1px solid var(--master-gold); 
+        }
         
-        .product-title { margin: 0; font-size: clamp(24px, 4vw, 30px); color: #3e2723; line-height: 1.3; font-family: 'Noto Serif JP', serif; }
-        .price { font-size: 44px; font-weight: 700; color: #1a1a1a; margin: 20px 0; font-family: 'Quicksand', sans-serif; display: flex; align-items: baseline; }
-        .price span { font-size: 18px; margin-left: 6px; font-family: 'Zen Maru Gothic'; }
+        .product-title { margin: 0; font-size: 24px; color: #3e2723; line-height: 1.3; font-family: 'Noto Serif JP', serif; }
+        .price { font-size: 38px; font-weight: 700; color: #1a1a1a; margin: 15px 0; font-family: 'Quicksand', sans-serif; }
+        .price span { font-size: 16px; margin-left: 2px; font-family: 'Zen Maru Gothic'; }
 
-        /* 報酬ボックス：MASTER仕様 */
         .reward-box { 
             background: linear-gradient(135deg, #fffcf5 0%, #fff 100%); 
-            padding: 30px; border-radius: 30px; 
-            border: 2px solid var(--master-gold); margin: 30px 0;
+            padding: 25px; border-radius: 25px; 
+            border: 2px solid var(--master-gold); margin: 25px 0;
             position: relative;
-            box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.05);
         }
-        .reward-box::after { content: "SPECIAL REWARD"; position: absolute; top: -10px; right: 20px; background: var(--master-gold); color: white; font-size: 9px; padding: 2px 10px; border-radius: 4px; font-family: 'Quicksand'; font-weight: bold; }
-        .reward-box h4 { margin: 0 0 15px; font-size: 16px; color: var(--deep-gold); display: flex; align-items: center; gap: 10px; }
-        .reward-box p { font-size: 13px; line-height: 2; color: #5d4037; margin: 0; font-weight: 500; }
+        .reward-box h4 { margin: 0 0 10px; font-size: 15px; color: var(--deep-gold); display: flex; align-items: center; gap: 8px; }
+        .reward-box p { font-size: 12px; line-height: 1.8; color: #5d4037; margin: 0; font-weight: 500; }
 
         .selection-summary { 
-            background: #fcfcfc; padding: 25px; border-radius: 30px; border: 1px solid #eee; margin-bottom: 35px;
-            position: relative; overflow: hidden;
+            background: #fcfcfc; padding: 20px; border-radius: 25px; border-left: 5px solid var(--master-gold); margin-bottom: 25px;
         }
-        .selection-summary b { color: var(--deep-gold); font-size: 18px; }
+        .selection-summary b { color: var(--deep-gold); font-size: 17px; }
 
-        /* ボタン：MASTERゴールドの重厚なグラデ */
         .btn-order { 
             background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); color: white; border: none; 
-            padding: 24px; width: 100%; border-radius: 100px; font-size: 19px; font-weight: bold; 
-            cursor: pointer; box-shadow: 0 10px 0 #8b6b08; transition: 0.2s; 
-            -webkit-tap-highlight-color: transparent;
+            padding: 20px; width: 100%; border-radius: 100px; font-size: 17px; font-weight: bold; 
+            cursor: pointer; box-shadow: 0 8px 0 #8b6b08; transition: 0.2s; 
             border: 2px solid rgba(255,255,255,0.3);
-            letter-spacing: 1px;
         }
-        .btn-order:hover { filter: brightness(1.1); }
-        .btn-order:active { transform: translateY(6px); box-shadow: 0 4px 0 #8b6b08; }
+        .btn-order:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 10px 0 #8b6b08; }
+        .btn-order:active { transform: translateY(6px); box-shadow: 0 2px 0 #8b6b08; }
 
         .btn-back {
             display: inline-flex; align-items: center; justify-content: center; width: 100%;
-            margin-top: 25px; padding: 12px; color: #aaa; text-decoration: none;
-            font-size: 14px; font-weight: bold; transition: 0.3s; font-family: 'Quicksand', sans-serif;
+            margin-top: 15px; padding: 10px; color: #bbb; text-decoration: none;
+            font-size: 12px; font-weight: bold; transition: 0.3s; font-family: 'Quicksand', sans-serif;
         }
         .btn-back:hover { color: var(--master-gold); }
 
-        footer { background: #1a1a1a; padding: 100px 20px; text-align: center; color: #fff; }
+        footer { background: #1a1a1a; padding: 70px 20px; text-align: center; color: #fff; }
     </style>
 </head>
 <body>
@@ -171,8 +179,8 @@
 
     <div class="order-hero">
         <span class="rank-badge">RANK A : MASTER KIT</span>
-        <h1 style="color:#3e2723; margin:20px 0; font-family: 'Noto Serif JP', serif;">匠のハグモ極みセット</h1>
-        <p style="font-size: 15px; color: var(--deep-gold); font-weight: bold; margin: 0; letter-spacing: 2px;">選ばれし者のための、究極の育成体験。</p>
+        <h1 style="color:#3e2723; margin:15px 0; font-family: 'Noto Serif JP', serif; font-size: clamp(22px, 5vw, 28px);">匠のハグモ極みセット</h1>
+        <p style="font-size: 14px; color: var(--deep-gold); font-weight: bold; margin: 0; letter-spacing: 1.5px;">選ばれし者のための、究極の育成体験。</p>
     </div>
 
     <div class="container">
@@ -199,7 +207,7 @@
                     <div class="thumb-name">くろいちじくま</div>
                 </div>
             </div>
-            <p style="text-align:center; font-size:12px; color:#d4af37; margin-top:25px; font-weight: bold; letter-spacing: 1.5px; font-family: 'Quicksand';">SELECT YOUR DESTINY PARTNER</p>
+            <p style="text-align:center; font-size:10px; color:#d4af37; margin-top:15px; font-weight: bold; letter-spacing: 1.2px; font-family: 'Quicksand';">CHOOSE YOUR DESTINY PARTNER</p>
         </div>
 
         <div class="info-section">
@@ -216,11 +224,11 @@
             </div>
 
             <div class="selection-summary">
-                <span style="font-size: 11px; color: #bbb; font-weight: bold; letter-spacing: 1px;">SUPREME CONTENTS</span><br>
+                <span style="font-size: 10px; color: #bbb; font-weight: bold; letter-spacing: 1px;">SUPREME CONTENTS</span><br>
                 <b id="selected-display">くろいちじくま（イチジク）</b><br>
-                <span style="font-size: 12px; color: #795548; display: block; margin-top: 12px; line-height: 1.8;">
+                <span style="font-size: 11px; color: #795548; display: block; margin-top: 8px; line-height: 1.7;">
                     届いたその日に匠の庭園：<br>
-                    稀少品種の原種苗、最高級オーガニック肥料、匠の特注ハンドメイド陶器鉢、プロ仕様・特注剪定バサミ、金箔押しシリアル入り育成証明書
+                    稀少品種の苗、最高級肥料、ハンドメイド陶器鉢、特注ハサミ、シリアル入り育成証明書
                 </span>
             </div>
 
@@ -233,8 +241,8 @@
     </div>
 
     <footer>
-        <p style="color: var(--master-gold); font-weight: bold; margin-bottom: 20px; font-size: 18px; letter-spacing: 3px;">🎀 HAGUMO project 🎀</p>
-        <p style="font-size: 12px; color: #666; line-height: 2; max-width: 500px; margin: 0 auto; letter-spacing: 1px;">
+        <p style="color: var(--master-gold); font-weight: bold; margin-bottom: 15px; font-size: 16px; letter-spacing: 2px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 10px; color: #888; line-height: 1.8; max-width: 500px; margin: 0 auto;">
             これは学校の授業用課題サイトです。<br>
             実際の商品の販売・発送は一切行っておりません。
         </p>
@@ -246,13 +254,13 @@
             const mainImg = document.getElementById('main-img');
             
             mainImg.style.opacity = '0';
-            mainImg.style.transform = 'scale(1.1) rotate(3deg) blur(5px)';
+            mainImg.style.transform = 'scale(1.05) blur(3px)';
             
             setTimeout(() => {
                 mainImg.src = newSrc;
                 mainImg.style.opacity = '1';
-                mainImg.style.transform = 'scale(1) rotate(0deg) blur(0px)';
-            }, 350);
+                mainImg.style.transform = 'scale(1) blur(0px)';
+            }, 300);
 
             document.getElementById('char-name-tag').innerText = "Master: " + name;
             document.getElementById('selected-display').innerText = name + "（" + type + "）";
