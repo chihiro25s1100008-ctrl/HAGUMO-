@@ -92,39 +92,46 @@
         
         .punitto { transform: scale(0.95) translateY(5px) !important; transition: 0.1s; }
 
-     /* 夜モード：背景を深く、文字を白系にして夜感を出す */
+    /* 夜モード：深いピンクと紫のグラデーションで「ゆめかわ」な夜に */
 body.night-room {
-    background: #1a1c2c !important; /* 深い紺色 */
+    background: #4a1942 !important; /* ベースを濃い葡萄色に */
     background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 1.5px, transparent 20px),
-        linear-gradient(135deg, #1a1c2c 0%, #4a1942 100%) !important; /* 星空とグラデーション */
-    background-size: 150px 150px, 100% 100% !important;
-    color: #eee !important;
+        radial-gradient(#ffb3d9, rgba(255,179,217,.3) 1.5px, transparent 30px), /* ピンクの星 */
+        linear-gradient(135deg, #6c3261 0%, #2d102e 100%) !important; /* アメジストピンクのグラデーション */
+    background-size: 100px 100px, 100% 100% !important;
+    color: #fff !important;
+    text-shadow: 0 0 5px rgba(255,179,217,0.5); /* 文字をほんのりピンクに光らせる */
 }
 
-/* 夜モード時の吹き出しとステータス枠 */
+/* 夜モード時の吹き出しとステータス枠（少しピンクを混ぜる） */
 body.night-room .bubble {
-    background: rgba(30, 30, 50, 0.9) !important;
+    background: rgba(45, 20, 40, 0.85) !important; /* 濃い紫ピンク */
     color: #fff !important;
-    border: 2px solid #6c5ce7 !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    border: 2px solid #ff7eb9 !important; /* ピンクの枠線 */
+    box-shadow: 0 10px 30px rgba(255,126,185,0.3) !important; /* ピンクの影 */
 }
 
 body.night-room .status-container {
-    background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(5px); /* 背景を少し透かすとおしゃれ */
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 245, 247, 0.15) !important; /* ほんのりピンクの透明枠 */
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 179, 217, 0.3);
     color: #fff !important;
 }
 
 body.night-room .user-name-display {
-    color: #ffb3d9 !important; /* 夜でも名前が見えやすい色に */
+    color: #ffdaeb !important; /* より明るいピンクに */
 }
 
 body.night-room .action-btn {
-    background: #2d3436 !important;
-    color: #dfe6e9 !important;
-    border: 1px solid #636e72 !important;
+    background: #3d1a35 !important;
+    color: #ffdaeb !important;
+    border: 1px solid #ff7eb9 !important;
+}
+
+/* 絆MAX時の文字色も夜に合わせて調整 */
+body.night-room .forever-msg {
+    color: #ffb3d9 !important;
+    text-shadow: 0 0 15px #ff7eb9 !important;
 }
     </style>
 </head>
