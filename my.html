@@ -409,80 +409,40 @@ body.night-room .status-container {
         }
     }
 
-    function updateStatus() {
-    const now = Date.now();
-    let diff = now - lastUpdate;
-    let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
+   function updateStatus() {
+        const now = Date.now();
+        let diff = now - lastUpdate;
+        let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
 
-    if (!isImmune && diff > 0) {
-        let loss = 0;
-        
-        // --- 絆が51以上の時（1分に1減少） ---
-        if (love > 51) {
-            loss = Math.floor(diff / (60 * 1000));
-            if (loss > 0) {
-                love = Math.max(51, love - loss);
-                lastUpdate += loss * (60 * 1000); // 減らした分だけ時間を進める
+        if (!isImmune && diff > 0) {
+            let loss = 0;
+            // 絆が51以上の時（1分に1減少）
+            if (love > 51) {
+                loss = Math.floor(diff / (60 * 1000));
+                if (loss > 0) {
+                    love = Math.max(51, love - loss);
+                    lastUpdate += loss * (60 * 1000);
+                }
+            } 
+            // 絆が2〜51の時（1時間に1減少）
+            else if (love > 1) {
+                loss = Math.floor(diff / (3600 * 1000));
+                if (loss > 0) {
+                    love = Math.max(1, love - loss);
+                    lastUpdate += loss * (3600 * 1000);
+                }
+            } 
+            // 絆が1の時（24時間耐える）
+            else if (love === 1) {
+                if (diff >= 24 * 3600 * 1000) {
+                    love = 0;
+                    lastUpdate = now;
+                }
             }
-        } 
-        // --- 絆が2〜51の時（1時間に1減少） ---
-        else if (love > 1) {
-            loss = Math.floor(diff / (3600 * 1000));
-            if (loss > 0) {
-                love = Math.max(1, love - loss); // 1で一旦止める
-                lastUpdate += loss * (3600 * 1000);
-            }
-        } 
-        // --- 絆が1の時（ここから24時間耐える！） ---
-        else if (love === 1) {
-            // 24時間（86400秒）経っていたら0にする
-            if (diff >= 24 * 3600 * 1000) {
-                love = 0;
-                lastUpdate = now;
-            }
-            // 24時間以内なら何もしない（1をキープ）
+            save();
         }
-        
-        save();
-    }
 
-    // --- 以下、表示更新処理（既存のものをそのまま使用） ---
-    document.getElementById('love-val').innerText = love;
-    document.getElementById('user-display').innerText = userName + "の絆ルーム";
-    
-    const fill = document.getElementById('love-fill');
-    const sprite = document.getElementById('hagumo-sprite');
-    const bubble = document.getElementById('chat-bubble');
-    const talkBtn = document.getElementById('talk-btn');
-    const container = document.body;
-    
-    fill.style.width = love + "%";
-
-    if (love >= 100) {
-        container.classList.add('bg-level-3', 'pachinko-shake');
-        fill.classList.add('max'); 
-        sprite.classList.add('max-evolution');
-        talkBtn.disabled = true;
-        talkBtn.innerText = "❤️ 永遠の絆";
-        if (document.getElementById('choices').style.display !== "flex" && !bubble.dataset.isStrokeReaction) {
-            bubble.innerHTML = `<div class="forever-msg">${getName(charData[currentChar].forever)}</div>`;
-        }
-    } else {
-        container.classList.remove('bg-level-3', 'pachinko-shake', 'bg-level-1', 'bg-level-2');
-        container.classList.add(love > 50 ? 'bg-level-2' : 'bg-level-1');
-        fill.classList.remove('max');
-        sprite.classList.remove('max-evolution');
-        talkBtn.innerText = "💬 おしゃべり";
-        if (!cooldowns.talk) talkBtn.disabled = false;
-    }
-
-    if (love <= 0) {
-        alert(getName(charData[currentChar].farewell));
-        resetCharData(currentChar);
-    }
-    checkTimeAndEffect();
-}
-
+        // 表示の更新
         document.getElementById('love-val').innerText = love;
         document.getElementById('user-display').innerText = userName + "の絆ルーム";
         
@@ -517,7 +477,7 @@ body.night-room .status-container {
             resetCharData(currentChar);
         }
         checkTimeAndEffect();
-    }
+    } // ← ここで updateStatus 関数が正しく終わります
 
     function strokeHagumo(e) {
         if (document.getElementById('stroke-btn').disabled) return;
@@ -642,56 +602,61 @@ body.night-room .status-container {
         if (strokeLog.length >= 10) startTimer('stroke', strokeLog[0] + (5 * 60 * 1000), "👋 なでなで");
     }
 
-    function startTimer(type, targetTime, originalText) {
+   function startTimer(type, targetTime, originalText) {
         const btnId = type === 'talk' ? 'talk-btn' : 'stroke-btn';
         const btn = document.getElementById(btnId);
         btn.disabled = true;
+
         if (cooldowns[type]) clearInterval(cooldowns[type]);
+
         cooldowns[type] = setInterval(() => {
-            const diff = targetTime - Date.now();
+            const now = Date.now();
+            const diff = targetTime - now;
+
             if (diff <= 0) {
                 clearInterval(cooldowns[type]);
+                cooldowns[type] = null;
+                btn.disabled = (type === 'talk' && love >= 100);
                 btn.innerText = originalText;
-                btn.disabled = false;
-                if (love >= 100 && type === 'talk') btn.disabled = true;
             } else {
-                const min = Math.floor(diff / 60000);
-                const sec = Math.floor((diff % 60000) / 1000);
-                btn.innerText = `⏳ ${min}:${sec.toString().padStart(2, '0')}`;
+                const sec = Math.ceil(diff / 1000);
+                btn.innerText = `待機中 (${sec}s)`;
             }
         }, 1000);
     }
 
-    function resetCharData(charKey) {
-        const keys = ['love', 'time', 'max_time', 'talk_log', 'stroke_log'];
-        keys.forEach(k => localStorage.removeItem(`hagu_${k}_${charKey}`));
-        location.reload();
-    }
-
     function renameUser() {
-        const newName = prompt("新しいお名前を教えてね！", userName);
-        if (newName) {
-            userName = newName;
+        const newName = prompt("新しいおなまえを教えてね！", userName);
+        if (newName && newName.trim()) {
+            userName = newName.trim();
             save();
             updateStatus();
         }
     }
 
     function manualReset() {
-        if (confirm("今の絆や設定をすべてリセットして最初からやり直す？")) {
-            const keys = Object.keys(localStorage);
-            keys.forEach(k => { if (k.startsWith('hagu_')) localStorage.removeItem(k); });
-            location.reload();
+        if (confirm("これまでの絆をリセットして、最初からやり直しますか？")) {
+            resetCharData(currentChar);
         }
     }
 
+    function resetCharData(charKey) {
+        localStorage.removeItem(`hagu_love_${charKey}`);
+        localStorage.removeItem(`hagu_time_${charKey}`);
+        localStorage.removeItem(`hagu_max_time_${charKey}`);
+        localStorage.removeItem(`hagu_talk_log_${charKey}`);
+        localStorage.removeItem(`hagu_stroke_log_${charKey}`);
+        location.reload();
+    }
+
+    // 初回起動時の初期化処理
     window.onload = () => {
-        const selector = document.getElementById('char-selector');
         const savedChar = localStorage.getItem('hagu_current_char') || "buta";
-        selector.value = savedChar;
-        document.getElementById('hagumo-sprite').src = `./images/${selector.value}.PNG`;
-        loadCharStatus(selector.value);
+        document.getElementById('char-selector').value = savedChar;
+        document.getElementById('hagumo-sprite').src = `./images/${savedChar}.PNG`;
+        loadCharStatus(savedChar);
+        setInterval(updateStatus, 30000); // 30秒ごとにステータス自動更新
     };
-    </script>
+</script>
 </body>
 </html>
