@@ -4,148 +4,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PRODUCT | HAGUMO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; }
+        :root { 
+            --main-pink: #ff7eb9; 
+            --soft-pink: #fff5f7; 
+            --pink1: #ffb3d9; 
+            --pink2: #d1478e; 
+            --white-glass: rgba(255, 255, 255, 0.85);
+        }
         
-        /* スマホでの表示を考慮した余白設定 */
-        body { font-family: 'Zen Maru Gothic', sans-serif; background: white; margin: 0; padding-top: 100px; overflow-x: hidden; color: #555; }
+        body { 
+            font-family: 'Zen Maru Gothic', sans-serif; 
+            background: white; 
+            margin: 0; 
+            padding-top: 80px; 
+            overflow-x: hidden; 
+            color: #555; 
+            background-image: radial-gradient(var(--soft-pink) 2px, transparent 2px);
+            background-size: 40px 40px;
+        }
 
-        /* --- 【決定版】スマホ対応ナビゲーション --- */
+        /* --- ナビゲーション（WORLDと統一） --- */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
-            background: white; z-index: 10000; border-bottom: 2px solid #fff0f6; 
-            padding: 8px 0;
+            background: var(--white-glass); backdrop-filter: blur(10px);
+            z-index: 10000; border-bottom: 2px solid rgba(255, 179, 217, 0.3); padding: 12px 0;
         }
         .nav-content { 
-            max-width: 1100px; margin: 0 auto; padding: 0 15px;
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            max-width: 1100px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .nav-logo-img { height: 28px; cursor: pointer; }
-        .nav-links { 
-            display: flex; flex-wrap: wrap; justify-content: center; 
-            gap: 4px 8px;
-        }
+        .nav-logo-img { height: 32px; cursor: pointer; }
+        .nav-links { display: flex; gap: 10px; }
         .nav-link { 
             color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
-            padding: 4px 8px; border-radius: 20px; transition: 0.3s;
-            background: #fdfdfd; border: 1px solid #f0f0f0;
+            padding: 6px 15px; border-radius: 50px; transition: 0.3s;
+            font-family: 'Quicksand', sans-serif;
         }
         .nav-link:hover, .nav-link.active { 
-            color: var(--main-pink); background: var(--soft-pink); border-color: var(--main-pink);
+            color: var(--pink2); background: white; box-shadow: 0 4px 10px rgba(255, 126, 185, 0.15);
         }
 
-        /* PCサイズ(769px以上)での見え方 */
-        @media screen and (min-width: 769px) {
-            body { padding-top: 90px; }
-            .nav-content { flex-direction: row; justify-content: space-between; height: 60px; }
-            .nav-logo-img { height: 35px; }
-            .nav-link { font-size: 13px; background: none; border: none; }
-        }
-
-        /* ショップヒーローエリア */
+        /* --- ショップヒーロー：特別感を演出 --- */
         .shop-hero { 
             text-align: center; 
-            padding: 40px 20px 60px; 
-            background: linear-gradient(135deg, #fff0f6 0%, #ffffff 100%); 
-            border-radius: 0 0 60px 60px; 
-            margin-bottom: 30px;
+            padding: 80px 20px 100px; 
+            background: radial-gradient(circle at center, #fff 0%, #fff0f6 100%); 
+            border-radius: 0 0 100px 100px; 
+            margin-bottom: 50px;
+            box-shadow: 0 20px 40px rgba(255,126,185,0.05);
         }
-        .shop-hero h1 { color: var(--pink2); font-size: clamp(24px, 8vw, 32px); margin: 0 0 10px; letter-spacing: 2px; font-weight: 700; }
-        .shop-hero p { color: #888; font-size: 14px; line-height: 1.8; margin: 0; font-weight: bold; }
+        .shop-hero h1 { 
+            color: var(--pink2); 
+            font-size: clamp(32px, 8vw, 48px); 
+            margin: 0 0 15px; 
+            letter-spacing: 4px; 
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            text-shadow: 3px 3px 0 white;
+        }
+        .shop-hero p { 
+            color: #888; font-size: 15px; line-height: 2; margin: 0; font-weight: bold;
+            letter-spacing: 1px;
+        }
 
-        /* プロダクトリスト */
+        /* --- プロダクトリスト --- */
         .product-list { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 30px; 
-            padding: 0 20px 80px; 
-            max-width: 1100px; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 40px; 
+            padding: 0 25px 100px; 
+            max-width: 1200px; 
             margin: 0 auto; 
         }
 
-        /* 価格カード */
+        /* --- 商品カード：大幅リニューアル --- */
         .price-card { 
             background: white; 
-            border-radius: 40px; 
-            padding: 40px 25px; 
+            border-radius: 50px; 
+            padding: 50px 30px; 
             text-align: center; 
             border: 2px solid var(--soft-pink); 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2);
             position: relative;
-            box-shadow: 0 15px 35px rgba(255,126,185,0.08);
+            box-shadow: 0 15px 45px rgba(255,126,185,0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow: hidden;
         }
+
+        .price-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 10px;
+        }
+        .price-card.easy-card::before { background: #4CAF50; }
+        .price-card.normal-card::before { background: #FF9800; }
+        .price-card.hard-card::before { background: var(--pink2); }
 
         .price-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
             border-color: var(--pink1);
-            box-shadow: 0 25px 50px rgba(255,126,185,0.15);
+            box-shadow: 0 30px 60px rgba(255,126,185,0.2);
         }
 
-        /* バッジ */
+        /* バッジのデザイン向上 */
         .level-badge { 
             display: inline-block; 
-            padding: 6px 20px; 
-            border-radius: 30px; 
-            font-size: 11px; 
-            font-weight: bold; 
-            margin-bottom: 20px; 
+            padding: 8px 24px; 
+            border-radius: 100px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            margin-bottom: 25px; 
+            letter-spacing: 1px;
         }
         .easy { background: #eef9f2; color: #4CAF50; }
         .normal { background: #fff8e6; color: #FF9800; }
         .hard { background: #fff0f3; color: #F06292; }
 
-        /* 商品画像 */
-        .product-img {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 10px 15px rgba(255,126,185,0.2));
-            transition: 0.5s;
+        /* 商品画像のアニメーション */
+        .product-img-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .price-card:hover .product-img { transform: scale(1.05); }
+        .product-img-wrapper::after {
+            content: ""; position: absolute; width: 120px; height: 30px; 
+            background: rgba(255,126,185,0.1); border-radius: 50%;
+            bottom: 0; filter: blur(8px); z-index: 1; transition: 0.5s;
+        }
+        .price-card:hover .product-img-wrapper::after { transform: scale(1.2); opacity: 0.5; }
 
-        .price-card h3 { color: var(--pink2); font-size: 20px; margin: 0 0 8px; font-weight: 700; }
-        .included-items { font-size: 11px; color: #bbb; margin-bottom: 15px; font-weight: bold; }
+        .product-img {
+            width: 100%; height: 100%; object-fit: contain;
+            position: relative; z-index: 2; transition: 0.5s;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.05));
+        }
+        .price-card:hover .product-img { transform: translateY(-10px) rotate(3deg); }
+
+        .price-card h3 { 
+            color: var(--pink2); font-size: 22px; margin: 0 0 10px; font-weight: 700; 
+            letter-spacing: 1px;
+        }
+        .included-items { 
+            font-size: 12px; color: #999; margin-bottom: 20px; font-weight: 500;
+            line-height: 1.6; min-height: 3.2em;
+        }
 
         .hashtags { 
             font-size: 12px; 
             color: var(--main-pink); 
-            margin-bottom: 30px; 
-            font-weight: bold;
+            margin-bottom: 35px; 
+            font-weight: 700;
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            font-family: 'Quicksand', sans-serif;
         }
+        .hashtags span::before { content: "#"; }
 
-        /* 購入リンク */
+        /* 購入ボタン：さらにリッチに */
         .buy-link { 
             width: 100%;
-            max-width: 220px;
-            background: var(--main-pink); 
+            max-width: 240px;
+            background: linear-gradient(135deg, var(--main-pink), #ff5e95); 
             color: white; 
             text-decoration: none; 
-            padding: 16px 0; 
+            padding: 18px 0; 
             border-radius: 100px; 
-            font-weight: bold; 
-            font-size: 15px;
-            transition: 0.3s;
-            box-shadow: 0 5px 0 var(--pink2);
+            font-weight: 700; 
+            font-size: 16px;
+            transition: 0.4s;
+            box-shadow: 0 8px 0 var(--pink2);
             margin-top: auto;
-            -webkit-tap-highlight-color: transparent;
+            border: 2px solid white;
         }
-        .buy-link:hover { background: #ff94c6; }
-        .buy-link:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--pink2); }
+        .buy-link:hover { transform: translateY(-3px); box-shadow: 0 12px 0 var(--pink2); filter: brightness(1.05); }
+        .buy-link:active { transform: translateY(6px); box-shadow: 0 2px 0 var(--pink2); }
 
         footer {
-            background: var(--soft-pink);
-            padding: 60px 20px;
-            text-align: center;
-            border-top: 2px dashed var(--pink1);
+            background: var(--soft-pink); padding: 80px 20px; text-align: center; border-top: 2px dashed var(--pink1);
         }
     </style>
 </head>
@@ -153,55 +195,60 @@
 
     <nav class="nav">
         <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'">
+            <img src="./images/rogo.PNG" class="nav-logo-img" onclick="location.href='index.html'" alt="HAGUMO">
             <div class="nav-links">
                 <a href="index.html" class="nav-link">HOME</a>
                 <a href="world.html" class="nav-link">WORLD</a>
-                <a href="product.html" class="nav-link active">PRODUCT</a>
+                <a href="product.html" class="nav-link active">ITEM</a>
                 <a href="hagumo.html" class="nav-link">HAGUMO</a>
                 <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-                <a href="my.html" class="nav-link">MY HAGUMO</a>
             </div>
         </div>
     </nav>
 
     <section class="shop-hero">
         <h1>HAGUMO SHOP</h1>
-        <p>「美容の自給自足」を、<br>お気に入りの子と一緒に始めませんか？</p>
+        <p>「美容の自給自足」を叶えるキット。<br>あなたにぴったりのパートナーを選んでください。</p>
     </section>
 
     <div class="product-list">
-        <div class="price-card">
-            <span class="level-badge easy">✨ かんたんセット</span>
-            <div class="included-items">カブ / サツマイモ / バタフライピー</div>
-            <img src="./images/buta.PNG" class="product-img">
+        <div class="price-card easy-card">
+            <span class="level-badge easy">✨ EASY SET</span>
+            <div class="product-img-wrapper">
+                <img src="./images/buta.PNG" class="product-img">
+            </div>
             <h3>はじめてのHAGUMO</h3>
-            <div class="hashtags"><span>#準備0</span> <span>#失敗0</span></div>
+            <div class="included-items">カブ / サツマイモ / バタフライピー<br><small>育てやすさ重視のセレクト</small></div>
+            <div class="hashtags"><span>ReadyIn5min</span> <span>NoFailure</span></div>
             <a href="order-entry.html" class="buy-link">この子をお迎えする 🌱</a>
         </div>
 
-        <div class="price-card">
-            <span class="level-badge normal">🌿 ふつうセット</span>
-            <div class="included-items">キュウリ / ミニトマト / カボチャ</div>
-            <img src="./images/risu.PNG" class="product-img">
+        <div class="price-card normal-card">
+            <span class="level-badge normal">🌿 NORMAL SET</span>
+            <div class="product-img-wrapper">
+                <img src="./images/risu.PNG" class="product-img">
+            </div>
             <h3>こだわり美肌菜園</h3>
-            <div class="hashtags"><span>#自分磨き</span> <span>#慣れてきたら</span></div>
+            <div class="included-items">キュウリ / ミニトマト / カボチャ<br><small>パックに最適な定番野菜</small></div>
+            <div class="hashtags"><span>BeautyCare</span> <span>ActiveLife</span></div>
             <a href="order-expert.html" class="buy-link">この子をお迎えする 🐿️</a>
         </div>
 
-        <div class="price-card">
-            <span class="level-badge hard">💎 むずかしめセット</span>
-            <div class="included-items">レモン / ピーチ / イチジク/　ブルーベリー</div>
-            <img src="./images/kuma.PNG" class="product-img">
+        <div class="price-card hard-card">
+            <span class="level-badge hard">💎 HARD SET</span>
+            <div class="product-img-wrapper">
+                <img src="./images/kuma.PNG" class="product-img">
+            </div>
             <h3>匠のハグモ極み</h3>
-            <div class="hashtags"><span>#プロ仕様</span> <span>#果実の恵み</span></div>
+            <div class="included-items">レモン / ピーチ / イチジク<br><small>贅沢な果実の恵みをその手に</small></div>
+            <div class="hashtags"><span>Professional</span> <span>Premium</span></div>
             <a href="order-master.html" class="buy-link">この子をお迎えする ✨</a>
         </div>
     </div>
 
     <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 15px; margin-bottom: 12px; letter-spacing: 1px;">🎀 HAGUMO project 🎀</p>
-        <p style="font-size: 10px; color: #aaa; line-height: 1.8; max-width: 400px; margin: 0 auto;">
+        <p style="color: var(--pink2); font-weight: bold; font-size: 16px; margin-bottom: 15px; letter-spacing: 2px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 11px; color: #aaa; line-height: 2; max-width: 500px; margin: 0 auto;">
             ※これは授業課題のプロトタイプです。<br>
             実際の商品の販売・発送は行っておりません。
         </p>
