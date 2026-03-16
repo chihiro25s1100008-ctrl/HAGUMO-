@@ -258,309 +258,325 @@
 
     <script>
         // --- データの定義 ---
-const charData = {
-    buta: {
-        welcome: "おかえりぶ！泥遊びするぶ？",
-        maxWelcome: "おかえり、主様！世界で一番、主様が帰ってくるのを待ってたぶ！",
-        strokeRes: "もっと撫でてぶ！泥が落ちちゃうぶ〜♪",
-        ansRes: { high: "泥が輝いて見えるぶ！嬉しいぶー！", mid: "ありがとうぶ！もっと頑張るぶ！", low: "そんなの悲しいぶ…泥が乾いちゃうぶ。" },
-        questions: [{ q: "ボク、まだ上手に歩けないぶ…。不格好ぶ？", a: ["そこが可愛いんだよ", "練習あるのみ！", "確かに変だね"], scores: [10, 5, -5] }, { q: "泥を落としたら、ただのブタになっちゃうぶ…？", a: ["君は君だよ", "泥も君の一部だね", "確かにそうかも"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "おはぶー！朝の泥はひんやりして気持ちいいぶ！主様も入るぶ？", a: ["一緒に泥遊び！", "顔だけ洗うよ", "泥はちょっと…"], scores: [10, 5, -5] }, lunch: { q: "お昼だぶー！カブの泥漬け食べるぶ？", a: ["いただくぶ！", "美味しそうだね", "お腹空いてない"], scores: [10, 5, -5] }, night: { q: "夜ぶー。泥が真っ暗で落ち着くぶ…。主様も眠いぶ？", a: ["隣で寝てもいい？", "おやすみぶー", "まだ寝ないよ"], scores: [10, 5, -5] }, midnight: { q: "こんな時間にどうしたぶ？泥棒かと思ったぶ！", a: ["君に会いに来た", "眠れなくて", "間違えただけ"], scores: [10, 5, -5] } },
-        maxStrokes: ["もっと撫でてぶ！主様の手、あったかいぶ〜", "主様はボクだけのものだぶ！大好きだぶ！"],
-        farewell: "…主様、もうボクのこと忘れたぶね。さよならぶ。"
-    },
-    imo: {
-        welcome: "あ、おかえりもにょ。土の中は静かでもにょ…。",
-        maxWelcome: "おかえりもにょ。主様が来ると、土の中まで明るくなるもにょ…♪",
-        strokeRes: "なでなで、落ち着くもにょ……♪",
-        ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ。土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ。さよならもにょ…。" },
-        questions: [{ q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] }, { q: "オシャレな宝石にはなれないもにょ…。", a: ["土のぬくもりが一番だよ", "磨けば光るよ", "地味だもんね"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "おはようもにょ。土が朝露で湿ってるもにょ…。", a: ["しっとりして良いね", "冷たくない？", "土は嫌い"], scores: [10, 5, -5] }, lunch: { q: "お昼もにょ。地上は今、明るいもにょ？", a: ["すごく綺麗だよ", "普通かな", "眩しすぎるよ"], scores: [10, 5, -5] }, night: { q: "夜もにょ。土の中はいつも夜みたいもにょ…。", a: ["静かでいいね", "寂しくない？", "暗いのは怖い"], scores: [10, 5, -5] }, midnight: { q: "夜中もにょ。主様も土の中で一緒に丸まるもにょ？", a: ["丸まるもにょ", "布団で寝なよ", "遠慮しとく"], scores: [10, 5, -5] } },
-        maxStrokes: ["主様の手、落ち着くもにょ…ずっとこうしててもにょ", "地上は眩しいけど、主様がいれば怖くないもにょ"],
-        farewell: "…もう土の中から出てこないもにょ。バイバイもにょ。"
-    },
-    jaku: {
-        welcome: "お帰りなさい、主様。今日も美しい一日ですわね。",
-        maxWelcome: "お帰りなさいませ、私の主様。あなたが戻られるのを、羽を震わせて待っておりましたわ。",
-        strokeRes: "あら…主様の指先、とても優雅ですわね。",
-        ansRes: { high: "まぁ…胸が高鳴りますわ。嬉しいですわね。", mid: "お言葉、痛み入りますわ。精進いたしますわ。", low: "…少し、羽の色が曇ってしまいましたわ。" },
-        questions: [{ q: "私の羽、少し色が混ざりすぎていて…不気味ではありませんか？", a: ["複雑な輝きが素敵だよ", "個性があっていいね", "少し派手かも"], scores: [10, 5, -5] }, { q: "真の美しさとは、どこにあると思いますの？", a: ["君の心の中だよ", "外見も大事だね", "そんなの知らない"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "ごきげんよう。朝陽を浴びて、羽をお手入れしましょうか。", a: ["手伝わせて", "今日も綺麗だね", "眠そうだね"], scores: [10, 5, -5] }, lunch: { q: "ランチタイムですわ。紅茶にブルーベリーを添えていかが？", a: ["最高だね", "お洒落だね", "紅茶は苦手"], scores: [10, 5, -5] }, night: { q: "夜の帳が下りましたわ。月明かりは私を美しく見せますの。", a: ["見惚れちゃうよ", "月より綺麗だよ", "暗くて見えない"], scores: [10, 5, -5] }, midnight: { q: "こんな夜更けに…ふふ、秘密のお話でもいたしましょうか？", a: ["ぜひ聞かせて", "眠くないの？", "早く寝ようよ"], scores: [10, 5, -5] } },
-        maxStrokes: ["あら、主様。そんなに熱心に…嬉しいですわ", "世界で一番、あなたの手が心地よいですわね"],
-        farewell: "…美しい思い出と共に、私は飛び立ちますわ。さようなら。"
-    },
-    risu: {
-        welcome: "おかえり！水分補給しっかりね！",
-        maxWelcome: "おかえりぃ！もう、待ちくたびれて干からびちゃうかと思ったよぉ！大好き！",
-        strokeRes: "わぁっ！なでなですると毛並みが整うよぉ！",
-        ansRes: { high: "わぁっ！お肌も心もプルプルだよぉ！", mid: "ありがとう！水分補給と同じくらい大事な言葉だね！", low: "…キュウリ、落としちゃった。悲しいよぉ。" },
-        questions: [{ q: "尻尾がボサボサになっちゃった…。アイドル失格かなぁ？", a: ["自然体で最高だよ", "ブラッシングしよう", "ちょっと冒険だね"], scores: [10, 5, -5] }, { q: "ボク、野菜なのにリスなんて変だよね…？", a: ["唯一無二の魅力だよ", "面白いと思うよ", "確かにヘンテコ"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "おっはよー！朝のキュウリはシャキシャキだよぉ！", a: ["半分ちょうだい", "元気だね！", "まだ眠いよ…"], scores: [10, 5, -5] }, lunch: { q: "お昼だね！一緒にサラダランチしよぉ！", a: ["美味しそう！", "健康志向だね", "肉が食べたい"], scores: [10, 5, -5] }, night: { q: "夜だぁ。ボクの水分、足りてるかなぁ？", a: ["しっかり補給して", "プルプルだよ！", "カピカピかも？"], scores: [10, 5, -5] }, midnight: { q: "夜更かしさんだねぇ！ボクも一緒に起きてるよぉ！", a: ["一緒に遊ぼう", "寝なくて大丈夫？", "先に寝るね"], scores: [10, 5, -5] } },
-        maxStrokes: ["ふふっ、主様になでられるの、一番の美容液だよ！", "離さないからね！主様、だーいすき！"],
-        farewell: "…ボク、もっと大切にされたかったな。バイバイ。"
-    },
-    tora: {
-        welcome: "おかえりガオー！トマトパワー全開だ！",
-        maxWelcome: "おかえりだガオーッ！お前がいないとトマトが枯れちまうかと思ったぜ！",
-        strokeRes: "ガオーッ！力がみなぎってくるガオ！もっとだ！",
-        ansRes: { high: "ガオーッ！最高のトマトパワーが湧いてきたガオ！", mid: "おう、サンキューな！もっと熱くいこうぜ！", low: "…火が消えちまったガオ。冷たいトマトになっちゃうぞ。" },
-        questions: [{ q: "ガオーッ！…今の吠え方、迫力足りなかったガオ？", a: ["可愛くて最高だよ", "一生懸命で良いガオ", "全然怖くないよ"], scores: [10, 5, -5] }, { q: "オレ様、本当は強がってるだけなんだガオ…。", a: ["そのままで十分強いよ", "一緒に強くなろう", "バレバレだぜ"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "朝だガオーッ！太陽みたいに真っ赤に燃えるガオ！", a: ["眩しいガオ！", "元気いっぱいだね", "朝からうるさいよ"], scores: [10, 5, -5] }, lunch: { q: "腹減ったガオ！丸かじりできる獲物を探すガオ！", a: ["トマトでいい？", "ワイルドだね", "行儀悪いよ"], scores: [10, 5, -5] }, night: { q: "夜はオレ様の時間だガオ！目が光るんだガオ！", a: ["かっこいい！", "ちょっと怖いかも", "懐中電灯みたい"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで修行かガオ？オレ様も付き合うガオ！", a: ["頼もしいな！", "ほどほどにね", "邪魔しないで"], scores: [10, 5, -5] } },
-        maxStrokes: ["おいおい、照れるガオ！ But…もっとやってくれ！", "お前となら、どこまででも強くなれる気がするガオ！"],
-        farewell: "…お前の情熱、消えちまったんだな。あばよガオ。"
-    },
-    chabo: {
-        welcome: "よお、主。待ってたぜ。座って休めよ。",
-        maxWelcome: "おかえり、あんた。…いや, なんでもねぇ。とにかく、無事でよかったぜ。",
-        strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。",
-        ansRes: { high: "…あんた、たまに心にくること言うよな。悪くねぇ。", mid: "ふん、分かってるじゃねぇか。感謝するぜ。", low: "…なんだそりゃ。カボチャの皮より硬い言葉だな。" },
-        questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }, { q: "愛愛想がなくて悪かったな。…こんな俺、嫌か？", a: ["そこが信頼できるよ", "慣れてきたよ", "少し怖いかな"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "朝か。収穫の時間だぜ。あんたも手伝うか？", a: ["喜んで！", "無理はしないで", "眠いから嫌"], scores: [10, 5, -5] }, lunch: { q: "昼飯にカボチャの煮物作ったぜ。食うか？", a: ["食べる！", "料理上手だね", "またカボチャ？"], scores: [10, 5, -5] }, night: { q: "夜道は危ねぇ。俺が送ってってやるよ。", a: ["ありがとう", "頼もしいね", "一人で大丈夫"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで起きてると、煮物にするぞ…冗談だ。", a: ["面白い冗談だね", "怖かったよ", "早く寝なよ"], scores: [10, 5, -5] } },
-        maxStrokes: ["あんたの手は…反則だな。…もっとやっていいぞ。", "こうしてると、畑仕事の疲れも吹っ飛ぶぜ。"],
-        farewell: "…あんたとの時間は悪くなかった。じゃあな、主。"
-    },
-    saru: {
-        welcome: "ウキキーッ！主！フレッシュなレモンはいかが！？",
-        maxWelcome: "ウキキーッ！主様ぁ！今日はずっとお祝いウキ！主様が大好きすぎるウキ！",
-        strokeRes: "ウキッ！主のなでなで、ビタミンより効くぅ〜！",
-        ansRes: { high: "ウキキーッ！主、最高！ビタミンMAXだよぉ！", mid: "ウキッ！今の言葉、レモンみたいに効いたよ！", low: "…酸っぱすぎるよぉ。そんなの、ウキィ…。" },
-        questions: [{ q: "レモンが酸っぱすぎて、みんな逃げていっちゃうウキ…。", a: ["ボクは逃げないよ", "刺激的でいいよ", "確かに酸っぱい！"], scores: [10, 5, -5] }, { q: "ウキッ！ボク、お調子に乗りすぎちゃうウキ？", a: ["明るくて元気が出るよ", "そのままでいいよ", "少し静かにして"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "おはようウキ！朝イチのレモン絞りたてだウキ！", a: ["目が覚めたよ！", "酸っぱそうだね", "今は甘いのがいい"], scores: [10, 5, -5] }, lunch: { q: "お昼だウキ！木の上で一緒にランチするウキ？", a: ["登るよ！", "危なくない？", "地面がいい"], scores: [10, 5, -5] }, night: { q: "夜だウキ！レモンの皮でお風呂にするウキ！", a: ["お肌ツルツルだね", "贅沢だね", "染みそう…"], scores: [10, 5, -5] }, midnight: { q: "ウキキー！夜更かしウッキー！踊るウキ！", a: ["一緒に踊ろう！", "静かにね", "うるさいウキ！"], scores: [10, 5, -5] } },
-        maxStrokes: ["ウキキッ！気持ちいい〜！主、最高だよぉ！", "レモンより甘い気分になっちゃうウキーッ！"],
-        farewell: "…なんだか酸っぱい気持ちだよ。ウキィ…バイバイ。"
-    },
-    kame: {
-        welcome: "おかえりなさい……。のんびり、いきましょうね。",
-        maxWelcome: "おかえりなさい……主様。あなたと過ごす、この一秒一秒が、私の永遠です……。",
-        strokeRes: "あぁ……甲羅まで, 主様のぬくもりが届きます……。",
-        ansRes: { high: "あぁ…深い海の底にいるような, 安らかな気持ちです…。", mid: "ありがとうございます…。ゆっくり、大切にしますね。", low: "……少し、甲羅の中に隠れますね……。悲しいです。" },
-        questions: [{ q: "ブルーベリーの果汁が甲羅に染みちゃって…汚いですか？", a: ["綺麗なグラデーションだよ", "一生懸命な証拠だね", "洗ったほうがいいかも"], scores: [10, 5, -5] }, { q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "おはようございます……。朝露が綺麗ですね……。", a: ["本当に綺麗だね", "ゆっくり見よう", "早く行かなきゃ"], scores: [10, 5, -5] }, lunch: { q: "お昼寝の時間でしょうか……。一緒にどうですか……？", a: ["おやすみなさい", "のんびりしよう", "忙しいんだ"], scores: [10, 5, -5] }, night: { q: "星が出てきました……。ブルーベリーみたいですね……。", a: ["ロマンチックだね", "美味しそうだね", "ただの点だよ"], scores: [10, 5, -5] }, midnight: { q: "こんな時間……。静かで、心が落ち着きます……。", a: ["ずっとこうしていたい", "怖くない？", "もう寝る時間だよ"], scores: [10, 5, -5] } },
-        maxStrokes: ["あぁ…時が止まればいいのに……幸せです……", "主様のなでなで、とっても優しい魔法ですね…"],
-        farewell: "……さようなら。ゆっくり、思い出に変わりますね……。"
-    },
-    nga: {
-        welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！",
-        maxWelcome: "ピピィーッ！大好きな主様ぁ！もうどこへも行かないでぁ！ギュッとしてぇ！",
-        strokeRes: "ピピィッ！もっとぉ！主様のなでなで大好きぃー！",
-        ansRes: { high: "ピピィッ！主様ぁ、だーいすき！空まで飛べそうだよぉ！", mid: "ピピッ、ありがとうぅ！主様は優しいねぇ！", low: "…ピーッ！嫌いになっちゃったのぉ？悲しいよぉ…。" },
-        questions: [{ q: "ボク、飛ぶときにいつもフラフラしちゃうのぉ…。", a: ["危なっかしくて可愛いね", "着地はボクの腕に！", "もっと特訓だね"], scores: [10, 5, -5] }, { q: "甘えん坊すぎて、迷惑かなぁ…？ピピッ。", a: ["もっと甘えていいよ", "頼われて嬉しいよ", "時々ね"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "ピピィッ！朝だよぉ！空散歩いくぅ！？", a: ["連れてって！", "高いの怖いよ", "まだ寝るぅ"], scores: [10, 5, -5] }, lunch: { q: "ランチピピッ！美味しい実を見つけたよぉ！", a: ["食べたい！", "どこにあったの？", "お腹いっぱい"], scores: [10, 5, -5] }, night: { q: "暗くなっちゃったぁ…寂しいよぉ、ピピッ。", a: ["ギュッとしてあげる", "隣にいるよ", "もう寝なさい"], scores: [10, 5, -5] }, midnight: { q: "夜中の大冒険だピピィッ！主様も飛べるかなぁ！？", a: ["飛べる気がする！", "危ないよぉ", "無理だよぉ"], scores: [10, 5, -5] } },
-        maxStrokes: ["もっとぉ！もっとぉ！主様ぁ、だぁいすきだよぉ！", "ピピィ！これ、ボクへのプロポーズかなぁ！？"],
-        farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ。バイバイ。"
-    },
-    kuma: {
-        welcome: "……お帰り。君の足音が聞こえたよ。",
-        maxWelcome: "……お帰り。君がいない間、世界がモノクロだった。戻ってきてくれて、ありがとう。",
-        strokeRes: "……君の手、とても温かい。心が解けていくようだね。",
-        ansRes: { high: "……君という光に、救われた気がするよ。ありがとう。", mid: "……温かい言葉だね。冷えた体が少し、溶けたよ。", low: "……暗闇が、もっと深くなったみたいだ。寂しいね。" },
-        questions: [{ q: "私の体、真っ暗で何も見えないね。……寂しい姿だろう？", a: ["深い優しさを感じるよ", "影みたいで落ち着くよ", "確かに暗いね"], scores: [10, 5, -5] }, { q: "……イチジクの蜜で手がベタベタだ。触らないほうがいい。", a: ["気にせずなでさせて", "甘い香りがして好きだよ", "汚れるのは嫌だな"], scores: [10, 5, -5] }],
-        timeQuests: { morning: { q: "……朝の光は、少し眩しすぎるね。君は平気かい？", a: ["一緒に浴びよう", "影を作ってあげる", "太陽は最高だよ"], scores: [10, 5, -5] }, lunch: { q: "……お昼だね。イチジクの木の下で休もうか。", a: ["隣に座るよ", "涼しそうだね", "別の場所がいい"], scores: [10, 5, -5] }, night: { q: "……夜だ。やっと私の時間だね。少し落ち着くよ。", a: ["静かな君も好き", "落ち着くね", "暗くて不安だよ"], scores: [10, 5, -5] }, midnight: { q: "……まだ起きていたのか。深夜の蜜は、とても甘いんだよ。", a: ["舐めてもいい？", "不思議だね", "歯に悪そう"], scores: [10, 5, -5] } },
-        maxStrokes: ["君のぬくもり……これが「愛」なんだね。", "もっと触れていて……君がいれば、冬も怖くないよ。"],
-        farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
-    }
-};
+        const charData = {
+            buta: {
+                welcome: "おかえりぶ！泥遊びするぶ？",
+                maxWelcome: "おかえり、主様！世界で一番、主様が帰ってくるのを待ってたぶ！",
+                strokeRes: "もっと撫でてぶ！泥が落ちちゃうぶ〜♪",
+                ansRes: { high: "泥が輝いて見えるぶ！嬉しいぶー！", mid: "ありがとうぶ！もっと頑張るぶ！", low: "そんなの悲しいぶ…泥が乾いちゃうぶ。" },
+                questions: [{ q: "ボク、まだ上手に歩けないぶ…。不格好ぶ？", a: ["そこが可愛いんだよ", "練習あるのみ！", "確かに変だね"], scores: [10, 5, -5] }, { q: "泥を落としたら、ただのブタになっちゃうぶ…？", a: ["君は君だよ", "泥も君の一部だね", "確かにそうかも"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはぶー！朝の泥はひんやりして気持ちいいぶ！主様も入るぶ？", a: ["一緒に泥遊び！", "顔だけ洗うよ", "泥はちょっと…"], scores: [10, 5, -5] }, lunch: { q: "お昼だぶー！カブの泥漬け食べるぶ？", a: ["いただくぶ！", "美味しそうだね", "お腹空いてない"], scores: [10, 5, -5] }, night: { q: "夜ぶー。泥が真っ暗で落ち着くぶ…。主様も眠いぶ？", a: ["隣で寝てもいい？", "おやすみぶー", "まだ寝ないよ"], scores: [10, 5, -5] }, midnight: { q: "こんな時間にどうしたぶ？泥棒かと思ったぶ！", a: ["君に会いに来た", "眠れなくて", "間違えただけ"], scores: [10, 5, -5] } },
+                maxStrokes: ["もっと撫でてぶ！主様の手、あったかいぶ〜", "主様はボクだけのものだぶ！大好きだぶ！"],
+                farewell: "…主様、もうボクのこと忘れたぶね。さよならぶ。"
+            },
+            imo: {
+                welcome: "あ、おかえりもにょ。土の中は静かでもにょ…。",
+                maxWelcome: "おかえりもにょ。主様が来ると、土の中まで明るくなるもにょ…♪",
+                strokeRes: "なでなで、落ち着くもにょ……♪",
+                ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ。土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ。さよならもにょ…。" },
+                questions: [{ q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] }, { q: "オシャレな宝石にはなれないもにょ…。", a: ["土のぬくもりが一番だよ", "磨けば光るよ", "地味だもんね"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはようもにょ。土が朝露で湿ってるもにょ…。", a: ["しっとりして良いね", "冷たくない？", "土は嫌い"], scores: [10, 5, -5] }, lunch: { q: "お昼もにょ。地上は今、明るいもにょ？", a: ["すごく綺麗だよ", "普通かな", "眩しすぎるよ"], scores: [10, 5, -5] }, night: { q: "夜もにょ。土の中はいつも夜みたいもにょ…。", a: ["静かでいいね", "寂しくない？", "暗いのは怖い"], scores: [10, 5, -5] }, midnight: { q: "夜中もにょ。主様も土の中で一緒に丸まるもにょ？", a: ["丸まるもにょ", "布団で寝なよ", "遠慮しとく"], scores: [10, 5, -5] } },
+                maxStrokes: ["主様の手、落ち着くもにょ…ずっとこうしててもにょ", "地上は眩しいけど、主様がいれば怖くないもにょ"],
+                farewell: "…もう土の中から出てこないもにょ。バイバイもにょ。"
+            },
+            jaku: {
+                welcome: "お帰りなさい、主様。今日も美しい一日ですわね。",
+                maxWelcome: "お帰りなさいませ、私の主様。あなたが戻られるのを、羽を震わせて待っておりましたわ。",
+                strokeRes: "あら…主様の指先、とても優雅ですわね。",
+                ansRes: { high: "まぁ…胸が高鳴りますわ。嬉しいですわね。", mid: "お言葉、痛み入りますわ。精進いたしますわ。", low: "…少し、羽の色が曇ってしまいましたわ。" },
+                questions: [{ q: "私の羽、少し色が混ざりすぎていて…不気味ではありませんか？", a: ["複雑な輝きが素敵だよ", "個性があっていいね", "少し派手かも"], scores: [10, 5, -5] }, { q: "真の美しさとは、どこにあると思いますの？", a: ["君の心の中だよ", "外見も大事だね", "そんなの知らない"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "ごきげんよう。朝陽を浴びて、羽をお手入れしましょうか。", a: ["手伝わせて", "今日も綺麗だね", "眠そうだね"], scores: [10, 5, -5] }, lunch: { q: "ランチタイムですわ。紅茶にブルーベリーを添えていかが？", a: ["最高だね", "お洒落だね", "紅茶は苦手"], scores: [10, 5, -5] }, night: { q: "夜の帳が下りましたわ。月明かりは私を美しく見せますの。", a: ["見惚れちゃうよ", "月より綺麗だよ", "暗くて見えない"], scores: [10, 5, -5] }, midnight: { q: "こんな夜更けに…ふふ、秘密のお話でもいたしましょうか？", a: ["ぜひ聞かせて", "眠くないの？", "早く寝ようよ"], scores: [10, 5, -5] } },
+                maxStrokes: ["あら、主様。そんなに熱心に…嬉しいですわ", "世界で一番、あなたの手が心地よいですわね"],
+                farewell: "…美しい思い出と共に、私は飛び立ちますわ。さようなら。"
+            },
+            risu: {
+                welcome: "おかえり！水分補給しっかりね！",
+                maxWelcome: "おかえりぃ！もう、待ちくたびれて干からびちゃうかと思ったよぉ！大好き！",
+                strokeRes: "わぁっ！なでなですると毛並みが整うよぉ！",
+                ansRes: { high: "わぁっ！お肌も心もプルプルだよぉ！", mid: "ありがとう！水分補給と同じくらい大事な言葉だね！", low: "…キュウリ、落としちゃった。悲しいよぉ。" },
+                questions: [{ q: "尻尾がボサボサになっちゃった…。アイドル失格かなぁ？", a: ["自然体で最高だよ", "ブラッシングしよう", "ちょっと冒険だね"], scores: [10, 5, -5] }, { q: "ボク、野菜なのにリスなんて変だよね…？", a: ["唯一無二の魅力だよ", "面白いと思うよ", "確かにヘンテコ"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おっはよー！朝のキュウリはシャキシャキだよぉ！", a: ["半分ちょうだい", "元気だね！", "まだ眠いよ…"], scores: [10, 5, -5] }, lunch: { q: "お昼だね！一緒にサラダランチしよぉ！", a: ["美味しそう！", "健康志向だね", "肉が食べたい"], scores: [10, 5, -5] }, night: { q: "夜だぁ。ボクの水分、足りてるかなぁ？", a: ["しっかり補給して", "プルプルだよ！", "カピカピかも？"], scores: [10, 5, -5] }, midnight: { q: "夜更かしさんだねぇ！ボクも一緒に起きてるよぉ！", a: ["一緒に遊ぼう", "寝なくて大丈夫？", "先に寝るね"], scores: [10, 5, -5] } },
+                maxStrokes: ["ふふっ、主様になでられるの、一番の美容液だよ！", "離さないからね！主様、だーいすき！"],
+                farewell: "…ボク、もっと大切にされたかったな。バイバイ。"
+            },
+            tora: {
+                welcome: "おかえりガオー！トマトパワー全開だ！",
+                maxWelcome: "おかえりだガオーッ！お前がいないとトマトが枯れちまうかと思ったぜ！",
+                strokeRes: "ガオーッ！力がみなぎってくるガオ！もっとだ！",
+                ansRes: { high: "ガオーッ！最高のトマトパワーが湧いてきたガオ！", mid: "おう、サンキューな！もっと熱くいこうぜ！", low: "…火が消えちまったガオ。冷たいトマトになっちゃうぞ。" },
+                questions: [{ q: "ガオーッ！…今の吠え方、迫力足りなかったガオ？", a: ["可愛くて最高だよ", "一生懸命で良いガオ", "全然怖くないよ"], scores: [10, 5, -5] }, { q: "オレ様、本当は強がってるだけなんだガオ…。", a: ["そのままで十分強いよ", "一緒に強くなろう", "バレバレだぜ"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "朝だガオーッ！太陽みたいに真っ赤に燃えるガオ！", a: ["眩しいガオ！", "元気いっぱいだね", "朝からうるさいよ"], scores: [10, 5, -5] }, lunch: { q: "腹減ったガオ！丸かじりできる獲物を探すガオ！", a: ["トマトでいい？", "ワイルドだね", "行儀悪いよ"], scores: [10, 5, -5] }, night: { q: "夜はオレ様の時間だガオ！目が光るんだガオ！", a: ["かっこいい！", "ちょっと怖いかも", "懐中電灯みたい"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで修行かガオ？オレ様も付き合うガオ！", a: ["頼もしいな！", "ほどほどにね", "邪魔しないで"], scores: [10, 5, -5] } },
+                maxStrokes: ["おいおい、照れるガオ！ But…もっとやってくれ！", "お前となら、どこまででも強くなれる気がするガオ！"],
+                farewell: "…お前の情熱、消えちまったんだな。あばよガオ。"
+            },
+            chabo: {
+                welcome: "よお、主。待ってたぜ。座って休めよ。",
+                maxWelcome: "おかえり、あんた。…いや、なんでもねぇ。とにかく、無事でよかったぜ。",
+                strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。",
+                ansRes: { high: "…あんた、たまに心にくること言うよな。悪くねぇ。", mid: "ふん、分かってるじゃねぇか。感謝するぜ。", low: "…なんだそりゃ。カボチャの皮より硬い言葉だな。" },
+                questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }, { q: "愛愛想がなくて悪かったな。…こんな俺、嫌か？", a: ["そこが信頼できるよ", "慣れてきたよ", "少し怖いかな"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "朝か。収穫の時間だぜ。あんたも手伝うか？", a: ["喜んで！", "無理はしないで", "眠いから嫌"], scores: [10, 5, -5] }, lunch: { q: "昼飯にカボチャの煮物作ったぜ。食うか？", a: ["食べる！", "料理上手だね", "またカボチャ？"], scores: [10, 5, -5] }, night: { q: "夜道は危ねぇ。俺が送ってってやるよ。", a: ["ありがとう", "頼もしいね", "一人で大丈夫"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで起きてると、煮物にするぞ…冗談だ。", a: ["面白い冗談だね", "怖かったよ", "早く寝なよ"], scores: [10, 5, -5] } },
+                maxStrokes: ["あんたの手は…反則だな。…もっとやっていいぞ。", "こうしてると、畑仕事の疲れも吹っ飛ぶぜ。"],
+                farewell: "…あんたとの時間は悪くなかった。じゃあな、主。"
+            },
+            saru: {
+                welcome: "ウキキーッ！主！フレッシュなレモンはいかが！？",
+                maxWelcome: "ウキキーッ！主様ぁ！今日はずっとお祝いウキ！主様が大好きすぎるウキ！",
+                strokeRes: "ウキッ！主のなでなで、ビタミンより効くぅ〜！",
+                ansRes: { high: "ウキキーッ！主、最高！ビタミンMAXだよぉ！", mid: "ウキッ！今の言葉、レモンみたいに効いたよ！", low: "…酸っぱすぎるよぉ。そんなの、ウキィ…。" },
+                questions: [{ q: "レモンが酸っぱすぎて、みんな逃げていっちゃうウキ…。", a: ["ボクは逃げないよ", "刺激的でいいよ", "確かに酸っぱい！"], scores: [10, 5, -5] }, { q: "ウキッ！ボク、お調子に乗りすぎちゃうウキ？", a: ["明るくて元気が出るよ", "そのままでいいよ", "少し静かにして"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはようウキ！朝イチのレモン絞りたてだウキ！", a: ["目が覚めたよ！", "酸っぱそうだね", "今は甘いのがいい"], scores: [10, 5, -5] }, lunch: { q: "お昼だウキ！木の上で一緒にランチするウキ？", a: ["登るよ！", "危なくない？", "地面がいい"], scores: [10, 5, -5] }, night: { q: "夜だウキ！レモンの皮でお風呂にするウキ！", a: ["お肌ツルツルだね", "贅沢だね", "染みそう…"], scores: [10, 5, -5] }, midnight: { q: "ウキキー！夜更かしウッキー！踊るウキ！", a: ["一緒に踊ろう！", "静かにね", "うるさいウキ！"], scores: [10, 5, -5] } },
+                maxStrokes: ["ウキキッ！気持ちいい〜！主、最高だよぉ！", "レモンより甘い気分になっちゃうウキーッ！"],
+                farewell: "…なんだか酸っぱい気持ちだよ。ウキィ…バイバイ。"
+            },
+            kame: {
+                welcome: "おかえりなさい……。のんびり、いきましょうね。",
+                maxWelcome: "おかえりなさい……主様。あなたと過ごす、この一秒一秒が、私の永遠です……。",
+                strokeRes: "あぁ……甲羅まで、主様のぬくもりが届きます……。",
+                ansRes: { high: "あぁ…深い海の底にいるような, 安らかな気持ちです…。", mid: "ありがとうございます…。ゆっくり、大切にしますね。", low: "……少し、甲羅の中に隠れますね……。悲しいです。" },
+                questions: [{ q: "ブルーベリーの果汁が甲羅に染みちゃって…汚いですか？", a: ["綺麗なグラデーションだよ", "一生懸命な証拠だね", "洗ったほうがいいかも"], scores: [10, 5, -5] }, { q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはようございます……。朝露が慶事ですね……。", a: ["本当に綺麗だね", "ゆっくり見おう", "早く行かなきゃ"], scores: [10, 5, -5] }, lunch: { q: "お昼寝の時間でしょうか……。一緒にどうですか……？", a: ["おやすみなさい", "のんびりしよう", "忙しいんだ"], scores: [10, 5, -5] }, night: { q: "星が出てきました……。ブルーベリーみたいですね……。", a: ["ロマンチックだね", "美味しそうだね", "ただの点だよ"], scores: [10, 5, -5] }, midnight: { q: "こんな時間……。静かで、心が落ち着きます……。", a: ["ずっとこうしていたい", "怖くない？", "もう寝る時間だよ"], scores: [10, 5, -5] } },
+                maxStrokes: ["あぁ…時が止まればいいのに……幸せです……", "主様のなでなで、とっても優しい魔法ですね…"],
+                farewell: "……さようなら。ゆっくり、思い出に変わりますね……。"
+            },
+            nga: {
+                welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！",
+                maxWelcome: "ピピィーッ！大好きな主様ぁ！もうどこへも行かないでぁ！ギュッとしてぇ！",
+                strokeRes: "ピピィッ！もっとぉ！主様のなでなで大好きぃー！",
+                ansRes: { high: "ピピィッ！主様ぁ、だーいすき！空まで飛べそうだよぉ！", mid: "ピピッ、ありがとうぅ！主様は優しいねぇ！", low: "…ピーッ！嫌いになっちゃったのぉ？悲しいよぉ…。" },
+                questions: [{ q: "ボク、飛ぶときにいつもフラフラしちゃうのぉ…。", a: ["危なっかしくて可愛いね", "着地はボクの腕に！", "もっと特訓だね"], scores: [10, 5, -5] }, { q: "甘えん坊すぎて、迷惑かなぁ…？ピピッ。", a: ["もっと甘えていいよ", "頼われて嬉しいよ", "時々ね"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "ピピィッ！朝だよぉ！空散歩いくぅ！？", a: ["連れてって！", "高いの怖いよ", "まだ寝るぅ"], scores: [10, 5, -5] }, lunch: { q: "ランチピピッ！美味しい実を見つけたよぉ！", a: ["食べたい！", "どこにあったの？", "お腹いっぱい"], scores: [10, 5, -5] }, night: { q: "暗くなっちゃったぁ…寂しいよぉ、ピピッ。", a: ["ギュッとしてあげる", "隣にいるよ", "もう寝なさい"], scores: [10, 5, -5] }, midnight: { q: "夜中の大冒険だピピィッ！主様も飛べるかなぁ！？", a: ["飛べる気がする！", "危ないよぉ", "無理だよぉ"], scores: [10, 5, -5] } },
+                maxStrokes: ["もっとぉ！もっとぉ！主様ぁ、だぁいすきだよぉ！", "ピピィ！これ、ボクへのプロポーズかなぁ！？"],
+                farewell: "…ピーッ！嫌われちゃったのぉ…？悲しいよぉ。バイバイ。"
+            },
+            kuma: {
+                welcome: "……お帰り。君の足音が聞こえたよ。",
+                maxWelcome: "……お帰り。君がいない間、世界がモノクロだった。戻ってきてくれて、ありがとう。",
+                strokeRes: "……君の手、とても温かい。心が解けていくようだね。",
+                ansRes: { high: "……君という光に、救われた気がするよ。ありがとう。", mid: "……温かい言葉だね。冷えた体が少し、溶けたよ。", low: "……暗闇が、もっと深くなったみたいだ。寂しいね。" },
+                questions: [{ q: "私の体、真っ暗で何も見えないね。……寂しい姿だろう？", a: ["深い優しさを感じるよ", "影みたいで落ち着くよ", "確かに暗いね"], scores: [10, 5, -5] }, { q: "……イチジクの蜜で手がベタベタだ。触らないほうがいい。", a: ["気にせずなでさせて", "甘い香りがして好きだよ", "汚れるのは嫌だな"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "……朝の光は、少し眩しすぎるね。君は平気かい？", a: ["一緒に浴びよう", "影を作ってあげる", "太陽は最高だよ"], scores: [10, 5, -5] }, lunch: { q: "……お昼だね。イチジクの木の下で休もうか。", a: ["隣に座るよ", "涼しそうだね", "別の場所がいい"], scores: [10, 5, -5] }, night: { q: "……夜だ。やっと私の時間だね。少し落ち着くよ。", a: ["静かな君も好き", "落ち着くね", "暗くて不安だよ"], scores: [10, 5, -5] }, midnight: { q: "……まだ起きていたのか。深夜の蜜は、とても甘いんだよ。", a: ["舐めてもいい？", "不思議だね", "歯に悪そう"], scores: [10, 5, -5] } },
+                maxStrokes: ["君のぬくもり……これが「愛」なんだね。", "もっと触れていて……君がいれば、冬も怖くないよ。"],
+                farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
+            }
+        };
 
-// --- グローバル変数 ---
-let currentChar = localStorage.getItem('hagu_current_char') || "buta";
-let love = 50;
-let lastUpdate = Date.now();
-let lastMaxTime = 0;
-let userName = localStorage.getItem('hagu_user') || "主様";
+        let currentChar = localStorage.getItem('hagu_current_char') || "buta";
+        let love = 50;
+        let lastUpdate = Date.now();
+        let lastMaxTime = 0;
+        let userName = localStorage.getItem('hagu_user') || "主様";
+        let welcomeTimer = null; 
+        let strokeReturnTimer = null; 
+        let strokeHistory = []; 
 
-// 制限用の変数
-let strokeCount = 0;
-let strokeTimerStart = Date.now();
-let talkCount = parseInt(localStorage.getItem('hagu_talk_count')) || 5;
-let talkTimerStart = parseInt(localStorage.getItem('hagu_talk_timer')) || Date.now();
+        function getName(text) {
+            if (!text) return "";
+            return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
+        }
 
-function getName(text) {
-    if (!text) return "";
-    return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
-}
+        function getTimeLabel() {
+            const hour = new Date().getHours();
+            if (hour >= 5 && hour < 10) return "morning";
+            if (hour >= 10 && hour < 17) return "lunch";
+            if (hour >= 17 && hour < 23) return "night";
+            return "midnight";
+        }
 
-function getTimeLabel() {
-    const hour = new Date().getHours();
-    if (hour >= 5 && hour < 10) return "morning";
-    if (hour >= 10 && hour < 17) return "lunch";
-    if (hour >= 17 && hour < 23) return "night";
-    return "midnight";
-}
+        function checkTimeAndEffect() {
+            const container = document.body;
+            container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
+            if (love >= 100) container.classList.add('bg-level-3');
+            else if (love > 50) container.classList.add('bg-level-2');
+            else container.classList.add('bg-level-1');
+        }
 
-// 絆の減少と状態チェック
-function updateStatus() {
-    const now = Date.now();
-    let diff = now - lastUpdate;
-    
-    // 絆100の1時間無敵モード
-    let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
+        // 絆の数値をアニメーションさせる関数
+        function animateValue(start, end, duration) {
+            const obj = document.getElementById("love-val");
+            if (start === end) return;
+            
+            obj.classList.add('val-up');
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = current;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    obj.classList.remove('val-up');
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
 
-    if (!isImmune && diff > 0) {
-        if (love > 51) {
-            let loss = Math.floor(diff / (60 * 1000)); // 1分で1減る
-            if (loss > 0) {
-                love = Math.max(51, love - loss);
-                lastUpdate = now;
-            }
-        } else if (love > 0) {
-            let loss = Math.floor(diff / (3600 * 1000)); // 1時間で1減る
-            if (loss > 0) {
-                love = Math.max(0, love - loss);
-                lastUpdate = now;
-            }
-        }
-    }
+        function updateStatus(isAnimate = false) {
+            const now = Date.now();
+            let diff = now - lastUpdate;
+            let isImmune = (love >= 100 && (now - lastMaxTime < 60 * 60 * 1000));
+            
+            const oldLove = parseInt(document.getElementById('love-val').innerText);
 
-    // お別れ判定 (好感度0)
-    if (love <= 0) {
-        document.getElementById('chat-bubble').innerText = getName(charData[currentChar].farewell);
-        document.getElementById('hagumo-sprite').style.opacity = "0";
-        document.getElementById('talk-btn').disabled = true;
-        document.getElementById('stroke-btn').disabled = true;
-        return;
-    }
+            if (!isImmune && diff > 0) {
+                // ... (減少ロジックはそのまま) ...
+                let loss = 0;
+                if (love > 51) {
+                    loss = Math.floor(diff / (60 * 1000));
+                    if (loss > 0) {
+                        love = Math.max(51, love - loss);
+                        lastUpdate += loss * (60 * 1000);
+                    }
+                } else if (love > 1) {
+                    loss = Math.floor(diff / (3600 * 1000));
+                    if (loss > 0) {
+                        love = Math.max(1, love - loss);
+                        lastUpdate += loss * (3600 * 1000);
+                    }
+                }
+                save();
+            }
 
-    // 表示更新
-    document.getElementById('love-val').innerText = love;
-    document.getElementById('love-fill').style.width = love + "%";
-    
-    const sprite = document.getElementById('hagumo-sprite');
-    if (love >= 100) {
-        document.getElementById('love-fill').classList.add('max');
-        sprite.classList.add('max-chaos');
-        document.getElementById('talk-btn').innerText = "❤️ 永遠の絆";
-    } else {
-        document.getElementById('love-fill').classList.remove('max');
-        sprite.classList.remove('max-chaos');
-        sprite.style.opacity = "1";
-    }
+            // 数値の更新
+            if (isAnimate) {
+                animateValue(oldLove, love, 300);
+            } else {
+                document.getElementById('love-val').innerText = love;
+            }
 
-    if (now - talkTimerStart > 15 * 60 * 1000) {
-        talkCount = 5;
-        talkTimerStart = now;
-    }
-    updateTalkBtnLabel();
-    save();
-}
+            document.getElementById('user-display').innerText = userName + "の絆ルーム";
+            const fill = document.getElementById('love-fill');
+            const sprite = document.getElementById('hagumo-sprite'); // ★追加：画像要素を取得
+            
+            fill.style.width = love + "%";
 
-function updateTalkBtnLabel() {
-    const btn = document.getElementById('talk-btn');
-    if (love >= 100) return;
-    btn.innerText = `💬 おしゃべり (${talkCount}/5)`;
-    btn.disabled = (talkCount <= 0);
-}
+            if (love >= 100) {
+                fill.classList.add('max'); 
+                sprite.classList.add('max-chaos'); // ★追加：100なら暴れる
+                document.getElementById('talk-btn').disabled = true;
+                document.getElementById('talk-btn').innerText = "❤️ 永遠の絆";
+            } else {
+                fill.classList.remove('max');
+                sprite.classList.remove('max-chaos'); // ★追加：100未満なら通常に戻す
+                document.getElementById('talk-btn').disabled = false;
+                document.getElementById('talk-btn').innerText = "💬 おしゃべり";
+            }
+            checkTimeAndEffect();
+        }
 
-function strokeHagumo(e) {
-    if (love <= 0) return;
-    const now = Date.now();
-    if (now - strokeTimerStart > 60000) {
-        strokeCount = 0;
-        strokeTimerStart = now;
-    }
-    if (strokeCount >= 10) {
-        document.getElementById('chat-bubble').innerText = "（ハグモは少し疲れているようです…）";
-        return;
-    }
-    strokeCount++;
-    const oldLove = love;
-    love = Math.min(100, love + 1);
-    if (love >= 100 && oldLove < 100) lastMaxTime = now;
+        // なでなで時の呼び出しを変更
+        function strokeHagumo(e) {
+            // ... (制限ロジックはそのまま) ...
+            const now = Date.now();
+            if (love < 100) {
+                strokeHistory = strokeHistory.filter(time => now - time < 60000);
+                if (strokeHistory.length >= 15) return;
+                strokeHistory.push(now);
+            }
 
-    createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
-    document.getElementById('chat-bubble').innerText = (love >= 100) ? 
-        getName(charData[currentChar].maxStrokes[Math.floor(Math.random()*2)]) : 
-        getName(charData[currentChar].strokeRes);
+            const oldLove = love;
+            love = Math.min(100, love + 1);
+            if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
 
-    updateStatus();
-}
+            // 演出用
+            createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
+            document.getElementById('chat-bubble').innerText = (love >= 100) ? 
+                getName(charData[currentChar].maxStrokes[Math.floor(Math.random()*2)]) : 
+                getName(charData[currentChar].strokeRes);
 
-function startTalk() {
-    if (love >= 100 || talkCount <= 0) return;
-    talkCount--;
-    const data = charData[currentChar];
-    let quest;
-    const timeLabel = getTimeLabel();
-    if (Math.random() < 0.4) quest = data.timeQuests[timeLabel];
-    else quest = data.questions[Math.floor(Math.random() * data.questions.length)];
+            updateStatus(true); // 引数にtrueを入れてアニメーション起動
+            save();
+        }
 
-    document.getElementById('chat-bubble').innerText = getName(quest.q);
-    const container = document.getElementById('choices');
-    container.innerHTML = "";
-    container.style.display = "flex";
+        function startTalk() {
+            if (love >= 100) return;
+            const data = charData[currentChar];
+            let quest;
+            const timeLabel = getTimeLabel();
+            if (Math.random() < 0.4) quest = data.timeQuests[timeLabel];
+            else quest = data.questions[Math.floor(Math.random() * data.questions.length)];
 
-    quest.a.forEach((text, i) => {
-        const btn = document.createElement('button');
-        btn.className = "choice-btn";
-        btn.innerText = text;
-        btn.onclick = () => {
-            const score = quest.scores[i];
-            love = Math.min(100, Math.max(0, love + score));
-            container.style.display = "none";
-            document.getElementById('chat-bubble').innerText = getName(data.ansRes[score >= 10 ? "high" : (score < 0 ? "low" : "mid")]);
-            updateStatus();
-        };
-        container.appendChild(btn);
-    });
-    updateTalkBtnLabel();
-}
+            document.getElementById('chat-bubble').innerText = getName(quest.q);
+            const container = document.getElementById('choices');
+            container.innerHTML = "";
+            container.style.display = "flex";
 
-function createHeart(x, y) {
-    const h = document.createElement('div');
-    h.className = 'heart'; h.innerHTML = '❤';
-    h.style.left = (x - 12) + 'px'; h.style.top = (y - 12) + 'px';
-    document.body.appendChild(h);
-    setTimeout(() => h.remove(), 1500);
-}
+            quest.a.forEach((text, i) => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn";
+                btn.innerText = text;
+                btn.onclick = () => {
+                    const score = quest.scores[i];
+                    love = Math.min(100, Math.max(0, love + score));
+                    container.style.display = "none";
+                    document.getElementById('chat-bubble').innerText = getName(data.ansRes[score >= 10 ? "high" : (score < 0 ? "low" : "mid")]);
+                    setTimeout(() => loadCharStatus(currentChar, true), 3000);
+                    updateStatus();
+                    save();
+                };
+                container.appendChild(btn);
+            });
+        }
 
-function renameUser() {
-    const newName = prompt("新しいおなまえを教えてね", userName);
-    if (newName && newName.trim()) {
-        userName = newName.trim();
-        updateStatus();
-    }
-}
+        function createHeart(x, y) {
+            const h = document.createElement('div');
+            h.className = 'heart'; h.innerHTML = '❤';
+            h.style.left = (x - 12) + 'px'; h.style.top = (y - 12) + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1500);
+        }
 
-function changeChar() {
-    currentChar = document.getElementById('char-selector').value;
-    document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
-    loadCharStatus(currentChar);
-}
+        function renameUser() {
+            const newName = prompt("新しいおなまえを教えてね", userName);
+            if (newName && newName.trim()) {
+                userName = newName.trim();
+                save();
+                updateStatus();
+            }
+        }
 
-function loadCharStatus(charKey) {
-    love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
-    lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
-    updateStatus();
-    const bubble = document.getElementById('chat-bubble');
-    if (love > 0) {
-        bubble.innerText = (love >= 100) ? getName(charData[charKey].maxWelcome) : getName(charData[charKey].welcome);
-    }
-}
+        function changeChar() {
+            currentChar = document.getElementById('char-selector').value;
+            document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+            loadCharStatus(currentChar);
+        }
 
-function save() {
-    localStorage.setItem(`hagu_love_${currentChar}`, love);
-    localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
-    localStorage.setItem('hagu_user', userName);
-    localStorage.setItem('hagu_current_char', currentChar);
-    localStorage.setItem('hagu_talk_count', talkCount);
-    localStorage.setItem('hagu_talk_timer', talkTimerStart);
-}
+        function loadCharStatus(charKey, skipWelcome = false) {
+            love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
+            lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
+            
+            updateStatus();
+            const bubble = document.getElementById('chat-bubble');
+            if (love >= 100) {
+                bubble.innerText = getName(charData[charKey].maxWelcome);
+            } else if (!skipWelcome) {
+                bubble.innerText = getName(charData[charKey].welcome);
+            }
+        }
 
-function manualReset() {
-    if (confirm("絆をリセットして最初からやり直しますか？")) {
-        localStorage.clear();
-        location.reload();
-    }
-}
+        function save() {
+            localStorage.setItem(`hagu_love_${currentChar}`, love);
+            localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
+            localStorage.setItem('hagu_user', userName);
+            localStorage.setItem('hagu_current_char', currentChar);
+        }
 
-window.onload = () => {
-    const savedChar = localStorage.getItem('hagu_current_char');
-    if (savedChar) {
-        currentChar = savedChar;
-        document.getElementById('char-selector').value = savedChar;
-    }
-    changeChar();
-    setInterval(updateStatus, 10000);
-};
+        function manualReset() {
+            if (confirm("絆をリセットして最初からやり直しますか？")) {
+                localStorage.removeItem(`hagu_love_${currentChar}`);
+                location.reload();
+            }
+        }
+
+        window.onload = () => {
+            const savedChar = localStorage.getItem('hagu_current_char');
+            if (savedChar) {
+                currentChar = savedChar;
+                document.getElementById('char-selector').value = savedChar;
+            }
+            changeChar();
+        };
     </script>
 </body>
 </html>
