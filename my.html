@@ -59,14 +59,11 @@
             max-width: 1000px; margin: 0 auto; padding: 20px; 
         }
 
-        @media screen and (min-width: 769px) {
-            .main-wrapper { 
-                flex-direction: row; align-items: flex-start; 
-                justify-content: center; gap: 50px; padding-top: 40px; 
-            }
-            .left-panel { width: 350px; position: sticky; top: 120px; }
-            .right-panel { width: 450px; }
-        }
+       /* my.html内のここを修正 */
+@media screen and (max-width: 768px) {
+    body { padding-top: 90px; } /* 110pxから少し減らしてみる */
+    .nav-link { padding: 6px 10px; } /* リンクの余白を少し詰めるとシャープになります */
+}
 
         /* カード・吹き出しのデザイン */
         .status-container, .bubble {
