@@ -59,14 +59,43 @@
             max-width: 1000px; margin: 0 auto; padding: 20px; 
         }
 
-        @media screen and (min-width: 769px) {
-            .main-wrapper { 
-                flex-direction: row; align-items: flex-start; 
-                justify-content: center; gap: 50px; padding-top: 40px; 
-            }
-            .left-panel { width: 350px; position: sticky; top: 120px; }
-            .right-panel { width: 450px; }
-        }
+        /* スマホ調整（ここを書き換え・追記） */
+@media screen and (max-width: 768px) {
+    body { 
+        padding-top: 70px; /* 少し上に詰める */
+    }
+    
+    .nav-logo-img { 
+        height: 28px; /* ロゴを少し小さく */
+    }
+
+    .main-wrapper {
+        padding: 10px; /* 全体の余白を削る */
+    }
+
+    .status-container {
+        padding: 15px; /* カード内の余白を削減 */
+        margin-bottom: 15px;
+    }
+
+    /* ハグモの画像サイズをスマホに最適化 */
+    .hagumo-img { 
+        width: 100%;
+        max-width: 180px; /* 最大でも180pxに制限 */
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .bubble {
+        padding: 15px;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .action-btn {
+        padding: 12px 20px; /* ボタンを押しやすいサイズに維持しつつスリムに */
+    }
+}
 
         /* カード・吹き出しのデザイン */
         .status-container, .bubble {
