@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MY HAGUMO | 絆</title>
+    <title>MY HAGUMO | 絆極致</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -13,9 +13,11 @@
 
         body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 80px; transition: background 0.3s; overflow-x: hidden; }
 
+        /* --- 共通ナビ --- */
         .nav { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 10000; border-bottom: 2px solid var(--pink1); padding: 12px 0; }
         .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
         .nav-logo-img { height: 35px; cursor: pointer; }
+        .nav-links { display: flex; gap: 20px; font-weight: bold; color: var(--pink2); font-size: 14px; }
 
         .main-wrapper { display: flex; flex-direction: column; align-items: center; max-width: 1000px; margin: 0 auto; padding: 20px; }
         @media screen and (min-width: 769px) {
@@ -25,36 +27,27 @@
 
         .status-container, .bubble { background: white; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 25px; text-align: center; margin-bottom: 20px; border: 2px solid #eee; position: relative; }
 
-        /* 絆ゲージ演出 */
+        /* 絆ゲージ */
         .love-bar-bg { width: 100%; height: 24px; background: #eee; border-radius: 20px; margin: 15px 0; overflow: hidden; position: relative; border: 2px solid #fff; }
         .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 0.4s; }
         
-        /* パチンコ風MAXゲージ（高速回転） */
+        /* MAX演出 */
         .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 0.2s linear infinite; }
         @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
-        /* キャラクター画像 */
         .hagumo-img { width: 240px; height: 240px; object-fit: contain; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); }
-        
-        /* パチンコ風MAXキャラ振動（さらに激しく） */
         .max-chaos { animation: pachi-vibe 0.05s infinite !important; transform: scale(1.15); }
-        @keyframes pachi-vibe { 0% { transform: translate(3px, 3px) rotate(2deg); } 50% { transform: translate(-3px, -3px) rotate(-2deg); } 100% { transform: translate(3px, -3px) rotate(2deg); } }
-        
-        /* 虹色に輝くフィルタ */
         .rainbow-filter { animation: pachi-color 0.4s infinite !important; }
+        @keyframes pachi-vibe { 0% { transform: translate(3px, 3px) rotate(2deg); } 50% { transform: translate(-3px, -3px) rotate(-2deg); } 100% { transform: translate(3px, -3px) rotate(2deg); } }
         @keyframes pachi-color { 0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px red); } 50% { filter: hue-rotate(180deg) drop-shadow(0 0 30px blue); } 100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px red); } }
-
-        /* パチンコ風虹文字 */
         .pachi-text { background: var(--rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px !important; font-weight: 900; animation: moveBg 0.5s linear infinite; display: block; letter-spacing: -2px; }
 
         .st-badge { font-size: 11px; padding: 5px 10px; border-radius: 15px; background: #fdfdfd; color: var(--pink2); border: 1px solid var(--pink1); margin: 0 2px; }
-
         .action-btn { background: white; border: 2px solid var(--pink1); padding: 15px; border-radius: 50px; font-weight: bold; cursor: pointer; color: var(--pink2); transition: 0.2s; width: 100%; margin-bottom: 10px; font-family: inherit; box-shadow: 0 4px 0 var(--soft-pink); }
         .action-btn:disabled { background: #eee; border-color: #ccc; color: #aaa; cursor: not-allowed; box-shadow: none; }
         
         #choices { display: none; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .choice-btn { background: white; border: 2px solid var(--pink1); padding: 12px; border-radius: 20px; cursor: pointer; font-weight: bold; color: var(--pink2); transition: 0.2s; }
-        .choice-btn:hover { background: var(--soft-pink); }
+        .choice-btn { background: white; border: 2px solid var(--pink1); padding: 12px; border-radius: 20px; cursor: pointer; font-weight: bold; color: var(--pink2); }
 
         .heart { position: fixed; pointer-events: none; animation: heartUp 1s forwards; font-size: 35px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(2.5) translateY(-180px); opacity: 0; } }
@@ -65,7 +58,11 @@
     <nav class="nav">
         <div class="nav-content">
             <img src="./images/rogo.PNG" class="nav-logo-img" alt="Logo" onclick="location.href='index.html'">
-            <div style="font-weight:bold; color:var(--pink2);">✨ MY HAGUMO ✨</div>
+            <div class="nav-links">
+                <span>ROOM</span>
+                <span>GARDEN</span>
+                <span onclick="renameUser()" style="cursor:pointer;">EDIT NAME</span>
+            </div>
         </div>
     </nav>
 
@@ -98,25 +95,25 @@
         </div>
 
         <div class="right-panel">
-            <div id="chat-bubble" class="bubble">なでなでしたり、お話しして絆を深めてね！</div>
+            <div id="chat-bubble" class="bubble">...</div>
             <div id="choices"></div>
-            <div class="action-menu" id="action-area">
+            <div class="action-menu">
                 <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべりする</button>
                 <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなでする</button>
-                <button class="action-btn" onclick="renameUser()" style="font-size: 12px; border-style: dotted;">✏️ 名前を変える</button>
                 <button onclick="manualReset()" style="background:none; border:none; color:#ccc; font-size:10px; width:100%; cursor:pointer; margin-top:10px;">♻️ この子の絆をリセット</button>
             </div>
         </div>
     </div>
 
     <script>
+        // キャラクターデータ（省略なし）
         const charData = {
             buta: { welcome: "おかえりぶ！泥遊びするぶ？", maxWelcome: "おかえり、主様！世界で一番待ってたぶ！", strokeRes: "もっと撫でてぶ！泥が落ちちゃうぶ〜♪", ansRes: { high: "泥が輝いて見えるぶ！嬉しいぶー！", mid: "ありがとうぶ！もっと頑張るぶ！", low: "そんなの悲しいぶ…泥が乾いちゃうぶ。" }, questions: [{ q: "ボク、まだ上手に歩けないぶ…。不格好ぶ？", a: ["そこが可愛いんだよ", "練習あるのみ！", "確かに変だね"], scores: [10, 5, -5] }], maxStrokes: ["主様の手、あったかいぶ〜…大好きぶ！", "主様はボクだけのものだぶ！離さないぶ！"] },
             imo: { welcome: "あ、おかえりもにょ。", maxWelcome: "主様が来ると、土の中まで明るくなるもにょ…♪", strokeRes: "なでなで、落ち着くもにょ……♪", ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ。", low: "…土の奥に潜るもにょ。" }, questions: [{ q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] }], maxStrokes: ["主様がいれば怖くないもにょ。愛してるもにょ。", "主様の手、落ち着くもにょ。ずっと一緒もにょ。"] },
             jaku: { welcome: "お帰りなさい、主様。今日も美しいですわ。", maxWelcome: "あなたが戻られるのを、羽を震わせて待っておりましたわ。", strokeRes: "あら…主様の指先、とても優雅ですわね。", ansRes: { high: "まぁ…胸が高鳴りますわ。嬉しいですわね。", mid: "お言葉、痛み入りますわ。", low: "…少し、羽の色が曇ってしまいましたわ。" }, questions: [{ q: "私の羽、少し色が混ざりすぎていて…不気味ではありませんか？", a: ["複雑な輝きが素敵だよ", "個性があっていいね", "少し派手かも"], scores: [10, 5, -5] }], maxStrokes: ["あぁ…時が止まればいいのに。主様、愛しております。", "世界で一番、心地よいですわ。私の全てを捧げます。"] },
             risu: { welcome: "おかえり！水分補給しっかりね！", maxWelcome: "もう、待ちくたびれて干からびちゃうかと思ったよぉ！大好き！", strokeRes: "わぁっ！なでなですると毛並みが整うよぉ！", ansRes: { high: "わぁっ！お肌も心もプルプルだよぉ！", mid: "ありがとう！", low: "…キュウリ、落としちゃった。" }, questions: [{ q: "尻尾がボサボサになっちゃった…。アイドル失格かなぁ？", a: ["自然体で最高だよ", "ブラッシングしよう", "ちょっと冒険だね"], scores: [10, 5, -5] }], maxStrokes: ["主様になでられるの、最高級の美容液だよぉ！", "主様、だーいすき！一生キュウリあげるねっ！"] },
             tora: { welcome: "おかえりガオー！トマトパワー全開だ！", maxWelcome: "お前がいないとトマトが枯れちまうかと思ったぜ！", strokeRes: "ガオーッ！力がみなぎってくるガオ！もっとだ！", ansRes: { high: "ガオーッ！最高のトマトパワーだガオ！", mid: "おう、サンキューな！", low: "…火が消えちまったガオ。" }, questions: [{ q: "ガオーッ！…今の吠え方、迫力足りなかったガオ？", a: ["可愛くて最高だよ", "一生懸命で良いガオ", "全然怖くないよ"], scores: [10, 5, -5] }], maxStrokes: ["おいおい、照れるガオ！お前は俺の宝物だぜ！", "お前となら、どこまでも強くなれる。愛してるガオ！"] },
-            chabo: { welcome: "よお、主。待ってたぜ。座って休めよ。", maxWelcome: "おかえり、あんた。とにかく、無事でよかったぜ。", strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。", ansRes: { high: "…あんた、たまに心にくること言うよな。", mid: "ふん、分かってるじゃねぇか。", low: "…カボチャの皮より硬い言葉だな。" }, questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }], maxStrokes: ["あんたの手は…反則だな。ずっとこうしてろ。", "…離さねぇぞ。あんたが俺を選んだんだからな。"] },
+            chabo: { welcome: "よお、主。待ってたぜ。座って休めよ。", maxWelcome: "おかえり、あんた。とにかく、無事でよかったぜ。", strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。", ansRes: { high: "…あんた、たまに心にくること言うよな。", mid: "ふん、分かってるじゃねぇか。", low: "…カボチャの皮より硬い言葉だな。" }, questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }], maxStrokes: ["あんたの手は…反則だな。ずっとこうしてろ。", "…離さねぇぞ。あんたが俺を選んだんだからな.さあな。"] },
             saru: { welcome: "ウキキーッ！主！フレッシュなレモンはいかが！？", maxWelcome: "今日はずっとお祝いウキ！主様が大好きすぎるウキ！", strokeRes: "ウキッ！主のなでなで、ビタミンより効くぅ〜！", ansRes: { high: "ウキキーッ！ビタミンMAXだよぉ！", mid: "ウキッ！レモンみたいに効いたよ！", low: "…酸っぱすぎるよぉ。" }, questions: [{ q: "レモンが酸っぱすぎて、みんな逃げていっちゃうウキ…。", a: ["ボクは逃げないよ", "刺激的でいいよ", "確かに酸っぱい！"], scores: [10, 5, -5] }], maxStrokes: ["主、最高だよぉ！レモンより甘い気分だウキーッ！", "主！主！大好きウキーッ！！結婚しよウキ！！"] },
             kame: { welcome: "おかえりなさい……。のんびり、いきましょうね。", maxWelcome: "あなたと過ごす、この一秒一秒が、私の永遠です……。", strokeRes: "あぁ……甲羅まで、ぬくもりが届きます……。", ansRes: { high: "あぁ…安らかな気持ちです…。", mid: "ありがとうございます……。", low: "……少し、甲羅の中に隠れますね。" }, questions: [{ q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] }], maxStrokes: ["あぁ…時が止まればいいのに……幸せです……。", "とっても優しい魔法ですね…あなたを愛しています。"] },
             nga: { welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！", maxWelcome: "大好きな主様ぁ！もうどこへも行かないでぇ！", strokeRes: "ピピィッ！もっとぉ！主様のなでなで大好きぃー！", ansRes: { high: "ピピィッ！空まで飛べそうだよぉ！", mid: "ピピッ、ありがとうぅ！", low: "…ピーッ！嫌いになっちゃったの？" }, questions: [{ q: "甘えん坊すぎて、迷惑かなぁ…？ピピッ。", a: ["もっと甘えていいよ", "頼われて嬉しいよ", "時々ね"], scores: [10, 5, -5] }], maxStrokes: ["主様ぁ、だぁいすきだよぉ！一生なでてぇ！", "これ、ボクへのプロポーズかなぁ！？ピピィッ❤️"] },
@@ -130,8 +127,14 @@
         let lastStrokeTime = parseInt(localStorage.getItem('st_time')) || Date.now();
         let lastTalkTime = parseInt(localStorage.getItem('tk_time')) || Date.now();
 
-        function getLove() { return parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50; }
-        function setLove(val) { localStorage.setItem(`hagu_love_${currentChar}`, val); }
+        // --- 絆データの取得・保存（キャラ別にキーを分ける） ---
+        function getLove() { 
+            const val = localStorage.getItem(`hagu_love_${currentChar}`);
+            return val === null ? 50 : parseInt(val); 
+        }
+        function setLove(val) { 
+            localStorage.setItem(`hagu_love_${currentChar}`, val); 
+        }
 
         function getName(text) {
             if (!text) return "";
@@ -152,16 +155,17 @@
 
             document.getElementById('love-val').innerText = love;
             fill.style.width = love + "%";
+            document.getElementById('user-display').innerText = userName + "のハグモルーム";
             document.getElementById('st-stroke-badge').innerText = `👋 なで: ${10 - strokeCount}/10`;
             document.getElementById('st-talk-badge').innerText = `💬 話: ${5 - talkCount}/5`;
 
             if (isMax) {
                 sprite.classList.add('max-chaos', 'rainbow-filter');
                 fill.classList.add('max');
-                label.innerHTML = '<span class="pachi-text">🌈絆🌈</span>';
+                label.innerHTML = '<span class="pachi-text">🌈絆・極🌈</span>';
                 document.getElementById('bg').style.background = "radial-gradient(circle, #ff00ff, #00ffff, #ffff00)";
                 talkBtn.disabled = true;
-                talkBtn.innerText = "❤️ 永遠の絆（お話不可）❤️";
+                talkBtn.innerText = "❤️ 永遠の絆 ❤️";
             } else {
                 sprite.classList.remove('max-chaos', 'rainbow-filter');
                 fill.classList.remove('max');
@@ -184,7 +188,6 @@
             setLove(love);
 
             const data = charData[currentChar];
-            // 絆MAX時は専用のセリフ、それ以外は通常
             const msg = (love >= 100) ? data.maxStrokes[Math.floor(Math.random()*data.maxStrokes.length)] : data.strokeRes;
             document.getElementById('chat-bubble').innerText = getName(msg);
             
@@ -209,7 +212,6 @@
                     love = Math.min(100, Math.max(0, love + score));
                     setLove(love);
                     container.style.display = "none";
-                    
                     const resType = score >= 10 ? "high" : (score < 0 ? "low" : "mid");
                     document.getElementById('chat-bubble').innerText = getName(data.ansRes[resType]);
                     updateStatus();
@@ -230,7 +232,7 @@
             const love = getLove();
             document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
             document.getElementById('chat-bubble').innerText = getName(love >= 100 ? charData[currentChar].maxWelcome : charData[currentChar].welcome);
-            updateStatus();
+            updateStatus(); // ここで絆MAX判定と演出を即時更新
         }
 
         function save() {
@@ -246,7 +248,7 @@
         }
 
         function manualReset() {
-            if(confirm("この子との絆をリセットして最初からやり直しますか？")) {
+            if(confirm("この子との絆をリセットしますか？")) {
                 setLove(50);
                 updateStatus();
             }
@@ -254,7 +256,11 @@
 
         window.onload = () => {
             const savedChar = localStorage.getItem('hagu_current_char');
-            if (savedChar) { currentChar = savedChar; document.getElementById('char-selector').value = savedChar; }
+            if (savedChar) { 
+                currentChar = savedChar; 
+                document.getElementById('char-selector').value = savedChar; 
+            }
+            updateStatus();
             changeChar();
             setInterval(updateStatus, 5000);
         };
