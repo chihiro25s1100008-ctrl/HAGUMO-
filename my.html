@@ -311,26 +311,12 @@
             }
         }
 
-        function strokeHagumo(e) {
-            if (love < 100 && stamina <= 0) return;
-            
-            if (love < 100) {
-                love = Math.min(100, love + 2);
-                stamina--;
-                lastStaminaTime = Date.now();
-            }
-            
-            createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2, love >= 100);
-            
-            const res = (love >= 100) ? 
-                (charData[currentChar]?.maxStrokes[Math.floor(Math.random()*2)] || "大好き！") : 
-                (charData[currentChar]?.strokeRes || "えへへ♪");
-            document.getElementById('chat-bubble').innerText = getName(res);
-
-            updateStatus(true);
-            save();
-        }
-
+        // updateStamina関数の中
+if (stamina <= 0) { // love < 100 の条件を外す
+    talkBtn.disabled = true;
+    strokeBtn.disabled = true;
+    // ...
+}
         function startTalk() {
             if (love >= 100 || stamina <= 0) return;
             
