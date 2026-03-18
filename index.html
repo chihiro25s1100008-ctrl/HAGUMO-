@@ -3,253 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HAGUMO | かわいくはじめる、美容の自給自足</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <title>MY HAGUMO | 絆極致</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --main-pink: #ff7eb9; 
-            --soft-pink: #fff5f7; 
-            --pink1: #ffb3d9; 
-            --pink2: #d1478e; 
+            --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; 
             --white-glass: rgba(255, 255, 255, 0.8);
-            scroll-behavior: smooth;
-        }
-        
-        body { 
-            font-family: 'Zen Maru Gothic', sans-serif; 
-            background: #fff; 
-            margin: 0; 
-            padding-top: 80px; 
-            overflow-x: hidden; 
-            color: #555; 
-            background-image: radial-gradient(var(--soft-pink) 2px, transparent 2px);
-            background-size: 40px 40px;
+            --rainbow: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff); 
         }
 
-        /* --- ナビゲーション --- */
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 80px; transition: background 0.3s; overflow-x: hidden; }
+
+        /* --- ホーム共通ナビゲーション --- */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
-            background: var(--white-glass);
-            backdrop-filter: blur(10px);
-            z-index: 10000; 
-            border-bottom: 2px solid rgba(255, 179, 217, 0.3); 
-            padding: 12px 0;
+            background: var(--white-glass); backdrop-filter: blur(10px);
+            z-index: 10000; border-bottom: 2px solid rgba(255, 179, 217, 0.3); padding: 12px 0;
         }
-        .nav-content { 
-            max-width: 1100px; margin: 0 auto; padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
         .nav-logo-img { height: 35px; cursor: pointer; transition: 0.3s; }
-        .nav-logo-img:hover { transform: scale(1.1) rotate(-3deg); }
-        
         .nav-links { display: flex; gap: 12px; }
         .nav-link { 
-            color: #888; 
-            text-decoration: none; 
-            font-size: 12px; 
-            font-weight: bold; 
-            padding: 6px 12px; 
-            border-radius: 50px; 
-            transition: 0.3s;
-            border: 1px solid transparent; 
-            font-family: 'Quicksand', sans-serif;
-            white-space: nowrap;
+            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
+            padding: 6px 12px; border-radius: 50px; transition: 0.3s; border: 1px solid transparent; font-family: 'Quicksand', sans-serif;
         }
-        .nav-link:hover, .nav-link.active { 
-            color: var(--pink2); 
-            background: white; 
-            border-color: var(--pink1);
-            box-shadow: 0 4px 10px rgba(255, 126, 185, 0.2);
-        }
+        .nav-link:hover, .nav-link.active { color: var(--pink2); background: white; border-color: var(--pink1); box-shadow: 0 4px 10px rgba(255, 126, 185, 0.2); }
 
-        /* --- 背景装飾 --- */
-        .floating-deco {
-            position: absolute; z-index: -1; pointer-events: none;
-            animation: floatAnim 6s ease-in-out infinite;
-            filter: drop-shadow(0 5px 10px rgba(255,179,217,0.4));
-        }
-        @keyframes floatAnim {
-            0%, 100% { transform: translateY(0) rotate(0) scale(1); }
-            50% { transform: translateY(-30px) rotate(20deg) scale(1.2); }
-        }
-
-        /* --- ヒーローセクション --- */
-        .hero-section {
-            padding: 80px 20px 100px;
-            background: radial-gradient(circle at 50% 50%, #fff 0%, #fff0f6 100%);
-            text-align: center;
-            border-radius: 0 0 100px 100px;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(255,126,185,0.1);
-        }
-
-        .hero-logo { 
-            width: 180px; 
-            margin-bottom: 30px; 
-            animation: bounceIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 10px 25px rgba(255,126,185,0.4));
-        }
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3) translateY(100px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .big-catch { 
-            font-size: clamp(34px, 8vw, 65px); 
-            font-weight: 700; 
-            color: var(--pink2); 
-            line-height: 1.2; 
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-            text-shadow: 3px 3px 0 #fff, 6px 6px 0 rgba(255,179,217,0.2);
-        }
-
-        .sub-copy { 
-            font-size: clamp(18px, 4vw, 22px); 
-            color: var(--main-pink); 
-            margin-bottom: 50px; 
-            font-weight: bold;
-            background: white; display: inline-block; padding: 8px 30px; 
-            border-radius: 50px; border: 2px solid var(--soft-pink);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        /* --- タイルメニュー --- */
-        .tile-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 850px;
-            margin: 50px auto;
-            padding: 0 15px;
-        }
-        .tile-btn {
-            background: white;
-            border: 2px solid var(--soft-pink);
-            border-radius: 30px;
-            padding: 25px 15px;
-            text-decoration: none;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
-            position: relative; overflow: hidden;
-        }
-        .tile-btn::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 5px;
-            background: var(--pink1); transform: scaleX(0); transition: 0.3s;
-        }
-        .tile-btn:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 30px rgba(255,126,185,0.2); 
-            border-color: var(--pink1);
-        }
-        .tile-btn:hover::after { transform: scaleX(1); }
-        .tile-btn span:first-child { font-size: 38px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
-        .tile-btn b { color: var(--pink2); font-size: 15px; }
-        .tile-btn i { color: #bbb; font-size: 10px; font-style: normal; font-family: 'Quicksand'; }
-
-        .hero-poster { 
-            width: 90%; 
-            max-width: 340px; 
-            border-radius: 40px; 
-            box-shadow: 0 30px 60px rgba(255,105,180,0.3); 
-            margin-top: 60px;
-            border: 10px solid white;
-            transform: rotate(-3deg);
-            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .hero-poster:hover { transform: rotate(0deg) scale(1.05) translateY(-10px); }
-
-        /* --- 特徴カード --- */
-        .feature-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 30px; 
-            padding: 100px 20px; 
-            max-width: 1100px; 
-            margin: 0 auto; 
-        }
-        .feature-card { 
-            background: white; 
-            padding: 50px 30px; 
-            border-radius: 50px; 
-            box-shadow: 0 20px 40px rgba(255,126,185,0.08); 
-            text-align: center; 
-            border: 2px solid var(--soft-pink); 
-            transition: 0.4s;
-            position: relative;
-        }
-        .feature-card:hover { 
-            transform: translateY(-15px); 
-            border-color: var(--pink1);
-            background: linear-gradient(to bottom, #fff, var(--soft-pink));
-        }
-        .feature-card h3 { 
-            color: var(--pink2); margin-bottom: 20px; font-size: 1.5rem; 
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-        .feature-card h3::after {
-            content: ''; width: 40px; height: 4px; background: var(--pink1); border-radius: 10px;
-        }
-
-        .big-button { 
-            display: inline-block; 
-            background: linear-gradient(135deg, var(--main-pink), #ff5e95); 
-            color: white; 
-            padding: 22px 60px; 
-            border-radius: 100px; 
-            text-decoration: none; 
-            font-weight: bold; 
-            font-size: 20px; 
-            box-shadow: 0 10px 25px rgba(255,126,185,0.4);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 4px solid white;
-            position: relative;
-            overflow: hidden;
-        }
-        .big-button::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: rgba(255,255,255,0.2); transform: rotate(45deg) translateY(-100%); transition: 0.5s;
-        }
-        .big-button:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 15px 35px rgba(255,126,185,0.5); }
-        .big-button:hover::before { transform: rotate(45deg) translateY(100%); }
-
-        /* スクロールアニメーション用 */
-        .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        footer {
-            background: linear-gradient(to bottom, #fff, var(--soft-pink));
-            padding: 80px 20px;
-            text-align: center;
-            border-top: 2px solid var(--soft-pink);
-        }
-
-        /* --- レスポンシブ対応 --- */
+        /* --- メインコンテンツ --- */
+        .main-wrapper { display: flex; flex-direction: column; align-items: center; max-width: 1000px; margin: 0 auto; padding: 20px; }
         @media screen and (min-width: 769px) {
-            .tile-menu { grid-template-columns: repeat(4, 1fr); }
+            .main-wrapper { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; padding-top: 40px; }
+            .left-panel { width: 320px; } .right-panel { width: 420px; }
         }
-        @media screen and (max-width: 480px) {
-            .nav-links {
-                gap: 5px;
-                overflow-x: auto;
-                white-space: nowrap;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 5px;
-            }
-            .nav-link { padding: 5px 10px; font-size: 11px; }
-            .tile-btn { padding: 15px 5px; }
-            .tile-btn span:first-child { font-size: 28px; }
-            .tile-btn b { font-size: 12px; }
-        }
+
+        .status-container, .bubble { background: white; border-radius: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 25px; text-align: center; margin-bottom: 20px; border: 2px solid #eee; position: relative; }
+
+        /* 絆ゲージ */
+        .love-bar-bg { width: 100%; height: 24px; background: #eee; border-radius: 20px; margin: 15px 0; overflow: hidden; position: relative; border: 2px solid #fff; }
+        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 0.4s; }
+        .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 0.2s linear infinite; }
+        @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+
+        /* キャラ演出 */
+        .hagumo-img { width: 240px; height: 240px; object-fit: contain; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); }
+        .max-chaos { animation: pachi-vibe 0.05s infinite !important; transform: scale(1.15); }
+        .rainbow-filter { animation: pachi-color 0.4s infinite !important; }
+        @keyframes pachi-vibe { 0% { transform: translate(3px, 3px) rotate(2deg); } 50% { transform: translate(-3px, -3px) rotate(-2deg); } 100% { transform: translate(3px, -3px) rotate(2deg); } }
+        @keyframes pachi-color { 0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px red); } 50% { filter: hue-rotate(180deg) drop-shadow(0 0 30px blue); } 100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px red); } }
+        .pachi-text { background: var(--rainbow); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px !important; font-weight: 900; animation: moveBg 0.5s linear infinite; display: block; letter-spacing: -2px; }
+
+        .st-badge { font-size: 11px; padding: 5px 10px; border-radius: 15px; background: #fdfdfd; color: var(--pink2); border: 1px solid var(--pink1); margin: 0 2px; }
+        .action-btn { background: white; border: 2px solid var(--pink1); padding: 15px; border-radius: 50px; font-weight: bold; cursor: pointer; color: var(--pink2); transition: 0.2s; width: 100%; margin-bottom: 10px; font-family: inherit; box-shadow: 0 4px 0 var(--soft-pink); }
+        .action-btn:disabled { background: #eee; border-color: #ccc; color: #aaa; cursor: not-allowed; box-shadow: none; }
+        
+        #choices { display: none; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .choice-btn { background: white; border: 2px solid var(--pink1); padding: 12px; border-radius: 20px; cursor: pointer; font-weight: bold; color: var(--pink2); transition: 0.2s; }
+
+        .heart { position: fixed; pointer-events: none; animation: heartUp 1s forwards; font-size: 35px; z-index: 9999; }
+        @keyframes heartUp { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(2.5) translateY(-180px); opacity: 0; } }
     </style>
 </head>
-<body>
-
-    <div class="floating-deco" style="top:15%; left:8%; font-size: 40px;">🎀</div>
-    <div class="floating-deco" style="top:35%; right:5%; font-size: 50px; animation-delay: 1s;">🌷</div>
-    <div class="floating-deco" style="bottom:15%; left:5%; font-size: 35px; animation-delay: 2s;">✨</div>
-    <div class="floating-deco" style="top:60%; left:12%; font-size: 30px; animation-delay: 1.5s;">🍃</div>
+<body id="bg">
 
     <nav class="nav">
         <div class="nav-content">
@@ -260,115 +74,203 @@
                 <a href="product.html" class="nav-link">PRODUCT</a>
                 <a href="hagumo.html" class="nav-link">HAGUMO</a>
                 <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-                <a href="my.html" class="nav-link">MY HAGUMO</a>
+                <a href="my.html" class="nav-link active">MY HAGUMO</a>
             </div>
         </div>
     </nav>
 
-    <main>
-        <section class="hero-section">
-            <div class="reveal active">
-                <img src="./images/rogo.PNG" class="hero-logo" alt="HAGUMO">
-                <h1 class="big-catch">かわいくはじめる、<br>美容の自給自足</h1>
-                <p class="sub-copy">育てる、私が、きれいになる。</p>
+    <div class="main-wrapper">
+        <div class="left-panel">
+            <div class="status-container">
+                <div id="user-display" style="font-weight: bold; margin-bottom: 10px;">ハグモルーム</div>
+                <div style="margin-bottom:10px;">
+                    <span id="st-stroke-badge" class="st-badge">なで: 10/10</span>
+                    <span id="st-talk-badge" class="st-badge">話: 5/5</span>
+                </div>
+                <select id="char-selector" onchange="changeChar()" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--pink1); margin-bottom: 10px; font-family: inherit; outline: none;">
+                    <option value="buta">かぶた</option>
+                    <option value="imo">さつまいもぐら</option>
+                    <option value="jaku">ばたふらいぴーこっく</option>
+                    <option value="risu">きゅうりす</option>
+                    <option value="tora">とまとら</option>
+                    <option value="chabo">かぼちゃぼ</option>
+                    <option value="saru">れもんきー</option>
+                    <option value="kame">ぶるーべりくがめ</option>
+                    <option value="nga">もももんが</option>
+                    <option value="kuma">くろいちじくま</option>
+                </select>
+                <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
+                <div id="love-label" style="font-size: 14px; font-weight: bold;">KIZUNA: <span id="love-val">50</span> / 100</div>
             </div>
-            
-            <div class="reveal active" style="margin-top: 20px;">
-                <a href="diagnosis.html" class="big-button">運命のパートナーを診断 🌱</a>
+            <div style="text-align: center;">
+                <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img" onclick="strokeHagumo(event)">
             </div>
-
-            <div class="tile-menu reveal">
-                <a href="world.html" class="tile-btn">
-                    <span>🌍</span><b>世界観をみる</b><i>The World</i>
-                </a>
-                <a href="product.html" class="tile-btn">
-                    <span>🧴</span><b>アイテム</b><i>Item</i>
-                </a>
-                <a href="hagumo.html" class="tile-btn">
-                    <span>🐿️</span><b>ハグモ図鑑</b><i>Collection</i>
-                </a>
-                <a href="my.html" class="tile-btn">
-                    <span>🎀</span><b>マイページ</b><i>My Page</i>
-                </a>
-            </div>
-            
-            <div class="reveal">
-                <img src="./images/pos.PNG" class="hero-poster" alt="HAGUMOポスター">
-            </div>
-        </section>
-
-        <section class="feature-grid">
-            <div class="feature-card reveal">
-                <h3><span>🧴</span> 美容への活用</h3>
-                <p>愛情を込めて収穫した野菜や果物は、最高のご褒美。自分だけの「生パック」や「美容風呂」で、肌も心も潤いで満たされます。</p>
-            </div>
-            <div class="feature-card reveal">
-                <h3><span>🐿️</span> 推し活としての農業</h3>
-                <p>個性豊かで愛らしい「ハグモ」たち。育てる過程で生まれる絆、触れ合い、そしてコレクション。農業はもう、労働ではなく最高の遊びです。</p>
-            </div>
-            <div class="feature-card reveal">
-                <h3><span>🎁</span> 育てるほどご褒美</h3>
-                <p>日々の成長をアプリで報告。頑張ったあなたには、限定のアクリルキーホルダーやオリジナルグッズが届きます。HAGUMOはあなたの努力を裏切りません。</p>
-            </div>
-        </section>
-
-        <div class="reveal" style="text-align:center; padding: 0 20px 150px;">
-            <h2 style="color: var(--pink2); margin-bottom: 40px; font-weight: 700; font-size: clamp(24px, 5vw, 32px);">新しい「きれい」のカタチ。</h2>
-            <a href="diagnosis.html" class="big-button">今すぐ診断をはじめる 🌱</a>
         </div>
-    </main>
 
-    <footer>
-        <div style="margin-bottom: 30px;">
-            <img src="./images/rogo.PNG" style="height: 30px; opacity: 0.6;" alt="HAGUMO">
+        <div class="right-panel">
+            <div id="chat-bubble" class="bubble">...</div>
+            <div id="choices"></div>
+            <div class="action-menu">
+                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべりする</button>
+                <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなでする</button>
+                <button class="action-btn" onclick="renameUser()" style="font-size: 12px; border-style: dotted;">✏️ 名前を変える</button>
+                <button onclick="manualReset()" style="background:none; border:none; color:#ccc; font-size:10px; width:100%; cursor:pointer; margin-top:10px;">♻️ この子の絆をリセット</button>
+            </div>
         </div>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 16px; margin-bottom: 15px; letter-spacing: 2px;">🎀 HAGUMO project 🎀</p>
-        <p style="font-size: 12px; color: #bbb; line-height: 2; max-width: 500px; margin: 0 auto; padding: 0 20px;">
-            ※これは授業課題のプロトタイプです。<br>
-            実際の商品の販売・発送は行っておりません。
-        </p>
-    </footer>
+    </div>
 
     <script>
-        // スクロール時に要素を表示させる
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
-            }
+        const charData = {
+            buta: { welcome: "おかえりぶ！泥遊びするぶ？", maxWelcome: "おかえり、主様！世界で一番待ってたぶ！", strokeRes: "もっと撫でてぶ！泥が落ちちゃうぶ〜♪", ansRes: { high: "泥が輝いて見えるぶ！嬉しいぶー！", mid: "ありがとうぶ！もっと頑張るぶ！", low: "そんなの悲しいぶ…泥が乾いちゃうぶ。" }, questions: [{ q: "ボク、まだ上手に歩けないぶ…。不格好ぶ？", a: ["そこが可愛いんだよ", "練習あるのみ！", "確かに変だね"], scores: [10, 5, -5] }], maxStrokes: ["主様の手、あったかいぶ〜…大好きぶ！", "主様はボクだけのものだぶ！離さないぶ！"] },
+            imo: { welcome: "あ、おかえりもにょ。", maxWelcome: "主様が来ると、土の中まで明るくなるもにょ…♪", strokeRes: "なでなで、落ち着くもにょ……♪", ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ。", low: "…土の奥に潜るもにょ。" }, questions: [{ q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] }], maxStrokes: ["主様がいれば怖くないもにょ。愛してるもにょ。", "主様の手、落ち着くもにょ。ずっと一緒もにょ。"] },
+            jaku: { welcome: "お帰りなさい、主様。今日も美しいですわ。", maxWelcome: "あなたが戻られるのを、羽を震わせて待っておりましたわ。", strokeRes: "あら…主様の指先、とても優雅ですわね。", ansRes: { high: "まぁ…胸が高鳴りますわ。嬉しいですわね。", mid: "お言葉、痛み入りますわ。", low: "…少し、羽の色が曇ってしまいましたわ。" }, questions: [{ q: "私の羽、少し色が混ざりすぎていて…不気味ではありませんか？", a: ["複雑な輝きが素敵だよ", "個性があっていいね", "少し派手かも"], scores: [10, 5, -5] }], maxStrokes: ["あぁ…時が止まればいいのに。主様、愛しております。", "世界で一番、心地よいですわ。私の全てを捧げます。"] },
+            risu: { welcome: "おかえり！水分補給しっかりね！", maxWelcome: "もう、待ちくたびれて干からびちゃうかと思ったよぉ！大好き！", strokeRes: "わぁっ！なでなですると毛並みが整うよぉ！", ansRes: { high: "わぁっ！お肌も心もプルプルだよぉ！", mid: "ありがとう！", low: "…キュウリ、落としちゃった。" }, questions: [{ q: "尻尾がボサボサになっちゃった…。アイドル失格かなぁ？", a: ["自然体で最高だよ", "ブラッシングしよう", "ちょっと冒険だね"], scores: [10, 5, -5] }], maxStrokes: ["主様になでられるの、最高級の美容液だよぉ！", "主様、だーいすき！一生キュウリあげるねっ！"] },
+            tora: { welcome: "おかえりガオー！トマトパワー全開だ！", maxWelcome: "お前がいないとトマトが枯れちまうかと思ったぜ！", strokeRes: "ガオーッ！力がみなぎってくるガオ！もっとだ！", ansRes: { high: "ガオーッ！最高のトマトパワーだガオ！", mid: "おう、サンキューな！", low: "…火が消えちまったガオ。" }, questions: [{ q: "ガオーッ！…今の吠え方、迫力足りなかったガオ？", a: ["可愛くて最高だよ", "一生懸命で良いガオ", "全然怖くないよ"], scores: [10, 5, -5] }], maxStrokes: ["おいおい、照れるガオ！お前は俺の宝物だぜ！", "お前となら、どこまでも強くなれる。愛してるガオ！"] },
+            chabo: { welcome: "よお、主。待ってたぜ。座って休めよ。", maxWelcome: "おかえり、あんた。とにかく、無事でよかったぜ。", strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。", ansRes: { high: "…あんた、たまに心にくること言うよな。", mid: "ふん、分かってるじゃねぇか。", low: "…カボチャの皮より硬い言葉だな。" }, questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }], maxStrokes: ["あんたの手は…反則だな。ずっとこうしてろ。", "…離さねぇぞ。あんたが俺を選んだんだからな。"] },
+            saru: { welcome: "ウキキーッ！主！フレッシュなレモンはいかが！？", maxWelcome: "今日はずっとお祝いウキ！主様が大好きすぎるウキ！", strokeRes: "ウキッ！主のなでなで、ビタミンより効くぅ〜！", ansRes: { high: "ウキキーッ！ビタミンMAXだよぉ！", mid: "ウキッ！レモンみたいに効いたよ！", low: "…酸っぱすぎるよぉ。" }, questions: [{ q: "レモンが酸っぱすぎて、みんな逃げていっちゃうウキ…。", a: ["ボクは逃げないよ", "刺激的でいいよ", "確かに酸っぱい！"], scores: [10, 5, -5] }], maxStrokes: ["主、最高だよぉ！レモンより甘い気分だウキーッ！", "主！主！大好きウキーッ！！結婚しよウキ！！"] },
+            kame: { welcome: "おかえりなさい……。のんびり、いきましょうね。", maxWelcome: "あなたと過ごす、この一秒一秒が、私の永遠です……。", strokeRes: "あぁ……甲羅まで、ぬくもりが届きます……。", ansRes: { high: "あぁ…安らかな気持ちです…。", mid: "ありがとうございます……。", low: "……少し、甲羅の中に隠れますね。" }, questions: [{ q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] }], maxStrokes: ["あぁ…時が止まればいいのに……幸せです……。", "とっても優しい魔法ですね…あなたを愛しています。"] },
+            nga: { welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！", maxWelcome: "大好きな主様ぁ！もうどこへも行かないでぇ！", strokeRes: "ピピィッ！もっとぉ！主様のなでなで大好きぃー！", ansRes: { high: "ピピィッ！空まで飛べそうだよぉ！", mid: "ピピッ、ありがとうぅ！", low: "…ピーッ！嫌いになっちゃったの？" }, questions: [{ q: "甘えん坊すぎて、迷惑かなぁ…？ピピッ。", a: ["もっと甘えていいよ", "頼われて嬉しいよ", "時々ね"], scores: [10, 5, -5] }], maxStrokes: ["主様ぁ、だぁいすきだよぉ！一生なでてぇ！", "これ、ボクへのプロポーズかなぁ！？ピピィッ❤️"] },
+            kuma: { welcome: "……お帰り。君の足音が聞こえたよ。", maxWelcome: "君が戻ってきてくれて、世界が色づいた。ありがとう。", strokeRes: "……君の手、とても温かい。心が解けていくようだね。", ansRes: { high: "……君という光に、救われた気がするよ。", mid: "……温かい言葉だね。", low: "……暗闇が、もっと深くなったみたいだ。" }, questions: [{ q: "イチジクの蜜で手がベタベタだ。触らないほうがいい。", a: ["気にせずなでさせて", "甘い香りがして好き", "汚れるのは嫌だな"], scores: [10, 5, -5] }], maxStrokes: ["君のぬくもり……これが「愛」なんだね。愛してる。", "君がいれば、冬も怖くないよ。ずっと隣にいて。"] }
+        };
+
+        let currentChar = localStorage.getItem('hagu_current_char') || "buta";
+        let userName = localStorage.getItem('hagu_user') || "主様";
+        let strokeCount = parseInt(localStorage.getItem('st_count')) || 0;
+        let talkCount = parseInt(localStorage.getItem('tk_count')) || 0;
+        let lastStrokeTime = parseInt(localStorage.getItem('st_time')) || Date.now();
+        let lastTalkTime = parseInt(localStorage.getItem('tk_time')) || Date.now();
+
+        // --- キャラごとに独立した絆データを扱う ---
+        function getLove() { 
+            const val = localStorage.getItem(`hagu_love_${currentChar}`);
+            return val === null ? 50 : parseInt(val); 
+        }
+        function setLove(val) { localStorage.setItem(`hagu_love_${currentChar}`, val); }
+
+        function getName(text) {
+            if (!text) return "";
+            return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
         }
 
-        // ナビゲーションのactiveクラス管理
-        function handleNavigation() {
-            let currentPath = window.location.pathname.split("/").pop() || 'index.html';
-            
-            // GitHubリポジトリ名で終わる場合などの対策
-            if (currentPath === "HAGUMO" || currentPath === "") { 
-                currentPath = 'index.html';
-            }
+        function updateStatus() {
+            const now = Date.now();
+            if (now - lastStrokeTime > 60000) { strokeCount = 0; lastStrokeTime = now; }
+            if (now - lastTalkTime > 900000) { talkCount = 0; lastTalkTime = now; }
 
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href === currentPath) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
+            const love = getLove();
+            const isMax = love >= 100;
+            const sprite = document.getElementById('hagumo-sprite');
+            const fill = document.getElementById('love-fill');
+            const label = document.getElementById('love-label');
+            const talkBtn = document.getElementById('talk-btn');
+
+            document.getElementById('user-display').innerText = userName + "のルーム";
+            document.getElementById('love-val').innerText = love;
+            fill.style.width = love + "%";
+            document.getElementById('st-stroke-badge').innerText = `👋 なで: ${10 - strokeCount}/10`;
+            document.getElementById('st-talk-badge').innerText = `💬 話: ${5 - talkCount}/5`;
+
+            if (isMax) {
+                sprite.classList.add('max-chaos', 'rainbow-filter');
+                fill.classList.add('max');
+                label.innerHTML = '<span class="pachi-text">🌈絆・極致🌈</span>';
+                document.getElementById('bg').style.background = "radial-gradient(circle, #ff00ff, #00ffff, #ffff00)";
+                talkBtn.disabled = true;
+                talkBtn.innerText = "❤️ 絆極致 ❤️";
+            } else {
+                sprite.classList.remove('max-chaos', 'rainbow-filter');
+                fill.classList.remove('max');
+                label.innerHTML = `KIZUNA: <span id="love-val">${love}</span> / 100`;
+                document.getElementById('bg').style.background = "#fff5f7";
+                talkBtn.disabled = (talkCount >= 5);
+                talkBtn.innerText = "💬 おしゃべりする";
+            }
+            save();
+        }
+
+        function strokeHagumo(e) {
+            let love = getLove();
+            if (strokeCount >= 10 && love < 100) {
+                document.getElementById('chat-bubble').innerText = "（少し疲れちゃったみたい…時間を置いてみてね）";
+                return;
+            }
+            strokeCount++;
+            love = Math.min(100, love + 1);
+            setLove(love);
+
+            const data = charData[currentChar];
+            const msg = (love >= 100) ? data.maxStrokes[Math.floor(Math.random()*data.maxStrokes.length)] : data.strokeRes;
+            document.getElementById('chat-bubble').innerText = getName(msg);
+            
+            createHeart(e.clientX || 200, e.clientY || 400, love >= 100);
+            updateStatus();
+        }
+
+        function startTalk() {
+            if (getLove() >= 100 || talkCount >= 5) return;
+            const data = charData[currentChar];
+            const quest = data.questions[Math.floor(Math.random() * data.questions.length)];
+            document.getElementById('chat-bubble').innerText = getName(quest.q);
+            const container = document.getElementById('choices');
+            container.innerHTML = ""; container.style.display = "flex";
+
+            quest.a.forEach((text, i) => {
+                const btn = document.createElement('button'); btn.className = "choice-btn"; btn.innerText = text;
+                btn.onclick = () => {
+                    talkCount++;
+                    let love = getLove();
+                    let score = quest.scores[i];
+                    love = Math.min(100, Math.max(0, love + score));
+                    setLove(love);
+                    container.style.display = "none";
+                    const resType = score >= 10 ? "high" : (score < 0 ? "low" : "mid");
+                    document.getElementById('chat-bubble').innerText = getName(data.ansRes[resType]);
+                    updateStatus();
+                };
+                container.appendChild(btn);
             });
         }
 
-        window.addEventListener("scroll", reveal);
-        window.addEventListener("load", () => {
-            reveal();
-            handleNavigation();
-        });
-    </script>
+        function createHeart(x, y, isMax) {
+            const h = document.createElement('div'); h.className = 'heart';
+            h.innerHTML = isMax ? '🌈' : '❤️';
+            h.style.left = (x - 20) + 'px'; h.style.top = (y - 20) + 'px';
+            document.body.appendChild(h); setTimeout(() => h.remove(), 1000);
+        }
 
+        function changeChar() {
+            currentChar = document.getElementById('char-selector').value;
+            const love = getLove();
+            document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+            document.getElementById('chat-bubble').innerText = getName(love >= 100 ? charData[currentChar].maxWelcome : charData[currentChar].welcome);
+            updateStatus(); // 変更時に即座にそのキャラの絆状態を反映
+        }
+
+        function save() {
+            localStorage.setItem('hagu_user', userName);
+            localStorage.setItem('hagu_current_char', currentChar);
+            localStorage.setItem('st_count', strokeCount); localStorage.setItem('tk_count', talkCount);
+            localStorage.setItem('st_time', lastStrokeTime); localStorage.setItem('tk_time', lastTalkTime);
+        }
+
+        function renameUser() {
+            const n = prompt("新しいおなまえを教えてね", userName);
+            if(n && n.trim()) { userName = n.trim(); updateStatus(); }
+        }
+
+        function manualReset() {
+            if(confirm("この子との絆をリセットしますか？")) {
+                setLove(50);
+                updateStatus();
+            }
+        }
+
+        window.onload = () => {
+            const savedChar = localStorage.getItem('hagu_current_char');
+            if (savedChar) { currentChar = savedChar; document.getElementById('char-selector').value = savedChar; }
+            changeChar(); // 初期キャラ設定
+            setInterval(updateStatus, 5000);
+        };
+    </script>
 </body>
 </html>
