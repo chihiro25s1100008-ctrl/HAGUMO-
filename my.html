@@ -1,239 +1,155 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MY HAGUMO | ハグモの部屋</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
-   <script>
-    const charData = { /* ...既存のcharData... */ };
-
-    let currentChar = localStorage.getItem('hagu_current_char') || "buta";
-    let userName = localStorage.getItem('hagu_user') || "主様";
-    let love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
-    
-    // タイマー管理
-    let stamina = parseInt(localStorage.getItem('hagu_stamina')) ?? 5;
-    let lastStaminaTime = parseInt(localStorage.getItem('hagu_stamina_time')) || Date.now();
-
-    function getName(text) {
-        if (!text) return "";
-        return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
-    }
-
-    // スタミナ回復ロジック
-    function updateStamina() {
-        const now = Date.now();
-        const diff = Math.floor((now - lastStaminaTime) / 60000); // 1分で1回復
-        if (diff > 0 && stamina < 5) {
-            stamina = Math.min(5, stamina + diff);
-            lastStaminaTime = now;
-            save();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MY HAGUMO | ハグモの部屋</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. 基本設定 --- */
+        :root { 
+            --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; 
+            --white-glass: rgba(255, 255, 255, 0.85);
+            --rainbow: linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd1de8, #ff2400); 
         }
+        body { font-family: 'Zen Maru Gothic', sans-serif; background: var(--soft-pink); margin: 0; padding-top: 80px; color: #555; overflow-x: hidden; min-height: 100vh; }
+
+        /* --- 2. ナビゲーション --- */
+        .nav { position: fixed; top: 0; width: 100%; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 1000; }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+        .nav-logo-img { height: 40px; cursor: pointer; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-link { text-decoration: none; color: #888; font-size: 12px; font-weight: bold; }
+        .nav-link.active { color: var(--main-pink); }
+
+        /* --- 3. レイアウト --- */
+        .main-wrapper { display: flex; flex-direction: row; justify-content: center; align-items: flex-start; max-width: 1000px; margin: 0 auto; padding: 20px; gap: 30px; }
+        .left-panel { width: 40%; text-align: center; }
+        .right-panel { width: 55%; }
+
+        /* --- 4. パーツデザイン --- */
+        .status-container, .bubble, .action-menu { background: white; border-radius: 25px; box-shadow: 0 10px 25px rgba(255, 126, 185, 0.1); padding: 20px; margin-bottom: 20px; }
+        .bubble { min-height: 80px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 15px; border: 2px solid var(--soft-pink); }
+
+        /* 絆ゲージ */
+        .love-bar-bg { width: 100%; height: 18px; background: #eee; border-radius: 10px; margin: 10px 0; overflow: hidden; position: relative; }
+        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
+
+        /* スタミナ表示 */
+        .stamina-badge { font-size: 12px; color: var(--pink2); font-weight: bold; background: var(--soft-pink); padding: 4px 12px; border-radius: 50px; display: inline-block; margin-bottom: 5px; }
+        .timer-text { font-size: 11px; color: #aaa; margin-bottom: 10px; height: 15px; }
+
+        /* ハグモ画像 */
+        .hagumo-img { width: 100%; max-width: 280px; height: auto; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 10px 20px rgba(255,126,185,0.2)); }
+        .bounce { animation: bounce 4s infinite ease-in-out; }
         
-        document.getElementById('stamina-val').innerText = stamina;
-        const talkBtn = document.getElementById('talk-btn');
-        const strokeBtn = document.getElementById('stroke-btn');
-        
-        if (stamina <= 0 && love < 100) {
-            talkBtn.disabled = true;
-            strokeBtn.disabled = true;
-            const nextRecovery = 60 - Math.floor((now - lastStaminaTime) / 1000);
-            document.getElementById('timer-display').innerText = `あと ${nextRecovery}秒で回復`;
-        } else {
-            talkBtn.disabled = false;
-            strokeBtn.disabled = false;
-            document.getElementById('timer-display').innerText = stamina === 5 ? "スタミナ満タン！" : "回復中...";
+        /* 絆MAX演出 */
+        .max-chaos {
+            animation: super-shake 0.1s infinite alternate, rainbow-flash 0.3s infinite !important;
+            transform: scale(1.2) !important;
+            z-index: 100;
         }
-    }
 
-    function updateStatus(isAnimate = false) {
-        const fill = document.getElementById('love-fill');
-        const sprite = document.getElementById('hagumo-sprite');
-        const loveVal = document.getElementById('love-val');
-
-        loveVal.innerText = love;
-        fill.style.width = love + "%";
-
-        if (love >= 100) {
-            fill.classList.add('max');
-            sprite.classList.add('max-chaos');
-            document.getElementById('chat-bubble').innerText = getName(charData[currentChar].maxWelcome);
-            // MAX時はスタミナ無限
-            stamina = 5;
-        } else {
-            fill.classList.remove('max');
-            sprite.classList.remove('max-chaos');
+        /* ボタン */
+        .main-actions, #choices { display: flex; gap: 10px; margin-bottom: 15px; }
+        .action-btn, .choice-btn { 
+            flex: 1; background: white; border: 2px solid var(--pink1); padding: 12px 5px; border-radius: 50px; 
+            font-weight: bold; cursor: pointer; color: var(--pink2); transition: 0.3s; font-size: 14px;
         }
-    }
+        .action-btn:hover:not(:disabled) { background: var(--soft-pink); transform: translateY(-2px); }
+        .action-btn:disabled { background: #f5f5f5; border-color: #ddd; color: #ccc; cursor: not-allowed; }
+        .reset-btn { background: none; border: none; color: #ccc; font-size: 11px; cursor: pointer; margin-top: 10px; text-decoration: underline; }
 
-    function strokeHagumo(e) {
-        if (love < 100 && stamina <= 0) return;
-        
-        if (love < 100) {
-            love = Math.min(100, love + 2);
-            stamina--;
-            lastStaminaTime = Date.now();
+        /* エフェクト */
+        .heart { position: fixed; pointer-events: none; animation: heartUp 1s forwards; z-index: 9999; font-size: 24px; }
+        .max-heart { font-size: 50px !important; }
+
+        /* アニメーション定義 */
+        @keyframes super-shake { 0% { transform: scale(1.2) translate(2px, 2px); } 100% { transform: scale(1.2) translate(-2px, -2px); } }
+        @keyframes rainbow-flash { 0% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(0deg); } 100% { filter: drop-shadow(0 0 40px #00ff00) hue-rotate(360deg); } }
+        @keyframes heartUp { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(2) translateY(-150px) rotate(20deg); opacity: 0; } }
+        @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        @media (max-width: 768px) {
+            .main-wrapper { flex-direction: column; align-items: center; }
+            .left-panel, .right-panel { width: 100%; }
         }
-        
-        // エフェクト生成
-        createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2, love >= 100);
-        
-        const res = (love >= 100) ? 
-            charData[currentChar].maxStrokes[Math.floor(Math.random()*2)] : 
-            charData[currentChar].strokeRes;
-        document.getElementById('chat-bubble').innerText = getName(res);
-
-        updateStatus(true);
-        save();
-    }
-
-    function createHeart(x, y, isMax) {
-        const h = document.createElement('div');
-        h.className = isMax ? 'heart max-heart' : 'heart';
-        h.innerHTML = isMax ? '💖' : '❤️';
-        h.style.left = (x - (isMax ? 25 : 12)) + 'px';
-        h.style.top = (y - (isMax ? 25 : 12)) + 'px';
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), 1000);
-    }
-
-    function startTalk() {
-        if (love >= 100 || stamina <= 0) return;
-        
-        const data = charData[currentChar];
-        const hour = new Date().getHours();
-        let timeLabel = "midnight";
-        if (hour >= 5 && hour < 10) timeLabel = "morning";
-        else if (hour >= 10 && hour < 17) timeLabel = "lunch";
-        else if (hour >= 17 && hour < 23) timeLabel = "night";
-
-        let quest = (Math.random() < 0.4) ? data.timeQuests[timeLabel] : data.questions[Math.floor(Math.random() * data.questions.length)];
-
-        document.getElementById('chat-bubble').innerText = getName(quest.q);
-        const container = document.getElementById('choices');
-        container.innerHTML = "";
-        container.style.display = "flex";
-
-        quest.a.forEach((text, i) => {
-            const btn = document.createElement('button');
-            btn.className = "choice-btn";
-            btn.innerText = text;
-            btn.onclick = () => {
-                const score = quest.scores[i];
-                love = Math.min(100, Math.max(0, love + score));
-                stamina--;
-                lastStaminaTime = Date.now();
-                container.style.display = "none";
-                document.getElementById('chat-bubble').innerText = getName(data.ansRes[score >= 10 ? "high" : (score < 0 ? "low" : "mid")]);
-                updateStatus(true);
-                save();
-            };
-            container.appendChild(btn);
-        });
-    }
-
-    function changeChar() {
-        currentChar = document.getElementById('char-selector').value;
-        love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
-        document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
-        updateStatus();
-        save();
-    }
-
-    function save() {
-        localStorage.setItem(`hagu_love_${currentChar}`, love);
-        localStorage.setItem('hagu_current_char', currentChar);
-        localStorage.setItem('hagu_stamina', stamina);
-        localStorage.setItem('hagu_stamina_time', lastStaminaTime);
-    }
-
-    // 1秒ごとにスタミナとタイマーを更新
-    setInterval(updateStamina, 1000);
-
-    window.onload = () => {
-        changeChar();
-        updateStamina();
-    };
-</script>
-   
+        footer { text-align: center; padding: 40px 20px; background: white; margin-top: 50px; }
+    </style>
 </head>
-<body class="bg-level-1">
+<body>
 
-    <nav class="nav">
-        <div class="nav-content">
-            <img src="./images/rogo.PNG" class="nav-logo-img" alt="HAGUMO Logo" onclick="location.href='index.html'">
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">HOME</a>
-                <a href="world.html" class="nav-link">WORLD</a>
-                <a href="product.html" class="nav-link">PRODUCT</a>
-                <a href="hagumo.html" class="nav-link">HAGUMO</a>
-                <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
-                <a href="my.html" class="nav-link active">MY HAGUMO</a>
-            </div>
-        </div>
-    </nav>
+    <nav class="nav">
+        <div class="nav-content">
+            <img src="./images/rogo.PNG" class="nav-logo-img" alt="HAGUMO Logo" onclick="location.href='index.html'">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">HOME</a>
+                <a href="world.html" class="nav-link">WORLD</a>
+                <a href="product.html" class="nav-link">PRODUCT</a>
+                <a href="hagumo.html" class="nav-link">HAGUMO</a>
+                <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
+                <a href="my.html" class="nav-link active">MY HAGUMO</a>
+            </div>
+        </div>
+    </nav>
 
-    <div class="main-wrapper">
-        <div class="left-panel">
-            <div class="status-container">
-                <div id="user-display" style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px;">ハグモルーム</div>
-                <select id="char-selector" onchange="changeChar()" style="width: 100%; padding: 10px; border-radius: 15px; border: 1px solid var(--pink1); font-family: inherit; margin-bottom: 10px; color: #666;">
-                    <option value="buta">かぶた</option>
-                    <option value="imo">さつまいもぐら</option>
-                    <option value="jaku">ばたふらいぴーこっく</option>
-                    <option value="risu">きゅうりす</option>
-                    <option value="tora">とまとら</option>
-                    <option value="chabo">かぼちゃぼ</option>
-                    <option value="saru">れもんきー</option>
-                    <option value="kame">ぶるーべりくがめ</option>
-                    <option value="nga">もももんが</option>
-                    <option value="kuma">くろいちじくま</option>
-                </select>
-                <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
-                <div style="font-size: 11px; color: #999; font-weight: bold;">KIZUNA: <span id="love-val">50</span> / 100</div>
-            </div>
-            <div style="text-align: center;">
-                <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="strokeHagumo(event)">
-            </div>
-        </div>
+    <div class="main-wrapper">
+        <div class="left-panel">
+            <div class="status-container">
+                <div id="user-display" style="color: var(--main-pink); font-weight: bold; margin-bottom: 10px;">ハグモルーム</div>
+                <select id="char-selector" onchange="changeChar()" style="width: 100%; padding: 10px; border-radius: 15px; border: 1px solid var(--pink1); font-family: inherit; margin-bottom: 15px; color: #666;">
+                    <option value="buta">かぶた</option>
+                    <option value="imo">さつまいもぐら</option>
+                    <option value="jaku">ばたふらいぴーこっく</option>
+                    <option value="risu">きゅうりす</option>
+                    <option value="tora">とまとら</option>
+                    <option value="chabo">かぼちゃぼ</option>
+                    <option value="saru">れもんきー</option>
+                    <option value="kame">ぶるーべりくがめ</option>
+                    <option value="nga">もももんが</option>
+                    <option value="kuma">くろいちじくま</option>
+                </select>
+                
+                <div class="stamina-badge">⚡ スタミナ: <span id="stamina-val">5</span>/5</div>
+                <div id="timer-display" class="timer-text"></div>
 
-        <div class="right-panel">
-            <div id="chat-bubble" class="bubble">なでなでしたり、お話しして絆を深めてね！</div>
-            <div id="choices"></div>
-            
-            <div class="action-menu">
-                <div class="main-actions">
-                    <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり</button>
-                    <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで</button>
-                </div>
-                <button class="action-btn" onclick="renameUser()" style="margin-top: 15px; font-size: 13px; width: 100%;">✏️ おなまえ変更</button>
-                <div style="text-align: center;">
-                    <button class="reset-btn" onclick="manualReset()">♻️ 絆をリセットする</button>
-                </div>
-            </div>
-        </div>
-    </div>
-   
-   <div class="status-container">
-    <div class="stamina-badge">⚡ スタミナ: <span id="stamina-val">5</span>/5</div>
-    <div id="timer-display" class="timer-text"></div>
-    <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
-    <div style="font-size: 11px; color: #999; font-weight: bold;">KIZUNA: <span id="love-val">50</span> / 100</div>
-</div>
+                <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
+                <div style="font-size: 11px; color: #999; font-weight: bold;">KIZUNA: <span id="love-val">50</span> / 100</div>
+            </div>
+            
+            <div style="position: relative;">
+                <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img bounce" onclick="strokeHagumo(event)">
+            </div>
+        </div>
 
-    <footer>
-        <p style="color: var(--pink2); font-weight: bold; font-size: 15px; margin-bottom: 12px; letter-spacing: 1px;">🎀 HAGUMO project 🎀</p>
-        <p style="font-size: 10px; color: #aaa; line-height: 1.8; max-width: 400px; margin: 0 auto;">
-            ※これは授業課題のプロトタイプです。<br>
-            実際の商品の販売・発送は行っておりません。
-        </p>
-        <p style="font-size: 9px; color: #ccc; margin-top: 15px;">© 2026 Chihiro / HAGUMO project</p>
-    </footer>
+        <div class="right-panel">
+            <div id="chat-bubble" class="bubble">なでなでしたり、お話しして絆を深めてね！</div>
+            
+            <div id="choices" style="display: none;"></div>
+            
+            <div class="action-menu">
+                <div class="main-actions">
+                    <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり</button>
+                    <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで</button>
+                </div>
+                <button class="action-btn" onclick="renameUser()" style="font-size: 13px; width: 100%; margin-top: 10px;">✏️ おなまえ変更</button>
+                <div style="text-align: center;">
+                    <button class="reset-btn" onclick="manualReset()">♻️ 絆をリセットする</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        // --- データの定義 ---
-        const charData = {
+    <footer>
+        <p style="color: var(--pink2); font-weight: bold; font-size: 15px; margin-bottom: 12px;">🎀 HAGUMO project 🎀</p>
+        <p style="font-size: 9px; color: #ccc;">© 2026 Chihiro / HAGUMO project</p>
+    </footer>
+
+    <script>
+        // --- データの定義 ---
+        const charData = {
             buta: {
                 welcome: "おかえりぶ！泥遊びするぶ？",
                 maxWelcome: "おかえり、主様！世界で一番、主様が帰ってくるのを待ってたぶ！",
@@ -335,210 +251,182 @@
                 farewell: "……君という光がいなくなった。闇に帰るよ。さようなら。"
             }
         };
-
-       
-  
-
-    // --- 状態管理変数 ---
-    let currentChar = localStorage.getItem('hagu_current_char') || "buta";
-    let userName = localStorage.getItem('hagu_user') || "主様";
-    let love = 50;
-    let lastUpdate = Date.now();
-    let strokeHistory = []; 
-
-    // 名前をユーザー設定に置き換える関数
-    function getName(text) {
-        if (!text) return "";
-        return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
-    }
-
-    // 現在の時刻に基づいた時間帯ラベルを取得
-    function getTimeLabel() {
-        const hour = new Date().getHours();
-        if (hour >= 5 && hour < 10) return "morning";
-        if (hour >= 10 && hour < 17) return "lunch";
-        if (hour >= 17 && hour < 23) return "night";
-        return "midnight";
-    }
-
-    // 絆レベルに応じた背景色の変更
-    function checkTimeAndEffect() {
-        const container = document.body;
-        container.classList.remove('bg-level-1', 'bg-level-2', 'bg-level-3');
-        if (love >= 100) container.classList.add('bg-level-3');
-        else if (love > 50) container.classList.add('bg-level-2');
-        else container.classList.add('bg-level-1');
-    }
-
-    // 数字がふわっと動くアニメーション
-    function animateValue(start, end, duration) {
-        const obj = document.getElementById("love-val");
-        if (start === end) {
-            obj.innerHTML = end;
-            return;
-        }
-        obj.classList.add('val-up');
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const current = Math.floor(progress * (end - start) + start);
-            obj.innerHTML = current;
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                obj.classList.remove('val-up');
-                obj.innerHTML = end;
-            }
-        };
-        window.requestAnimationFrame(step);
-    }
-
-    // 画面表示の総合更新
-    function updateStatus(isAnimate = false) {
-        const fill = document.getElementById('love-fill');
-        const sprite = document.getElementById('hagumo-sprite');
-        const oldLove = parseInt(document.getElementById('love-val').innerText) || 0;
-
-        // 数値とゲージの更新
-        if (isAnimate) {
-            animateValue(oldLove, love, 300);
-        } else {
-            document.getElementById('love-val').innerText = love;
-        }
-
-        document.getElementById('user-display').innerText = userName + "の絆ルーム";
-        fill.style.width = love + "%";
-
-        // MAX時の演出設定
-        if (love >= 100) {
-            fill.classList.add('max');
-            sprite.classList.add('max-chaos');
-            document.getElementById('talk-btn').disabled = true;
-            document.getElementById('talk-btn').innerText = "❤️ 永遠の絆";
-        } else {
-            fill.classList.remove('max');
-            sprite.classList.remove('max-chaos');
-            document.getElementById('talk-btn').disabled = false;
-            document.getElementById('talk-btn').innerText = "💬 おしゃべり";
-        }
-        checkTimeAndEffect();
-    }
-
-    // データの保存
-    function save() {
-        localStorage.setItem(`hagu_love_${currentChar}`, love);
-        localStorage.setItem(`hagu_time_${currentChar}`, Date.now());
-        localStorage.setItem('hagu_user', userName);
-        localStorage.setItem('hagu_current_char', currentChar);
-    }
-
-    // なでなで処理
-    function strokeHagumo(e) {
-        const now = Date.now();
-        if (love < 100) {
-            strokeHistory = strokeHistory.filter(time => now - time < 60000);
-            if (strokeHistory.length >= 15) return; // 連打制限
-            strokeHistory.push(now);
-        }
-
-        love = Math.min(100, love + 1);
-        createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
+        // --- 状態管理 ---
+        let currentChar = localStorage.getItem('hagu_current_char') || "buta";
+        let userName = localStorage.getItem('hagu_user') || "主様";
+        let love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
         
-        const res = (love >= 100) ? 
-            charData[currentChar].maxStrokes[Math.floor(Math.random()*2)] : 
-            charData[currentChar].strokeRes;
-        document.getElementById('chat-bubble').innerText = getName(res);
+        // スタミナ管理
+        let stamina = parseInt(localStorage.getItem('hagu_stamina')) ?? 5;
+        let lastStaminaTime = parseInt(localStorage.getItem('hagu_stamina_time')) || Date.now();
 
-        updateStatus(true);
-        save();
-    }
+        function getName(text) {
+            if (!text) return "";
+            return text.replace(/主様/g, userName).replace(/主(?![ぁ-ん])/g, userName);
+        }
 
-    // おしゃべり開始
-    function startTalk() {
-        if (love >= 100) return;
-        const data = charData[currentChar];
-        const timeLabel = getTimeLabel();
-        let quest = (Math.random() < 0.4) ? data.timeQuests[timeLabel] : data.questions[Math.floor(Math.random() * data.questions.length)];
-
-        document.getElementById('chat-bubble').innerText = getName(quest.q);
-        const container = document.getElementById('choices');
-        container.innerHTML = "";
-        container.style.display = "flex";
-
-        quest.a.forEach((text, i) => {
-            const btn = document.createElement('button');
-            btn.className = "choice-btn";
-            btn.innerText = text;
-            btn.onclick = () => {
-                const score = quest.scores[i];
-                love = Math.min(100, Math.max(0, love + score));
-                container.style.display = "none";
-                document.getElementById('chat-bubble').innerText = getName(data.ansRes[score >= 10 ? "high" : (score < 0 ? "low" : "mid")]);
-                updateStatus(true);
+        function updateStamina() {
+            const now = Date.now();
+            const diff = Math.floor((now - lastStaminaTime) / 60000); // 1分で1回復
+            if (diff > 0 && stamina < 5) {
+                stamina = Math.min(5, stamina + diff);
+                lastStaminaTime = now;
                 save();
-            };
-            container.appendChild(btn);
-        });
-    }
+            }
+            
+            document.getElementById('stamina-val').innerText = stamina;
+            const talkBtn = document.getElementById('talk-btn');
+            const strokeBtn = document.getElementById('stroke-btn');
+            const timerDisplay = document.getElementById('timer-display');
+            
+            if (stamina <= 0 && love < 100) {
+                talkBtn.disabled = true;
+                strokeBtn.disabled = true;
+                const nextRecovery = 60 - Math.floor((now - lastStaminaTime) / 1000 % 60);
+                timerDisplay.innerText = `あと ${nextRecovery}秒でスタミナ回復`;
+            } else {
+                talkBtn.disabled = (love >= 100);
+                strokeBtn.disabled = false;
+                timerDisplay.innerText = stamina === 5 ? "スタミナ満タン！" : "スタミナ回復中...";
+            }
+        }
 
-    // キャラクター切り替え
-    function changeChar() {
-        currentChar = document.getElementById('char-selector').value;
-        const sprite = document.getElementById('hagumo-sprite');
-        sprite.src = `./images/${currentChar}.PNG`;
-        
-        // 保存データの読み込み
-        love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
-        
-        // 最初のセリフを表示
-        const bubble = document.getElementById('chat-bubble');
-        bubble.innerText = (love >= 100) ? getName(charData[currentChar].maxWelcome) : getName(charData[currentChar].welcome);
-        
-        updateStatus();
-        save();
-    }
+        function updateStatus(isAnimate = false) {
+            const fill = document.getElementById('love-fill');
+            const sprite = document.getElementById('hagumo-sprite');
+            const loveVal = document.getElementById('love-val');
 
-    // ハート生成
-    function createHeart(x, y) {
-        const h = document.createElement('div');
-        h.className = 'heart'; h.innerHTML = '❤';
-        h.style.left = (x - 12) + 'px'; h.style.top = (y - 12) + 'px';
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), 1500);
-    }
+            loveVal.innerText = love;
+            fill.style.width = love + "%";
+            document.getElementById('user-display').innerText = userName + "の絆ルーム";
 
-    // 名前変更
-    function renameUser() {
-        const newName = prompt("新しいおなまえを教えてね", userName);
-        if (newName && newName.trim()) {
-            userName = newName.trim();
+            if (love >= 100) {
+                fill.classList.add('max');
+                sprite.classList.add('max-chaos');
+                document.getElementById('talk-btn').innerText = "❤️ 永遠の絆";
+            } else {
+                fill.classList.remove('max');
+                sprite.classList.remove('max-chaos');
+                document.getElementById('talk-btn').innerText = "💬 おしゃべり";
+            }
+        }
+
+        function strokeHagumo(e) {
+            if (love < 100 && stamina <= 0) return;
+            
+            if (love < 100) {
+                love = Math.min(100, love + 2);
+                stamina--;
+                lastStaminaTime = Date.now();
+            }
+            
+            createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2, love >= 100);
+            
+            const res = (love >= 100) ? 
+                (charData[currentChar]?.maxStrokes[Math.floor(Math.random()*2)] || "大好き！") : 
+                (charData[currentChar]?.strokeRes || "えへへ♪");
+            document.getElementById('chat-bubble').innerText = getName(res);
+
+            updateStatus(true);
+            save();
+        }
+
+        function startTalk() {
+            if (love >= 100 || stamina <= 0) return;
+            
+            const data = charData[currentChar];
+            if(!data) return;
+
+            const hour = new Date().getHours();
+            let timeLabel = "midnight";
+            if (hour >= 5 && hour < 10) timeLabel = "morning";
+            else if (hour >= 10 && hour < 17) timeLabel = "lunch";
+            else if (hour >= 17 && hour < 23) timeLabel = "night";
+
+            let quest = (Math.random() < 0.4) ? data.timeQuests[timeLabel] : data.questions[Math.floor(Math.random() * data.questions.length)];
+
+            document.getElementById('chat-bubble').innerText = getName(quest.q);
+            const container = document.getElementById('choices');
+            container.innerHTML = "";
+            container.style.display = "flex";
+
+            quest.a.forEach((text, i) => {
+                const btn = document.createElement('button');
+                btn.className = "choice-btn";
+                btn.innerText = text;
+                btn.onclick = () => {
+                    const score = quest.scores[i];
+                    love = Math.min(100, Math.max(0, love + score));
+                    stamina--;
+                    lastStaminaTime = Date.now();
+                    container.style.display = "none";
+                    document.getElementById('chat-bubble').innerText = getName(data.ansRes[score >= 10 ? "high" : (score < 0 ? "low" : "mid")]);
+                    updateStatus(true);
+                    save();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function createHeart(x, y, isMax) {
+            const h = document.createElement('div');
+            h.className = isMax ? 'heart max-heart' : 'heart';
+            h.innerHTML = isMax ? '💖' : '❤️';
+            h.style.left = (x - (isMax ? 25 : 12)) + 'px';
+            h.style.top = (y - (isMax ? 25 : 12)) + 'px';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 1000);
+        }
+
+        function changeChar() {
+            currentChar = document.getElementById('char-selector').value;
+            love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
+            document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+            
+            const bubble = document.getElementById('chat-bubble');
+            bubble.innerText = (love >= 100) ? getName(charData[currentChar]?.maxWelcome) : getName(charData[currentChar]?.welcome);
+            
             updateStatus();
             save();
         }
-    }
 
-    // リセット
-    function manualReset() {
-        if (confirm("この子の絆をリセットして最初からやり直しますか？")) {
-            localStorage.removeItem(`hagu_love_${currentChar}`);
-            love = 50;
-            save();
-            location.reload();
+        function renameUser() {
+            const newName = prompt("新しいおなまえを教えてね", userName);
+            if (newName && newName.trim()) {
+                userName = newName.trim();
+                updateStatus();
+                save();
+            }
         }
-    }
 
-    // ページ読み込み時の起動処理
-    window.onload = () => {
-        const savedChar = localStorage.getItem('hagu_current_char');
-        if (savedChar && charData[savedChar]) {
-            currentChar = savedChar;
-            document.getElementById('char-selector').value = savedChar;
+        function manualReset() {
+            if (confirm("この子の絆をリセットして最初からやり直しますか？")) {
+                localStorage.removeItem(`hagu_love_${currentChar}`);
+                love = 50;
+                save();
+                location.reload();
+            }
         }
-        changeChar(); // これで初期状態をセットアップ
-    };
 
-</script>
-          
+        function save() {
+            localStorage.setItem(`hagu_love_${currentChar}`, love);
+            localStorage.setItem('hagu_current_char', currentChar);
+            localStorage.setItem('hagu_stamina', stamina);
+            localStorage.setItem('hagu_stamina_time', lastStaminaTime);
+            localStorage.setItem('hagu_user', userName);
+        }
+
+        setInterval(updateStamina, 1000);
+
+        window.onload = () => {
+            const savedChar = localStorage.getItem('hagu_current_char');
+            if (savedChar) {
+                currentChar = savedChar;
+                document.getElementById('char-selector').value = savedChar;
+            }
+            changeChar();
+            updateStamina();
+        };
+    </script>
 </body>
 </html>
