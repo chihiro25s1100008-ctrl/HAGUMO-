@@ -6,6 +6,19 @@
     <title>MY HAGUMO | ハグモの部屋</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
+        // --- 状態管理 ---
+        let currentChar = localStorage.getItem('hagu_current_char') || "buta";
+        let userName = localStorage.getItem('hagu_user') || "主様";
+        let love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
+        
+        // 【修正版】キャラ個別のスタミナ管理（NaN対策済み）
+        let staminaRaw = localStorage.getItem(`hagu_stamina_${currentChar}`);
+        let stamina = (staminaRaw !== null) ? parseInt(staminaRaw) : 5;
+        if (isNaN(stamina)) stamina = 5;
+
+        let timeRaw = localStorage.getItem(`hagu_stamina_time_${currentChar}`);
+        let lastStaminaTime = (timeRaw !== null) ? parseInt(timeRaw) : Date.now();
+        if (isNaN(lastStaminaTime)) lastStaminaTime = Date.now();
         /* --- 1. 基本設定 --- */
         :root { 
             --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; 
@@ -365,16 +378,33 @@ if (stamina <= 0) { // love < 100 の条件を外す
         }
 
         function changeChar() {
-            currentChar = document.getElementById('char-selector').value;
-            love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
-            document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
-            
-            const bubble = document.getElementById('chat-bubble');
-            bubble.innerText = (love >= 100) ? getName(charData[currentChar]?.maxWelcome) : getName(charData[currentChar]?.welcome);
-            
-            updateStatus();
-            save();
-        }
+    currentChar = document.getElementById('char-selector').value;
+    
+    // そのキャラの絆、スタミナ、回復時間をロード
+    love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
+    stamina = parseInt(localStorage.getItem(`hagu_stamina_${currentChar}`)) ?? 5;
+    if (isNaN(stamina)) stamina = 5;
+    
+    lastStaminaTime = parseInt(localStorage.getItem(`hagu_stamina_time_${currentChar}`)) || Date.now();
+    if (isNaN(lastStaminaTime)) lastStaminaTime = Date.now();
+
+    document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+    
+    const bubble = document.getElementById('chat-bubble');
+    bubble.innerText = (love >= 100) ? getName(charData[currentChar]?.maxWelcome) : getName(charData[currentChar]?.welcome);
+    
+    updateStatus();
+    updateStamina(); // スタミナ表示を即座に更新
+    save();
+}
+        function save() {
+    localStorage.setItem(`hagu_love_${currentChar}`, love);
+    localStorage.setItem('hagu_current_char', currentChar);
+    // 【修正】キャラ個別のキーで保存
+    localStorage.setItem(`hagu_stamina_${currentChar}`, stamina);
+    localStorage.setItem(`hagu_stamina_time_${currentChar}`, lastStaminaTime);
+    localStorage.setItem('hagu_user', userName);
+}
 
         function renameUser() {
             const newName = prompt("新しいおなまえを教えてね", userName);
