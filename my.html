@@ -6,7 +6,6 @@
     <title>MY HAGUMO | ハグモの部屋</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* --- HOMEと完全に共通のデザイン変数 --- */
         :root { 
             --main-pink: #ff7eb9; 
             --soft-pink: #fff5f7; 
@@ -26,7 +25,7 @@
             transition: background 0.5s;
         }
 
-        /* --- ナビゲーション（HOME完全一致） --- */
+        /* --- ナビゲーション（HOME共通） --- */
         .nav { 
             position: fixed; top: 0; left: 0; width: 100%; 
             background: var(--white-glass);
@@ -41,7 +40,6 @@
         }
         .nav-logo-img { height: 35px; cursor: pointer; transition: 0.3s; }
         .nav-logo-img:hover { transform: scale(1.1) rotate(-3deg); }
-
         .nav-links { display: flex; gap: 12px; }
         .nav-link { 
             color: #888; text-decoration: none; font-size: 13px; font-weight: bold; 
@@ -53,208 +51,262 @@
             box-shadow: 0 4px 10px rgba(255, 126, 185, 0.2);
         }
 
-        /* --- MY HAGUMO レイアウト --- */
-        .main-wrapper { 
-            display: flex; flex-direction: column; align-items: center; 
-            max-width: 1000px; margin: 0 auto; padding: 20px; 
-        }
-
+        /* --- レイアウト --- */
+        .main-wrapper { display: flex; flex-direction: column; align-items: center; max-width: 1000px; margin: 0 auto; padding: 20px; }
         @media screen and (min-width: 769px) {
-            .main-wrapper { 
-                flex-direction: row; align-items: flex-start; 
-                justify-content: center; gap: 50px; padding-top: 40px; 
-            }
+            .main-wrapper { flex-direction: row; align-items: flex-start; justify-content: center; gap: 50px; padding-top: 40px; }
             .left-panel { width: 350px; position: sticky; top: 120px; }
             .right-panel { width: 450px; }
         }
 
-        /* カード・吹き出しのデザイン */
         .status-container, .bubble {
-            background: white;
-            border: 2px solid var(--soft-pink);
-            border-radius: 35px;
-            box-shadow: 0 15px 35px rgba(255, 126, 185, 0.12);
-            padding: 25px;
-            text-align: center;
-            box-sizing: border-box;
-            margin-bottom: 25px;
+            background: white; border: 2px solid var(--soft-pink); border-radius: 35px;
+            box-shadow: 0 15px 35px rgba(255, 126, 185, 0.12); padding: 25px; text-align: center; margin-bottom: 25px;
         }
 
-        /* 絆ゲージ */
         .love-bar-bg { width: 100%; height: 20px; background: #f0f0f0; border-radius: 15px; margin: 15px 0; overflow: hidden; }
         .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 0.5s; }
         .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
         @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
 
-        /* キャラクター画像 */
-        .hagumo-img { 
-            width: 280px; height: 280px; object-fit: contain; cursor: pointer; transition: 0.3s; 
-            filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); 
-        }
-        .bounce { animation: bounce 4s infinite ease-in-out; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .hagumo-img { width: 280px; height: 280px; object-fit: contain; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); }
+        
+        .max-chaos { animation: abare-move 0.2s infinite, rainbow-flash 0.5s infinite !important; }
+        @keyframes abare-move { 0% { transform: translate(0,0) rotate(0); } 25% { transform: translate(-5px,5px) rotate(-5deg); } 75% { transform: translate(5px,-5px) rotate(5deg); } }
+        @keyframes rainbow-flash { 0% { filter: hue-rotate(0deg) drop-shadow(0 0 10px red); } 100% { filter: hue-rotate(360deg) drop-shadow(0 0 10px red); } }
 
-        /* ボタンデザイン（HOMEの丸みと合わせる） */
         .action-btn { 
-            background: white; border: 2px solid var(--soft-pink); padding: 15px 25px; border-radius: 50px; 
-            font-weight: bold; cursor: pointer; color: #666; transition: 0.3s; flex: 1;
-            font-family: 'Zen Maru Gothic', sans-serif;
+            background: white; border: 2px solid var(--soft-pink); padding: 15px; border-radius: 50px; 
+            font-weight: bold; cursor: pointer; color: #666; transition: 0.3s; flex: 1; font-family: inherit;
         }
-        .action-btn:hover { border-color: var(--pink1); color: var(--pink2); transform: translateY(-2px); }
+        .action-btn:hover:not(:disabled) { border-color: var(--pink1); color: var(--pink2); transform: translateY(-2px); }
+        .action-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .main-actions { display: flex; gap: 15px; width: 100%; }
 
-        /* おしゃべり選択肢 */
-        #choices { display: none; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
+        #choices { display: none; flex-direction: column; gap: 12px; width: 100%; margin-top: 20px; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .choice-btn {
-            background: var(--soft-pink); border: none; padding: 10px 20px; border-radius: 20px;
-            cursor: pointer; font-size: 13px; color: var(--pink2); transition: 0.3s;
+            background: white; border: 2px solid var(--pink1); padding: 15px; border-radius: 30px;
+            cursor: pointer; font-size: 15px; color: var(--pink2); font-weight: bold; transition: 0.2s; text-align: center;
         }
-        .choice-btn:hover { background: var(--pink1); color: white; }
+        .choice-btn:hover { background: var(--soft-pink); }
 
-        /* ハート演出 */
         .heart { position: fixed; color: #ff4d94; pointer-events: none; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
         @keyframes heartUp { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-100px); opacity: 0; } }
 
-        /* 特殊状態の背景（絆MAXなど） */
-        body.bg-level-1 { background: #fff5f7; }
-        body.bg-level-2 { background: #ffe0f0; }
-        body.bg-level-3 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
-
-        .reset-btn { background: none; border: none; color: #ccc; font-size: 11px; cursor: pointer; margin-top: 20px; }
-
-        /* --- フッター（HOME完全一致） --- */
-        footer { background: white; padding: 60px 20px; text-align: center; border-top: 2px solid var(--soft-pink); margin-top: 100px; }
-
-        /* スマホ調整 */
-        @media screen and (max-width: 768px) {
-            .nav-links { gap: 5px; overflow-x: auto; white-space: nowrap; padding-bottom: 3px; }
-            .nav-link { padding: 6px 12px; font-size: 11px; }
-            body { padding-top: 110px; }
-            .hagumo-img { width: 220px; height: 220px; }
-        }
-        /* おしゃべり選択肢：もっと押しやすく！ */
-#choices { 
-    display: none; 
-    flex-direction: column; /* 縦に並べて押しやすく */
-    gap: 12px; 
-    width: 100%;
-    margin-top: 20px; 
-    animation: fadeIn 0.3s;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.choice-btn {
-    background: white; 
-    border: 2px solid var(--pink1); 
-    padding: 15px; 
-    border-radius: 30px;
-    cursor: pointer; 
-    font-size: 15px; 
-    color: var(--pink2); 
-    font-weight: bold;
-    transition: 0.2s;
-    box-shadow: 0 4px 0 var(--soft-pink);
-    text-align: center;
-}
-.choice-btn:hover { background: var(--soft-pink); transform: translateY(-2px); }
-.choice-btn:active { transform: translateY(2px); box-shadow: none; }
-
-/* 数字が動く時のアニメーション */
-#love-val {
-    display: inline-block;
-    transition: transform 0.1s;
-}
-.val-up { color: var(--main-pink); transform: scale(1.3); }
-        /* 虹色に光るアニメーション */
-@keyframes rainbow-flash {
-    0% { filter: drop-shadow(0 0 10px #ff0000) hue-rotate(0deg); }
-    100% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(360deg); }
-}
-
-/* 激しく暴れるアニメーション */
-@keyframes abare-move {
-    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    10% { transform: translate(-5px, -10px) rotate(-5deg) scale(1.1); }
-    20% { transform: translate(5px, 10px) rotate(5deg) scale(1.05); }
-    30% { transform: translate(-10px, 5px) rotate(-10deg) scale(1.2); }
-    50% { transform: translate(10px, -5px) rotate(15deg) scale(1.1); }
-    70% { transform: translate(-5px, 15px) rotate(-20deg) scale(1.3); }
-    90% { transform: translate(15px, 5px) rotate(10deg) scale(1.1); }
-    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-}
-
-/* MAX時に付与するクラス */
-.max-chaos {
-    animation: abare-move 0.2s infinite, rainbow-flash 0.5s infinite !important;
-    cursor: orange !important;
-}
+        select { width: 100%; padding: 12px; border-radius: 15px; border: 2px solid var(--pink1); margin-bottom: 15px; font-family: inherit; color: var(--pink2); font-weight: bold; }
     </style>
 </head>
-<body class="bg-level-1">
-@@ -415,7 +438,7 @@
-                save();
+<body>
+
+    <nav class="nav">
+        <div class="nav-content">
+            <img src="./images/rogo.PNG" class="nav-logo-img" alt="Logo" onclick="location.href='index.html'">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">HOME</a>
+                <a href="world.html" class="nav-link">WORLD</a>
+                <a href="product.html" class="nav-link">PRODUCT</a>
+                <a href="hagumo.html" class="nav-link">HAGUMO</a>
+                <a href="diagnosis.html" class="nav-link">DIAGNOSIS</a>
+                <a href="my.html" class="nav-link active">MY HAGUMO</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="left-panel">
+            <div class="status-container">
+                <div id="user-display" style="font-weight: bold; margin-bottom: 10px; color: var(--pink2);">ハグモの部屋</div>
+                <select id="char-selector" onchange="changeChar()">
+                    <option value="buta">かぶた</option>
+                    <option value="imo">さつまいもぐら</option>
+                    <option value="jaku">ばたふらいぴーこっく</option>
+                    <option value="risu">きゅうりす</option>
+                    <option value="tora">とまとら</option>
+                    <option value="chabo">かぼちゃぼ</option>
+                    <option value="saru">れもんきー</option>
+                    <option value="kame">ぶるーべりくがめ</option>
+                    <option value="nga">もももんが</option>
+                    <option value="kuma">くろいちじくま</option>
+                </select>
+                <div class="love-bar-bg"><div id="love-fill" class="love-bar-fill"></div></div>
+                <div style="font-size: 14px; font-weight: bold; color: var(--pink2);">KIZUNA: <span id="love-val">50</span> / 100</div>
+            </div>
+            <div style="text-align: center;">
+                <img id="hagumo-sprite" src="./images/buta.PNG" class="hagumo-img" onclick="strokeHagumo(event)">
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div id="chat-bubble" class="bubble">...</div>
+            <div id="choices"></div>
+            <div class="main-actions">
+                <button id="talk-btn" class="action-btn" onclick="startTalk()">💬 おしゃべり</button>
+                <button id="stroke-btn" class="action-btn" onclick="strokeHagumo(event)">👋 なでなで</button>
+            </div>
+            <center><button class="reset-btn" onclick="manualReset()" style="margin-top:20px; background:none; border:none; color:#ccc; cursor:pointer; font-size:10px;">絆をリセット</button></center>
+        </div>
+    </div>
+
+    <script>
+        const charData = {
+            buta: {
+                welcome: "おかえりぶ！泥遊びするぶ？",
+                maxWelcome: "おかえり、主様！世界で一番、主様が帰ってくるのを待ってたぶ！",
+                strokeRes: "もっと撫でてぶ！泥が落ちちゃうぶ〜♪",
+                ansRes: { high: "泥が輝いて見えるぶ！嬉しいぶー！", mid: "ありがとうぶ！もっと頑張るぶ！", low: "そんなの悲しいぶ…泥が乾いちゃうぶ。" },
+                questions: [{ q: "ボク、まだ上手に歩けないぶ…。不格好ぶ？", a: ["そこが可愛いんだよ", "練習あるのみ！", "確かに変だね"], scores: [10, 5, -5] }, { q: "泥を落としたら、ただのブタになっちゃうぶ…？", a: ["君は君だよ", "泥も君の一部だね", "確かにそうかも"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはぶー！朝の泥はひんやりして気持ちいいぶ！主様も入るぶ？", a: ["一緒に泥遊び！", "顔だけ洗うよ", "泥はちょっと…"], scores: [10, 5, -5] }, lunch: { q: "お昼だぶー！カブの泥漬け食べるぶ？", a: ["いただくぶ！", "美味しそうだね", "お腹空いてない"], scores: [10, 5, -5] }, night: { q: "夜ぶー。泥が真っ暗で落ち着くぶ…。主様も眠いぶ？", a: ["隣で寝てもいい？", "おやすみぶー", "まだ寝ないよ"], scores: [10, 5, -5] }, midnight: { q: "こんな時間にどうしたぶ？泥棒かと思ったぶ！", a: ["君に会いに来た", "眠れなくて", "間違えただけ"], scores: [10, 5, -5] } },
+                maxStrokes: ["もっと撫でてぶ！主様の手、あったかいぶ〜", "主様はボクだけのものだぶ！大好きだぶ！"]
+            },
+            imo: {
+                welcome: "あ、おかえりもにょ。土の中は静かでもにょ…。",
+                maxWelcome: "おかえりもにょ。主様が来ると、土の中まで明るくなるもにょ…♪",
+                strokeRes: "なでなで、落ち着くもにょ……♪",
+                ansRes: { high: "心の中がポカポカもにょ…♪", mid: "ありがとうもにょ。土の中でも聞こえたもにょ。", low: "…土の奥に潜るもにょ。さよならもにょ…。" },
+                questions: [{ q: "一生、土の中かもしれないもにょ…。それでもいいもにょ？", a: ["ボクが土に行くよ", "いつか地上へ行こう", "暗いのは嫌だな"], scores: [10, 5, -5] }, { q: "オシャレな宝石にはなれないもにょ…。", a: ["土のぬくもりが一番だよ", "磨けば光るよ", "地味だもんね"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはようもにょ。土が朝露で湿ってるもにょ…。", a: ["しっとりして良いね", "冷たくない？", "土は嫌い"], scores: [10, 5, -5] }, lunch: { q: "お昼もにょ。地上は今、明るいもにょ？", a: ["すごく綺麗だよ", "普通かな", "眩しすぎるよ"], scores: [10, 5, -5] }, night: { q: "夜もにょ。土の中はいつも夜みたいもにょ…。", a: ["静かでいいね", "寂しくない？", "暗いのは怖い"], scores: [10, 5, -5] }, midnight: { q: "夜中もにょ。主様も土の中で一緒に丸まるもにょ？", a: ["丸まるもにょ", "布団で寝なよ", "遠慮しとく"], scores: [10, 5, -5] } },
+                maxStrokes: ["主様の手、落ち着くもにょ…ずっとこうしててもにょ", "地上は眩しいけど、主様がいれば怖くないもにょ"]
+            },
+            jaku: {
+                welcome: "お帰りなさい、主様。今日も美しい一日ですわね。",
+                maxWelcome: "お帰りなさいませ、私の主様。あなたが戻られるのを、羽を震わせて待っておりましたわ。",
+                strokeRes: "あら…主様の指先、とても優雅ですわね。",
+                ansRes: { high: "まぁ…胸が高鳴りますわ。嬉しいですわね。", mid: "お言葉、痛み入りますわ。精進いたしますわ。", low: "…少し、羽の色が曇ってしまいましたわ。" },
+                questions: [{ q: "私の羽、少し色が混ざりすぎていて…不気味ではありませんか？", a: ["複雑な輝きが素敵だよ", "個性があっていいね", "少し派手かも"], scores: [10, 5, -5] }, { q: "真の美しさとは、どこにあると思いますの？", a: ["君の心の中だよ", "外見も大事だね", "そんなの知らない"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "ごきげんよう。朝陽を浴びて、羽をお手入れしましょうか。", a: ["手伝わせて", "今日も綺麗だね", "眠そうだね"], scores: [10, 5, -5] }, lunch: { q: "ランチタイムですわ。紅茶にブルーベリーを添えていかが？", a: ["最高だね", "お洒落だね", "紅茶は苦手"], scores: [10, 5, -5] }, night: { q: "夜の帳が下りましたわ。月明かりは私を美しく見せますの。", a: ["見惚れちゃうよ", "月より綺麗だよ", "暗くて見えない"], scores: [10, 5, -5] }, midnight: { q: "こんな夜更けに…ふふ、秘密のお話でもいたしましょうか？", a: ["ぜひ聞かせて", "眠くないの？", "早く寝ようよ"], scores: [10, 5, -5] } },
+                maxStrokes: ["あら、主様。そんなに熱心に…嬉しいですわ", "世界で一番、あなたの手が心地よいですわね"]
+            },
+            risu: {
+                welcome: "おかえり！水分補給しっかりね！",
+                maxWelcome: "おかえりぃ！もう、待ちくたびれて干からびちゃうかと思ったよぉ！大好き！",
+                strokeRes: "わぁっ！なでなですると毛並みが整うよぉ！",
+                ansRes: { high: "わぁっ！お肌も心もプルプルだよぉ！", mid: "ありがとう！水分補給と同じくらい大事な言葉だね！", low: "…キュウリ、落としちゃった。悲しいよぉ。" },
+                questions: [{ q: "尻尾がボサボサになっちゃった…。アイドル失格かなぁ？", a: ["自然体で最高だよ", "ブラッシングしよう", "ちょっと冒険だね"], scores: [10, 5, -5] }, { q: "ボク、野菜なのにリスなんて変だよね…？", a: ["唯一無二の魅力だよ", "面白いと思うよ", "確かにヘンテコ"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おっはよー！朝のキュウリはシャキシャキだよぉ！", a: ["半分ちょうだい", "元気だね！", "まだ眠いよ…"], scores: [10, 5, -5] }, lunch: { q: "お昼だね！一緒にサラダランチしよぉ！", a: ["美味しそう！", "健康志向だね", "肉が食べたい"], scores: [10, 5, -5] }, night: { q: "夜だぁ。ボクの水分、足りてるかなぁ？", a: ["しっかり補給して", "プルプルだよ！", "カピカピかも？"], scores: [10, 5, -5] }, midnight: { q: "夜更かしさんだねぇ！ボクも一緒に起きてるよぉ！", a: ["一緒に遊ぼう", "寝なくて大丈夫？", "先に寝るね"], scores: [10, 5, -5] } },
+                maxStrokes: ["ふふっ、主様になでられるの、一番の美容液だよ！", "離さないからね！主様、だーいすき！"]
+            },
+            tora: {
+                welcome: "おかえりガオー！トマトパワー全開だ！",
+                maxWelcome: "おかえりだガオーッ！お前がいないとトマトが枯れちまうかと思ったぜ！",
+                strokeRes: "ガオーッ！力がみなぎってくるガオ！もっとだ！",
+                ansRes: { high: "ガオーッ！最高のトマトパワーが湧いてきたガオ！", mid: "おう、サンキューな！もっと熱くいこうぜ！", low: "…火が消えちまったガオ。冷たいトマトになっちゃうぞ。" },
+                questions: [{ q: "ガオーッ！…今の吠え方、迫力足りなかったガオ？", a: ["可愛くて最高だよ", "一生懸命で良いガオ", "全然怖くないよ"], scores: [10, 5, -5] }, { q: "オレ様、本当は強がってるだけなんだガオ…。", a: ["そのままで十分強いよ", "一緒に強くなろう", "バレバレだぜ"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "朝だガオーッ！太陽みたいに真っ赤に燃えるガオ！", a: ["眩しいガオ！", "元気いっぱいだね", "朝からうるさいよ"], scores: [10, 5, -5] }, lunch: { q: "腹減ったガオ！丸かじりできる獲物を探すガオ！", a: ["トマトでいい？", "ワイルドだね", "行儀悪いよ"], scores: [10, 5, -5] }, night: { q: "夜はオレ様の時間だガオ！目が光るんだガオ！", a: ["かっこいい！", "ちょっと怖いかも", "懐中電灯みたい"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで修行かガオ？オレ様も付き合うガオ！", a: ["頼もしいな！", "ほどほどにね", "邪魔しないで"], scores: [10, 5, -5] } },
+                maxStrokes: ["おいおい、照れるガオ！ But…もっとやってくれ！", "お前となら、どこまででも強くなれる気がするガオ！"]
+            },
+            chabo: {
+                welcome: "よお、主。待ってたぜ。座って休めよ。",
+                maxWelcome: "おかえり、あんた。…いや、なんでもねぇ。とにかく、無事でよかったぜ。",
+                strokeRes: "…ふん、悪くねぇ。もっと端の方もなでろよ。",
+                ansRes: { high: "…あんた、たまに心にくること言うよな。悪くねぇ。", mid: "ふん、分かってるじゃねぇか。感謝するぜ。", low: "…なんだそりゃ。カボチャの皮より硬い言葉だな。" },
+                questions: [{ q: "俺の殻、ヒビが入っちまった。格好つかねぇな…。", a: ["戦った証だね", "味があっていいよ", "直さないの？"], scores: [10, 5, -5] }, { q: "愛愛想がなくて悪かったな。…こんな俺、嫌か？", a: ["そこが信頼できるよ", "慣れてきたよ", "少し怖いかな"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "朝か。収穫の時間だぜ。あんたも手伝うか？", a: ["喜んで！", "無理はしないで", "眠いから嫌"], scores: [10, 5, -5] }, lunch: { q: "昼飯にカボチャの煮物作ったぜ。食うか？", a: ["食べる！", "料理上手だね", "またカボチャ？"], scores: [10, 5, -5] }, night: { q: "夜道は危ねぇ。俺が送ってってやるよ。", a: ["ありがとう", "頼もしいね", "一人で大丈夫"], scores: [10, 5, -5] }, midnight: { q: "こんな時間まで起きてると、煮物にするぞ…冗談だ。", a: ["面白い冗談だね", "怖かったよ", "早く寝なよ"], scores: [10, 5, -5] } },
+                maxStrokes: ["あんたの手は…反則だな。…もっとやっていいぞ。", "こうしてると、畑仕事の疲れも吹っ飛ぶぜ。"]
+            },
+            saru: {
+                welcome: "ウキキーッ！主！フレッシュなレモンはいかが！？",
+                maxWelcome: "ウキキーッ！主様ぁ！今日はずっとお祝いウキ！主様が大好きすぎるウキ！",
+                strokeRes: "ウキッ！主のなでなで、ビタミンより効くぅ〜！",
+                ansRes: { high: "ウキキーッ！主、最高！ビタミンMAXだよぉ！", mid: "ウキッ！今の言葉、レモンみたいに効いたよ！", low: "…酸っぱすぎるよぉ。そんなの、ウキィ…。" },
+                questions: [{ q: "レモンが酸っぱすぎて、みんな逃げていっちゃうウキ…。", a: ["ボクは逃げないよ", "刺激的でいいよ", "確かに酸っぱい！"], scores: [10, 5, -5] }, { q: "ウキッ！ボク、お調子に乗りすぎちゃうウキ？", a: ["明るくて元気が出るよ", "そのままでいいよ", "少し静かにして"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはようウキ！朝イチのレモン絞りたてだウキ！", a: ["目が覚めたよ！", "酸っぱそうだね", "今は甘いのがいい"], scores: [10, 5, -5] }, lunch: { q: "お昼だウキ！木の上で一緒にランチするウキ？", a: ["登るよ！", "危なくない？", "地面がいい"], scores: [10, 5, -5] }, night: { q: "夜だウキ！レモンの皮でお風呂にするウキ！", a: ["お肌ツルツルだね", "贅沢だね", "染みそう…"], scores: [10, 5, -5] }, midnight: { q: "ウキキー！夜更かしウッキー！踊るウキ！", a: ["一緒に踊ろう！", "静かにね", "うるさいウキ！"], scores: [10, 5, -5] } },
+                maxStrokes: ["ウキキッ！気持ちいい〜！主、最高だよぉ！", "レモンより甘い気分になっちゃうウキーッ！"]
+            },
+            kame: {
+                welcome: "おかえりなさい……。のんびり、いきましょうね。",
+                maxWelcome: "おかえりなさい……主様。あなたと過ごす、この一秒一秒が、私の永遠です……。",
+                strokeRes: "あぁ……甲羅まで、主様のぬくもりが届きます……。",
+                ansRes: { high: "あぁ…深い海の底にいるような, 安らかな気持ちです…。", mid: "ありがとうございます…。ゆっくり、大切にしますね。", low: "……少し、甲羅の中に隠れますね……。悲しいです。" },
+                questions: [{ q: "ブルーベリーの果汁が甲羅に染みちゃって…汚いですか？", a: ["綺麗なグラデーションだよ", "一生懸命な証拠だね", "洗ったほうがいいかも"], scores: [10, 5, -5] }, { q: "私……歩くの、遅すぎますか……？", a: ["一緒に歩けるから好き", "マイペースでいいよ", "もう少し急いで"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "おはようございます……。朝露が慶事ですね……。", a: ["本当に綺麗だね", "ゆっくり見おう", "早く行かなきゃ"], scores: [10, 5, -5] }, lunch: { q: "お昼寝の時間でしょうか……。一緒にどうですか……？", a: ["おやすみなさい", "のんびりしよう", "忙しいんだ"], scores: [10, 5, -5] }, night: { q: "星が出てきました……。ブルーベリーみたいですね……。", a: ["ロマンチックだね", "美味しそうだね", "ただの点だよ"], scores: [10, 5, -5] }, midnight: { q: "こんな時間……。静かで、心が落ち着きます……。", a: ["ずっとこうしていたい", "怖くない？", "もう寝る時間だよ"], scores: [10, 5, -5] } },
+                maxStrokes: ["あぁ…時が止まればいいのに……幸せです……", "主様のなでなで、とっても優しい魔法ですね…"]
+            },
+            nga: {
+                welcome: "ピピィーッ！主様ぁ！会いたかったよぉ！",
+                maxWelcome: "ピピィーッ！大好きな主様ぁ！もうどこへも行かないでぁ！ギュッとしてぇ！",
+                strokeRes: "ピピィッ！もっとぉ！主様のなでなで大好きぃー！",
+                ansRes: { high: "ピピィッ！主様ぁ、だーいすき！空まで飛べそうだよぉ！", mid: "ピピッ、ありがとうぅ！主様は優しいねぇ！", low: "…ピーッ！嫌いになっちゃったのぉ？悲しいよぉ…。" },
+                questions: [{ q: "ボク、飛ぶときにいつもフラフラしちゃうのぉ…。", a: ["危なっかしくて可愛いね", "着地はボクの腕に！", "もっと特訓だね"], scores: [10, 5, -5] }, { q: "甘えん坊すぎて、迷惑かなぁ…？ピピッ。", a: ["もっと甘えていいよ", "頼われて嬉しいよ", "時々ね"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "ピピィッ！朝だよぉ！空散歩いくぅ！？", a: ["連れてって！", "高いの怖いよ", "まだ寝るぅ"], scores: [10, 5, -5] }, lunch: { q: "ランチピピッ！美味しい実を見つけたよぉ！", a: ["食べたい！", "どこにあったの？", "お腹いっぱい"], scores: [10, 5, -5] }, night: { q: "暗くなっちゃったぁ…寂しいよぉ、ピピッ。", a: ["ギュッとしてあげる", "隣にいるよ", "もう寝なさい"], scores: [10, 5, -5] }, midnight: { q: "夜中の大冒険だピピィッ！主様も飛べるかなぁ！？", a: ["飛べる気がする！", "危ないよぉ", "無理だよぉ"], scores: [10, 5, -5] } },
+                maxStrokes: ["もっとぉ！もっとぉ！主様ぁ、だぁいすきだよぉ！", "ピピィ！これ、ボクへのプロポーズかなぁ！？"]
+            },
+            kuma: {
+                welcome: "……お帰り。君の足音が聞こえたよ。",
+                maxWelcome: "……お帰り。君がいない間、世界がモノクロだった。戻ってきてくれて、ありがとう。",
+                strokeRes: "……君の手、とても温かい。心が解けていくようだね。",
+                ansRes: { high: "……君という光に、救われた気がするよ。ありがとう。", mid: "……温かい言葉だね。冷えた体が少し、溶けたよ。", low: "……暗闇が、もっと深くなったみたいだ。寂しいね。" },
+                questions: [{ q: "私の体、真っ暗で何も見えないね。……寂しい姿だろう？", a: ["深い優しさを感じるよ", "影みたいで落ち着くよ", "確かに暗いね"], scores: [10, 5, -5] }, { q: "……イチジクの蜜で手がベタベタだ。触らないほうがいい。", a: ["気にせずなでさせて", "甘い香りがして好きだよ", "汚れるのは嫌だな"], scores: [10, 5, -5] }],
+                timeQuests: { morning: { q: "……朝の光は、少し眩しすぎるね。君は平気かい？", a: ["一緒に浴びよう", "影を作ってあげる", "太陽は最高だよ"], scores: [10, 5, -5] }, lunch: { q: "……お昼だね。イチジクの木の下で休もうか。", a: ["隣に座るよ", "涼しそうだね", "別の場所がいい"], scores: [10, 5, -5] }, night: { q: "……夜だ。やっと私の時間だね。少し落ち着くよ。", a: ["静かな君も好き", "落ち着くね", "暗くて不安だよ"], scores: [10, 5, -5] }, midnight: { q: "……まだ起きていたのか。深夜の蜜は、とても甘いんだよ。", a: ["舐めてもいい？", "不思議だね", "歯に悪そう"], scores: [10, 5, -5] } },
+                maxStrokes: ["君のぬくもり……これが「愛」なんだね。", "もっと触れていて……君がいれば、冬も怖くないよ。"]
             }
+        };
 
-            // 数値の更新（アニメーションさせるかどうか）
-            // 数値の更新
-            if (isAnimate) {
-                animateValue(oldLove, love, 300);
-            } else {
-@@ -424,132 +447,136 @@
+        let currentChar = "buta";
+        let love = 50;
 
-            document.getElementById('user-display').innerText = userName + "の絆ルーム";
+        function getLove() { 
+            return parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50; 
+        }
+        function setLove(val) { 
+            localStorage.setItem(`hagu_love_${currentChar}`, val); 
+        }
+
+        function getTimeLabel() {
+            const h = new Date().getHours();
+            if (h >= 5 && h < 11) return "morning";
+            if (h >= 11 && h < 17) return "lunch";
+            if (h >= 17 && h < 22) return "night";
+            return "midnight";
+        }
+
+        function updateStatus() {
+            love = getLove();
             const fill = document.getElementById('love-fill');
-            const sprite = document.getElementById('hagumo-sprite'); // ★追加：画像要素を取得
-            
+            const sprite = document.getElementById('hagumo-sprite');
+            const valLabel = document.getElementById('love-val');
+            const talkBtn = document.getElementById('talk-btn');
+
+            valLabel.innerText = love;
             fill.style.width = love + "%";
 
             if (love >= 100) {
-                fill.classList.add('max'); 
-                sprite.classList.add('max-chaos'); // ★追加：100なら暴れる
-                document.getElementById('talk-btn').disabled = true;
-                document.getElementById('talk-btn').innerText = "❤️ 永遠の絆";
+                fill.classList.add('max');
+                sprite.classList.add('max-chaos');
+                talkBtn.disabled = true;
+                talkBtn.innerText = "❤️ 永遠の絆";
             } else {
                 fill.classList.remove('max');
-                sprite.classList.remove('max-chaos'); // ★追加：100未満なら通常に戻す
-                document.getElementById('talk-btn').disabled = false;
-                document.getElementById('talk-btn').innerText = "💬 おしゃべり";
+                sprite.classList.remove('max-chaos');
+                talkBtn.disabled = false;
+                talkBtn.innerText = "💬 おしゃべり";
             }
-            checkTimeAndEffect();
         }
 
-        // なでなで時の呼び出しを変更
         function strokeHagumo(e) {
-            // ... (制限ロジックはそのまま) ...
-            const now = Date.now();
-            if (love < 100) {
-                strokeHistory = strokeHistory.filter(time => now - time < 60000);
-                if (strokeHistory.length >= 15) return;
-                strokeHistory.push(now);
-            }
+            let currentLove = getLove();
+            const data = charData[currentChar];
+            
+            currentLove = Math.min(100, currentLove + 1);
+            setLove(currentLove);
+            
+            document.getElementById('chat-bubble').innerText = (currentLove >= 100) ? 
+                data.maxStrokes[Math.floor(Math.random() * data.maxStrokes.length)] : data.strokeRes;
 
-            const oldLove = love;
-            love = Math.min(100, love + 1);
-            if (love >= 100 && oldLove < 100) lastMaxTime = Date.now();
-
-            // 演出用
             createHeart(e.clientX || window.innerWidth/2, e.clientY || window.innerHeight/2);
-            document.getElementById('chat-bubble').innerText = (love >= 100) ? 
-                getName(charData[currentChar].maxStrokes[Math.floor(Math.random()*2)]) : 
-                getName(charData[currentChar].strokeRes);
-
-            updateStatus(true); // 引数にtrueを入れてアニメーション起動
-            save();
+            updateStatus();
         }
 
         function startTalk() {
-            if (love >= 100) return;
+            if (getLove() >= 100) return;
             const data = charData[currentChar];
             let quest;
-            const timeLabel = getTimeLabel();
-            if (Math.random() < 0.4) quest = data.timeQuests[timeLabel];
+            
+            // 40%の確率で時間帯質問、60%で通常質問
+            if (Math.random() < 0.4) quest = data.timeQuests[getTimeLabel()];
             else quest = data.questions[Math.floor(Math.random() * data.questions.length)];
 
-            document.getElementById('chat-bubble').innerText = getName(quest.q);
+            document.getElementById('chat-bubble').innerText = quest.q;
             const container = document.getElementById('choices');
             container.innerHTML = "";
             container.style.display = "flex";
@@ -264,16 +316,31 @@
                 btn.className = "choice-btn";
                 btn.innerText = text;
                 btn.onclick = () => {
+                    let currentLove = getLove();
                     const score = quest.scores[i];
-                    love = Math.min(100, Math.max(0, love + score));
+                    currentLove = Math.min(100, Math.max(0, currentLove + score));
+                    setLove(currentLove);
+                    
                     container.style.display = "none";
-                    document.getElementById('chat-bubble').innerText = getName(data.ansRes[score >= 10 ? "high" : (score < 0 ? "low" : "mid")]);
-                    setTimeout(() => loadCharStatus(currentChar, true), 3000);
+                    document.getElementById('chat-bubble').innerText = 
+                        data.ansRes[score >= 10 ? "high" : (score < 0 ? "low" : "mid")];
+                    
                     updateStatus();
-                    save();
                 };
                 container.appendChild(btn);
             });
+        }
+
+        function changeChar() {
+            currentChar = document.getElementById('char-selector').value;
+            localStorage.setItem('hagu_current_char', currentChar);
+            document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+            
+            const currentLove = getLove();
+            document.getElementById('chat-bubble').innerText = (currentLove >= 100) ? 
+                charData[currentChar].maxWelcome : charData[currentChar].welcome;
+            
+            updateStatus();
         }
 
         function createHeart(x, y) {
@@ -284,43 +351,8 @@
             setTimeout(() => h.remove(), 1500);
         }
 
-        function renameUser() {
-            const newName = prompt("新しいおなまえを教えてね", userName);
-            if (newName && newName.trim()) {
-                userName = newName.trim();
-                save();
-                updateStatus();
-            }
-        }
-
-        function changeChar() {
-            currentChar = document.getElementById('char-selector').value;
-            document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
-            loadCharStatus(currentChar);
-        }
-
-        function loadCharStatus(charKey, skipWelcome = false) {
-            love = parseInt(localStorage.getItem(`hagu_love_${charKey}`)) || 50;
-            lastUpdate = parseInt(localStorage.getItem(`hagu_time_${charKey}`)) || Date.now();
-
-            updateStatus();
-            const bubble = document.getElementById('chat-bubble');
-            if (love >= 100) {
-                bubble.innerText = getName(charData[charKey].maxWelcome);
-            } else if (!skipWelcome) {
-                bubble.innerText = getName(charData[charKey].welcome);
-            }
-        }
-
-        function save() {
-            localStorage.setItem(`hagu_love_${currentChar}`, love);
-            localStorage.setItem(`hagu_time_${currentChar}`, lastUpdate);
-            localStorage.setItem('hagu_user', userName);
-            localStorage.setItem('hagu_current_char', currentChar);
-        }
-
         function manualReset() {
-            if (confirm("絆をリセットして最初からやり直しますか？")) {
+            if (confirm(`${currentChar}との絆をリセットしますか？`)) {
                 localStorage.removeItem(`hagu_love_${currentChar}`);
                 location.reload();
             }
