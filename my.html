@@ -254,29 +254,38 @@
             }
         };
      
-       // --- 状態管理 ---
+      // --- 状態管理 ---
     let currentChar = localStorage.getItem('hagu_current_char') || "buta";
     let userName = localStorage.getItem('hagu_user') || "主様";
-    let love, stamina, lastStaminaTime;
+    let love;
+    
+    // スタミナを2種類に分離
+    let staminaStroke, staminaTalk;
+    let lastTimeStroke, lastTimeTalk;
 
-    // --- メイン関数 ---
-
-    // データの保存
+    // --- 保存と読み込み ---
     function save() {
         localStorage.setItem(`hagu_love_${currentChar}`, love);
-        localStorage.setItem(`hagu_stamina_${currentChar}`, stamina);
-        localStorage.setItem(`hagu_stamina_time_${currentChar}`, lastStaminaTime);
+        localStorage.setItem(`hagu_st_stroke_${currentChar}`, staminaStroke);
+        localStorage.setItem(`hagu_st_talk_${currentChar}`, staminaTalk);
+        localStorage.setItem(`hagu_time_stroke_${currentChar}`, lastTimeStroke);
+        localStorage.setItem(`hagu_time_talk_${currentChar}`, lastTimeTalk);
         localStorage.setItem('hagu_current_char', currentChar);
         localStorage.setItem('hagu_user', userName);
     }
 
-    // ステータスの表示更新
+    // --- 表示の更新 ---
     function updateStatus() {
         const fill = document.getElementById('love-fill');
-        const loveVal = document.getElementById('love-val');
+        const loveText = document.getElementById('love-val');
         const sprite = document.getElementById('hagumo-sprite');
+        const userDisplay = document.getElementById('user-display');
         
-        loveVal.innerText = love;
+        // スタミナ表示エリアの書き換え (2種類表示)
+        const staminaBadge = document.querySelector('.stamina-badge');
+        staminaBadge.innerHTML = `👋 なで:${staminaStroke}/5 💬 話:${staminaTalk}/3`;
+
+        loveText.innerText = love;
         fill.style.width = love + "%";
         
         if (love >= 100) {
@@ -287,76 +296,60 @@
             sprite.classList.remove('max-chaos');
         }
 
-        document.getElementById('stamina-val').innerText = stamina;
-        document.getElementById('user-display').innerText = `${userName}のハグモルーム`;
-        
-        const talkBtn = document.getElementById('talk-btn');
-        const strokeBtn = document.getElementById('stroke-btn');
-        talkBtn.disabled = (stamina <= 0);
-        strokeBtn.disabled = (stamina <= 0);
+        userDisplay.innerText = `${userName}のハグモルーム`;
+
+        // 個別のスタミナ不足でボタンを無効化
+        document.getElementById('stroke-btn').disabled = (staminaStroke < 1);
+        document.getElementById('talk-btn').disabled = (staminaTalk < 1);
     }
 
-    // スタミナの回復計算
+    // --- スタミナ回復計算 ---
     function updateStamina() {
         const now = Date.now();
-        const waitTime = 300000; // 5分(300000ms)で1回復
-        const diff = now - lastStaminaTime;
+        const waitStroke = 180000; // なでなで：3分
+        const waitTalk = 600000;   // おしゃべり：10分
 
-        if (stamina < 5 && diff >= waitTime) {
-            const recovery = Math.floor(diff / waitTime);
-            stamina = Math.min(5, stamina + recovery);
-            lastStaminaTime = lastStaminaTime + (recovery * waitTime);
-            save();
-            updateStatus();
+        let changed = false;
+
+        // なでなで回復
+        if (staminaStroke < 5 && (now - lastTimeStroke) >= waitStroke) {
+            const rec = Math.floor((now - lastTimeStroke) / waitStroke);
+            staminaStroke = Math.min(5, staminaStroke + rec);
+            lastTimeStroke += rec * waitStroke;
+            changed = true;
         }
 
+        // おしゃべり回復
+        if (staminaTalk < 3 && (now - lastTimeTalk) >= waitTalk) {
+            const rec = Math.floor((now - lastTimeTalk) / waitTalk);
+            staminaTalk = Math.min(3, staminaTalk + rec);
+            lastTimeTalk += rec * waitTalk;
+            changed = true;
+        }
+
+        if (changed) { save(); updateStatus(); }
+
+        // タイマー表示
         const timerDisplay = document.getElementById('timer-display');
-        if (stamina < 5) {
-            const nextRecovery = waitTime - (diff % waitTime);
-            const sec = Math.ceil(nextRecovery / 1000);
-            timerDisplay.innerText = `スタミナ全回復まで あと ${Math.floor(sec/60)}分${sec%60}秒`;
-        } else {
-            timerDisplay.innerText = "スタミナは満タンだよ！";
-        }
+        timerDisplay.innerText = (staminaStroke < 5 || staminaTalk < 3) ? "スタミナ回復中..." : "スタミナ満タン！";
     }
 
-    // キャラ変更
-    function changeChar() {
-        currentChar = document.getElementById('char-selector').value;
-        
-        // ロード処理
-        love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
-        let sRaw = localStorage.getItem(`hagu_stamina_${currentChar}`);
-        stamina = (sRaw !== null) ? parseInt(sRaw) : 5;
-        let tRaw = localStorage.getItem(`hagu_stamina_time_${currentChar}`);
-        lastStaminaTime = (tRaw !== null) ? parseInt(tRaw) : Date.now();
+    // --- アクション ---
 
-        document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
-        document.getElementById('chat-bubble').innerText = (love >= 100) ? charData[currentChar].maxWelcome : charData[currentChar].welcome;
-        
-        save();
-        updateStatus();
-    }
-
-    // なでなで
     function strokeHagumo(e) {
-        if (stamina <= 0) return;
-        
-        stamina--;
+        if (staminaStroke < 1) return;
+        staminaStroke--;
         love = Math.min(100, love + 2);
-        lastStaminaTime = Date.now();
+        lastTimeStroke = Date.now();
         
-        const res = charData[currentChar].strokeRes;
-        document.getElementById('chat-bubble').innerText = res;
-        
+        document.getElementById('chat-bubble').innerText = charData[currentChar].strokeRes;
         createHeart(e.pageX, e.pageY);
         save();
         updateStatus();
     }
 
-    // おしゃべり
     function startTalk() {
-        if (stamina <= 0) return;
+        if (staminaTalk < 1) return;
         
         const qList = charData[currentChar].questions;
         const qData = qList[Math.floor(Math.random() * qList.length)];
@@ -373,8 +366,8 @@
             btn.onclick = () => {
                 const score = qData.scores[idx];
                 love = Math.max(0, Math.min(100, love + score));
-                stamina--;
-                lastStaminaTime = Date.now();
+                staminaTalk--; // おしゃべりスタミナを消費
+                lastTimeTalk = Date.now();
                 
                 let resMsg = charData[currentChar].ansRes.mid;
                 if (score > 5) resMsg = charData[currentChar].ansRes.high;
@@ -389,7 +382,31 @@
         });
     }
 
-    // ハート演出
+    // キャラクター切り替え＆ロード
+    function changeChar() {
+        currentChar = document.getElementById('char-selector').value;
+        
+        love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
+        
+        // なでなでロード
+        let sS = localStorage.getItem(`hagu_st_stroke_${currentChar}`);
+        staminaStroke = (sS !== null) ? parseInt(sS) : 5;
+        let tS = localStorage.getItem(`hagu_time_stroke_${currentChar}`);
+        lastTimeStroke = (tS !== null) ? parseInt(tS) : Date.now();
+
+        // おしゃべりロード
+        let sT = localStorage.getItem(`hagu_st_talk_${currentChar}`);
+        staminaTalk = (sT !== null) ? parseInt(sT) : 3;
+        let tT = localStorage.getItem(`hagu_time_talk_${currentChar}`);
+        lastTimeTalk = (tT !== null) ? parseInt(tT) : Date.now();
+
+        document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+        document.getElementById('chat-bubble').innerText = (love >= 100) ? charData[currentChar].maxWelcome : charData[currentChar].welcome;
+        
+        save();
+        updateStatus();
+    }
+
     function createHeart(x, y) {
         const h = document.createElement('div');
         h.className = love >= 100 ? 'heart max-heart' : 'heart';
@@ -400,29 +417,16 @@
         setTimeout(() => h.remove(), 1000);
     }
 
-    // おなまえ変更
     function renameUser() {
-        const newName = prompt("新しいお名前を教えてね", userName);
-        if (newName) {
-            userName = newName;
-            save();
-            updateStatus();
-        }
+        const newName = prompt("新しいお名前は？", userName);
+        if (newName) { userName = newName; save(); updateStatus(); }
     }
 
-    // リセット
     function manualReset() {
-        if (confirm("絆をリセットしてもいい？")) {
-            love = 50;
-            save();
-            updateStatus();
-        }
+        if (confirm("絆をリセットしますか？")) { love = 50; save(); updateStatus(); }
     }
 
-    // 初期化
     window.onload = () => {
-        currentChar = localStorage.getItem('hagu_current_char') || "buta";
-        document.getElementById('char-selector').value = currentChar;
         changeChar();
         setInterval(updateStamina, 1000);
     };
