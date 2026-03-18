@@ -254,47 +254,178 @@
             }
         };
      
-        // --- データの定義 ---
-        const charData = { /* ...中身はそのまま... */ };
+       // --- 状態管理 ---
+    let currentChar = localStorage.getItem('hagu_current_char') || "buta";
+    let userName = localStorage.getItem('hagu_user') || "主様";
+    let love, stamina, lastStaminaTime;
 
-        // --- 状態管理 (255行目付近) ---
-        let currentChar = localStorage.getItem('hagu_current_char') || "buta";
-        let userName = localStorage.getItem('hagu_user') || "主様";
+    // --- メイン関数 ---
+
+    // データの保存
+    function save() {
+        localStorage.setItem(`hagu_love_${currentChar}`, love);
+        localStorage.setItem(`hagu_stamina_${currentChar}`, stamina);
+        localStorage.setItem(`hagu_stamina_time_${currentChar}`, lastStaminaTime);
+        localStorage.setItem('hagu_current_char', currentChar);
+        localStorage.setItem('hagu_user', userName);
+    }
+
+    // ステータスの表示更新
+    function updateStatus() {
+        const fill = document.getElementById('love-fill');
+        const loveVal = document.getElementById('love-val');
+        const sprite = document.getElementById('hagumo-sprite');
         
-        // キャラ個別の絆をロード
-        let love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
+        loveVal.innerText = love;
+        fill.style.width = love + "%";
         
-        // 【修正】キャラ個別のスタミナ管理（NaN対策）
-        let staminaRaw = localStorage.getItem(`hagu_stamina_${currentChar}`);
-        let stamina = (staminaRaw !== null) ? parseInt(staminaRaw) : 5;
-        if (isNaN(stamina)) stamina = 5;
-
-        let timeRaw = localStorage.getItem(`hagu_stamina_time_${currentChar}`);
-        let lastStaminaTime = (timeRaw !== null) ? parseInt(timeRaw) : Date.now();
-        if (isNaN(lastStaminaTime)) lastStaminaTime = Date.now();
-
-        // --- 以下、関数群 ---
-
-        // (中略: getName, updateStamina, updateStatus, startTalk, createHeart, changeChar, renameUser, manualReset は今のままでOK)
-
-        // 【重要】一番下の save 関数をこれに書き換え
-        function save() {
-            localStorage.setItem(`hagu_love_${currentChar}`, love);
-            localStorage.setItem('hagu_current_char', currentChar);
-            // キャラ個別のキーで保存するように統一
-            localStorage.setItem(`hagu_stamina_${currentChar}`, stamina);
-            localStorage.setItem(`hagu_stamina_time_${currentChar}`, lastStaminaTime);
-            localStorage.setItem('hagu_user', userName);
+        if (love >= 100) {
+            fill.classList.add('max');
+            sprite.classList.add('max-chaos');
+        } else {
+            fill.classList.remove('max');
+            sprite.classList.remove('max-chaos');
         }
 
-        setInterval(updateStamina, 1000);
+        document.getElementById('stamina-val').innerText = stamina;
+        document.getElementById('user-display').innerText = `${userName}のハグモルーム`;
+        
+        const talkBtn = document.getElementById('talk-btn');
+        const strokeBtn = document.getElementById('stroke-btn');
+        talkBtn.disabled = (stamina <= 0);
+        strokeBtn.disabled = (stamina <= 0);
+    }
 
-        window.onload = () => {
-            const savedChar = localStorage.getItem('hagu_current_char') || "buta";
-            document.getElementById('char-selector').value = savedChar;
-            changeChar(); // これを呼ぶことで初期ロードが走ります
-        };
-    </script>
-           
+    // スタミナの回復計算
+    function updateStamina() {
+        const now = Date.now();
+        const waitTime = 300000; // 5分(300000ms)で1回復
+        const diff = now - lastStaminaTime;
+
+        if (stamina < 5 && diff >= waitTime) {
+            const recovery = Math.floor(diff / waitTime);
+            stamina = Math.min(5, stamina + recovery);
+            lastStaminaTime = lastStaminaTime + (recovery * waitTime);
+            save();
+            updateStatus();
+        }
+
+        const timerDisplay = document.getElementById('timer-display');
+        if (stamina < 5) {
+            const nextRecovery = waitTime - (diff % waitTime);
+            const sec = Math.ceil(nextRecovery / 1000);
+            timerDisplay.innerText = `スタミナ全回復まで あと ${Math.floor(sec/60)}分${sec%60}秒`;
+        } else {
+            timerDisplay.innerText = "スタミナは満タンだよ！";
+        }
+    }
+
+    // キャラ変更
+    function changeChar() {
+        currentChar = document.getElementById('char-selector').value;
+        
+        // ロード処理
+        love = parseInt(localStorage.getItem(`hagu_love_${currentChar}`)) || 50;
+        let sRaw = localStorage.getItem(`hagu_stamina_${currentChar}`);
+        stamina = (sRaw !== null) ? parseInt(sRaw) : 5;
+        let tRaw = localStorage.getItem(`hagu_stamina_time_${currentChar}`);
+        lastStaminaTime = (tRaw !== null) ? parseInt(tRaw) : Date.now();
+
+        document.getElementById('hagumo-sprite').src = `./images/${currentChar}.PNG`;
+        document.getElementById('chat-bubble').innerText = (love >= 100) ? charData[currentChar].maxWelcome : charData[currentChar].welcome;
+        
+        save();
+        updateStatus();
+    }
+
+    // なでなで
+    function strokeHagumo(e) {
+        if (stamina <= 0) return;
+        
+        stamina--;
+        love = Math.min(100, love + 2);
+        lastStaminaTime = Date.now();
+        
+        const res = charData[currentChar].strokeRes;
+        document.getElementById('chat-bubble').innerText = res;
+        
+        createHeart(e.pageX, e.pageY);
+        save();
+        updateStatus();
+    }
+
+    // おしゃべり
+    function startTalk() {
+        if (stamina <= 0) return;
+        
+        const qList = charData[currentChar].questions;
+        const qData = qList[Math.floor(Math.random() * qList.length)];
+        
+        document.getElementById('chat-bubble').innerText = qData.q;
+        const choiceArea = document.getElementById('choices');
+        choiceArea.innerHTML = "";
+        choiceArea.style.display = "flex";
+        
+        qData.a.forEach((txt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = "choice-btn";
+            btn.innerText = txt;
+            btn.onclick = () => {
+                const score = qData.scores[idx];
+                love = Math.max(0, Math.min(100, love + score));
+                stamina--;
+                lastStaminaTime = Date.now();
+                
+                let resMsg = charData[currentChar].ansRes.mid;
+                if (score > 5) resMsg = charData[currentChar].ansRes.high;
+                if (score < 0) resMsg = charData[currentChar].ansRes.low;
+                
+                document.getElementById('chat-bubble').innerText = resMsg;
+                choiceArea.style.display = "none";
+                save();
+                updateStatus();
+            };
+            choiceArea.appendChild(btn);
+        });
+    }
+
+    // ハート演出
+    function createHeart(x, y) {
+        const h = document.createElement('div');
+        h.className = love >= 100 ? 'heart max-heart' : 'heart';
+        h.innerText = '❤';
+        h.style.left = x + 'px';
+        h.style.top = y + 'px';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 1000);
+    }
+
+    // おなまえ変更
+    function renameUser() {
+        const newName = prompt("新しいお名前を教えてね", userName);
+        if (newName) {
+            userName = newName;
+            save();
+            updateStatus();
+        }
+    }
+
+    // リセット
+    function manualReset() {
+        if (confirm("絆をリセットしてもいい？")) {
+            love = 50;
+            save();
+            updateStatus();
+        }
+    }
+
+    // 初期化
+    window.onload = () => {
+        currentChar = localStorage.getItem('hagu_current_char') || "buta";
+        document.getElementById('char-selector').value = currentChar;
+        changeChar();
+        setInterval(updateStamina, 1000);
+    };
+</script>
 </body>
 </html>
