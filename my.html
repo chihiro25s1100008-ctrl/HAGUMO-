@@ -6,218 +6,194 @@
     <title>MY HAGUMO | ハグモの部屋</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* --- HOMEと完全に共通のデザイン変数 --- */
-        :root { 
-            --main-pink: #ff7eb9; 
-            --soft-pink: #fff5f7; 
-            --pink1: #ffb3d9; 
-            --pink2: #d1478e; 
-            --white-glass: rgba(255, 255, 255, 0.85);
-            --rainbow: linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd1de8, #ff2400); 
-        }
+    /* --- 1. デザイン変数・基本設定（PC・スマホ共通） --- */
+    :root { 
+        --main-pink: #ff7eb9; 
+        --soft-pink: #fff5f7; 
+        --pink1: #ffb3d9; 
+        --pink2: #d1478e; 
+        --white-glass: rgba(255, 255, 255, 0.85);
+        --rainbow: linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd1de8, #ff2400); 
+    }
 
-        body { 
-            font-family: 'Zen Maru Gothic', sans-serif; 
-            background: var(--soft-pink); 
-            margin: 0; 
-            padding-top: 80px; 
-            color: #555; 
-            overflow-x: hidden;
-            transition: background 0.5s;
-        }
-
-        /* --- ナビゲーション（HOME完全一致） --- */
-        .nav { 
-            position: fixed; top: 0; left: 0; width: 100%; 
-            background: var(--white-glass);
-            backdrop-filter: blur(10px); 
-            z-index: 10000; 
-            border-bottom: 2px solid rgba(255, 179, 217, 0.3); 
-            padding: 12px 0;
-        }
-        .nav-content { 
-            max-width: 1100px; margin: 0 auto; padding: 0 20px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .nav-logo-img { height: 35px; cursor: pointer; transition: 0.3s; }
-        .nav-logo-img:hover { transform: scale(1.1) rotate(-3deg); }
-
-        .nav-links { display: flex; gap: 12px; }
-        .nav-link { 
-            color: #888; text-decoration: none; font-size: 13px; font-weight: bold; 
-            padding: 8px 16px; border-radius: 50px; transition: 0.3s;
-            border: 1px solid transparent; font-family: 'Quicksand', sans-serif;
-        }
-        .nav-link:hover, .nav-link.active { 
-            color: var(--pink2); background: white; border-color: var(--pink1);
-            box-shadow: 0 4px 10px rgba(255, 126, 185, 0.2);
-        }
-
-        /* --- MY HAGUMO レイアウト --- */
-        .main-wrapper { 
-            display: flex; flex-direction: column; align-items: center; 
-            max-width: 1000px; margin: 0 auto; padding: 20px; 
-        }
-
-        /* スマホ調整（ここを書き換え・追記） */
-@media screen and (max-width: 768px) {
     body { 
-        padding-top: 70px; /* 少し上に詰める */
-    }
-    
-    .nav-logo-img { 
-        height: 28px; /* ロゴを少し小さく */
-    }
-
-    .main-wrapper {
-        padding: 10px; /* 全体の余白を削る */
+        font-family: 'Zen Maru Gothic', sans-serif; 
+        background: var(--soft-pink); 
+        margin: 0; 
+        padding-top: 80px; 
+        color: #555; 
+        overflow-x: hidden;
+        transition: background 0.5s;
     }
 
-    .status-container {
-        padding: 15px; /* カード内の余白を削減 */
-        margin-bottom: 15px;
+    /* --- 2. PC版レイアウト（横並び） --- */
+    .main-wrapper { 
+        display: flex; 
+        flex-direction: row; /* 横に並べる */
+        justify-content: center;
+        align-items: flex-start;
+        max-width: 1000px; 
+        margin: 0 auto; 
+        padding: 20px; 
+        gap: 40px;
+        box-sizing: border-box;
     }
 
-    /* ハグモの画像サイズをスマホに最適化 */
+    .left-panel { width: 40%; }
+    .right-panel { width: 55%; }
+
+    /* --- 3. パーツ別デザイン --- */
+    /* ナビゲーション */
+    .nav { position: fixed; top: 0; left: 0; width: 100%; background: var(--white-glass); backdrop-filter: blur(10px); z-index: 10000; border-bottom: 2px solid rgba(255, 179, 217, 0.3); padding: 12px 0; }
+    .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo-img { height: 35px; cursor: pointer; transition: 0.3s; }
+    .nav-links { display: flex; gap: 12px; }
+    .nav-link { color: #888; text-decoration: none; font-size: 13px; font-weight: bold; padding: 8px 16px; border-radius: 50px; transition: 0.3s; border: 1px solid transparent; font-family: 'Quicksand', sans-serif; }
+    .nav-link:hover, .nav-link.active { color: var(--pink2); background: white; border-color: var(--pink1); box-shadow: 0 4px 10px rgba(255, 126, 185, 0.2); }
+
+    /* キャラクター画像（サイズ固定とアニメーション） */
     .hagumo-img { 
-        width: 100%;
-        max-width: 180px; /* 最大でも180pxに制限 */
-        height: auto;
+        width: 100%; 
+        max-width: 280px; /* PCでの最大サイズ */
+        height: auto; 
+        object-fit: contain; 
+        cursor: pointer; 
+        transition: transform 0.3s, filter 0.3s; 
+        filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); 
+        display: block;
         margin: 0 auto;
     }
+    
+    /* 通常時のふわふわアニメーション */
+    .bounce { animation: bounce 4s infinite ease-in-out; }
+    
+    /* なでなでされた時の縮む演出 */
+    .hagumo-img:active { transform: scale(0.95); }
 
-    .bubble {
-        padding: 15px;
-        font-size: 14px;
-        margin-bottom: 15px;
+    /* 吹き出し・ステータスカード */
+    .status-container, .bubble { background: white; border: 2px solid var(--soft-pink); border-radius: 35px; box-shadow: 0 15px 35px rgba(255, 126, 185, 0.12); padding: 25px; text-align: center; margin-bottom: 25px; box-sizing: border-box; }
+
+    /* 絆ゲージ */
+    .love-bar-bg { width: 100%; height: 20px; background: #f0f0f0; border-radius: 15px; margin: 15px 0; overflow: hidden; }
+    .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: width 0.5s ease-out; }
+    
+    /* MAX時の虹色アニメーション */
+    .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
+
+    /* ボタン（HAGUMOデザイン） */
+    .main-actions { display: flex; gap: 15px; width: 100%; margin-top: 10px; }
+    .action-btn { 
+        background: white; border: 2px solid var(--pink1); padding: 15px 25px; border-radius: 50px; 
+        font-weight: bold; cursor: pointer; color: var(--pink2); transition: 0.3s; flex: 1; 
+        font-family: 'Zen Maru Gothic', sans-serif;
+        box-shadow: 0 4px 0 var(--soft-pink);
+    }
+    .action-btn:hover { background: var(--soft-pink); transform: translateY(-2px); }
+    .action-btn:active { transform: translateY(2px); box-shadow: none; }
+    .action-btn:disabled { background: #eee; border-color: #ddd; color: #aaa; cursor: not-allowed; box-shadow: none; }
+
+    /* おしゃべり選択肢（フェードインと縦並び） */
+    #choices { 
+        display: none; 
+        flex-direction: column; 
+        gap: 12px; 
+        width: 100%;
+        margin-top: 20px; 
+        animation: fadeIn 0.3s ease-out;
+    }
+    .choice-btn {
+        background: white; 
+        border: 2px solid var(--pink1); 
+        padding: 15px; 
+        border-radius: 30px;
+        cursor: pointer; 
+        font-size: 15px; 
+        color: var(--pink2); 
+        font-weight: bold;
+        transition: 0.2s;
+        box-shadow: 0 4px 0 var(--soft-pink);
+        text-align: center;
+    }
+    .choice-btn:hover { background: var(--soft-pink); transform: translateY(-2px); }
+
+    /* ハート演出のCSS */
+    .heart { position: fixed; color: #ff4d94; pointer-events: none; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
+
+    /* MAX時に付与するクラス（暴れる・虹色に光る） */
+    .max-chaos {
+        animation: abare-move 0.2s infinite, rainbow-flash 0.5s infinite !important;
+        cursor: orange !important;
     }
 
-    .action-btn {
-        padding: 12px 20px; /* ボタンを押しやすいサイズに維持しつつスリムに */
+    /* --- 4. スマホ版レスポンシブ（最後に書く！） --- */
+    @media screen and (max-width: 768px) {
+        body { padding-top: 110px; }
+        
+        /* スマホでは縦並びに強制変更 */
+        .main-wrapper {
+            flex-direction: column !important;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .left-panel, .right-panel {
+            width: 100% !important;
+        }
+
+        /* 画像がデカすぎないように調整 */
+        .hagumo-img { 
+            max-width: 180px; /* スマホでの最適サイズ */
+            margin: 0 auto;
+        }
+
+        .nav-logo-img { height: 25px; }
+        .nav-links { gap: 5px; overflow-x: auto; white-space: nowrap; padding-bottom: 5px; }
+        .nav-link { padding: 6px 12px; font-size: 11px; }
+
+        .status-container, .bubble { padding: 15px; border-radius: 25px; }
+        
+        /* スマホではおしゃべりボタン等を縦に並べる */
+        .main-actions { flex-direction: column; gap: 10px; }
+        .action-btn { width: 100%; }
     }
-}
 
-        /* カード・吹き出しのデザイン */
-        .status-container, .bubble {
-            background: white;
-            border: 2px solid var(--soft-pink);
-            border-radius: 35px;
-            box-shadow: 0 15px 35px rgba(255, 126, 185, 0.12);
-            padding: 25px;
-            text-align: center;
-            box-sizing: border-box;
-            margin-bottom: 25px;
-        }
+    /* --- 5. アニメーション設定（ここにすべてまとめました） --- */
+    
+    /* 絆ゲージMAX時の虹色移動 */
+    @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+    
+    /* 通常時のふわふわ浮遊 */
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    
+    /* 選択肢のフェードイン */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* なでなでした時のハート上昇 */
+    @keyframes heartUp { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-100px); opacity: 0; } }
+    
+    /* MAX時の虹色フラッシュ（ドロップシャドウ） */
+    @keyframes rainbow-flash {
+        0% { filter: drop-shadow(0 0 10px #ff0000) hue-rotate(0deg); }
+        100% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(360deg); }
+    }
 
-        /* 絆ゲージ */
-        .love-bar-bg { width: 100%; height: 20px; background: #f0f0f0; border-radius: 15px; margin: 15px 0; overflow: hidden; }
-        .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink1), var(--main-pink)); width: 50%; transition: 0.5s; }
-        .love-bar-fill.max { background: var(--rainbow); background-size: 200% 100%; animation: moveBg 2s linear infinite; }
-        @keyframes moveBg { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+    /* MAX時の激しく暴れる移動 */
+    @keyframes abare-move {
+        0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+        10% { transform: translate(-5px, -10px) rotate(-5deg) scale(1.1); }
+        20% { transform: translate(5px, 10px) rotate(5deg) scale(1.05); }
+        30% { transform: translate(-10px, 5px) rotate(-10deg) scale(1.2); }
+        50% { transform: translate(10px, -5px) rotate(15deg) scale(1.1); }
+        70% { transform: translate(-5px, 15px) rotate(-20deg) scale(1.3); }
+        90% { transform: translate(15px, 5px) rotate(10deg) scale(1.1); }
+        100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    }
 
-        /* キャラクター画像 */
-        .hagumo-img { 
-            width: 280px; height: 280px; object-fit: contain; cursor: pointer; transition: 0.3s; 
-            filter: drop-shadow(0 15px 25px rgba(255,126,185,0.3)); 
-        }
-        .bounce { animation: bounce 4s infinite ease-in-out; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-        /* ボタンデザイン（HOMEの丸みと合わせる） */
-        .action-btn { 
-            background: white; border: 2px solid var(--soft-pink); padding: 15px 25px; border-radius: 50px; 
-            font-weight: bold; cursor: pointer; color: #666; transition: 0.3s; flex: 1;
-            font-family: 'Zen Maru Gothic', sans-serif;
-        }
-        .action-btn:hover { border-color: var(--pink1); color: var(--pink2); transform: translateY(-2px); }
-        .main-actions { display: flex; gap: 15px; width: 100%; }
-
-        /* おしゃべり選択肢 */
-        #choices { display: none; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
-        .choice-btn {
-            background: var(--soft-pink); border: none; padding: 10px 20px; border-radius: 20px;
-            cursor: pointer; font-size: 13px; color: var(--pink2); transition: 0.3s;
-        }
-        .choice-btn:hover { background: var(--pink1); color: white; }
-
-        /* ハート演出 */
-        .heart { position: fixed; color: #ff4d94; pointer-events: none; animation: heartUp 1.5s forwards; font-size: 24px; z-index: 9999; }
-        @keyframes heartUp { 0% { transform: scale(0.5) translateY(0); opacity: 1; } 100% { transform: scale(1.5) translateY(-100px); opacity: 0; } }
-
-        /* 特殊状態の背景（絆MAXなど） */
-        body.bg-level-1 { background: #fff5f7; }
-        body.bg-level-2 { background: #ffe0f0; }
-        body.bg-level-3 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
-
-        .reset-btn { background: none; border: none; color: #ccc; font-size: 11px; cursor: pointer; margin-top: 20px; }
-
-        /* --- フッター（HOME完全一致） --- */
-        footer { background: white; padding: 60px 20px; text-align: center; border-top: 2px solid var(--soft-pink); margin-top: 100px; }
-
-        /* スマホ調整 */
-        @media screen and (max-width: 768px) {
-            .nav-links { gap: 5px; overflow-x: auto; white-space: nowrap; padding-bottom: 3px; }
-            .nav-link { padding: 6px 12px; font-size: 11px; }
-            body { padding-top: 110px; }
-            .hagumo-img { width: 220px; height: 220px; }
-        }
-        /* おしゃべり選択肢：もっと押しやすく！ */
-#choices { 
-    display: none; 
-    flex-direction: column; /* 縦に並べて押しやすく */
-    gap: 12px; 
-    width: 100%;
-    margin-top: 20px; 
-    animation: fadeIn 0.3s;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.choice-btn {
-    background: white; 
-    border: 2px solid var(--pink1); 
-    padding: 15px; 
-    border-radius: 30px;
-    cursor: pointer; 
-    font-size: 15px; 
-    color: var(--pink2); 
-    font-weight: bold;
-    transition: 0.2s;
-    box-shadow: 0 4px 0 var(--soft-pink);
-    text-align: center;
-}
-.choice-btn:hover { background: var(--soft-pink); transform: translateY(-2px); }
-.choice-btn:active { transform: translateY(2px); box-shadow: none; }
-
-/* 数字が動く時のアニメーション */
-#love-val {
-    display: inline-block;
-    transition: transform 0.1s;
-}
-.val-up { color: var(--main-pink); transform: scale(1.3); }
-        /* 虹色に光るアニメーション */
-@keyframes rainbow-flash {
-    0% { filter: drop-shadow(0 0 10px #ff0000) hue-rotate(0deg); }
-    100% { filter: drop-shadow(0 0 20px #ff0000) hue-rotate(360deg); }
-}
-
-/* 激しく暴れるアニメーション */
-@keyframes abare-move {
-    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-    10% { transform: translate(-5px, -10px) rotate(-5deg) scale(1.1); }
-    20% { transform: translate(5px, 10px) rotate(5deg) scale(1.05); }
-    30% { transform: translate(-10px, 5px) rotate(-10deg) scale(1.2); }
-    50% { transform: translate(10px, -5px) rotate(15deg) scale(1.1); }
-    70% { transform: translate(-5px, 15px) rotate(-20deg) scale(1.3); }
-    90% { transform: translate(15px, 5px) rotate(10deg) scale(1.1); }
-    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-}
-
-/* MAX時に付与するクラス */
-.max-chaos {
-    animation: abare-move 0.2s infinite, rainbow-flash 0.5s infinite !important;
-    cursor: orange !important;
-}
-    </style>
+    /* --- その他 --- */
+    .reset-btn { background: none; border: none; color: #ccc; font-size: 11px; cursor: pointer; margin: 20px auto; display: block; }
+    footer { background: white; padding: 40px 20px; text-align: center; border-top: 2px solid var(--soft-pink); margin-top: 50px; }
+</style>
 </head>
 <body class="bg-level-1">
 
@@ -275,7 +251,6 @@
             </div>
         </div>
     </div>
-</style>
 
     <footer>
         <p style="color: var(--pink2); font-weight: bold; font-size: 15px; margin-bottom: 12px; letter-spacing: 1px;">🎀 HAGUMO project 🎀</p>
