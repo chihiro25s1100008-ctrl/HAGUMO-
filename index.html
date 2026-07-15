@@ -4,99 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HAGUMO | ホーム</title>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
+    <!-- フォントの読み込み -->
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- 共通のstyle.cssを読み込む -->
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        :root { 
-            --main-pink: #ff7eb9; --soft-pink: #fff5f7; --pink1: #ffb3d9; --pink2: #d1478e; 
-            --white-glass: rgba(255, 255, 255, 0.8);
+        /* ホーム画面専用のレイアウト調整（style.cssを上書きしません） */
+        body {
+            padding-top: 100px; /* ナビゲーションの下に隠れないための余白 */
+        }
+        @media screen and (min-width: 769px) {
+            body { padding-top: 80px; }
         }
 
-        body { 
-            font-family: 'Zen Maru Gothic', sans-serif; 
-            background: var(--soft-pink); 
-            margin: 0; 
-            padding-top: 80px; 
-            color: #555;
-        }
-
-        /* --- ナビゲーション --- */
-        .nav { 
-            position: fixed; top: 0; left: 0; width: 100%; 
-            background: var(--white-glass); backdrop-filter: blur(10px);
-            z-index: 10000; border-bottom: 2px solid rgba(255, 179, 217, 0.3); padding: 12px 0;
-        }
-        .nav-content { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo-img { height: 35px; cursor: pointer; }
-        .nav-links { display: flex; gap: 12px; }
-        .nav-link { 
-            color: #888; text-decoration: none; font-size: 11px; font-weight: bold; 
-            padding: 6px 12px; border-radius: 50px; transition: 0.3s; border: 1px solid transparent; font-family: 'Quicksand', sans-serif;
-        }
-        .nav-link:hover, .nav-link.active { color: var(--pink2); background: white; border-color: var(--pink1); box-shadow: 0 4px 10px rgba(255, 126, 185, 0.2); }
-
-        /* --- メインビジュアル --- */
-        .hero {
-            max-width: 1000px;
-            margin: 40px auto 20px;
-            padding: 60px 20px;
-            text-align: center;
-            background: white;
-            border-radius: 35px;
-            border: 2px solid #eee;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        }
-        .hero h1 {
-            color: var(--pink2);
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-        .hero p {
-            font-size: 16px;
-            color: #777;
-            line-height: 1.6;
-        }
-
-        /* --- コンテンツエリア --- */
+        /* メニューカードを綺麗に並べるグリッドレイアウト */
         .menu-grid {
-            max-width: 1000px;
-            margin: 0 auto 40px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 15fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
+            max-width: 1000px;
+            margin: 20px auto 40px;
             padding: 0 20px;
         }
+
+        /* style.cssの.cardをリンクボタンとして使うための微調整 */
         .menu-card {
-            background: white;
-            border-radius: 25px;
-            padding: 30px;
-            text-align: center;
-            border: 2px solid #eee;
-            transition: 0.3s;
             text-decoration: none;
             color: inherit;
+            margin: 0 !important; /* 個別のマージンをリセットしてグリッドに合わせる */
+            max-width: 100% !important;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid transparent;
+            transition: 0.3s;
         }
+
+        /* ホバーした時に少し浮き上がって枠線がピンクになる演出 */
         .menu-card:hover {
             transform: translateY(-5px);
-            border-color: var(--pink1);
-            box-shadow: 0 10px 20px rgba(255, 126, 185, 0.1);
+            border-color: var(--pink);
+            box-shadow: 0 15px 30px rgba(255, 126, 185, 0.15);
         }
+
         .menu-card h2 {
-            color: var(--main-pink);
+            margin: 0 0 10px 0;
+            color: var(--pink2);
             font-size: 20px;
-            margin-top: 0;
         }
+
         .menu-card p {
-            font-size: 13px;
+            margin: 0;
+            font-size: 13.5px;
             color: #888;
+        }
+
+        @media screen and (max-width: 768px) {
+            .menu-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <!-- 全ページ共通の最強ナビゲーション構造 -->
     <nav class="nav">
         <div class="nav-content">
+            <!-- ロゴをクリックしたらindex.htmlに戻る -->
             <img src="./images/rogo.PNG" class="nav-logo-img" alt="HAGUMO Logo" onclick="location.href='index.html'">
+            
             <div class="nav-links">
+                <!-- 現在のページなのでHOMEにだけ active クラスをつけています -->
                 <a href="index.html" class="nav-link active">HOME</a>
                 <a href="world.html" class="nav-link">WORLD</a>
                 <a href="product.html" class="nav-link">PRODUCT</a>
@@ -107,25 +88,35 @@
         </div>
     </nav>
 
-    <div class="hero">
-        <h1>ようこそ、HAGUMOの世界へ！</h1>
-        <p>くだものやお野菜、可愛いどうぶつたちが織りなす<br>優しくてちょっぴり特別なブランドへようこそ。あなたのお気に入りの子を見つけてね。</p>
+    <!-- 共通のヒーローセクション -->
+    <div class="hero-section">
+        <h1 class="main-copy">ようこそ、HAGUMOの世界へ！</h1>
+        <p class="sub-copy">くだものやお野菜、可愛いどうぶつたちが織りなす<br>優しくてちょっぴり特別なブランド。あなたのお気に入りの子を見つけてね。</p>
     </div>
 
+    <!-- コンテンツカードのグリッド表示（共通の.cardクラスを適用） -->
     <div class="menu-grid">
-        <a href="world.html" class="menu-card">
+        <a href="world.html" class="card menu-card">
             <h2>🌍 WORLD</h2>
-            <p>ハグモたちが暮らす素敵なお庭や、世界観のストーリーをのぞいてみよう！</p>
+            <p>ハグモたちが暮らす素敵なお庭のストーリーや世界観をのぞいてみよう！</p>
         </a>
-        <a href="hagumo.html" class="menu-card">
+        
+        <a href="product.html" class="card menu-card">
+            <h2>🛍️ PRODUCT</h2>
+            <p>可愛さとこだわりがたっぷり詰まった、HAGUMO自慢のアイテムたち。</p>
+        </a>
+
+        <a href="hagumo.html" class="card menu-card">
             <h2>🐾 HAGUMO</h2>
-            <p>かぶたやさつまいもぐらなど、個性豊かなハグモたちのプロフィールはこちら！</p>
+            <p>かぶたやさつまいもぐらなど、個性豊かなハグモたちのプロフィール！</p>
         </a>
-        <a href="diagnosis.html" class="menu-card">
+        
+        <a href="diagnosis.html" class="card menu-card">
             <h2>✨ DIAGNOSIS</h2>
             <p>あなたと一番相性ピッタリなハグモがわかる、ドキドキの相性診断！</p>
         </a>
-        <a href="my.html" class="menu-card">
+        
+        <a href="my.html" class="card menu-card">
             <h2>🏠 MY HAGUMO</h2>
             <p>お部屋でハグモたちとおしゃべりしたり、なでなでして絆を深めよう！</p>
         </a>
